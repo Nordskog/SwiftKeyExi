@@ -21,7 +21,7 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 	@Override
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable
     {
-		if ( !(lpparam.packageName.equals("com.touchtype.swiftkey.beta") || lpparam.packageName.equals("com.touchtype.swiftkey")) )
+		if ( !(lpparam.packageName.equals( ExiModule.SWIFTKEY_BETA_PACKAGE_NAME ) || lpparam.packageName.equals( ExiModule.SWIFTKEY_PACKAGE_NAME )) )
             return;
 
 		ExiXposed.HOOK_PACKAGE_NAME = lpparam.packageName;

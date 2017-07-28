@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Binder;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
@@ -37,6 +38,9 @@ public class SharedPreferencesProvider extends ContentProvider
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) 
 	{
+
+		if ( !ProviderSecurity.isAllowed( this.getContext(), Binder.getCallingUid() ) )
+			return null;
 
 		switch  (mSharedPreferencesUriMatcher.match(uri) )
 		{

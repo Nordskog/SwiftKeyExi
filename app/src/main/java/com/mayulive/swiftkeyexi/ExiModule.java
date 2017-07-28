@@ -30,6 +30,8 @@ public class ExiModule
 	//Anything that references the package name should use this constant
 	public static String PACKAGE = BuildConfig.APPLICATION_ID;
 
+	public static String SWIFTKEY_PACKAGE_NAME = "com.touchtype.swiftkey";
+	public static String SWIFTKEY_BETA_PACKAGE_NAME = "com.touchtype.swiftkey.beta";
 
 	public enum ModuleDatabaseType
 	{

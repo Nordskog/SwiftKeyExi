@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Binder;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
@@ -30,7 +31,6 @@ public class Provider extends ContentProvider
     {
         //For fetching anything that accesses a database
         mDatabaseUriMatcher.addURI(ExiModule.PACKAGE+".database", PROVIDER_DATABASE_PATH+"/*", 0);
-
     }
 	
 	@Override
@@ -49,6 +49,9 @@ public class Provider extends ContentProvider
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) 
 	{
+		if ( !ProviderSecurity.isAllowed( this.getContext(), Binder.getCallingUid() ) )
+			return null;
+
 		switch  (mDatabaseUriMatcher.match(uri) )
 		{
 			case 0:
@@ -84,6 +87,9 @@ public class Provider extends ContentProvider
 	@Override
 	public Uri insert(Uri uri, ContentValues values)
 	{
+		if ( !ProviderSecurity.isAllowed( this.getContext(), Binder.getCallingUid() ) )
+			return null;
+
 		long newId = mDbWrap.insert(uri.getLastPathSegment(), null, values);
 		return uri.buildUpon().appendPath(String.valueOf( newId ) ).build();
 	}
@@ -91,16 +97,20 @@ public class Provider extends ContentProvider
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs)
 	{
+		if ( !ProviderSecurity.isAllowed( this.getContext(), Binder.getCallingUid() ) )
+			return -1;
+
 		return mDbWrap.delete(uri.getLastPathSegment(),selection,selectionArgs);
 	}
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
 	{
+		if ( !ProviderSecurity.isAllowed( this.getContext(), Binder.getCallingUid() ) )
+			return -1;
 
 		return mDbWrap.update(uri.getLastPathSegment(), values, selection,selectionArgs);
 	}
-
 
 	public static WrappedProvider getWrapped(Context context)
 	{

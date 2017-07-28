@@ -22,7 +22,7 @@
             android:value="true"/>
         <meta-data
             android:name="xposeddescription"
-            android:value="Customize swiftkeyexi Emoji"/>
+            android:value="Swiftkey Customization"/>
         <meta-data
             android:name="xposedminversion"
             android:value="53"/>
