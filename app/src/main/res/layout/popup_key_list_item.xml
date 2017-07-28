@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/vertical_item_spacing"
+
+    android:descendantFocusability="blocksDescendants"
+
+    >
+
+    <Button
+        style="@style/DisplayButton"
+        android:id="@+id/popupkey_parent_key"
+        />
+
+    <FrameLayout style="@style/SectionSeparator" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <com.mayulive.swiftkeyexi.main.popupkeys.PopupkeysPositionWidget
+            android:id="@+id/popupkey_position_widget"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"/>
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

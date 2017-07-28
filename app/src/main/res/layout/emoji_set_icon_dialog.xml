@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="@dimen/popup_margin"
+              android:paddingRight="@dimen/popup_margin"
+              android:orientation="vertical"
+              android:layout_gravity="center"
+                >
+
+    <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        app:bounded_width="600dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                style="@style/EditboxDescription"
+                android:id="@+id/set_icon_textview"
+                android:text="@string/emoji_icon_description" />
+
+            <android.support.v7.widget.AppCompatEditText
+                style="@style/EditBoxInput"
+                android:id="@+id/set_icon_edittext" >
+            </android.support.v7.widget.AppCompatEditText>
+
+
+            <ImageButton
+                android:id="@+id/pickButton"
+                android:layout_width="@dimen/popup_key_row_button"
+                android:layout_weight="0"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/ic_pick_icon"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <ImageButton
+                android:id="@+id/leftButton"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_keyboard_arrow_left"/>
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_weight="0"
+                android:layout_height="wrap_content"
+                android:text="@string/emoji_position"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+            <ImageButton
+                android:id="@+id/rightButton"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right"/>
+
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:paddingTop="@dimen/vertical_item_spacing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/doneButton"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:tint="?android:textColorPrimary"
+                android:layout_height="match_parent"
+                android:text="@string/button_done"
+                />
+
+            <!-- Would be a problem when changing themes on the keyboard side. Not allowing. -->
+            <CheckBox
+                android:visibility="gone"
+                android:id="@+id/emoji_color_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/emoji_use_color_emoji"/>
+
+        </FrameLayout>
+
+    </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="keydefinition_default">Default</string>
+    <string name="keydefinition_symbol">Letter or symbol key</string>
+    <string name="keydefinition_delete">Delete key</string>
+    <string name="keydefinition_shift">Shift Key</string>
+    <string name="keydefinition_space">Space key</string>
+    <string name="keydefinition_switch_layout">Layout key (Symbols)</string>
+    <string name="keydefinition_emoji">Emoji key</string>
+    <string name="keydefinition_enter">Enter key</string>
+    <string name="keydefinition_period">Period key</string>
+    <string name="keydefinition_clearbuffer">Clear buffer key (清空)</string>
+    <string name="keydefinition_tab">Tab key</string>
+    <string name="keydefinition_layout_mapped_letterKey">Multi-Letter key</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--- Probably not used anymore -->
+    <color name="global_background_color">#232323</color>
+    <color name="standard_text_color">#777777</color>
+
+    <!-- Duplicate of material colors because kitkat is kitkat -->
+    <color name="colorAccent">#FFC94E4E</color>
+    <color name="accent_material_light_1">#003df5</color>
+
+
+    <color name="quick_men_default_color">#2d5bc6</color>
+    <color name="accent_material_light">#c94e4e</color>
+
+</resources>

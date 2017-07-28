@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/vertical_item_spacing"
+
+              style="@style/ContainerPadding"
+
+    android:descendantFocusability="blocksDescendants"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            style="@style/ModButton"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" + "
+            android:layout_gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
+
+        <Button
+            style="@style/ModButton"
+            android:id="@+id/shortcutkey_text"
+            android:alpha="1"
+            />
+
+        <TextView
+            android:id="@+id/shortcutkey_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select all"
+            android:gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
+
+
+    </LinearLayout>
+
+
+<!--
+    <FrameLayout
+
+        android:layout_width="match_parent"
+
+        android:layout_height="1dp"
+        android:background="?attr/colorAccent"
+        />
+
+-->
+
+</LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="xposed_tabMaxWidth"             type="dimen">@dimen/design_tab_max_width</item>
+    <item name="xposed_tabIndicatorColor"       type="color">?attr/colorAccent</item>
+    <item name="xposed_tabIndicatorHeight"      type="dimen">2dp</item>
+    <item name="xposed_tabPaddingStart"         type="dimen">12dp</item>
+    <item name="xposed_tabPaddingEnd"           type="dimen">12dp</item>
+    <item name="xposed_tabBackground"           type="color">?attr/selectableItemBackground</item>
+    <item name="xposed_tabTextAppearance"       type="style">@style/TextAppearance.Design.Tab</item>
+    <item name="xposed_tabSelectedTextColor"    type="color">?android:textColorPrimary</item>
+</resources>

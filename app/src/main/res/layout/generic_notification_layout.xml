@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Not used -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:background="?attr/colorPrimary"
+             android:padding="@dimen/activity_horizontal_margin"
+             android:layout_width="match_parent"
+
+             android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/notificationIcon"
+        android:visibility="gone"
+        android:tint="#ff9000"
+        app:srcCompat="@drawable/alert_icon"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/notificationMessage"
+        android:layout_gravity="start"
+        android:layout_marginStart="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="#ff9000"
+        android:text="Changes require keyboard reload"/>
+
+
+    <ImageView
+        android:id="@+id/notificationHelpIcon"
+        android:tint="#ff9000"
+        app:srcCompat="@drawable/help_icon"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</FrameLayout>

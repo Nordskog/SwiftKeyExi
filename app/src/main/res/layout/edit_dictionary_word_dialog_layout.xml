@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+     >
+
+    <TableRow>
+
+        <TextView
+            style="@style/EditboxDescription"
+            android:id="@+id/textView2"
+            android:text="@string/dictionary_shortcut_description" />
+
+        <EditText
+            style="@style/EditBoxInput"
+            android:id="@+id/keyValueBox" >
+        </EditText>
+
+   </TableRow>
+    
+    <TableRow>
+
+        <TextView
+            style="@style/EditboxDescription"
+            android:id="@+id/textView1"
+            android:text="@string/dictionary_text_description" />
+
+        <EditText
+            style="@style/EditBoxInput"
+            android:id="@+id/textValueBox" >
+        </EditText>
+
+    </TableRow>
+
+
+
+</TableLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- space swipe modifier -->
+    <string-array name="pref_space_swipe_modifier_mode_display_entries">
+        <item>@string/pref_space_swipe_modifier_mode_display_string_KEY</item>
+        <item>@string/pref_space_swipe_modifier_mode_display_string_MENU</item>
+        <item>@string/pref_space_swipe_modifier_mode_display_string_DISABLED</item>
+    </string-array>
+
+    <string-array name="pref_space_swipe_modifier_mode_values">
+        <item>KEY</item>
+        <item>MENU</item>
+        <item>DISABLED</item>
+    </string-array>
+
+
+
+    <!-- App theme -->
+
+    <string-array name="pref_app_theme_values">
+        <item>DARK</item>
+        <item>LIGHT</item>
+    </string-array>
+
+    <string-array name="pref_app_theme_value_display_strings">
+        <item>@string/pref_app_theme_value_display_string_DARK</item>
+        <item>@string/pref_app_theme_value_display_string_LIGHT</item>
+    </string-array>
+
+</resources>
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+
+              style="@style/ContainerPadding"
+    >
+
+    <Button
+        style="@style/DisplayButton"
+        android:id="@+id/popupkey_parent_key"
+        />
+
+    <FrameLayout style="@style/SectionSeparator" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <EditText
+            style="@style/EditBoxInputSmall"
+            android:id="@+id/popupkey_lowercaseEditText"
+            android:hint="@string/content_title"
+            >
+        </EditText>
+
+        <com.mayulive.swiftkeyexi.main.popupkeys.PopupkeysPositionWidget
+            android:id="@+id/popupkey_position_widget"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

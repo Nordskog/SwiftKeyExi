@@ -1,0 +1,135 @@
+package com.mayulive.swiftkeyexi.main.settings;
+
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
+
+import com.mayulive.swiftkeyexi.database.DatabaseHolder;
+import com.mayulive.swiftkeyexi.database.WrappedDatabase;
+import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
+import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
+import com.mayulive.swiftkeyexi.R;
+import com.mayulive.swiftkeyexi.settings.NumberPickerPreferenceFragment;
+import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+
+/**
+ * Created by Roughy on 1/4/2017.
+ */
+
+public class SettingsFragment extends PreferenceFragmentCompat
+{
+
+	WrappedDatabase mDbWrap;
+
+	private void setupReferences()
+	{
+		mDbWrap = DatabaseHolder.getWrapped(this.getContext());
+	}
+
+
+	@Override
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
+	{
+
+		setupReferences();
+
+		PreferenceManager prefMgr = getPreferenceManager();
+		prefMgr.setSharedPreferencesName(SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+
+		addPreferencesFromResource(R.xml.preferences);
+
+		Preference shiftPreference = findPreference(this.getContext().getResources().getString( R.string.pref_additional_shift_keys_key ));
+		shiftPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayAdditionalKeysFragment(KeyCommons.KeyType.SHIFT);
+				return true;
+			}
+		});
+
+		Preference deletePreference = findPreference(this.getContext().getResources().getString( R.string.pref_additional_delete_keys_key ));
+		deletePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayAdditionalKeysFragment(KeyCommons.KeyType.DELETE);
+				return true;
+			}
+		});
+
+		Preference symbolPreference = findPreference(this.getContext().getResources().getString( R.string.pref_additional_symbol_keys_key ));
+		symbolPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayAdditionalKeysFragment(KeyCommons.KeyType.SYMBOL);
+				return true;
+			}
+		});
+
+		Preference aboutPreference = findPreference(this.getContext().getResources().getString( R.string.pref_about_key ));
+		aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayAboutFragment();
+				return true;
+			}
+		});
+
+
+	}
+
+	private void displayAdditionalKeysFragment(KeyCommons.KeyType type)
+	{
+		KeyDefinitionFragment nextFrag= new KeyDefinitionFragment();
+
+		Bundle extras = new Bundle();
+
+		if (type == KeyCommons.KeyType.SHIFT)
+			extras.putInt(KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_BUNDLE_KEY, KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_SHIFT_KEY_BUNDLE_VALUE);
+		else if (type == KeyCommons.KeyType.SYMBOL)
+			extras.putInt(KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_BUNDLE_KEY, KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_SYMBOL_KEY_BUNDLE_VALUE);
+		else
+			extras.putInt(KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_BUNDLE_KEY, KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_DELETE_KEY_BUNDLE_VALUE);
+
+		nextFrag.setArguments(extras);
+
+		this.getFragmentManager().beginTransaction()
+				.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
+				.addToBackStack(null)
+				.commit();
+
+	}
+
+	private void displayAboutFragment()
+	{
+		AboutFragment nextFrag= new AboutFragment();
+
+		this.getFragmentManager().beginTransaction()
+				.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
+				.addToBackStack(null)
+				.commit();
+	}
+
+	//Needed for custom prefs to work... ? I don't even
+	@Override
+	public void onDisplayPreferenceDialog(Preference preference) {
+		DialogFragment fragment;
+		if (preference instanceof NumberPickerPreference) {
+			fragment = NumberPickerPreferenceFragment.newInstance(preference);
+			fragment.setTargetFragment(this, 0);
+			fragment.show(getFragmentManager(),
+					"android.support.v7.preference.PreferenceFragment.DIALOG");
+		} else super.onDisplayPreferenceDialog(preference);
+	}
+}

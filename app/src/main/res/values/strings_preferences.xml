@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--- Must mirror SettingsCommons value -->
+    <string name="shared_pref_module_settings_key">shared_pref_module_settings</string>
+
+
+    <!-- Categories -->
+    <string name="category_pref_emoji_panel">Emoji Panel</string>
+    <string name="category_pref_flow_suggestions">Flow &amp; Suggestions </string>
+    <string name="category_pref_misc">Misc</string>
+
+
+    <!-- Quick menu color  -->
+    <string name="pref_quick_menu_color_key">pref_quick_menu_color</string>
+    <string name="pref_quick_menu_color_title">Quick-Menu color</string>
+    <string name="pref_quick_menu_color_summary">Highlight color</string>
+
+
+    <!-- App Theme -->
+    <string name="pref_app_theme_key">pref_app_theme</string>
+    <string name="pref_app_theme_title">App Theme</string>
+    <string name="pref_app_theme_summary">App apperance</string>
+
+    <string name="pref_app_theme_value_display_string_LIGHT">Light</string>
+    <string name="pref_app_theme_value_display_string_DARK">Dark</string>
+
+    <!-- Emoji text size -->
+    <string name="pref_emoji_text_size_key">pref_emoji_text_size</string>
+    <string name="pref_emoji_text_size_title">Emoji Size</string>
+    <string name="pref_emoji_text_size_summary">How large Emoji will appear</string>
+
+
+
+    <!-- Key Definitions. Keys are only used to identify menu items  -->
+    <string name="pref_additional_shift_keys_key">pref_additional_shift_keys</string>
+        <string name="pref_additional_shift_keys_title">Shift Keys</string>
+        <string name="pref_additional_shift_keys_summary">Additional Shift Keys</string>
+
+    <string name="pref_additional_delete_keys_key">pref_additional_delete_keys</string>
+        <string name="pref_additional_delete_keys_title">Delete Keys</string>
+        <string name="pref_additional_delete_keys_summary">Additional Delete Keys</string>
+
+    <string name="pref_additional_symbol_keys_key">pref_additional_symbol_keys</string>
+        <string name="pref_additional_symbol_keys_title">Modifier Keys</string>
+        <string name="pref_additional_symbol_keys_summary">Additional Modifier Keys</string>
+
+    <!-- Hotkeys -->
+    <string name="pref_space_swipe_modifier_mode_key">pref_space_swipe_modifier_mode</string>
+        <string name="pref_space_swipe_modifier_mode_title">Space-Swipe Hotkey Mode</string>
+        <string name="pref_space_swipe_modifier_mode_summary">Behavior when swiping from Space</string>
+
+    <string name="pref_space_swipe_modifier_mode_display_string_MENU">Quick Menu</string>
+    <string name="pref_space_swipe_modifier_mode_display_string_KEY">Swipe to Hotkey</string>
+    <string name="pref_space_swipe_modifier_mode_display_string_DISABLED">Disable</string>
+
+    <string name="pref_shortcut_keys_toggle_key">pref_shortcut_keys_toggle</string>
+        <string name="pref_shortcut_keys_toggle_title">Shortcut Keys</string>
+        <string name="pref_shortcut_keys_toggle_summary">Toggle shortcut keys</string>
+
+
+    <!-- Suggestions -->
+    <string name="pref_more_suggestions_key">pref_more_suggestions</string>
+    <string name="pref_more_suggestions_title">More Suggestions</string>
+    <string name="pref_more_suggestions_summary">Display more suggestions</string>
+
+    <string name="pref_flow_suggestions_key">pref_flow_suggestions</string>
+    <string name="pref_flow_suggestions_title">Flow shortcuts</string>
+    <string name="pref_flow_suggestions_summary">Insert shortcuts into flow</string>
+
+    <string name="pref_prediction_suggestions_key">pref_prediction_suggestions</string>
+    <string name="pref_prediction_suggestions_title">Suggestion shortcuts</string>
+    <string name="pref_prediction_suggestions_summary">Shortcuts also trigger on suggestions</string>
+
+    <string name="pref_disable_auto_correct_on_cursor_move_key">pref_disable_auto_correct_on_cursor_move</string>
+    <string name="pref_disable_auto_correct_on_cursor_move_title">No auto-correct after swiping</string>
+    <string name="pref_disable_auto_correct_on_cursor_move_summary">Insert space instead of correction</string>
+
+    <string name="pref_remove_suggestion_padding_key">pref_remove_suggestion_padding</string>
+    <string name="pref_remove_suggestion_padding_title">Maximize Suggestions</string>
+    <string name="pref_remove_suggestion_padding_summary">Make suggestions bar fill screen</string>
+
+
+    <string name="pref_dictionary_toggle_key">pref_dictionary_toggle</string>
+        <string name="pref_dictionary_toggle_title">Dictionary</string>
+        <string name="pref_dictionary_toggle_summary">Toggle custom dictionary shortcuts</string>
+
+
+
+
+    <!-- Swipe behavior -->
+    <string name="pref_old_flow_behavior_key">pref_old_flow_behavior</string>
+    <string name="pref_old_flow_behavior_title">Use old Flow behavior</string>
+    <string name="pref_old_flow_behavior_summary">Predict next instead of correcting last</string>
+
+
+    <!-- Period button -->
+    <string name="pref_disable_period_click_key">pref_disable_period_click</string>
+    <string name="pref_disable_period_click_title">Disable Period tap</string>
+    <string name="pref_disable_period_click_summary">Must be clicked instead</string>
+
+
+    <!--- Emoji kill switch -->
+    <string name="pref_emoji_panel_key">pref_emoji_panel</string>
+        <string name="pref_emoji_panel_title">Replace Emoji Panel</string>
+        <string name="pref_emoji_panel_summary">Enable Emoji panel customization</string>
+
+
+
+
+
+    <!-- Swipe selection -->
+
+
+    <string name="pref_cursor_speed_key">pref_cursor_speed</string>
+    <string name="pref_cursor_speed_title">Cursor Speed</string>
+    <string name="pref_cursor_speed_summary">How fast the cursor moves</string>
+
+    <string name="pref_swipe_threshold_key">pref_swipe_threshold_toggle</string>
+    <string name="pref_swipe_threshold_title">Swipe Threshold</string>
+    <string name="pref_swipe_threshold_summary">Movement required to enter swipe mode</string>
+
+
+    <string name="pref_cursor_behavior_key">pref_cursor_behavior</string>
+        <string name="pref_cursor_behavior_title">Cursor Behavior</string>
+        <string name="pref_cursor_behavior_summary">How the cursor responds to swipes</string>
+        <string name="pref_cursor_behavior_dialog_title">Cursor Behavior</string>
+        <string name="pref_cursor_behavior_default">SWIPE</string>
+
+    <string name="pref_selection_behavior_key">pref_selection_behavior</string>
+        <string name="pref_selection_behavior_title">Selection Behavior</string>
+        <string name="pref_selection_behavior_summary">How you select text</string>
+        <string name="pref_selection_behavior_dialog_title">Selection Behavior</string>
+        <string name="pref_selection_behavior_default">HYBRID</string>
+
+
+    <string name="pref_about_key">pref_about</string>
+    <string name="pref_about_title">About</string>
+
+
+
+</resources>

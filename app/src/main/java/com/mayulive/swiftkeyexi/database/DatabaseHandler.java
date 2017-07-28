@@ -1,0 +1,99 @@
+package com.mayulive.swiftkeyexi.database;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
+
+public class DatabaseHandler extends SQLiteOpenHelper
+{
+
+	public static final int DATABASE_VERSION = 1;
+	public static final String DATABASE_NAME = "exi_main.db";
+
+	private SQLiteDatabase mDb = null;
+	
+	//////////////////////////////////////////////////////////////////
+
+
+	public SQLiteDatabase getDatabaseInstance()
+	{
+		ensureOpen();
+		return mDb;
+
+	}
+
+	public  void openDatabase()
+	{
+		mDb = getWritableDatabase();
+	}
+	
+	public void closeDataBase()
+	{
+		mDb.close();
+		mDb = null;
+	}
+	
+	public void ensureOpen()
+	{
+		if (mDb == null)
+			openDatabase();
+	}
+	
+	
+	public DatabaseHandler(Context context)
+	{
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		
+	}
+	
+	@Override
+	public void onCreate(SQLiteDatabase db) 
+	{
+		String query = "CREATE TABLE " + TableInfoTemplates.DICTIONARY_SHORTCUT_TABLE_INFO.tableName + TableInfoTemplates.DICTIONARY_SHORTCUT_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+		
+		query = "CREATE TABLE " + TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO.tableName + TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
+		query = "CREATE TABLE " + TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO.tableName + TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
+		query = "CREATE TABLE " + TableInfoTemplates.RECENT_EMOJI_TABLE_INFO.tableName + TableInfoTemplates.RECENT_EMOJI_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
+		query = "CREATE TABLE " + TableInfoTemplates.MODIFIER_KEY_TABLE_INFO.tableName + TableInfoTemplates.MODIFIER_KEY_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
+		query = "CREATE TABLE " + TableInfoTemplates.POPUP_KEY_TABLE_INFO.tableName + TableInfoTemplates.POPUP_KEY_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
+		query = "CREATE TABLE " + TableInfoTemplates.ADDITIONAL_SHIFT_KEYS_TABLE_INFO.tableName + TableInfoTemplates.ADDITIONAL_SHIFT_KEYS_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
+		query = "CREATE TABLE " + TableInfoTemplates.ADDITIONAL_DELETE_KEYS_TABLE_INFO.tableName + TableInfoTemplates.ADDITIONAL_DELETE_KEYS_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
+		query = "CREATE TABLE " + TableInfoTemplates.ADDITIONAL_SYMBOL_KEYS_TABLE_INFO.tableName + TableInfoTemplates.ADDITIONAL_SYMBOL_KEYS_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
+	}
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
+	{
+		//uuuuhh
+		db.execSQL("DROP TABLE IF EXISTS " + TableInfoTemplates.DICTIONARY_SHORTCUT_TABLE_INFO.tableName);
+		db.execSQL("DROP TABLE IF EXISTS " + TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO.tableName);
+		onCreate(db);
+		
+	}
+	
+	public static void DeleteDatabase(Context context)
+	{
+		context.deleteDatabase(DATABASE_NAME);
+	}
+
+
+	
+}

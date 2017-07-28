@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_about_author_title">Author</string>
+    <string name="pref_about_version_title">Version</string>
+    <string name="pref_about_source_code_title">Source Code</string>
+    <string name="pref_about_support_title">Support</string>
+    <string name="pref_about_supported_title">Last supported version</string>
+</resources>

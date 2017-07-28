@@ -1,0 +1,36 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity" >
+
+    <item
+        android:id="@+id/new_menu_item"
+        android:orderInCategory="100"
+        android:title="@string/emoji_new_panel"/>
+
+    <item
+        android:id="@+id/load_menu_item"
+        android:orderInCategory="100"
+        android:title="@string/emoji_load_panel"/>
+
+
+    <item
+        android:id="@+id/delete_menu_item"
+        android:orderInCategory="100"
+        android:title="@string/emoji_delete_panel"/>
+
+    <item
+        android:id="@+id/add_all_menu_item"
+        android:orderInCategory="100"
+        android:title="@string/emoji_add_all"/>
+
+    <item
+        android:id="@+id/column_size_menu_item"
+        android:orderInCategory="100"
+        android:title="@string/emoji_column_size"/>
+
+    <item
+        android:id="@+id/column_add_single_emoji"
+        android:orderInCategory="100"
+        android:title="@string/emoji_input_emoji"/>
+
+</menu>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="0.5"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    >
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:id="@+id/swipe_mode_item_image"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_swipe_mode_anywhere"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+
+        android:elevation="30dp"
+
+        />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/swipe_mode_item_text"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Swipe anywhere"
+        />
+
+</LinearLayout>

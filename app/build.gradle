@@ -1,0 +1,121 @@
+apply plugin: 'com.android.application'
+
+//Folder containing keystore and signing config is excluded from version control.
+//Please create them yourself before trying to build
+apply from: 'keystore/signing.gradle'
+
+android
+        {
+            compileSdkVersion 25
+            buildToolsVersion "25.0.1"
+            defaultConfig
+                    {
+                        applicationId 'com.mayulive.swiftkeyexi'
+                        minSdkVersion 19
+                        targetSdkVersion 23
+                        versionCode 1
+                        versionName "1.0.0"
+
+
+
+                        //About fields
+                        def SWIFTKEY_SUPORTED_VERSION = "6.6.3.21"
+                        def SWIFTKEY_BETA_SUPORTED_VERSION = "6.6.4.15"
+                        def APP_AUTHOR_NAME = "Roughy"
+
+
+                        resValue  "string", "APP_AUTHOR_NAME", APP_AUTHOR_NAME
+                        resValue  "string", "APP_VERSION_NAME", versionName
+                        resValue  "string", "APP_SOURCE_CODE_URL", "https://github.com/Nordskog/swiftkeyexi"
+                        resValue  "string", "APP_SUPPORT_URL", "https://github.com/Nordskog/swiftkeyexi"
+                        resValue  "string", "SWIFTKEY_SUPPORTED_VERSION", "Swiftkey: " + SWIFTKEY_SUPORTED_VERSION
+                        resValue  "string", "SWIFTKEY_BETA_SUPPORTED_VERSION", "Beta: " + SWIFTKEY_BETA_SUPORTED_VERSION
+
+
+
+                        //Necessary for image compat vector drawables
+                        vectorDrawables.useSupportLibrary = true
+
+                        externalNativeBuild
+                                {
+
+                                    // Encapsulates your CMake build configurations.
+                                    cmake
+                                            {
+                                                //Argumetns must be under defaultConfig, not down with the path value.
+                                                arguments "-DANDROID_STL=c++_static"
+                                            }
+                                }
+
+
+                    }
+            buildTypes
+                    {
+
+                        release
+                                {
+                                    debuggable false
+                                    minifyEnabled false //Barely makes a dent
+                                                        //Not worth the headache
+                                    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+                                    signingConfig signingConfigs.release
+
+
+                                }
+                        debug
+                                {
+                                    debuggable true
+                                }
+                    }
+            aaptOptions
+                    {
+                        //If are fonts are compressed we can't map them to memory
+                        noCompress "ttf"
+
+                    }
+            // Encapsulates your external native build configurations.
+            externalNativeBuild
+                    {
+
+                        // Encapsulates your CMake build configurations.
+                        cmake
+                                {
+                                    // Provides a relative path to your CMake build script.
+                                    path "CMakeLists.txt"
+                                }
+                    }
+            productFlavors
+                    {
+                    }
+
+
+
+        }
+repositories
+        {
+
+        mavenCentral()
+    jcenter()
+    mavenLocal()
+    
+}
+
+dependencies
+        {
+            provided 'de.robv.android.xposed:api:82:sources'
+            compile('com.github.kizitonwose.colorpreference:support:1.0.3') {
+                exclude group: 'com.android.support'
+            }
+            compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+            compile "com.android.support:support-v13:$rootProject.supportLibraryVersion"
+            compile "com.android.support:design:$rootProject.supportLibraryVersion"
+            compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+            compile "com.android.support:preference-v14:$rootProject.supportLibraryVersion"
+            compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+            compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+
+            compile 'com.mayulive.xposed.classhunter:classhunter:1.0.0'
+
+
+            provided 'de.robv.android.xposed:api:82'
+        }

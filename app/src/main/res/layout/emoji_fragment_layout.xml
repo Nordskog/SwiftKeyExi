@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+	>
+
+    <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+        >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <com.mayulive.swiftkeyexi.util.view.FixedViewPager
+                    android:id="@+id/dictionaryPanelTabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.mayulive.swiftkeyexi.util.view.FixedViewPager>
+
+                <com.mayulive.swiftkeyexi.main.emoji.EmojiPanelInfoView
+                    android:id="@+id/dictionaryPanelInfoView"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_height="match_parent"/>
+
+            </FrameLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                    <!-- Making a tablayout center is difficult -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    >
+
+                    <com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout
+                        android:id="@+id/dictionaryPanelTabsTitles"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        app:tabMinWidth="0dp"
+                        app:tabMode="scrollable"
+                        app:tabGravity="center"
+
+                        />
+
+                    </FrameLayout>
+
+
+
+                </FrameLayout>
+
+                <Space
+                    android:layout_width="@dimen/circle_button_size"
+                    android:layout_marginRight="@dimen/generic_object_padding"
+                    android:layout_height="fill_parent"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <com.mayulive.swiftkeyexi.util.view.FixedViewPager
+                    android:id="@+id/keyboardPanelTabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                </com.mayulive.swiftkeyexi.util.view.FixedViewPager>
+
+                <com.mayulive.swiftkeyexi.main.emoji.EmojiPanelInfoView
+                    android:id="@+id/keyboardPanelInfoView"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_height="match_parent"/>
+
+            </FrameLayout>
+
+
+
+
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                >
+
+                <com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout
+                    android:id="@+id/keyboardPanelTabsTitles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    app:tabMinWidth="0dp"
+                    app:tabMode="scrollable"
+                    app:tabGravity="center"
+
+                    />
+
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        style="@style/CenteredFloatingButton"
+        app:srcCompat="@drawable/menu_icon"
+        android:id="@+id/dictionaryPanelMenuButton"
+        />
+
+</FrameLayout>

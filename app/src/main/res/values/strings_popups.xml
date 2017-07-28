@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="popups_set_popup_key">Set popup key</string>
+    <string name="popups_set_popup_parent_key">Set parent key</string>
+
+    <string name="popups_parent_change_failed_title">Update Failed</string>
+    <string name="popups_parent_change_failed_message">Entry with this key already exists.</string>
+
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                   android:title="About"
+                   android:key="customPrefKey">
+    <Preference
+        android:title="@string/pref_about_author_title"
+        android:summary="@string/APP_AUTHOR_NAME" />
+
+    <Preference
+        android:title="@string/pref_about_version_title"
+        android:summary="@string/APP_VERSION_NAME" />
+
+    <com.mayulive.swiftkeyexi.util.view.MultilineSummaryPreference
+        android:title="@string/pref_about_supported_title"
+        app:top_summary="@string/SWIFTKEY_SUPPORTED_VERSION"
+        app:bottom_summary="@string/SWIFTKEY_BETA_SUPPORTED_VERSION"
+        />
+
+
+    <Preference android:title="@string/pref_about_source_code_title" >
+        <intent android:action="android.intent.action.VIEW"
+                android:data="@string/APP_SOURCE_CODE_URL" />
+    </Preference>
+
+    <!-- TODO replace with xda thread link -->
+    <Preference android:title="@string/pref_about_support_title" >
+        <intent android:action="android.intent.action.VIEW"
+                android:data="@string/APP_SUPPORT_URL" />
+    </Preference>
+
+
+</PreferenceScreen>
