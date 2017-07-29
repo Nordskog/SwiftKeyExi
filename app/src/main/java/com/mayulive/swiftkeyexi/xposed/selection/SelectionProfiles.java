@@ -136,8 +136,6 @@ public class SelectionProfiles
 										new ClassItem(float.class)
 
 								),
-
-
 				});
 
 		return newProfile;

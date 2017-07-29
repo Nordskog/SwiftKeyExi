@@ -31,8 +31,6 @@ android
                         resValue  "string", "SWIFTKEY_SUPPORTED_VERSION", "Swiftkey: " + SWIFTKEY_SUPORTED_VERSION
                         resValue  "string", "SWIFTKEY_BETA_SUPPORTED_VERSION", "Beta: " + SWIFTKEY_BETA_SUPORTED_VERSION
 
-
-
                         //Necessary for image compat vector drawables
                         vectorDrawables.useSupportLibrary = true
 

@@ -40,9 +40,17 @@ public class SelectionClassManager
 
 
 	protected static Method frameHolderFactoryClass_frameHolderInflaterMethod = null;
-	protected static List<Method> FlowDelegate_flowDetectedMethods = null;
+	//protected static List<Method> FlowDelegate_flowDetectedMethods = null;
+	protected static Method FlowDelegate_flowDetectedMethod = null;
 	protected static Method swipeDelegate_flowDetectedMethod = null;
 	protected static Method SelectionChangedInputEventClass_hasMovedAbruptlyMethod = null;
+
+
+	////////////
+	//Objects
+	////////////
+
+	protected static Object FlowDelegate_DRAG_ENUM = null;
 
 	public static void loadUnknownClasses(PackageTree param) throws IOException
 	{
@@ -82,7 +90,29 @@ public class SelectionClassManager
 		{
 			//Catches another method I don't quite remember what does, but it's ... probably fine.
 			//It is possible to tell them apart if need be.
-			FlowDelegate_flowDetectedMethods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, FlowDelegateClass.getDeclaredMethods());
+			//FlowDelegate_flowDetectedMethods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, FlowDelegateClass.getDeclaredMethods());
+
+
+
+			FlowDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar(new MethodProfile
+							(
+									PRIVATE,
+									new ClassItem(boolean.class),
+									new ClassItem( ENUM)
+							),
+					FlowDelegateClass.getDeclaredMethods(), FlowDelegateClass);
+
+			if (FlowDelegate_flowDetectedMethod != null)
+			{
+				if (FlowDelegate_flowDetectedMethod.getParameterTypes().length == 1)
+				{
+					Class enumClass = FlowDelegate_flowDetectedMethod.getParameterTypes()[0];
+					if (enumClass.isEnum())
+					{
+						FlowDelegate_DRAG_ENUM = ProfileHelpers.findEnumByName((Enum[])enumClass.getEnumConstants(), "DRAG");
+					}
+				}
+			}
 		}
 
 
@@ -131,8 +161,6 @@ public class SelectionClassManager
 		loadUnknownClasses(param);
 		loadMethods();
 
-
-
 		updateDependencyState();
 	}
 
@@ -147,7 +175,8 @@ public class SelectionClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegateClass", 	swipeDelegateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "frameHolderFactoryClass_frameHolderInflaterMethod", 	frameHolderFactoryClass_frameHolderInflaterMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegate_flowDetectedMethod", 	swipeDelegate_flowDetectedMethod );
-		Hooks.logSetRequirement( Hooks.selectionHooks_base,	 "FlowDelegate_flowDetectedMethods",  (FlowDelegate_flowDetectedMethods != null && !FlowDelegate_flowDetectedMethods.isEmpty() ));
+		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegate_flowDetectedMethod",  (FlowDelegate_flowDetectedMethod ));
+		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegate_DRAG_ENUM",  (FlowDelegate_DRAG_ENUM ));
 	}
 
 }

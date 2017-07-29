@@ -78,59 +78,33 @@ public class SelectionHooks
 	}
 
 
-	public static Set<XC_MethodHook.Unhook> hookFlowHandler( )
+	public static XC_MethodHook.Unhook hookFlowHandler( )
 	{
 		//This class also handles swipe requests, but .. they aren't actually passed to it.
 		//Probabily both implementing the same interface
-
-		Set<XC_MethodHook.Unhook> returnHooks = new HashSet<>();
-
-		for (Method method : SelectionClassManager.FlowDelegate_flowDetectedMethods)
+		return XposedBridge.hookMethod(SelectionClassManager.FlowDelegate_flowDetectedMethod, new XC_MethodHook()
 		{
-
-			Object tempEnum = null;
-			if (method.getParameterTypes().length > 0)
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
-				Class firstParamClass = method.getParameterTypes().getClass();
-				if (firstParamClass.isEnum())
+				try
 				{
-					tempEnum = CodeUtils.findEnumByName((Enum[])firstParamClass.getEnumConstants(), "DRAG");
-				}
-			}
-
-			final Object targetEnum = tempEnum;
-
-			if (targetEnum != null)
-			{
-				returnHooks.add( XposedBridge.hookMethod(method, new XC_MethodHook()
-				{
-					@Override
-					protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+					if (param.args[0] == SelectionClassManager.FlowDelegate_DRAG_ENUM)
 					{
-						try
+						if (SelectionState.isSwipeAllowed())
 						{
-							if (param.args[0].getClass().isEnum())
-							{
-								if (param.args[0] == targetEnum)
-								{
-									if (SelectionState.isSwipeAllowed())
-									{
-										param.setResult(true);
-									}
-								}
-							}
-						}
-						catch (Throwable ex)
-						{
-							Hooks.selectionHooks_base.invalidate(ex, "Unexpected problem in Flow Handler hook");
-							SelectionState.clearState(0);
+							param.setResult(true);
 						}
 					}
-				}));
-			}
-		}
 
-		return returnHooks;
+				}
+				catch (Throwable ex)
+				{
+					Hooks.selectionHooks_base.invalidate(ex, "Unexpected problem in Flow Handler hook");
+					SelectionState.clearState(0);
+				}
+			}
+		});
 	}
 
 
@@ -145,9 +119,9 @@ public class SelectionHooks
 					@Override
 					protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 					{
-
 						if (SelectionState.isSwipeAllowed())
 						{
+							Log.d(LOGTAG, "returning false");
 							param.setResult(false);
 						}
 
@@ -201,7 +175,7 @@ public class SelectionHooks
 				if ( Hooks.selectionHooks_base.isRequirementsMet() )
 				{
 					//Disable flow and gestures
-					Hooks.selectionHooks_base.addAll( hookFlowHandler() );
+					Hooks.selectionHooks_base.add( hookFlowHandler() );
 					Hooks.selectionHooks_base.add( hookSwipeHandler() );
 
 					//Selection

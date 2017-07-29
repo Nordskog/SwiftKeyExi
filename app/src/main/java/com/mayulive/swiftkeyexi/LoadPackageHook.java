@@ -17,7 +17,6 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 {
 	private static String LOGTAG = ExiModule.getLogTag(LoadPackageHook.class);
 
-
 	@Override
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable
     {
@@ -29,18 +28,9 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 		XposedBridge.log(LOGTAG+", "+"Module loaded in "+lpparam.packageName);
 		Log.i(LOGTAG, "Module loaded in "+ExiXposed.HOOK_PACKAGE_NAME);
 
-
-
 		PackageTree classTree = new PackageTree(lpparam.appInfo.sourceDir, lpparam.classLoader);
 		ProfileCache.setSaveLocation(lpparam.appInfo.dataDir+"/files/EXI_CLASS_CACHE_"+ ExiXposed.HOOK_PACKAGE_NAME);
 		ProfileCache.loadCache();
-
-		if ( lpparam.packageName.equals("com.touchtype.swiftkey.beta")  )
-		{
-			ProfileServer server = new ProfileServer(8282,lpparam.classLoader, classTree);
-			server.start();
-		}
-
 
 		Hooks.hookAll(classTree);
 		ProfileCache.saveCache();
