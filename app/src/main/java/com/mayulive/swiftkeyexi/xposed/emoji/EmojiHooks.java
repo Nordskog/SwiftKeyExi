@@ -52,15 +52,35 @@ public class EmojiHooks
 
 	private static String LOGTAG = ExiModule.getLogTag(EmojiHooks.class);
 
+	public static XC_MethodHook.Unhook hookEmojiPanelStyle(final PackageTree packageParam) throws NoSuchMethodException
+	{
+
+			//XposedBridge.hookAllConstructors(emojiPanelClass, new XC_MethodHook()
+			return XposedBridge.hookMethod(EmojiClassManager.emojiPanelThemeClass_getThemeTypeMethod, new XC_MethodHook()
+			{
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					try
+					{
+						EmojiCommons.setEmojiTheme( (int) param.getResult() );
+					}
+					catch (Throwable ex)
+					{
+						Hooks.emojiHooks_theme.invalidate(ex, "Unexpected problem in Emoji Panel Theme hook");
+					}
+
+				}
+			});
+
+	}
+
 	public static XC_MethodHook.Unhook hookEmojiPanel(final PackageTree packageParam) throws NoSuchMethodException
 	{
 		{
 			//XposedBridge.hookAllConstructors(emojiPanelClass, new XC_MethodHook()
 			return XposedBridge.hookMethod(EmojiClassManager.emojiPanel_staticConstructorMethod, new XC_MethodHook()
 			{
-
-
-
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
@@ -176,7 +196,7 @@ public class EmojiHooks
 
 									//If no min is set they're all super wide,
 									//if set to 0 they're all tiny.
-									EmojiCommons.mEmojiPanelTabs.setTabMinWidth( (int)(dimens.singleEmojiWidth * 1.5f) );
+									EmojiCommons.mEmojiPanelTabs.setTabMinWidth( (int)(dimens.singleEmojiWidth * 1.1f) );
 								}
 
 
@@ -189,37 +209,38 @@ public class EmojiHooks
 							RelativeLayout.LayoutParams pagerParams = (RelativeLayout.LayoutParams) pagerView.getLayoutParams();
 							RelativeLayout.LayoutParams tabParams = (RelativeLayout.LayoutParams) titlesView.getLayoutParams();
 
+
+
 							//Centering a tablayout is very difficult.
 							//It needs to be wrapped in a wrap_content parent,
 							//which agains is wrapped in a fill_parent ... parent.
-							FrameLayout outerTabsWrapper = new FrameLayout(context);
+							//The width/height params probably od nothing, I think the existing params have
+							//a weight set. This is why we use match_parent for all the children.
+							EmojiCommons.mOuterTabsWrapper = new FrameLayout(context);
 							tabParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
 							tabParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 							tabParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-							outerTabsWrapper.setLayoutParams( tabParams );
+							EmojiCommons.mOuterTabsWrapper.setLayoutParams( tabParams );
 
-							//The tablayout bar is slightly darker than the background,
-							//but the dark theme one is far darker than the light one.
-							//This is dark enough to not look out of place for the dark one,
-							//and still looks okay for the light one.
-							outerTabsWrapper.setBackgroundColor( Color.argb( (int)(0.10f*255f),0,0,0 ) );
+							//Color is set in a separate hook to match theme. Default background color is a midpoint that looks okay-ish regardless of theme.
+							EmojiCommons.mOuterTabsWrapper.setBackgroundColor( Color.argb( (int)(0.10f*255f),0,0,0 ) );
 
 							//We are in relative layout, and the actualy pager needs to be placed below the tablayout
-							outerTabsWrapper.setId( View.generateViewId() );
+							EmojiCommons.mOuterTabsWrapper.setId( View.generateViewId() );
 							pagerParams.removeRule( RelativeLayout.BELOW );
-							pagerParams.addRule(RelativeLayout.BELOW, outerTabsWrapper.getId());
+							pagerParams.addRule(RelativeLayout.BELOW, EmojiCommons.mOuterTabsWrapper.getId());
 							EmojiCommons.mEmojiPanelPager.setLayoutParams( pagerParams );
 
 							//Next we need an inner wrapper that wrap_content's the tablayout while being centered.
 							FrameLayout InnerTabsWrapper = new FrameLayout(context);
-							FrameLayout.LayoutParams innerWrapperParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+							FrameLayout.LayoutParams innerWrapperParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
 							innerWrapperParams.gravity = Gravity.CENTER_HORIZONTAL;
-							outerTabsWrapper.addView(InnerTabsWrapper, innerWrapperParams);
+							EmojiCommons.mOuterTabsWrapper.addView(InnerTabsWrapper, innerWrapperParams);
 
 
 
 							//We can then add the actual tablayout to the inner wrapper
-							FrameLayout.LayoutParams innerTabsParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+							FrameLayout.LayoutParams innerTabsParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 							innerTabsParams.gravity = Gravity.CENTER_HORIZONTAL;
 							InnerTabsWrapper.addView( EmojiCommons.mEmojiPanelTabs, innerTabsParams );
 
@@ -228,9 +249,7 @@ public class EmojiHooks
 							//And finally add the views
 
 							thiz.addView(EmojiCommons.mEmojiPanelPager,0);
-							thiz.addView(outerTabsWrapper,0);
-
-
+							thiz.addView(EmojiCommons.mOuterTabsWrapper,0);
 						}
 					}
 					catch (Throwable ex)
@@ -443,6 +462,11 @@ public class EmojiHooks
 				Hooks.emojiHooks_base.add( hookEmojiPanel(param) );
 				//Hooks.emojiHooks_base.add( hookRecentsView() );
 
+
+				if (Hooks.emojiHooks_theme.isRequirementsMet())
+				{
+					Hooks.emojiHooks_theme.add( hookEmojiPanelStyle(param) );
+				}
 
 
 				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()

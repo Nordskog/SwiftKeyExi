@@ -46,7 +46,8 @@ public class Hooks
 	public static HookCategory popupHooks_read = new HookCategory("PopupHooks Read", popupHooks_modify);
 
 	//Emoji
-	public static HookCategory emojiHooks_base = new HookCategory("Emoji Hooks");
+	public static HookCategory emojiHooks_theme = new HookCategory("EmojiHooks Theme");
+	public static HookCategory emojiHooks_base = new HookCategory("EmojiHooks Base", emojiHooks_theme);
 
 	//Key
 	public static HookCategory keyHooks_keyCancel = new HookCategory("KeyHooks Cancel");

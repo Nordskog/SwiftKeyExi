@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.emoji;
 import android.content.Context;
 import android.util.Log;
 import android.view.inputmethod.InputConnection;
+import android.widget.FrameLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
@@ -40,6 +41,10 @@ public class EmojiCommons
 	protected static EmojiPanelPagerAdapter mEmojiPanelAdapter;
 	protected static int mEmojiPanelRecentsTabIndex = -1;
 	protected static FixedViewPager mEmojiPanelPager;
+	protected static FrameLayout mOuterTabsWrapper = null;
+
+	private static final int DARK_THEME_ACCENT_COLOR = 0xFF1a1a1c;
+	private static final int LIGHT_THEME_ACCENT_COLOR = 0xFFe4e7e8;
 
 	private final static int RECENTS_COUNT = 32;
 
@@ -67,6 +72,21 @@ public class EmojiCommons
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static void setEmojiTheme(int theme)
+	{
+		//0 light
+		//1 dark
+		if (mOuterTabsWrapper != null)
+		{
+			if (theme == 0)
+				mOuterTabsWrapper.setBackgroundColor( LIGHT_THEME_ACCENT_COLOR );
+			else
+				mOuterTabsWrapper.setBackgroundColor( DARK_THEME_ACCENT_COLOR );
+		}
+
+
 	}
 
 	//Will usually use panel style rather than item style

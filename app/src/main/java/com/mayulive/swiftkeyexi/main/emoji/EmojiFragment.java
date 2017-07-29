@@ -165,6 +165,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		FixedViewPager pager = null;
 		EmojiPanelTabLayout tabs = null;
 
+
+
 		if (type == EmojiPanelType.KEYBOARD)
 		{
 			mKeyboardInfoView = (EmojiPanelInfoView )mRootView.findViewById(R.id.keyboardPanelInfoView);
@@ -189,6 +191,12 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			pager = mDictionaryPager;
 			tabs = mDictionaryTabIndicator;
 		}
+
+		//Originally only needed to fix things in hook context, but I guess that's the new standard.
+		//Unfortunately it has no effect here ... Shame, I prefer the other size.
+		// TODO do battle with layout tab size
+		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(this.getContext());
+		tabs.setTabMinWidth( (int)(dimens.singleEmojiWidth * 1.1f) );
 
 		pager.setAdapter(pagerAdapter);
 
