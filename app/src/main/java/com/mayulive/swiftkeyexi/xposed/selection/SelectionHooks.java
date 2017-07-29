@@ -121,7 +121,6 @@ public class SelectionHooks
 					{
 						if (SelectionState.isSwipeAllowed())
 						{
-							Log.d(LOGTAG, "returning false");
 							param.setResult(false);
 						}
 

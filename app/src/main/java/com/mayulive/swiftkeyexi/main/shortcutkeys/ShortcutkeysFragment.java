@@ -56,7 +56,7 @@ public class ShortcutkeysFragment extends Fragment
 	private void setLastUpdateTime()
 	{
 		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this.getContext(), SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
-		editor.putLong(PreferenceConstants.pref_emoji_last_update_key, System.currentTimeMillis());
+		editor.putLong(PreferenceConstants.pref_hotkeys_last_update_key, System.currentTimeMillis());
 		editor.apply();
 	}
 
