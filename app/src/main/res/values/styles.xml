@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppBaseTheme" parent="Theme.AppCompat">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -12,12 +12,13 @@
         -->
     </style>
 
-    <style name="AppBaseThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppBaseThemeLight" parent="Theme.AppCompat.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         -->
+
     </style>
 
     <!-- Application theme. -->
@@ -25,7 +26,9 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
 
        <!-- <item name="android:alertDialogStyle"> @style/mydialogtheme </item> -->
-            <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:colorBackground">@color/background_material_dark</item>
+        <item name="android:popupBackground">?attr/colorPrimaryDark</item>
     </style>
 
     <style name="AppThemeLight" parent="Theme.AppCompat.Light">
@@ -33,6 +36,9 @@
 
         <!-- <item name="android:alertDialogStyle"> @style/mydialogtheme </item> -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:colorForeground">@color/foreground_material_light</item>
+        <item name="android:textColorPrimary">@color/primary_text_material_light</item>
+        <item name="android:popupBackground">?attr/colorPrimaryDark</item>
     </style>
 
 

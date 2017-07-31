@@ -24,6 +24,9 @@ public class PopupLinearLayout extends PopupWindow
 	LinearLayout mMenuLayout = null;
 	Context mContext = null;
 
+	int mXoffset = 0;
+	int mYoffset = 0;
+
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public PopupLinearLayout(Context context)
 	{
@@ -38,6 +41,7 @@ public class PopupLinearLayout extends PopupWindow
 		this.setWindowLayoutMode(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		this.setHeight(1);
 		this.setWidth(1);
+
 
 		if (VersionTools.isLollipopOrGreater())
 		{
@@ -57,8 +61,12 @@ public class PopupLinearLayout extends PopupWindow
 				dismiss();
 			}
 		});
+	}
 
-
+	public void setOffset(int xOffset, int yOffset)
+	{
+		mXoffset = xOffset;
+		mYoffset = yOffset;
 	}
 
 	public LinearLayout getLayoutView()
@@ -69,7 +77,18 @@ public class PopupLinearLayout extends PopupWindow
 	public void addItem(View view)
 	{
 		mMenuLayout.addView(view);
+	}
 
+	public void addItem(View view, ViewGroup.LayoutParams params)
+	{
+		mMenuLayout.addView(view, params);
+	}
+
+	@Override
+	public void showAsDropDown(View anchor, int xoff, int yoff, int gravity)
+	{
+		//Overriden to apply offset
+		super.showAsDropDown(anchor, xoff+mXoffset, yoff+mYoffset, gravity);
 	}
 
 	public void showAboveLeft(View anchor)

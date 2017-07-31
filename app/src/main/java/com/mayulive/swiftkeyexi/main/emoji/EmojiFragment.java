@@ -8,6 +8,7 @@ import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
+import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
@@ -36,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 
@@ -286,7 +288,22 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				final PopupLinearLayout dictionaryPopup = new PopupLinearLayout(dictionaryPanelMenuButton.getContext());
 				NavigationView dictionaryMenuView = new NavigationView(dictionaryPanelMenuButton.getContext());
 				dictionaryMenuView.inflateMenu(R.menu.emoji_dictionary_popup_menu);
-				dictionaryPopup.addItem(dictionaryMenuView);
+
+				{
+					//Add margin so there's space to display the shadow. PopupLinearLayout is supposed to be elevated, but doesn't work.
+					//So the shadow needs to be displayed by the navigation view /inside/ the popup
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+					//Should be enough
+					float shadowMargin = DimenUtils.calculatePixelFromDp(EmojiFragment.this.getContext(), 30);
+
+					params.setMargins((int)shadowMargin,0,0, (int)shadowMargin);
+					dictionaryPopup.addItem(dictionaryMenuView, params);
+
+					//Compensate for margin of both menus
+					dictionaryPopup.setOffset( 0, (int)(shadowMargin/2f) );
+				}
+
 
 				EmojiPanelView dictionarView = getCurrentPanel(EmojiPanelType.DICTIONARY);
 				EmojiPanelView keyboardView = getCurrentPanel(EmojiPanelType.KEYBOARD);
@@ -313,7 +330,19 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 				NavigationView keyboardMenuView = new NavigationView(dictionaryPanelMenuButton.getContext());
 				keyboardMenuView.inflateMenu(R.menu.emoji_keyboard_popup_menu);
-				dictionaryPopup.addItem(keyboardMenuView);
+
+				{
+					//Add margin so there's space to display the shadow. PopupLinearLayout is supposed to be elevated, but doesn't work.
+					//So the shadow needs to be displayed by the navigation view /inside/ the popup
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+					//Should be enough
+					float shadowMargin = DimenUtils.calculatePixelFromDp(EmojiFragment.this.getContext(), 30);
+
+					params.setMargins((int)shadowMargin,0,0, (int)shadowMargin);
+					dictionaryPopup.addItem(keyboardMenuView, params);
+				}
+
 
 
 				//No deleting panels that don't exist

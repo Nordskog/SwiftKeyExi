@@ -10,21 +10,26 @@ import java.util.regex.Pattern;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
+import com.mayulive.swiftkeyexi.main.commons.PopupLinearLayout;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryWordItem;
+import com.mayulive.swiftkeyexi.main.emoji.EmojiFragment;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+import com.mayulive.swiftkeyexi.util.DimenUtils;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -36,6 +41,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.DICTIONARY_SHORTCUT_TABLE_INFO;
@@ -139,27 +145,49 @@ public class DictionaryFragment extends Fragment
 		});
 
 
-		FloatingActionButton menuButton = (FloatingActionButton)mRootView.findViewById(R.id.dictionaryPanelMenuButton);
+		final FloatingActionButton menuButton = (FloatingActionButton)mRootView.findViewById(R.id.dictionaryPanelMenuButton);
 
+		/*
 		final PopupMenu dictionaryMenuView = new PopupMenu(this.getContext(), menuButton);
 		dictionaryMenuView.inflate(R.menu.dictionary_popup_menu);
+		*/
+		//Switching to linearpopuplayout for consistency. Stock popupmenu doesn't have have shadows or anything.
+		//TODO make generic
+		final PopupLinearLayout dictionaryPopup = new PopupLinearLayout(this.getContext());
+		NavigationView dictionaryMenuView = new NavigationView(this.getContext());
 
+		NavigationView keyboardMenuView = new NavigationView(this.getContext());
+		keyboardMenuView.inflateMenu(R.menu.dictionary_popup_menu);
+
+		{
+			//Add margin so there's space to display the shadow. PopupLinearLayout is supposed to be elevated, but doesn't work.
+			//So the shadow needs to be displayed by the navigation view /inside/ the popup
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+			//Should be enough
+			float shadowMargin = DimenUtils.calculatePixelFromDp(DictionaryFragment.this.getContext(), 30);
+
+			params.setMargins((int)shadowMargin,0,0, (int)shadowMargin);
+			dictionaryPopup.addItem(keyboardMenuView, params);
+
+			//Compensate for margin. This leaves a gap, but is visually superior.
+			dictionaryPopup.setOffset( 0, (int)(shadowMargin/2f) );
+		}
 
 		menuButton.setOnClickListener(new OnClickListener()
 		{
-
 			@Override
 			public void onClick(View v)
 			{
-				dictionaryMenuView.show();
+				dictionaryPopup.showAbove(menuButton);
 			}
 
 		});
 
-		dictionaryMenuView.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+		dictionaryMenuView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
 		{
 			@Override
-			public boolean onMenuItemClick(MenuItem item)
+			public boolean onNavigationItemSelected(@NonNull MenuItem item)
 			{
 				switch(item.getItemId())
 				{

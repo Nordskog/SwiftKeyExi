@@ -49,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="?attr/colorPrimary"
                 >
 
                 <FrameLayout
@@ -59,6 +60,7 @@
                     >
 
                     <!-- Making a tablayout center is difficult -->
+
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -133,25 +135,31 @@
 
 
 
-
             <FrameLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:background="?attr/colorPrimary"
                 >
 
-                <com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout
-                    android:id="@+id/keyboardPanelTabsTitles"
-                    android:layout_width="match_parent"
+                <FrameLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    app:tabMinWidth="0dp"
-                    app:tabMode="scrollable"
-                    app:tabGravity="center"
+                    android:layout_gravity="center"
+                    >
 
-                    />
+                    <com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout
+                        android:id="@+id/keyboardPanelTabsTitles"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        app:tabMinWidth="0dp"
+                        app:tabMode="scrollable"
+                        app:tabGravity="center"
 
+                        />
+                </FrameLayout>
             </FrameLayout>
+
 
 
 

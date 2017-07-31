@@ -4,7 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.HorizontalScrollView;
 
 import com.mayulive.swiftkeyexi.R;
 
@@ -20,6 +24,54 @@ public class FixedTabLayout extends TabLayout
 
 	private OnTabAddedListener mOnTabAddedListener = null;
 	private OnTabLongPressedListener mOnTabLongPressedListener = null;
+
+	private static Field mParentField = null;
+
+	static
+	{
+		try
+		{
+			mParentField = View.class.getDeclaredField("mParent");
+			mParentField.setAccessible(true);
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private ViewParent getParentFieldValue()
+	{
+		if (mParentField != null)
+		{
+			try
+			{
+				return (ViewParent)mParentField.get(this);
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		return null;
+
+	}
+
+	private void setParentFieldValue(ViewParent parent)
+	{
+		if (mParentField != null)
+		{
+			try
+			{
+				mParentField.set(this, parent);
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public FixedTabLayout(Context context)
 	{
@@ -52,6 +104,37 @@ public class FixedTabLayout extends TabLayout
 		}
 	}
 
+	//Tablayout will request requestDisallowInterceptTouchEvent on its parent, thus breaking viewpagers.
+	//It checks mParent before calling it. Simplest workaround is to override, null the field, call super, re-set field.
+	//I can't think of any scenario where you would want the original behavior in a tablayout.
+	//Note that a fix for canScroll() is also required in ViewPager to make tablayouts place nice.
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev)
+	{
+		ViewParent parent = getParentFieldValue();
+		setParentFieldValue(null);
+		boolean retValue = super.onInterceptTouchEvent(ev);
+		setParentFieldValue(parent);
+
+		return retValue;
+	}
+
+	//Also in touch, but here it uses getParent().
+	//Clearing the field works all the same though
+	@Override
+	public boolean onTouchEvent(MotionEvent ev)
+	{
+		ViewParent parent = getParentFieldValue();
+		setParentFieldValue(null);
+		boolean retValue = super.onTouchEvent(ev);
+		setParentFieldValue(parent);
+
+		return retValue;
+	}
+
+
+
+
 	@Override
 	public void addTab(@NonNull final Tab tab, int position, boolean setSelected)
 	{
@@ -64,7 +147,6 @@ public class FixedTabLayout extends TabLayout
 		{
 			View customView = tab.getCustomView();
 
-			//No click listener with custom views? weird.
 			customView.setOnClickListener(new OnClickListener()
 			{
 				@Override
@@ -73,7 +155,6 @@ public class FixedTabLayout extends TabLayout
 					tab.select();
 				}
 			});
-
 
 			customView.setOnLongClickListener(new OnLongClickListener()
 			{
@@ -89,9 +170,11 @@ public class FixedTabLayout extends TabLayout
 				}
 			});
 
+
 		}
 
 		super.addTab(tab, position, setSelected);
+
 
 	}
 
@@ -116,5 +199,6 @@ public class FixedTabLayout extends TabLayout
 	{
 		mOnTabAddedListener = listener;
 	}
+
 
 }

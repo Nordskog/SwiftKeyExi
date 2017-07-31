@@ -11,5 +11,12 @@
 
     <color name="quick_men_default_color">#2d5bc6</color>
     <color name="accent_material_light">#c94e4e</color>
+    <color name="primary_dark_material_dark">#0f0f0f</color>
+    <color name="primary_dark_material_light">#c4c4c4</color>
+    <color name="primary_material_dark">#1a1a1a</color>
+    <color name="background_material_dark">#1d1d1d</color>
+    <color name="foreground_material_light">#212121</color>
+    <color name="primary_text_default_material_light">#de1c1c1c</color>
+    <color name="primary_text_material_light">#de262626</color>
 
 </resources>

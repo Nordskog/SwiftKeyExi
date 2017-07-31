@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-                android:background="?attr/colorPrimary"
+    android:background="?android:attr/colorBackground"
     >
 
     <LinearLayout
@@ -30,14 +30,14 @@
         </LinearLayout>
 
 
-        <android.support.v4.view.ViewPager
+        <com.mayulive.swiftkeyexi.util.view.FixedViewPager
             android:id="@+id/mainViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true">
 
-        </android.support.v4.view.ViewPager>
+        </com.mayulive.swiftkeyexi.util.view.FixedViewPager>
 
 
 
