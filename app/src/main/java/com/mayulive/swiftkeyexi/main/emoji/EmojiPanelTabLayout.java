@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiContainer;
+import com.mayulive.swiftkeyexi.shared.SharedStyles;
 import com.mayulive.swiftkeyexi.util.ThemeUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedTabLayout;
 import com.mayulive.swiftkeyexi.R;
@@ -37,6 +38,7 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 
 	private void init()
 	{
+		/*
 		try
 		{
 			mSelectedColor = ThemeUtils.getThemeAccentColor(this.getContext());
@@ -46,6 +48,11 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 			//Will get called in the hook as well, but we don't need it there.
 			//Might fail?
 		}
+		*/
+
+		mSelectedColor = SharedStyles.getAccentColor(this.getContext() );
+		this.setSelectedTabIndicatorColor( mSelectedColor  );
+		this.setSelectedTabIndicatorHeight( SharedStyles.getTabHeight(this.getContext() ));
 
 		setCurrentHighlight();
 	}
@@ -85,19 +92,5 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 
 		this.addOnTabSelectedListener(listener);
 	}
-
-	//Call if we are in a hooked context
-	public void setHookValues(Context hookContext, Context moduleContext)
-	{
-		//Not available in hook land
-		int indicatorColorRes = hookContext.getResources().getIdentifier("emoji_highlight_color", "color", ExiXposed.HOOK_PACKAGE_NAME);
-		//int indicatorHeightRes = hookContext.getResources().getIdentifier("tabIndicatorHeight", "attr", "com.touchtype.swiftkey.beta");
-
-		this.setSelectedTabIndicatorColor( hookContext.getResources().getColor(indicatorColorRes));
-		this.setSelectedTabIndicatorHeight( (int) moduleContext.getResources().getDimension(R.dimen.xposed_tabIndicatorHeight) );
-
-		mSelectedColor = hookContext.getResources().getColor(indicatorColorRes);
-	}
-
 
 }

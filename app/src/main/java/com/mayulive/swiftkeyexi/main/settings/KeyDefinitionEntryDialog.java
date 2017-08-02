@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.mayulive.swiftkeyexi.main.commons.data.DB_KeyDefinition;
-import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.R;
 
 /**
@@ -24,18 +24,18 @@ public abstract class KeyDefinitionEntryDialog
 	AlertDialog mDialog = null;
 
 	//Skip the first default value, second is symbol
-	private static final KeyCommons.KeyType[] mDropdownOptions = new KeyCommons.KeyType[]
+	private static final KeyType[] mDropdownOptions = new KeyType[]
 			{
-					KeyCommons.KeyType.SYMBOL,
-					KeyCommons.KeyType.SHIFT,
-					KeyCommons.KeyType.DELETE,
-					KeyCommons.KeyType.SWITCH_LAYOUT,
-					KeyCommons.KeyType.ENTER,
-					KeyCommons.KeyType.PERIOD,
-					KeyCommons.KeyType.CLEAR_BUFFER_KEY,
-					KeyCommons.KeyType.TAB,
-					KeyCommons.KeyType.SPACE,
-					KeyCommons.KeyType.EMOJI,
+					KeyType.SYMBOL,
+					KeyType.SHIFT,
+					KeyType.DELETE,
+					KeyType.SWITCH_LAYOUT,
+					KeyType.ENTER,
+					KeyType.PERIOD,
+					KeyType.CLEAR_BUFFER_KEY,
+					KeyType.TAB,
+					KeyType.SPACE,
+					KeyType.EMOJI,
 			};
 
 	KeyDefinitionEntryDialog(Context context, DB_KeyDefinition inputItem)
@@ -55,7 +55,7 @@ public abstract class KeyDefinitionEntryDialog
 		{
 			for (int i = 0; i < mDropdownOptions.length; i++)
 			{
-				menuItems[i] = KeyCommons.KeyType.getKeyDefinitionDisplayString(context,mDropdownOptions[i]);
+				menuItems[i] = KeyType.getKeyDefinitionDisplayString(context,mDropdownOptions[i]);
 			}
 		}
 
@@ -68,8 +68,8 @@ public abstract class KeyDefinitionEntryDialog
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
 			{
-				KeyCommons.KeyType type = indexToAction( position );
-				keyEditText.setEnabled( type == KeyCommons.KeyType.SYMBOL );
+				KeyType type = indexToAction( position );
+				keyEditText.setEnabled( type == KeyType.SYMBOL );
 			}
 
 			@Override
@@ -83,7 +83,7 @@ public abstract class KeyDefinitionEntryDialog
 		boolean existingItem = inputItem != null;
 		if (!existingItem)
 		{
-			inputItem = new DB_KeyDefinition("", KeyCommons.KeyType.SYMBOL);
+			inputItem = new DB_KeyDefinition("", KeyType.SYMBOL);
 		}
 		else
 		{
@@ -133,13 +133,13 @@ public abstract class KeyDefinitionEntryDialog
 
 
 
-	private static KeyCommons.KeyType indexToAction(int index)
+	private static KeyType indexToAction(int index)
 	{
 		return mDropdownOptions[index];
 	}
 
 	// ...
-	private static int actionToIndex(KeyCommons.KeyType action)
+	private static int actionToIndex(KeyType action)
 	{
 		for (int i = 0; i < mDropdownOptions.length; i++)
 		{

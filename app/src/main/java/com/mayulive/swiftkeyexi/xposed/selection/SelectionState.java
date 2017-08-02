@@ -5,6 +5,7 @@ import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -34,7 +35,7 @@ public class SelectionState
 	//Constants
 	//////////////////////////////
 
-	static final KeyDefinition DUMMY_SPACEBAR = new KeyDefinition("", KeyCommons.KeyType.SPACE);
+	static final KeyDefinition DUMMY_SPACEBAR = new KeyDefinition("", KeyType.SPACE);
 
 
 	//////////////////////////////
@@ -88,9 +89,9 @@ public class SelectionState
 	protected static HashSet<String> mShiftKeys = new HashSet<String>();
 	protected static HashSet<String> mDeleteKeys = new HashSet<String>();
 	protected static HashSet<String> mSymbolKeys = new HashSet<String>();
-	protected static EnumSet<KeyCommons.KeyType> mShiftKeyEnums = EnumSet.noneOf(KeyCommons.KeyType.class);
-	protected static EnumSet<KeyCommons.KeyType> mDeleteKeyEnums = EnumSet.noneOf(KeyCommons.KeyType.class);
-	protected static EnumSet<KeyCommons.KeyType> mSymbolKeyEnums = EnumSet.noneOf(KeyCommons.KeyType.class);
+	protected static EnumSet<KeyType> mShiftKeyEnums = EnumSet.noneOf(KeyType.class);
+	protected static EnumSet<KeyType> mDeleteKeyEnums = EnumSet.noneOf(KeyType.class);
+	protected static EnumSet<KeyType> mSymbolKeyEnums = EnumSet.noneOf(KeyType.class);
 	protected static Map<String,KeyboardInteraction.TextAction> mModifierKeyActions = new HashMap<String,KeyboardInteraction.TextAction>();
 	protected static Map<Integer,pointerInformation> mPointerInformation = new HashMap<Integer,pointerInformation>();
 
@@ -122,7 +123,7 @@ public class SelectionState
 	{
 		if (mShiftKeyEnums.contains(key.getType()))
 			return true;
-		else if (key.is(KeyCommons.KeyType.SYMBOL))
+		else if (key.is(KeyType.SYMBOL))
 		{
 			return mShiftKeys.contains(key.content);
 		}
@@ -134,7 +135,7 @@ public class SelectionState
 	 {
 		 if (mDeleteKeyEnums.contains(key.getType()))
 			 return true;
-		 else if (key.is(KeyCommons.KeyType.SYMBOL))
+		 else if (key.is(KeyType.SYMBOL))
 		 {
 			 return mDeleteKeys.contains(key.content);
 		 }
@@ -146,7 +147,7 @@ public class SelectionState
 	 {
 		 if (mSymbolKeyEnums.contains(key.getType()))
 			 return true;
-		 else if (key.is(KeyCommons.KeyType.SYMBOL))
+		 else if (key.is(KeyType.SYMBOL))
 		 {
 			 return mSymbolKeys.contains(key.content);
 		 }
@@ -273,7 +274,7 @@ public class SelectionState
 			//There's a quick swipe gesture on the period key for inserting ! and ?
 			//However, Once you start swiping it triggers another keypress of god only knows what type.
 			//Solution: In handleFirstKeyDown we set swipeBlocked to true on period down
-			if (SelectionState.mFirstDown.is(KeyCommons.KeyType.PERIOD))
+			if (SelectionState.mFirstDown.is(KeyType.PERIOD))
 				return false;
 
 			switch(Settings.SWIPE_CURSOR_BEHAVIOR)

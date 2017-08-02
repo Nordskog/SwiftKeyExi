@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi;
 
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_KeyDefinition;
@@ -8,7 +9,6 @@ import com.mayulive.swiftkeyexi.database.DatabaseMethods;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelTemplates;
-import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 import java.util.ArrayList;
 
@@ -170,19 +170,19 @@ public class ExiModule
 			{
 				ArrayList<DB_KeyDefinition> keys = new ArrayList<DB_KeyDefinition>();
 				{
-					keys.add( new DB_KeyDefinition("", KeyCommons.KeyType.SWITCH_LAYOUT));
+					keys.add( new DB_KeyDefinition("", KeyType.SWITCH_LAYOUT));
 					DatabaseMethods.updateAllItems( db, keys, ADDITIONAL_SYMBOL_KEYS_TABLE_INFO,true);
 				}
 
 				{
 					keys.clear();
-					keys.add( new DB_KeyDefinition("", KeyCommons.KeyType.DELETE));
+					keys.add( new DB_KeyDefinition("", KeyType.DELETE));
 					DatabaseMethods.updateAllItems( db, keys, ADDITIONAL_DELETE_KEYS_TABLE_INFO,true);
 				}
 
 				{
 					keys.clear();
-					keys.add( new DB_KeyDefinition("", KeyCommons.KeyType.SHIFT));
+					keys.add( new DB_KeyDefinition("", KeyType.SHIFT));
 					DatabaseMethods.updateAllItems( db, keys, ADDITIONAL_SHIFT_KEYS_TABLE_INFO,true);
 				}
 

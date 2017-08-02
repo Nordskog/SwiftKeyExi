@@ -4,6 +4,7 @@ import android.graphics.RectF;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.util.TextUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -148,14 +149,14 @@ public class KeyHooks
 
 						RectF hitbox = KeyCommons.getKeyArea(returnKey);
 
-						KeyCommons.KeyType type = KeyCommons.KeyType.getType(tag);
+						KeyType type = KeyType.getType(tag);
 
 						if (DebugSettings.DEBUG_KEYS)
 						{
 							Log.i(LOGTAG, "Key defined. Tag: "+tag);
 						}
 
-						if (KeyCommons.KeyType.SPACE == type)
+						if (KeyType.SPACE == type)
 						{
 
 							if (KeyboardMethods.isLayoutWeird())
@@ -212,7 +213,7 @@ public class KeyHooks
 								KeyCommons.HitboxMap map = KeyCommons.getHitboxMap();
 
 								//Don't bother adding anything but space for weird layouts
-								if (map != null && ( !KeyboardMethods.isLayoutWeird() || type == KeyCommons.KeyType.SPACE ) )
+								if (map != null && ( !KeyboardMethods.isLayoutWeird() || type == KeyType.SPACE ) )
 								{
 									String key = "";
 									if (KeyCommons.sLastSymbolDefined != null)

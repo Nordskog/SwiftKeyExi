@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.xposed.emoji.EmojiCommons;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionHooks;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
@@ -269,7 +270,7 @@ public class Hooks
 			@Override
 			public void onKeyDown(KeyDefinition key)
 			{
-				if (key.is(KeyCommons.KeyType.PERIOD) && Settings.DISABLE_PERIOD_CLICK)
+				if (key.is(KeyType.PERIOD) && Settings.DISABLE_PERIOD_CLICK)
 				{
 
 					KeyCommons.requestCancelNextKey();

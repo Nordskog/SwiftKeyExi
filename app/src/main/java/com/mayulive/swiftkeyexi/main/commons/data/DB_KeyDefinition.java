@@ -6,7 +6,6 @@ import android.provider.BaseColumns;
 
 import com.mayulive.swiftkeyexi.database.DatabaseItem;
 import com.mayulive.swiftkeyexi.database.DatabaseWrapper;
-import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 /**
  * Created by Roughy on 3/8/2017.
@@ -23,13 +22,13 @@ public class DB_KeyDefinition extends KeyDefinition implements DatabaseItem
 		super();
 	}
 
-	public DB_KeyDefinition(int id, String content, KeyCommons.KeyType type)
+	public DB_KeyDefinition(int id, String content, KeyType type)
 	{
 		super(content,type);
 		_id = id;
 	}
 
-	public DB_KeyDefinition(String content, KeyCommons.KeyType type)
+	public DB_KeyDefinition(String content, KeyType type)
 	{
 		super(content,type);
 	}
@@ -75,7 +74,7 @@ public class DB_KeyDefinition extends KeyDefinition implements DatabaseItem
 
 		set_id( c.getInt(idColumnIndex) );
 		setContent( c.getString(contentColumnIndex));
-		setType( KeyCommons.KeyType.valueOf(c.getString(typeColumnIndex) ) );
+		setType( KeyType.valueOf(c.getString(typeColumnIndex) ) );
 	}
 
 	@Override

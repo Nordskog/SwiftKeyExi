@@ -38,7 +38,7 @@ public abstract class EditDictionaryShortcutDialog
 				{
 					public void onClick(DialogInterface dialog, int id)
 					{
-						String keyField = keyValueBox.getText().toString().trim();
+						String keyField = keyValueBox.getText().toString().trim().toLowerCase();
 						Boolean makeSecondaryValue = secondaryCheckbox.isChecked();
 
 						outputItem.setInsertSecondary(makeSecondaryValue);

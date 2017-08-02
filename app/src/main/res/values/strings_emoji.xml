@@ -12,7 +12,7 @@
     <string name="emoji_new_panel">New panel</string>
     <string name="emoji_delete_panel">Delete panel</string>
     <string name="emoji_clear_panel">Clear panel</string>
-    <string name="emoji_load_panel">Load panel</string>
+    <string name="emoji_load_panel">Import panel</string>
     <string name="emoji_add_all">Add all</string>
     <string name="emoji_column_size">Column size</string>
     <string name="emoji_input_emoji">Input Emoji</string>

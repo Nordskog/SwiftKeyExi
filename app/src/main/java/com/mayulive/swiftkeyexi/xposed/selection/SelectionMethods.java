@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.selection;
 import java.util.Map.Entry;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
@@ -28,7 +29,6 @@ import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 import static com.mayulive.swiftkeyexi.util.ContextUtils.getModuleContext;
-import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mSwiping;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.LEFT_SWIPE;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.RIGHT_SWIPE;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.SWIPE;
@@ -328,7 +328,7 @@ public class SelectionMethods
 				if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE)
 				{
 					//Space swipe requires that first key down is space
-					if ( SelectionState.mFirstDown.is(KeyCommons.KeyType.SPACE) )
+					if ( SelectionState.mFirstDown.is(KeyType.SPACE) )
 					{
 						currentPointerInfo.state = SWIPE;
 					}
@@ -511,7 +511,7 @@ public class SelectionMethods
 				//This makes it a tiny bit too sensitive, so add 0.25 the height of the spacebar too.
 				spaceModifierMaxHeight -=  (mFirstDown.hitbox.height()*view.getMeasuredHeight()) * 0.25f;
 
-				if (SelectionState.getSpaceModifierBehavior().isEnabled() && SelectionState.mFirstDown.is(KeyCommons.KeyType.SPACE) && newY < spaceModifierMaxHeight)
+				if (SelectionState.getSpaceModifierBehavior().isEnabled() && SelectionState.mFirstDown.is(KeyType.SPACE) && newY < spaceModifierMaxHeight)
 				{
 
 					if ( SelectionState.mSwiping )
@@ -842,7 +842,7 @@ public class SelectionMethods
 
 			//Workaround for period swipe gesture. When you swipe from it it triggers
 			//a different key. Solution is to always block swipe on period key-down.
-			if (key.is(KeyCommons.KeyType.PERIOD))
+			if (key.is(KeyType.PERIOD))
 				SelectionState.mSwipeBlocked = true;
 
 
@@ -854,7 +854,7 @@ public class SelectionMethods
 					SelectionActions.handeModifierAction(SelectionState.mLastPointerDownInfo, SelectionState.mFirstDown.content);
 				}
 			}
-			else if ( SelectionState.getSpaceModifierBehavior().isEnabled() && key.is(KeyCommons.KeyType.SPACE) )
+			else if ( SelectionState.getSpaceModifierBehavior().isEnabled() && key.is(KeyType.SPACE) )
 			//else if ( SelectionState.getSpaceModifierBehavior().isEnabled() && ( Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.SPACE_SWIPE && key.is(KeyCommons.KeyType.SPACE) ) )
 			{
 				if ( SelectionState.isSymbols( SelectionState.mFirstDown ))
@@ -878,11 +878,11 @@ public class SelectionMethods
 			if (!SelectionState.mActionModifierDown || (Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE &&  SelectionState.isSymbols(SelectionState.DUMMY_SPACEBAR) ) )
 			{
 
-				if ( ( SelectionState.mFirstDown.is(KeyCommons.KeyType.SPACE) && Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE) || !SelectionState.mFirstDown.is(KeyCommons.KeyType.SPACE)   )
+				if ( ( SelectionState.mFirstDown.is(KeyType.SPACE) && Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE) || !SelectionState.mFirstDown.is(KeyType.SPACE)   )
 				{
 					SelectionState.mValidFirstDown = true;
 
-					if (SelectionState.mFirstDown.is(KeyCommons.KeyType.SPACE))
+					if (SelectionState.mFirstDown.is(KeyType.SPACE))
 					{
 						SelectionState.mSpaceDown = true;
 						if (Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE)
@@ -925,7 +925,7 @@ public class SelectionMethods
 			Log.i(LOGTAG, "Long press triggered!");
 		}
 
-		if (SelectionState.mSwiping || (SelectionState.mActionModifierDown && !(mFirstDown.is(KeyCommons.KeyType.SPACE) && Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE))  )
+		if (SelectionState.mSwiping || (SelectionState.mActionModifierDown && !(mFirstDown.is(KeyType.SPACE) && Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE))  )
 			return true;
 		//If we trigger a long-press on a character that has multiple sub-characters, we want to
 		//block swiping. mMultipleKeyPopups is the list of keys that have multiple sub-characters.
@@ -934,7 +934,7 @@ public class SelectionMethods
 		//There are also some key types specific to certain languages, such as KoreanKey. tl;dr symbol key type is not very useful.
 		//else if (mFirstDown.is(KeyCommons.KeyType.SYMBOL) || mFirstDown.is(KeyCommons.KeyType.ENTER))
 		{
-			if (PopupkeysCommons.hasMultiplePopupKeys(mFirstDown.content) || mFirstDown.is(KeyCommons.KeyType.ENTER)  || (mFirstDown.is(KeyCommons.KeyType.SPACE)))
+			if (PopupkeysCommons.hasMultiplePopupKeys(mFirstDown.content) || mFirstDown.is(KeyType.ENTER)  || (mFirstDown.is(KeyType.SPACE)))
 				SelectionState.mSwipeBlocked = true;
 		}
 

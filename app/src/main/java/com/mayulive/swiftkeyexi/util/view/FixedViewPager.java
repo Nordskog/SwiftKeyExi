@@ -120,15 +120,6 @@ public class FixedViewPager extends ViewPager
 	}
 
 
-	@Override
-	public void requestDisallowInterceptTouchEvent(boolean disallowIntercept)
-	{
-		//Ignore
-		//Log.i("Exi/Test", "Intercept request detected!");
-		//CodeUtils.printStackTrace();
-	}
-
-
 	//Tablayouts will requestDisallowInterceptTouchEvent, which is fixed on the tablayout's side.
 	//In addition, the standard canScroll implementation doesn't work correctly. the viewCompat one called
 	//on return does though.

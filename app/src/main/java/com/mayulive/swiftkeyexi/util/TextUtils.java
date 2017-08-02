@@ -37,4 +37,17 @@ public class TextUtils
 						(charIn >= MONGOLIAN_VARIANT_SELECTOR_START && charIn <= MONGOLIAN_VARIANT_SELECTOR_END)
 		);
 	}
+
+	public static String stripBom(String string)
+	{
+		if (string != null && string.length() > 0)
+		{
+			if (string.charAt(0) == 0xfeff)
+			{
+				return string.substring(1);
+			}
+		}
+
+		return string;
+	}
 }

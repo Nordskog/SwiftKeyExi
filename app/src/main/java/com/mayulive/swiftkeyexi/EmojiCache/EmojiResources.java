@@ -25,7 +25,7 @@ public class EmojiResources
 	private static final int EMOJI_HORIZONTAL_PADDING_DP = 10;
 	private static final int EMOJI_VERTICAL_PADDING_DP = 10;
 
-	public static int EMOJI_COLOR = 0;
+	public static int EMOJI_COLOR = 0xFF9c9c9c;
 
 	private static EmojiPixelDimensions mDimensions = null;
 
@@ -82,19 +82,6 @@ public class EmojiResources
 		mDimensions.default_emojiTextSize = mDimensions.configured_emojiTextSize;
 		mDimensions.emojiHorizontalPadding = (int)calculatePixelFromDp(context, EMOJI_HORIZONTAL_PADDING_DP);
 		mDimensions.emojiVerticalPadding = (int)calculatePixelFromDp(context, EMOJI_VERTICAL_PADDING_DP);
-
-		loadHookResources(context);
-	}
-
-	private static void loadHookResources(Context context)
-	{
-		if (context.getPackageName().contains("com.touchtype.swiftkey"))
-		{
-			Log.i(LOGTAG, "Loading hook resources");
-
-			int textColorResId = context.getResources().getIdentifier("emoji_text_color", "color", ExiXposed.HOOK_PACKAGE_NAME);
-			EMOJI_COLOR = context.getResources().getColor(textColorResId);
-		}
 	}
 
 	public static int calculateColCount(Context context, int viewWidth, int itemWidth)

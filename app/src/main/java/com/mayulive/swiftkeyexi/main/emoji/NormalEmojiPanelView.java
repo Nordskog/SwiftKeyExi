@@ -13,6 +13,8 @@ import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.database.TableList;
+import com.mayulive.swiftkeyexi.shared.SharedStyles;
+import com.mayulive.swiftkeyexi.util.view.ScrollbarRecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +27,7 @@ import java.util.Map;
  * Created by Roughy on 12/4/2016.
  */
 
-public class NormalEmojiPanelView extends RecyclerView implements EmojiPanelView
+public class NormalEmojiPanelView extends ScrollbarRecyclerView implements EmojiPanelView
 {
 	emojiPanelAdapter mAdapter = null;
 
@@ -54,7 +56,15 @@ public class NormalEmojiPanelView extends RecyclerView implements EmojiPanelView
 	{
 		//The things you have to do to get scrollbars around here
 		super(context);
+	}
 
+	public static NormalEmojiPanelView getWithScrollbars(Context context)
+	{
+		//return new NormalEmojiPanelView(new ContextThemeWrapper(context, R.style.ScrollbarRecyclerView));
+
+		NormalEmojiPanelView panel = new NormalEmojiPanelView(context);
+
+		return panel;
 	}
 
 
@@ -69,16 +79,8 @@ public class NormalEmojiPanelView extends RecyclerView implements EmojiPanelView
 		mGridLayoutManager = new GridLayoutManager(this.getContext(), EmojiResources.calculateColCount(this.getContext(), viewWidth, itemWidth));
 		mLayoutManager = mGridLayoutManager;
 
-
-		//I give up, scrollbars can only be enabled in xml
-		/*
-		this.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-
-		this.setVerticalScrollBarEnabled(true);
-		this.setHorizontalScrollBarEnabled(true);
-
-		this.setScrollbarFadingEnabled(true);
-		*/
+		this.setScrollbarEnabled(true);
+		this.setScrollbarColor(SharedStyles.getAccentColor(this.getContext()));
 
 		this.setLayoutManager(mLayoutManager);
 		this.setAdapter(mAdapter);
@@ -521,5 +523,6 @@ public class NormalEmojiPanelView extends RecyclerView implements EmojiPanelView
 		}
 
 	}
+
 
 }

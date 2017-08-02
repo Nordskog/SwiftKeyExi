@@ -8,8 +8,8 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
-import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreferenceFragment;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
@@ -46,7 +46,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayAdditionalKeysFragment(KeyCommons.KeyType.SHIFT);
+				displayAdditionalKeysFragment(KeyType.SHIFT);
 				return true;
 			}
 		});
@@ -57,7 +57,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayAdditionalKeysFragment(KeyCommons.KeyType.DELETE);
+				displayAdditionalKeysFragment(KeyType.DELETE);
 				return true;
 			}
 		});
@@ -68,7 +68,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayAdditionalKeysFragment(KeyCommons.KeyType.SYMBOL);
+				displayAdditionalKeysFragment(KeyType.SYMBOL);
 				return true;
 			}
 		});
@@ -87,15 +87,15 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
 	}
 
-	private void displayAdditionalKeysFragment(KeyCommons.KeyType type)
+	private void displayAdditionalKeysFragment(KeyType type)
 	{
 		KeyDefinitionFragment nextFrag= new KeyDefinitionFragment();
 
 		Bundle extras = new Bundle();
 
-		if (type == KeyCommons.KeyType.SHIFT)
+		if (type == KeyType.SHIFT)
 			extras.putInt(KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_BUNDLE_KEY, KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_SHIFT_KEY_BUNDLE_VALUE);
-		else if (type == KeyCommons.KeyType.SYMBOL)
+		else if (type == KeyType.SYMBOL)
 			extras.putInt(KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_BUNDLE_KEY, KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_SYMBOL_KEY_BUNDLE_VALUE);
 		else
 			extras.putInt(KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_BUNDLE_KEY, KeyDefinitionFragment.KEY_DEFINITION_FRAGMENT_DELETE_KEY_BUNDLE_VALUE);
@@ -103,7 +103,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 		nextFrag.setArguments(extras);
 
 		this.getFragmentManager().beginTransaction()
-				.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
 				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
 				.addToBackStack(null)
 				.commit();
@@ -115,7 +115,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 		AboutFragment nextFrag= new AboutFragment();
 
 		this.getFragmentManager().beginTransaction()
-				.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
 				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
 				.addToBackStack(null)
 				.commit();

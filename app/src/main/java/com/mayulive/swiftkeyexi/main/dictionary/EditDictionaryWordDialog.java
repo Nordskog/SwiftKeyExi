@@ -46,7 +46,7 @@ public abstract class EditDictionaryWordDialog
 					public void onClick(DialogInterface dialog, int id)
 					{
 						String textField = textValueBox.getText().toString().trim();
-						String keyField = keyValueBox.getText().toString().trim();
+						String keyField = keyValueBox.getText().toString().trim().toLowerCase();
 
 						if (textField.isEmpty() && keyField.isEmpty())
 						{

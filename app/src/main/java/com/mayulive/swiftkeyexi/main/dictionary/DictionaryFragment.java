@@ -20,6 +20,7 @@ import com.mayulive.swiftkeyexi.main.emoji.EmojiFragment;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
+import com.mayulive.swiftkeyexi.util.TextUtils;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +44,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import org.w3c.dom.Text;
 
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.DICTIONARY_SHORTCUT_TABLE_INFO;
 import static com.mayulive.swiftkeyexi.settings.SettingsCommons.MODULE_SHARED_PREFERENCES_KEY;
@@ -147,71 +150,69 @@ public class DictionaryFragment extends Fragment
 
 		final FloatingActionButton menuButton = (FloatingActionButton)mRootView.findViewById(R.id.dictionaryPanelMenuButton);
 
-		/*
-		final PopupMenu dictionaryMenuView = new PopupMenu(this.getContext(), menuButton);
-		dictionaryMenuView.inflate(R.menu.dictionary_popup_menu);
-		*/
-		//Switching to linearpopuplayout for consistency. Stock popupmenu doesn't have have shadows or anything.
-		//TODO make generic
-		final PopupLinearLayout dictionaryPopup = new PopupLinearLayout(this.getContext());
-		NavigationView dictionaryMenuView = new NavigationView(this.getContext());
-
-		NavigationView keyboardMenuView = new NavigationView(this.getContext());
-		keyboardMenuView.inflateMenu(R.menu.dictionary_popup_menu);
-
-		{
-			//Add margin so there's space to display the shadow. PopupLinearLayout is supposed to be elevated, but doesn't work.
-			//So the shadow needs to be displayed by the navigation view /inside/ the popup
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-			//Should be enough
-			float shadowMargin = DimenUtils.calculatePixelFromDp(DictionaryFragment.this.getContext(), 30);
-
-			params.setMargins((int)shadowMargin,0,0, (int)shadowMargin);
-			dictionaryPopup.addItem(keyboardMenuView, params);
-
-			//Compensate for margin. This leaves a gap, but is visually superior.
-			dictionaryPopup.setOffset( 0, (int)(shadowMargin/2f) );
-		}
-
 		menuButton.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
+				//Switching to linearpopuplayout for consistency. Stock popupmenu doesn't have have shadows or anything.
+				//TODO make generic
+				final PopupLinearLayout dictionaryPopup = new PopupLinearLayout(DictionaryFragment.this.getContext());
+				NavigationView dictionaryMenuView = new NavigationView(DictionaryFragment.this.getContext());
+
+				dictionaryMenuView.inflateMenu(R.menu.dictionary_popup_menu);
+
+				{
+					//Add margin so there's space to display the shadow. PopupLinearLayout is supposed to be elevated, but doesn't work.
+					//So the shadow needs to be displayed by the navigation view /inside/ the popup
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+					//Should be enough
+					float shadowMargin = DimenUtils.calculatePixelFromDp(DictionaryFragment.this.getContext(), 30);
+
+					params.setMargins((int)shadowMargin,0,0, (int)shadowMargin);
+					dictionaryPopup.addItem(dictionaryMenuView, params);
+
+					//Compensate for margin. This leaves a gap, but is visually superior.
+					dictionaryPopup.setOffset( 0, (int)(shadowMargin/2f) );
+				}
+
+				dictionaryMenuView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
+				{
+					@Override
+					public boolean onNavigationItemSelected(@NonNull MenuItem item)
+					{
+						switch(item.getItemId())
+						{
+							case R.id.clear_menu_item:
+							{
+
+								showDictionaryClearConfirmationDialog();
+
+								break;
+							}
+
+							case R.id.import_menu_item:
+							{
+								showLoadDictionaryFromFileDialog();
+								break;
+							}
+
+							default:
+								break;
+						}
+
+						dictionaryPopup.dismiss();
+
+
+						return true;
+					}
+				});
+
+
 				dictionaryPopup.showAbove(menuButton);
 			}
 
-		});
-
-		dictionaryMenuView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-		{
-			@Override
-			public boolean onNavigationItemSelected(@NonNull MenuItem item)
-			{
-				switch(item.getItemId())
-				{
-					case R.id.clear_menu_item:
-					{
-
-						showDictionaryClearConfirmationDialog();
-
-						break;
-					}
-
-					case R.id.import_menu_item:
-					{
-						showLoadDictionaryFromFileDialog();
-						break;
-					}
-
-					default:
-						break;
-
-				}
-
-				return true;
-			}
 		});
 
 
@@ -257,6 +258,7 @@ public class DictionaryFragment extends Fragment
 					{
 						setLastUpdateTime();
 						mItems.clear();
+						mMap.clear();
 						mDictionaryAdapter.notifyDataSetChanged();
 					}
 				})
@@ -290,9 +292,12 @@ public class DictionaryFragment extends Fragment
 					}
 					else
 					{
+						//Else set key on item and update map
 						mItems.update(item);
+						mMap.put(item.get_key(), item);
 					}
 
+					//Always remove original key
 					mMap.remove(oldKey);
 				}
 				else
@@ -545,10 +550,11 @@ public class DictionaryFragment extends Fragment
 			{
 				String[] split = WHITESPACE.split(line,2);
 
+
 				if (split.length == 2)
 				{
-					String text = split[1].trim();
-					String key = split[0].trim();
+					String text = TextUtils.stripBom( split[1].trim() );
+					String key = TextUtils.stripBom( split[0].trim().toLowerCase() );
 
 					DB_DictionaryWordItem newEntry = new DB_DictionaryWordItem(-1,text);
 					newEntry.set_priority(newPriority);

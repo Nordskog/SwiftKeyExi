@@ -9,6 +9,7 @@ import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
+import com.mayulive.swiftkeyexi.util.TextUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
@@ -1031,7 +1032,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 			while ( (line = in.readLine() ) != null)
 			{
-				newPanel.get_items().add( new DB_EmojiItem(line));
+				newPanel.get_items().add( new DB_EmojiItem( TextUtils.stripBom( line ) ));
 			}
 		}
 		catch (IOException e)

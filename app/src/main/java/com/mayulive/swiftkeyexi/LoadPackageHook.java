@@ -2,6 +2,7 @@ package com.mayulive.swiftkeyexi;
 
 import android.util.Log;
 
+import com.mayulive.swiftkeyexi.shared.SharedStyles;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ProfileCache;
@@ -24,6 +25,9 @@ public class LoadPackageHook implements IXposedHookLoadPackage
             return;
 
 		ExiXposed.HOOK_PACKAGE_NAME = lpparam.packageName;
+
+		//Some assets as shared between the app and xposed, requirement some management
+		SharedStyles.setStyleContext(SharedStyles.StyleContext.HOOK);	//Defaults to app
 
 		XposedBridge.log(LOGTAG+", "+"Module loaded in "+lpparam.packageName);
 		Log.i(LOGTAG, "Module loaded in "+ExiXposed.HOOK_PACKAGE_NAME);

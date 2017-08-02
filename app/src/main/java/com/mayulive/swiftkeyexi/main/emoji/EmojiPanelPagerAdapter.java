@@ -119,8 +119,10 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 		else
 		{
 			final NormalEmojiPanelView newPanel;
-			newPanel = new NormalEmojiPanelView(container.getContext());
+			//newPanel = new NormalEmojiPanelView(container.getContext());
+			newPanel = NormalEmojiPanelView.getWithScrollbars(container.getContext());
 			newPanel.init( panelItem, container.getMeasuredWidth(), panelItem.get_column_width());
+
 
 
 			//I have no idea what I'm doing with these settings

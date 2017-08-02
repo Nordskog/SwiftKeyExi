@@ -183,7 +183,6 @@ public class EmojiHooks
 
 
 								EmojiCommons.mEmojiPanelTabs = new EmojiPanelTabLayout(context);
-								EmojiCommons.mEmojiPanelTabs.setHookValues(ContextUtils.getHookContext(), ContextUtils.getModuleContext());
 								EmojiCommons.mEmojiPanelTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 								EmojiCommons.mEmojiPanelTabs.setTabGravity(TabLayout.GRAVITY_CENTER);
 

@@ -2,6 +2,7 @@ package com.mayulive.swiftkeyexi.main;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.R;
@@ -14,6 +15,7 @@ import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 public class Theme
 {
 	private static int mCurrentTheme = R.style.AppTheme;
+
 
 	public static int getTheme(String themeString)
 	{

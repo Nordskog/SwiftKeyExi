@@ -2,13 +2,13 @@ package com.mayulive.swiftkeyexi.xposed.selection;
 
 import com.mayulive.swiftkeyexi.main.commons.data.DB_KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_ModifierKeyItem;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseMethods;
 import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.database.WrappedProvider;
 import com.mayulive.swiftkeyexi.providers.Provider;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class SelectionSetup
 
 				for (DB_KeyDefinition item : mShiftItems)
 				{
-					if (item.is(KeyCommons.KeyType.SYMBOL))
+					if (item.is(KeyType.SYMBOL))
 					{
 						SelectionState.mShiftKeys.add(item.getContent());
 					}
@@ -61,7 +61,7 @@ public class SelectionSetup
 
 				for (DB_KeyDefinition item : mDeleteItems)
 				{
-					if (item.is(KeyCommons.KeyType.SYMBOL))
+					if (item.is(KeyType.SYMBOL))
 					{
 						SelectionState.mDeleteKeys.add(item.getContent());
 					}
@@ -80,7 +80,7 @@ public class SelectionSetup
 
 				for (DB_KeyDefinition item : mSymbolItems)
 				{
-					if (item.is(KeyCommons.KeyType.SYMBOL))
+					if (item.is(KeyType.SYMBOL))
 					{
 						SelectionState.mSymbolKeys.add(item.getContent());
 					}
