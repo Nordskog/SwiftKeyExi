@@ -27,7 +27,7 @@ android
                         resValue  "string", "APP_AUTHOR_NAME", APP_AUTHOR_NAME
                         resValue  "string", "APP_VERSION_NAME", versionName
                         resValue  "string", "APP_SOURCE_CODE_URL", "https://github.com/Nordskog/SwiftKeyExi"
-                        resValue  "string", "APP_SUPPORT_URL", "https://github.com/Nordskog/SwiftKeyExi"
+                        resValue  "string", "APP_SUPPORT_URL", "https://forum.xda-developers.com/xposed/modules/mod-exi-swiftkey-t3650598"
                         resValue  "string", "SWIFTKEY_SUPPORTED_VERSION", "Swiftkey: " + SWIFTKEY_SUPORTED_VERSION
                         resValue  "string", "SWIFTKEY_BETA_SUPPORTED_VERSION", "Beta: " + SWIFTKEY_BETA_SUPORTED_VERSION
 
