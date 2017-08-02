@@ -2,8 +2,9 @@
 
 Exi for Swiftkey is an Xposed Framework module that adds a number of features to the Swiftkey keyboard.
 
-//TODO Xposed remove link
-//TODO XDA support thread link
+* [XDA Support Thread](https://forum.xda-developers.com/xposed/modules/mod-exi-swiftkey-t3650598)
+
+* [Xposed Module Repository page](http://repo.xposed.info/module/com.mayulive.swiftkeyexi)
 
 A short list of features:
 
@@ -11,12 +12,12 @@ A short list of features:
   * Cursor movement
   * Selection (Gesture or swipe-from-key)
   * Multiple modes (Anywhere, spacebar, hold-and-swipe)
+* More Suggestions
+  * Suggestions bar can be scrolled to view all suggestions
 * Custom shortcuts
-  * Multiple words for each shortcut
-  * Can be inserted after primary suggestion
-  * Can trigger on suggestions, not just verbatrim input
-  * Can be inserted into flow suggestions
-  * Supports importing from file (Tab or space delimited)
+  * Multiple shortcuts for same word
+  * Trigger on verbatim input, suggestions, or flow
+  * CDictionary importable from file (tab or space delimited)
 * Hotkeys (Ctrl + key )
   * Define any key as CTRL
   * Supports Select all / Cut / Copy / Paste / Go to end
@@ -24,11 +25,11 @@ A short list of features:
   * Display circular quick-menu by swiping up from spacebar
   * Trigger corresponding hotkey by swiping from spacebar to key
 * Popup-keys
-  * Alternate characters can be added and positioned anywhere
+  * Customize popup alt-characters
 * Emoji
   * Panels are fully customizable (Icon, position, emoji, row count)
   * Supports importing from file (line-break delimited)
-  * Emoji size can be configured
+  * Configurable font size
 * Other
   * Remove empty space next to suggestions
   * Prevent period key from triggering on tap
