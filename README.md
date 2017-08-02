@@ -17,7 +17,7 @@ A short list of features:
 * Custom shortcuts
   * Multiple shortcuts for same word
   * Trigger on verbatim input, suggestions, or flow
-  * CDictionary importable from file (tab or space delimited)
+  * Dictionary importable from file (tab or space delimited)
 * Hotkeys (Ctrl + key )
   * Define any key as CTRL
   * Supports Select all / Cut / Copy / Paste / Go to end
