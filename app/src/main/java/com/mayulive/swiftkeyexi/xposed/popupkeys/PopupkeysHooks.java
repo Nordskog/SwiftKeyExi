@@ -332,8 +332,10 @@ public class PopupkeysHooks
 								//else
 								//	insertString = item.get_popupUpper();
 
-								if (isLowerCase)
-									insertString = insertString.toUpperCase();
+								//TODO lowercase check fails work words but works with single chars?
+								//Might be preferrable for them to be inserted as-is anyway.
+								//if (isLowerCase)
+								//	insertString = insertString.toUpperCase();
 
 								if (insertLocation > outputKeys.size() )
 								{
@@ -354,7 +356,8 @@ public class PopupkeysHooks
 
 							///////////////////////
 
-							//Log.i(LOGTAG, "Output: "+outputKeys.toString());
+							if (DebugSettings.DEBUG_POPUPS)
+								Log.i(LOGTAG, "Output: "+outputKeys.toString());
 
 							btSubClass_aField.set(btSubClassInstance, outputKeys);
 						}
