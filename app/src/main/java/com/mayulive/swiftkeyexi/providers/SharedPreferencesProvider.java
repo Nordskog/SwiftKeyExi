@@ -92,7 +92,9 @@ public class SharedPreferencesProvider extends ContentProvider
 				null,                    		 // Selection criteria
 				null);                        	 // The sort order for the returned rows
 
-		return new SharedPreferencesCursor(cursor);
+		SharedPreferencesCursor prefCursor = new SharedPreferencesCursor(cursor);
+		cursor.close();;
+		return prefCursor;
 
 
 	}
