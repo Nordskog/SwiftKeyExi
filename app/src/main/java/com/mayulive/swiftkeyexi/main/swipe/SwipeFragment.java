@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.util.MathUtils;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
@@ -106,7 +107,19 @@ public class SwipeFragment extends Fragment
 		// Inflate the layout for this fragment
 		mRootView = inflater.inflate(R.layout.swipe_fragment_layout, container, false);
 
+		/////////////////////////
+		//Buttons
+		/////////////////////////
 
+		View keyboardButton = mRootView.findViewById(R.id.testkeyboardbutton);
+		keyboardButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				((MainActivity)getActivity()).displayInputTest();
+			}
+		});
 
 		//////////////////////////
 		//Swipe and select modes

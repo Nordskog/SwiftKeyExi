@@ -13,13 +13,29 @@
         android:layout_height="match_parent"/>
 
 
+    <LinearLayout
+        android:layout_gravity="center_vertical|bottom|end"
+        android:gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <android.support.design.widget.FloatingActionButton
+            style="@style/FloatingButton"
+            app:srcCompat="@drawable/add_button_symbol"
+            android:id="@+id/addPopupkeyButton"
+            />
 
 
-    <android.support.design.widget.FloatingActionButton
-        style="@style/FloatingButton"
-        app:srcCompat="@drawable/add_button_symbol"
-        android:id="@+id/addPopupkeyButton"
-        android:layout_gravity="bottom|end"
-        />
+        <android.support.design.widget.FloatingActionButton
+            style="@style/FloatingButton"
+            app:srcCompat="@drawable/ic_keyboardbutton"
+            android:id="@+id/testkeyboardbutton"
+            />
+
+    </LinearLayout>
+
+
 
 </FrameLayout>

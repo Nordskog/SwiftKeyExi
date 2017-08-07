@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupKeyItem;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupParentKeyItem;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
@@ -99,6 +100,19 @@ public class PopupkeysFragment extends Fragment
 			}
 		});
 
+		/////////////////
+		//Buttons
+		/////////////////
+
+		View keyboardButton = mRootView.findViewById(R.id.testkeyboardbutton);
+		keyboardButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				((MainActivity)getActivity()).displayInputTest();
+			}
+		});
 
 		FloatingActionButton addButton = (FloatingActionButton)mRootView.findViewById(R.id.addPopupkeyButton);
 		addButton.setOnClickListener(new View.OnClickListener()

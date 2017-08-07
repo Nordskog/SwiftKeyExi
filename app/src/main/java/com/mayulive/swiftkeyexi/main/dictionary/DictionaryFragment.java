@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.main.commons.PopupLinearLayout;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
@@ -145,6 +146,16 @@ public class DictionaryFragment extends Fragment
 				displayWordDialog(null, null);
 			}
 
+		});
+
+		View keyboardButton = mRootView.findViewById(R.id.testkeyboardbutton);
+		keyboardButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				((MainActivity)getActivity()).displayInputTest();
+			}
 		});
 
 
