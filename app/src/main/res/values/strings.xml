@@ -32,7 +32,7 @@
 
     <!-- Main tab layout  -->
 
-    <string name="tab_name_dictionary">Dictionary</string>
+    <string name="tab_name_dictionary">Shortcuts</string>
     <string name="tab_name_emoji">Emoji</string>
     <string name="tab_name_hotkeys">Hotkeys</string>
     <string name="tab_name_popups">Popups</string>

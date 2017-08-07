@@ -36,15 +36,15 @@
     <!-- Key Definitions. Keys are only used to identify menu items  -->
     <string name="pref_additional_shift_keys_key">pref_additional_shift_keys</string>
         <string name="pref_additional_shift_keys_title">Shift Keys</string>
-        <string name="pref_additional_shift_keys_summary">Additional Shift Keys</string>
+        <string name="pref_additional_shift_keys_summary">Add Shift Keys</string>
 
     <string name="pref_additional_delete_keys_key">pref_additional_delete_keys</string>
         <string name="pref_additional_delete_keys_title">Delete Keys</string>
-        <string name="pref_additional_delete_keys_summary">Additional Delete Keys</string>
+        <string name="pref_additional_delete_keys_summary">Add Delete Keys</string>
 
     <string name="pref_additional_symbol_keys_key">pref_additional_symbol_keys</string>
         <string name="pref_additional_symbol_keys_title">Modifier Keys</string>
-        <string name="pref_additional_symbol_keys_summary">Additional Modifier Keys</string>
+        <string name="pref_additional_symbol_keys_summary">Add Modifier Keys</string>
 
     <!-- Hotkeys -->
     <string name="pref_space_swipe_modifier_mode_key">pref_space_swipe_modifier_mode</string>
@@ -103,12 +103,8 @@
 
     <!--- Emoji kill switch -->
     <string name="pref_emoji_panel_key">pref_emoji_panel</string>
-        <string name="pref_emoji_panel_title">Replace Emoji Panel</string>
+        <string name="pref_emoji_panel_title">Use Exi Emoji panel</string>
         <string name="pref_emoji_panel_summary">Enable Emoji panel customization</string>
-
-
-
-
 
     <!-- Swipe selection -->
 
