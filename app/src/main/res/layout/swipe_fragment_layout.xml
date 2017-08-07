@@ -40,7 +40,7 @@
 
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                           android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                          android:layout_width="100dp"
+                          android:layout_width="match_parent"
                           android:gravity="center"
                           android:layout_height="wrap_content"
                           android:text="@string/threshold_title"/>
@@ -49,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"/>
 
-                <com.mayulive.swiftkeyexi.main.swipe.CharUnitDisplayView
+                <com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView
                     android:id="@+id/swipe_threshold_indicator"
                     android:layout_width="match_parent"
                     android:layout_height="15dp"/>
@@ -78,16 +78,15 @@
                           android:gravity="center"
                           android:text="@string/speed_title"/>
 
-                <TextView
-                    android:padding="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:text="A"
-                    android:textSize="25dp"
-                    android:gravity="center"
-                    />
 
-                <com.mayulive.swiftkeyexi.main.swipe.CharUnitDisplayView
+
+                <com.mayulive.swiftkeyexi.main.swipe.UnitCharDisplayView
+                    android:id="@+id/swipe_speed_text_indicator"
+                    android:layout_width="match_parent"
+                    app:comparison_bar_length="30dp"
+                    android:layout_height="35dp"/>
+
+                <com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView
                     android:id="@+id/swipe_speed_indicator"
                     android:layout_width="match_parent"
                     android:layout_height="15dp"/>

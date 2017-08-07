@@ -32,6 +32,61 @@ public class MathUtils
 		return  number + multiple - number % multiple;
 	}
 
+	public static double recursiveMultiplyBySelf(double x, int y)
+	{
+		for (int i = 0; i < y; i++)
+		{
+			x *= x;
+		}
+
+		return x;
+	}
+
+	public static double recursiveMultiplyBySquare(double x, int y)
+	{
+		for (int i = 0; i < y; i++)
+		{
+			x = x / Math.sqrt(x);
+		}
+
+		return x;
+	}
+
+	public static float scaleExponential(float value, float max, int iterations)
+	{
+		//Get as ratio
+		value = value / max;
+
+		//Reverse
+		value = 1f - value;
+
+		//Multiply by self x times
+		value = (float) MathUtils.recursiveMultiplyBySelf(value , iterations );
+
+		//Reverse
+		value = 1f - value;
+
+		return value * max;
+	}
+
+	public static float unscaleExponential(float value, float max, int iterations)
+	{
+		//Get as ratio
+		value = value / max;
+
+		//Reverse
+		value = 1f - value;
+
+		//Reverse expo
+		value = (float)  (MathUtils.recursiveMultiplyBySquare(value, iterations ) );
+
+		//Reverse
+		value = 1f - value;
+
+		//Ratio to value
+		return value * max;
+	}
+
 	public static class Vector2D extends PointF
 	{
 		public Vector2D(float x, float y)

@@ -9,14 +9,14 @@ import android.view.View;
 
 import com.mayulive.swiftkeyexi.R;
 
-import static com.mayulive.swiftkeyexi.main.swipe.CharUnitDisplayView.ChartUnitDisplayMode.CENTER;
-import static com.mayulive.swiftkeyexi.main.swipe.CharUnitDisplayView.ChartUnitDisplayMode.TOP;
+import static com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView.ChartUnitDisplayMode.CENTER;
+import static com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView.ChartUnitDisplayMode.TOP;
 
 /**
  * Created by Roughy on 3/15/2017.
  */
 
-public class CharUnitDisplayView extends View
+public class UnitBarDisplayView extends View
 {
 
 	float mPixelCount = 100;		//Current value
@@ -52,19 +52,19 @@ public class CharUnitDisplayView extends View
 		this.invalidate();
 	}
 
-	public CharUnitDisplayView(Context context)
+	public UnitBarDisplayView(Context context)
 	{
 		super(context);
 		init();
 	}
 
-	public CharUnitDisplayView(Context context, AttributeSet attrs)
+	public UnitBarDisplayView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
 		init();
 	}
 
-	public CharUnitDisplayView(Context context, AttributeSet attrs, int defStyleAttr)
+	public UnitBarDisplayView(Context context, AttributeSet attrs, int defStyleAttr)
 	{
 		super(context, attrs, defStyleAttr);
 		init();

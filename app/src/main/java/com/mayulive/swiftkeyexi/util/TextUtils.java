@@ -50,4 +50,15 @@ public class TextUtils
 
 		return string;
 	}
+
+	public static String fillString( String fillchars, int repeatCount)
+	{
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < repeatCount; i++)
+		{
+			builder.append(fillchars);
+		}
+
+		return builder.toString();
+	}
 }
