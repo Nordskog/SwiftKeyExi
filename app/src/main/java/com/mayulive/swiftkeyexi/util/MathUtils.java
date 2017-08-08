@@ -44,6 +44,10 @@ public class MathUtils
 
 	public static double recursiveMultiplyBySquare(double x, int y)
 	{
+
+		if (x == 0)
+			return 0;
+
 		for (int i = 0; i < y; i++)
 		{
 			x = x / Math.sqrt(x);
