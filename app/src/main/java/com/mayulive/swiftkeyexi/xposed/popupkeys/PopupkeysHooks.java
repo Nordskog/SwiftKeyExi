@@ -279,7 +279,8 @@ public class PopupkeysHooks
 									//Regardless of the outcome, all we have to do afterwards is add primaryPopup back in at
 									//position leftCount;
 									//primaryPopup = isLowerCase ? item.get_popupLower() : item.get_popupUpper();
-									primaryPopup = isLowerCase ? item.get_popupLower() : item.get_popupLower().toUpperCase();
+									//primaryPopup = isLowerCase ? item.get_popupLower() : item.get_popupLower().toUpperCase();
+									primaryPopup =  item.get_popupLower();
 
 									replacePrimary = true;
 
