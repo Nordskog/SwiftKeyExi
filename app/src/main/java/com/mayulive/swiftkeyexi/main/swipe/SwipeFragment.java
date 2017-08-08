@@ -10,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
+import com.mayulive.swiftkeyexi.util.MathUtils;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
 import com.mayulive.swiftkeyexi.R;
@@ -28,22 +31,29 @@ import static com.mayulive.swiftkeyexi.settings.SettingsCommons.MODULE_SHARED_PR
 
 public class SwipeFragment extends Fragment
 {
+
+	private static String LOGTAG = ExiModule.getLogTag(SwipeFragment.class);
+
+	private static final int SPEED_SEEKBAR_MAX = 1000;
+	private static final float SPEED_PIXEL_MAX = 500;
+	private static final float SPEED_PIXEL_MIN = 10;
+	private static final int SPEED_SEEKBAR_EXPONENT_MULTIPLIER = 2;
+
 	View mRootView = null;
 
 	ArrayList<View> mSwipeModeViews = new ArrayList<>();
 	ArrayList<View> mSelectModeViews = new ArrayList<>();
 	ArrayList<View> mSpaceModifierViews = new ArrayList<>();
 
-	CharUnitDisplayView mSpeedDisplay;
+	UnitCharDisplayView mSpeedTextDisplay;
+	UnitBarDisplayView mSpeedDisplay;
 	SeekBar mSpeedSeekBar;
 
-	CharUnitDisplayView mThresholdDisplay;
+	UnitBarDisplayView mThresholdDisplay;
 	SeekBar mThresholdSeekBar;
 
-	private static float mLastSpeed = 100;
-	private static float mLastThreshold = 100;
-	private static final float mMaxSpeed = 500;
-
+	private static float mLastPixelSpeed = 100;
+	private static float mLastPixelThreshold = 100;
 
 
 	//Must match layout below
@@ -97,7 +107,19 @@ public class SwipeFragment extends Fragment
 		// Inflate the layout for this fragment
 		mRootView = inflater.inflate(R.layout.swipe_fragment_layout, container, false);
 
+		/////////////////////////
+		//Buttons
+		/////////////////////////
 
+		View keyboardButton = mRootView.findViewById(R.id.testkeyboardbutton);
+		keyboardButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				((MainActivity)getActivity()).displayInputTest();
+			}
+		});
 
 		//////////////////////////
 		//Swipe and select modes
@@ -198,18 +220,23 @@ public class SwipeFragment extends Fragment
 		//Swipe speed / threshold
 		////////////////////////////
 
-		mSpeedDisplay = (CharUnitDisplayView)mRootView.findViewById(R.id.swipe_speed_indicator);
-		mSpeedDisplay.setMaxPixelCount(mMaxSpeed);
+
+		mSpeedTextDisplay = (UnitCharDisplayView) mRootView.findViewById(R.id.swipe_speed_text_indicator);
+		mSpeedDisplay = (UnitBarDisplayView) mRootView.findViewById(R.id.swipe_speed_indicator);
+
+		//This is static
+		mSpeedDisplay.setPixelCount( mSpeedTextDisplay.getComparisonBarLenght() );
+
 
 		mSpeedSeekBar = (SeekBar)mRootView.findViewById(R.id.swipe_speed_seekbar);
-		mSpeedSeekBar.setMax((int)mMaxSpeed);
+		mSpeedSeekBar.setMax(SPEED_SEEKBAR_MAX);	//Arbitrary units
 
 		mSpeedSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
 			{
-				setSwipeSpeed( mMaxSpeed - progress, !fromUser);
+				setSwipeSpeed( speedUnitsToPixelUits( progress ), !fromUser);
 			}
 
 			@Override
@@ -231,11 +258,11 @@ public class SwipeFragment extends Fragment
 
 
 
-		mThresholdDisplay = (CharUnitDisplayView)mRootView.findViewById(R.id.swipe_threshold_indicator);
-		mThresholdDisplay.setMaxPixelCount(mMaxSpeed);
+		mThresholdDisplay = (UnitBarDisplayView)mRootView.findViewById(R.id.swipe_threshold_indicator);
+		mThresholdDisplay.setMaxPixelCount(SPEED_PIXEL_MAX);
 
 		mThresholdSeekBar = (SeekBar)mRootView.findViewById(R.id.swipe_threshold_seekbar);
-		mThresholdSeekBar.setMax((int)mMaxSpeed);
+		mThresholdSeekBar.setMax((int) SPEED_PIXEL_MAX);
 
 
 		mThresholdSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
@@ -255,12 +282,14 @@ public class SwipeFragment extends Fragment
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar)
 			{
+
+
+
 				saveSettings();
 			}
 		});
 
 		loadSettings();
-
 
 
 		return mRootView;
@@ -280,34 +309,6 @@ public class SwipeFragment extends Fragment
 	{
 
 		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this.getContext(), MODULE_SHARED_PREFERENCES_KEY);
-
-		/*
-		setSwipeSelected(
-				SelectionCommons.CursorBehavior.valueOf
-						(
-						prefs.getString(PreferenceConstants.pref_cursor_behavior_key,
-						SelectionCommons.CursorBehavior.SWIPE.toString()
-						)
-				));
-
-
-		setSelectionStateFromMode(
-				SelectionCommons.SelectionBehavior.valueOf
-					(
-						prefs.getString(PreferenceConstants.pref_selection_behavior_key,
-						SelectionCommons.SelectionBehavior.HYBRID.toString()
-					)
-				));
-
-
-		setSpaceModBehavior(
-				SelectionCommons.SpaceModifierBehavior.valueOf
-						(
-								prefs.getString(PreferenceConstants.pref_space_swipe_modifier_mode_key,
-										SelectionCommons.SpaceModifierBehavior.MENU.toString()
-								)
-						));
-						*/
 
 		mCurrentSwipeMode =
 				CursorBehavior.valueOf
@@ -335,12 +336,15 @@ public class SwipeFragment extends Fragment
 								)
 						);
 
-		mLastSpeed = prefs.getFloat(PreferenceConstants.pref_cursor_speed_key, 100);
-		mLastThreshold = prefs.getFloat(PreferenceConstants.pref_swipe_threshold_key, 100);
 
-		setSwipeSpeed(mLastSpeed, true);
-		setSwipeThreshold(mLastThreshold, true);
 
+		mLastPixelSpeed = prefs.getFloat(PreferenceConstants.pref_cursor_speed_key, 100);
+
+		mLastPixelThreshold = prefs.getFloat(PreferenceConstants.pref_swipe_threshold_key, 100);
+
+		setSwipeSpeed(mLastPixelSpeed, true);
+
+		setSwipeThreshold(mLastPixelThreshold, true);
 		setSelectionSelectedFromState();
 		setSpaceModifierFromState();
 		setSwipeSelected(mCurrentSwipeMode);
@@ -355,9 +359,8 @@ public class SwipeFragment extends Fragment
 		editor.putString(PreferenceConstants.pref_selection_behavior_key, getSelectionModeFromState().toString());
 
 		editor.putString(PreferenceConstants.pref_space_swipe_modifier_mode_key, mCurrentSpaceModBehavior.toString());
-
-		editor.putFloat(PreferenceConstants.pref_cursor_speed_key, mLastSpeed);
-		editor.putFloat(PreferenceConstants.pref_swipe_threshold_key, mLastThreshold);
+		editor.putFloat(PreferenceConstants.pref_cursor_speed_key, mLastPixelSpeed );
+		editor.putFloat(PreferenceConstants.pref_swipe_threshold_key, mLastPixelThreshold);
 
 
 		editor.apply();
@@ -368,28 +371,61 @@ public class SwipeFragment extends Fragment
 	//Swipe settings
 	///////////////////
 
+	private float speedUnitsToPixelUits(float progress)
+	{
+		progress = MathUtils.scaleExponential( progress, SPEED_SEEKBAR_MAX, SPEED_SEEKBAR_EXPONENT_MULTIPLIER);
+
+		//As ratio
+		progress /= SPEED_SEEKBAR_MAX;
+
+		//Reverse
+		progress = 1f - progress;
+
+		//Get as pixel value
+		progress *= SPEED_PIXEL_MAX - SPEED_PIXEL_MIN;
+		progress += SPEED_PIXEL_MIN;
+
+		return progress;
+
+	}
+
+	private int pixelUnitstoSpeedUnits(float pixelValue)
+	{
+		//Get as speed units
+		pixelValue = SPEED_SEEKBAR_MAX * ( (pixelValue - SPEED_PIXEL_MIN) / (SPEED_PIXEL_MAX - SPEED_PIXEL_MIN));
+
+
+		//Reverse
+		pixelValue = SPEED_SEEKBAR_MAX - pixelValue;
+
+		pixelValue = MathUtils.unscaleExponential( pixelValue, SPEED_SEEKBAR_MAX, SPEED_SEEKBAR_EXPONENT_MULTIPLIER);
+
+		return (int) pixelValue;
+	}
+
+	private boolean mDoNotUpdateSeekBar = false;
+
 	//Remember that 0 is inifinity, 1 is ultrafast, 500 is slow.
 	private void setSwipeSpeed(float newValue, boolean updateSeekbar)
 	{
-
-		newValue = newValue < 1f ? 1f : newValue;
-
-		mLastSpeed = newValue;
-
+		mLastPixelSpeed = newValue;
 		//No loops here
-		if (updateSeekbar)
+
+		if (!mDoNotUpdateSeekBar && updateSeekbar)
 		{
-			mSpeedSeekBar.setProgress((int) (mMaxSpeed - newValue) );
+			mDoNotUpdateSeekBar = true;
+			mSpeedSeekBar.setProgress( pixelUnitstoSpeedUnits(mLastPixelSpeed) );
+			mDoNotUpdateSeekBar = false;
 		}
 
-		mSpeedDisplay.setPixelCount( newValue );
+		mSpeedTextDisplay.setPixelCount( newValue );
 	}
 
 	private void setSwipeThreshold(float newValue, boolean updateSeekbar)
 	{
 		newValue = newValue < 1f ? 1f : newValue;
 
-		mLastThreshold = newValue;
+		mLastPixelThreshold = newValue;
 
 
 		//No loops here

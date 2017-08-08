@@ -256,6 +256,8 @@ public class DatabaseMethods
 				Log.e("###", "Cursor count was below 1");
 			*/
 
+			if (!c.isClosed())
+				c.close();
 			return returnArray;
 		}
 
@@ -279,7 +281,9 @@ public class DatabaseMethods
 	public static ArrayList<? extends DatabaseItem> getAllItems(DatabaseWrapper db, TableInfo tableInfo)
 	{
 		Cursor c = getCursorToAllItems(db, tableInfo);
-		return getItemsFromCursor(db, tableInfo, c);
+		ArrayList<? extends DatabaseItem> items =  getItemsFromCursor(db, tableInfo, c);
+		c.close();
+		return items;
 	}
 
 
@@ -293,12 +297,8 @@ public class DatabaseMethods
 			addItem(db, item, tableInfo);
 		}
 
-
 		db.setTransactionSuccessful();
 		db.endTransaction();
-
-
-
 	}
 
 	//Updates if ID is != -1, otherwise adds as new item

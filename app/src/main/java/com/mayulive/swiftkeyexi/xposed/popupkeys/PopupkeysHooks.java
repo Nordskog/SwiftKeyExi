@@ -279,7 +279,8 @@ public class PopupkeysHooks
 									//Regardless of the outcome, all we have to do afterwards is add primaryPopup back in at
 									//position leftCount;
 									//primaryPopup = isLowerCase ? item.get_popupLower() : item.get_popupUpper();
-									primaryPopup = isLowerCase ? item.get_popupLower() : item.get_popupLower().toUpperCase();
+									//primaryPopup = isLowerCase ? item.get_popupLower() : item.get_popupLower().toUpperCase();
+									primaryPopup =  item.get_popupLower();
 
 									replacePrimary = true;
 
@@ -332,8 +333,10 @@ public class PopupkeysHooks
 								//else
 								//	insertString = item.get_popupUpper();
 
-								if (isLowerCase)
-									insertString = insertString.toUpperCase();
+								//TODO lowercase check fails work words but works with single chars?
+								//Might be preferrable for them to be inserted as-is anyway.
+								//if (isLowerCase)
+								//	insertString = insertString.toUpperCase();
 
 								if (insertLocation > outputKeys.size() )
 								{
@@ -354,7 +357,8 @@ public class PopupkeysHooks
 
 							///////////////////////
 
-							//Log.i(LOGTAG, "Output: "+outputKeys.toString());
+							if (DebugSettings.DEBUG_POPUPS)
+								Log.i(LOGTAG, "Output: "+outputKeys.toString());
 
 							btSubClass_aField.set(btSubClassInstance, outputKeys);
 						}

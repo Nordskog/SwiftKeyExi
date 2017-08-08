@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">Sensitivity</string>
     <string name="swipe_mode_title">Swipe Mode</string>
     <string name="selection_mode_title">Selection Mode</string>
     <string name="space_up_swipe_mode_title">Space Up-Swipe Mode</string>
 
-    <string name="threshold_title">Threshold</string>
+    <string name="threshold_title">Trigger Threshold</string>
     <string name="speed_title">Speed</string>
 
     <!--- Must mirror SettingsCommons value -->

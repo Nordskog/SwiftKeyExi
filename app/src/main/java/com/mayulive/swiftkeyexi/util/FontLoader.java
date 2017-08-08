@@ -26,6 +26,7 @@ public class FontLoader
 	private static String LOGTAG = ExiModule.getLogTag(FontLoader.class);
 
 	static boolean mLibraryLoaded = false;
+	static boolean mFontsLoaded = false;
 	private static final String xmlNamespace = null;
 
 	private static Paint mPaint = new Paint();
@@ -57,9 +58,10 @@ public class FontLoader
 
 	public static void initFontLoader(String[] paths)
 	{
-		if (mLibraryLoaded)
+		if (!mFontsLoaded && mLibraryLoaded)
 		{
 			nInitFontLoader(paths);
+			mFontsLoaded = true;
 		}
 	}
 

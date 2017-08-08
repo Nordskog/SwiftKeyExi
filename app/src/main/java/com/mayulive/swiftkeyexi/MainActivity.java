@@ -10,6 +10,8 @@ import com.mayulive.swiftkeyexi.main.Theme;
 import com.mayulive.swiftkeyexi.main.main.MainViewPagerAdapter;
 import com.mayulive.swiftkeyexi.main.settings.SettingsActivity;
 import com.mayulive.swiftkeyexi.util.FontLoader;
+import com.mayulive.swiftkeyexi.util.KeyboardUtil;
+import com.mayulive.swiftkeyexi.util.view.BackCallbackEditText;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,8 +22,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 
 
 import static com.mayulive.swiftkeyexi.util.FontLoader.getFontPathArray;
@@ -35,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 	WrappedDatabase mDbWrap = null;
 	MainViewPagerAdapter mAdapter;
 	ViewPager mPager;
+
+	BackCallbackEditText mTestInput = null;
+	FrameLayout mTestInputContainer = null;
 
 	public static int mAppliedTheme = R.style.AppTheme;
 
@@ -89,7 +98,28 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 			editor.putInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
 			editor.apply();
 		}
+	}
 
+	public void displayInputTest()
+	{
+		mTestInputContainer.setVisibility(View.VISIBLE);
+		mTestInput.requestFocus();
+		KeyboardUtil.showKeyboard(mTestInput);
+	}
+
+	public void hideInputTest()
+	{
+		mTestInputContainer.setVisibility(View.GONE);
+		KeyboardUtil.hideKeyboard(mTestInput);
+	}
+
+	public void hideInputOnBack()
+	{
+		//For when we override backup. Keyboard will hide itself.
+		if (mTestInputContainer.getVisibility() == View.VISIBLE)
+		{
+			mTestInputContainer.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -127,6 +157,36 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 
 		TabLayout titleIndicator = (TabLayout)findViewById(R.id.mainViewTitles);
 		titleIndicator.setupWithViewPager(mPager);
+
+		setupKeyboard();
+
+	}
+
+	private void setupKeyboard()
+	{
+		mTestInput = (BackCallbackEditText) findViewById(R.id.test_keyboard);
+		mTestInputContainer = (FrameLayout) findViewById(R.id.test_keyboard_container);
+
+		mTestInput.setOnBackPressedListener(new BackCallbackEditText.OnBackPressed()
+		{
+			@Override
+			public boolean onBackPressed()
+			{
+				hideInputOnBack();
+				return false;
+			}
+		});
+
+		mTestInputContainer.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				hideInputTest();
+			}
+		});
+
+
 	}
 
 	@Override
@@ -159,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 	@Override
 	protected void onPause()
 	{
+
 		super.onPause();
 		//Log.e("###", "Activity paused");
 
@@ -168,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 	protected void onResume()
 	{
 		super.onResume();
+		hideInputOnBack();
 		if (Theme.applyThemeIfNecessary(this))
 		{
 			//Some of our cached emoji will be a mix of

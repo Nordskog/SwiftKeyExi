@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.TableList;
@@ -80,6 +81,16 @@ public class ShortcutkeysFragment extends Fragment
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
 				displayEntryDialog(mItems.get(position), position);
+			}
+		});
+
+		View keyboardButton = mRootView.findViewById(R.id.testkeyboardbutton);
+		keyboardButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				((MainActivity)getActivity()).displayInputTest();
 			}
 		});
 

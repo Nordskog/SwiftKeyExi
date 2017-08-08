@@ -1,170 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="5dp"
-    android:gravity="center_horizontal"
-    >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent" >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/vertical_item_spacing"
         android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:gravity="center_horizontal"
         >
-
-        <TextView
-            style="@style/SectionTitle"
-            android:text="@string/settings_title" />
-        <FrameLayout style="@style/SectionSeparator"
-            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/vertical_item_spacing"
+            android:orientation="vertical"
             >
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:gravity="center"
-                >
-
-                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                          android:layout_width="100dp"
-                          android:gravity="center"
-                          android:layout_height="wrap_content"
-                          android:text="@string/threshold_title"/>
-
-                <android.support.v4.widget.Space
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"/>
-
-                <com.mayulive.swiftkeyexi.main.swipe.CharUnitDisplayView
-                    android:id="@+id/swipe_threshold_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp"/>
-
-                <com.mayulive.swiftkeyexi.main.swipe.UninterceptableSeekBar
-                    android:id="@+id/swipe_threshold_seekbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"/>
-            </LinearLayout>
-
+            <TextView
+                style="@style/SectionTitle"
+                android:text="@string/settings_title" />
+            <FrameLayout style="@style/SectionSeparator"
+                />
 
             <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:gravity="center"
+                android:orientation="horizontal"
                 >
 
-
-                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                          android:layout_width="100dp"
-                          android:layout_height="wrap_content"
-                          android:gravity="center"
-                          android:text="@string/speed_title"/>
-
-                <TextView
-                    android:padding="5dp"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:text="A"
-                    android:textSize="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:gravity="center"
-                    />
+                    >
 
-                <com.mayulive.swiftkeyexi.main.swipe.CharUnitDisplayView
-                    android:id="@+id/swipe_speed_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="15dp"/>
+                    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                              android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                              android:layout_width="match_parent"
+                              android:gravity="center"
+                              android:layout_height="wrap_content"
+                              android:text="@string/threshold_title"/>
 
-                <com.mayulive.swiftkeyexi.main.swipe.UninterceptableSeekBar
-                    android:id="@+id/swipe_speed_seekbar"
+                    <android.support.v4.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"/>
+
+                    <com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView
+                        android:id="@+id/swipe_threshold_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"/>
+
+                    <com.mayulive.swiftkeyexi.main.swipe.UninterceptableSeekBar
+                        android:id="@+id/swipe_threshold_seekbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"/>
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:gravity="center"
+                    >
+
+
+                    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                              android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                              android:layout_width="100dp"
+                              android:layout_height="wrap_content"
+                              android:gravity="center"
+                              android:text="@string/speed_title"/>
+
+
+
+                    <com.mayulive.swiftkeyexi.main.swipe.UnitCharDisplayView
+                        android:id="@+id/swipe_speed_text_indicator"
+                        android:layout_width="match_parent"
+                        app:comparison_bar_length="30dp"
+                        android:layout_height="35dp"/>
+
+                    <com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView
+                        android:id="@+id/swipe_speed_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"/>
+
+                    <com.mayulive.swiftkeyexi.main.swipe.UninterceptableSeekBar
+                        android:id="@+id/swipe_speed_seekbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
+
+
+            <TextView
+                style="@style/SectionTitle"
+                android:text="@string/swipe_mode_title"/>
+            <FrameLayout style="@style/SectionSeparator" />
+
+
+            <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
+                style="@style/WidthLimitedContainer">
+
+                    <include layout="@layout/swipe_mode_item"
+                             android:id="@+id/swipe_mode_anywhere"/>/>
+                <include layout="@layout/swipe_mode_item"
+                         android:id="@+id/swipe_mode_hold_any"/>/>
+
+                </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
+
+            <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
+                style="@style/WidthLimitedContainer">
+
+                <include layout="@layout/swipe_mode_item"
+                         android:id="@+id/swipe_mode_space"/>/>
+                    <include layout="@layout/swipe_mode_item"
+                             android:id="@+id/swipe_mode_hold_shift"/>/>
+
+                </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
+
+
+            <TextView
+                style="@style/SectionTitle"
+                android:text="@string/selection_mode_title" />
+            <FrameLayout style="@style/SectionSeparator" />
+
+            <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
+                style="@style/WidthLimitedContainer">
+
+                <include layout="@layout/swipe_mode_item"
+                        android:id="@+id/swipe_select_mode_two_finger"/>
+                <include layout="@layout/swipe_mode_item"
+                         android:id="@+id/swipe_select_mode_shift_delete"/>
+
+            </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
+
+
+            <TextView
+                      style="@style/SectionTitle"
+                      android:text="@string/space_up_swipe_mode_title"/>
+            <FrameLayout style="@style/SectionSeparator" />
+
+            <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
+                style="@style/WidthLimitedContainer">
+
+                <include layout="@layout/swipe_mode_item"
+                         android:id="@+id/space_modifier_select_mode_menu"/>
+                <include layout="@layout/swipe_mode_item"
+                         android:id="@+id/space_modifier_select_mode_key"/>
+
+            </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+
 
         </LinearLayout>
 
+    </ScrollView>
 
-        <TextView
-            style="@style/SectionTitle"
-            android:text="@string/swipe_mode_title"/>
-        <FrameLayout style="@style/SectionSeparator" />
+    <android.support.design.widget.FloatingActionButton
+        style="@style/FloatingButton"
+        app:srcCompat="@drawable/ic_keyboardbutton"
+        android:id="@+id/testkeyboardbutton"
+        android:layout_gravity="bottom|end"
+        />
 
-
-        <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
-            style="@style/WidthLimitedContainer">
-
-                <include layout="@layout/swipe_mode_item"
-                         android:id="@+id/swipe_mode_anywhere"/>/>
-            <include layout="@layout/swipe_mode_item"
-                     android:id="@+id/swipe_mode_hold_any"/>/>
-
-            </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
-
-        <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
-            style="@style/WidthLimitedContainer">
-
-            <include layout="@layout/swipe_mode_item"
-                     android:id="@+id/swipe_mode_space"/>/>
-                <include layout="@layout/swipe_mode_item"
-                         android:id="@+id/swipe_mode_hold_shift"/>/>
-
-            </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
-
-
-        <TextView
-            style="@style/SectionTitle"
-            android:text="@string/selection_mode_title" />
-        <FrameLayout style="@style/SectionSeparator" />
-
-        <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
-            style="@style/WidthLimitedContainer">
-
-            <include layout="@layout/swipe_mode_item"
-                    android:id="@+id/swipe_select_mode_two_finger"/>
-            <include layout="@layout/swipe_mode_item"
-                     android:id="@+id/swipe_select_mode_shift_delete"/>
-
-        </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
-
-
-        <TextView
-                  style="@style/SectionTitle"
-                  android:text="@string/space_up_swipe_mode_title"/>
-        <FrameLayout style="@style/SectionSeparator" />
-
-        <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
-            style="@style/WidthLimitedContainer">
-
-            <include layout="@layout/swipe_mode_item"
-                     android:id="@+id/space_modifier_select_mode_menu"/>
-            <include layout="@layout/swipe_mode_item"
-                     android:id="@+id/space_modifier_select_mode_key"/>
-
-        </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
-
-
-    </LinearLayout>
-
-
-
-
-
-</ScrollView>
+</FrameLayout>
