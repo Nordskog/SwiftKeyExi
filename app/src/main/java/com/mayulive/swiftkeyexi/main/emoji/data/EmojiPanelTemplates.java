@@ -210,7 +210,7 @@ public class EmojiPanelTemplates
 		//Stock  emoticons
 		//After everything else because I doubt anyone uses them
 		{
-			String[] newStrings = new String[]{":-)",":-(",",-)",":-P",":-D",":-|",":-*",":O","B-)",":-$",":3",":-/",":-[","O:-)",":-\\",":'(","(^_-)","(-:",":-{"};
+			String[] newStrings = new String[]{":-)",":-(",";-)",":-P",":-D",":-|",":-*",":O","B-)",":-$",":3",":-/",":-[","O:-)",":-\\",":'(","(^_-)","(-:",":-{"};
 			EMOJI_PANEL_TEMPLATES.add( getEmojiPanel(newStrings, 2, ":-)", ":-)", 0,false) );
 		}
 
