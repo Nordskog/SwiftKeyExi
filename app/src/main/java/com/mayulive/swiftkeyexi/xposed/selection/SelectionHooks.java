@@ -91,7 +91,9 @@ public class SelectionHooks
 				{
 					if (param.args[0] == SelectionClassManager.FlowDelegate_DRAG_ENUM)
 					{
-						if (SelectionState.isSwipeAllowed())
+						//We block swipe when some popups appear, including the spacebar change-language one.
+						//this results in swipeAllowed() returning false, thus the extra space check
+						if (SelectionState.isSwipeAllowed() || SelectionState.mSpaceDown)
 						{
 							param.setResult(true);
 						}
@@ -119,7 +121,9 @@ public class SelectionHooks
 					@Override
 					protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 					{
-						if (SelectionState.isSwipeAllowed())
+						//We block swipe when some popups appear, including the spacebar change-language one.
+						//this results in swipeAllowed() returning false, thus the extra space check
+						if (SelectionState.isSwipeAllowed() || SelectionState.mSpaceDown)
 						{
 							param.setResult(false);
 						}

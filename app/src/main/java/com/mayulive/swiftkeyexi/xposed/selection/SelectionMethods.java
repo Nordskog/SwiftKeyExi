@@ -29,6 +29,8 @@ import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 import static com.mayulive.swiftkeyexi.util.ContextUtils.getModuleContext;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.isDelete;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.isShift;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.LEFT_SWIPE;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.RIGHT_SWIPE;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.SWIPE;
@@ -502,28 +504,33 @@ public class SelectionMethods
 
 			//calculateDistance(currentPointerInfo, newX, newY);
 
-			//Since we may transition from swipe to space modifier, always check space modifier first.
-			//This will only happen if we are swiping on the spacebar.
-			if (  !SelectionState.mSpaceModifierTriggered && ( !SelectionState.mSwiping || Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE )  )
+			//First off, the current pointer must have come down on the space bar
+			if ( currentPointerInfo.key.is(KeyType.SPACE) )
 			{
-				float spaceModifierMaxHeight = view.getMeasuredHeight() - ( ( 1.0f - mFirstDown.hitbox.top )*view.getMeasuredHeight());
-				//The above value means space modifier will trigger as soon as we swipe above the spacebar.
-				//This makes it a tiny bit too sensitive, so add 0.25 the height of the spacebar too.
-				spaceModifierMaxHeight -=  (mFirstDown.hitbox.height()*view.getMeasuredHeight()) * 0.25f;
-
-				if (SelectionState.getSpaceModifierBehavior().isEnabled() && SelectionState.mFirstDown.is(KeyType.SPACE) && newY < spaceModifierMaxHeight)
+				//Since we may transition from swipe to space modifier, always check space modifier first.
+				//This will only happen if we are swiping on the spacebar.
+				if (  !SelectionState.mSpaceModifierTriggered && ( !SelectionState.mSwiping || Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE )  )
 				{
+					float spaceModifierMaxHeight = view.getMeasuredHeight() - ( ( 1.0f - mFirstDown.hitbox.top )*view.getMeasuredHeight());
+					//The above value means space modifier will trigger as soon as we swipe above the spacebar.
+					//This makes it a tiny bit too sensitive, so add 0.25 the height of the spacebar too.
+					spaceModifierMaxHeight -=  (mFirstDown.hitbox.height()*view.getMeasuredHeight()) * 0.25f;
 
-					if ( SelectionState.mSwiping )
+					if (SelectionState.getSpaceModifierBehavior().isEnabled() && SelectionState.mFirstDown.is(KeyType.SPACE) && newY < spaceModifierMaxHeight)
 					{
-						//We've already triggered swipe.
-						cancelSwipe();
-					}
 
-					currentPointerInfo.state = PointerState.SPACE_MODIFIER;
-					SelectionState.mSpaceModifierTriggered = true;
-					SelectionState.mSwipeBlocked = true;
+						if ( SelectionState.mSwiping )
+						{
+							//We've already triggered swipe.
+							cancelSwipe();
+						}
+
+						currentPointerInfo.state = PointerState.SPACE_MODIFIER;
+						SelectionState.mSpaceModifierTriggered = true;
+						SelectionState.mSwipeBlocked = true;
+					}
 				}
+
 			}
 
 			if  (!SelectionState.mSwiping && !SelectionState.mSpaceModifierTriggered)
@@ -531,15 +538,22 @@ public class SelectionMethods
 
 				if (SelectionState.mValidFirstDown && !PointerState.isSwipe(currentPointerInfo.state))
 				{
-					if (!SelectionState.mSwiping)
+					//Must not already be swiping, and current pointer must have come down on spacebar if space_swipe cursor mode.
+					//Or shift/delet if enabled
+					if (!SelectionState.mSwiping
+							 && (
+							 		(
+							 				Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.SPACE_SWIPE || currentPointerInfo.key.is(KeyType.SPACE)
+										|| Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() && ( isShift(currentPointerInfo.key) || isDelete(currentPointerInfo.key) )
+									)
+
+					))
 					{
 						if (Math.abs(currentPointerInfo.xDistance) > Settings.SWIPE_THRESHOLD)
 						{
 							if (SelectionState.isSwipeAllowed())
 							{
 								setSwipePointerState(firstPointerInfo, currentPointerInfo, isPrimary);
-
-
 
 								if (PointerState.isSwipe(currentPointerInfo.state))
 								{
@@ -846,6 +860,25 @@ public class SelectionMethods
 				SelectionState.mSwipeBlocked = true;
 
 
+			//Whether and how we set the pointer down state is decided later, but we should always set the key for the current pointer
+			if (SelectionState.mLastPointerDownInfo != null)
+			{
+				SelectionState.mLastPointerDownInfo.key = key;
+			}
+			if ( SelectionState.isShift(SelectionState.mFirstDown))
+			{
+				SelectionState.mShiftDown = true;
+			}
+
+			if (  SelectionState.isDelete(SelectionState.mFirstDown) )
+			{
+				SelectionState.mDeleteDown = true;
+			}
+			if (SelectionState.mFirstDown.is(KeyType.SPACE))
+			{
+				SelectionState.mSpaceDown = true;
+			}
+
 
 			if (SelectionState.mActionModifierDown)
 			{
@@ -884,7 +917,6 @@ public class SelectionMethods
 
 					if (SelectionState.mFirstDown.is(KeyType.SPACE))
 					{
-						SelectionState.mSpaceDown = true;
 						if (Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE)
 						{
 							//SelectionCommons.mDelayNextPopup = true;
@@ -892,15 +924,6 @@ public class SelectionMethods
 						}
 					}
 
-					if ( SelectionState.isShift(SelectionState.mFirstDown))
-					{
-						SelectionState.mShiftDown = true;
-					}
-
-					if (  SelectionState.isDelete(SelectionState.mFirstDown) )
-					{
-						SelectionState.mDeleteDown = true;
-					}
 
 					//The state of the pointer is determined in the ontouchevent listener, /this/ is called after that.
 					//If the key is relevant, it needs to be run a second time here.

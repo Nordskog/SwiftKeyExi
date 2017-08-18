@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
@@ -293,9 +294,7 @@ public class SelectionState
 					if ( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() )
 					{
 						if (mShiftDown || mDeleteDown)
-						{
 							return true;
-						}
 					}
 
 					break;
@@ -310,10 +309,9 @@ public class SelectionState
 					if ( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() )
 					{
 						if (mShiftDown || mDeleteDown)
-						{
 							return true;
-						}
 					}
+
 
 					break;
 				}
@@ -325,10 +323,9 @@ public class SelectionState
 					if ( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() )
 					{
 						if (mShiftDown || mDeleteDown)
-						{
 							return true;
-						}
 					}
+
 
 					if (mSpaceDown)
 						return true;
