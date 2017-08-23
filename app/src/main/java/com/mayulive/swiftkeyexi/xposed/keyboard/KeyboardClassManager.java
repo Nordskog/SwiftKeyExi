@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mayulive.xposed.classhunter.Modifiers.*;
 
@@ -33,6 +35,8 @@ public class KeyboardClassManager
 	public static Class keyboardServiceClass =  null;
 	public static Class breadcrumbClass = null;
 
+	protected static Class punctuatorImplClass = null;
+
 	/////////////////
 	//unknown classes
 	/////////////////
@@ -46,6 +50,8 @@ public class KeyboardClassManager
 	public static Method keyboardLoader_onSharedPreferenceChangedMethod;
 	public static Method keyboardLoader_loadMethod = null;
 	public static Method keyboardLoader_clearCacheMethod = null;
+
+	protected static List<Method> punctuatorImplClass_PunctuateMethod = new ArrayList<>();
 
 
 
@@ -68,6 +74,7 @@ public class KeyboardClassManager
 		breadcrumbClass = ClassHunter.loadClass("com.touchtype.telemetry.Breadcrumb", param.getClassLoader());
 		layoutClass = ClassHunter.loadClass("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout", param.getClassLoader());
 
+		punctuatorImplClass = ClassHunter.loadClass("com.touchtype_fluency.impl.PunctuatorImpl", param.getClassLoader());
 	}
 
 	public static void loadUnknownClasses(PackageTree param)
@@ -117,8 +124,11 @@ public class KeyboardClassManager
 							),
 
 					KeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), KeyboardClassManager.keyboardLoaderClass);
+		}
 
-
+		if (punctuatorImplClass != null)
+		{
+			punctuatorImplClass_PunctuateMethod = ProfileHelpers.findAllMethodsWithReturnType(int[].class, punctuatorImplClass.getDeclaredMethods());
 		}
 
 	}
@@ -165,6 +175,10 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "getCurrentInputConnectionMethod", 	getCurrentInputConnectionMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoaderClass", 	keyboardLoaderClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoader_clearCacheMethod", 	keyboardLoader_clearCacheMethod );
+
+		//Punctuation space
+		Hooks.logSetRequirement(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_PunctuateMethod", !punctuatorImplClass_PunctuateMethod.isEmpty());
+
 
 		//View created (Overlay)
 		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "KeyboardServiceClass", 	keyboardServiceClass );

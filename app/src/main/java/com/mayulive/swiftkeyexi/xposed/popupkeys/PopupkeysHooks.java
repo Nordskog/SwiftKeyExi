@@ -445,14 +445,6 @@ public class PopupkeysHooks
 								if (PopupkeysCommons.mLastUpdateTime < Settings.LAST_POPUP_UPDATE)
 								{
 									PopupkeysSetup.loadPopupKeys();
-
-									//If the keyboard is already loaded, we also want to trigger a reload
-									//so that it will construct itself with the new popups.
-									if (PopupkeysCommons.mLastUpdateTime != -1)
-									{
-										KeyboardMethods.requestKeyboardReload();
-									}
-
 									PopupkeysCommons.mLastUpdateTime = Settings.LAST_POPUP_UPDATE;
 								}
 							}

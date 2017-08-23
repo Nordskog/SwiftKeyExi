@@ -96,6 +96,11 @@
     <PreferenceCategory
         android:title="@string/category_pref_misc">
 
+    <CheckBoxPreference
+        android:key="@string/pref_disable_punctuation_autospace_key"
+        android:title="@string/pref_disable_punctuation_autospace_title"
+        android:summary="@string/pref_disable_punctuation_autospace_summary"
+        android:defaultValue="false" />
 
     <CheckBoxPreference
         android:key="@string/pref_disable_period_click_key"

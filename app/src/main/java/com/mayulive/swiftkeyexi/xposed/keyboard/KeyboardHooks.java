@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -8,15 +9,25 @@ import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
+import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
+import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.xposed.classhunter.ClassHunter;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -97,6 +108,14 @@ public class KeyboardHooks
 					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
 					{
 						listener.beforeKeyboardOpened();
+					}
+
+					//At this point any changes that require data to be read from exi's database should have completed.
+					//If they require the keyboard to be reloaded, do so.
+					if (Settings.request_KEYBOARD_RELOAD)
+					{
+						Settings.request_KEYBOARD_RELOAD = false;
+						KeyboardMethods.requestKeyboardReload();
 					}
 				}
 
@@ -214,6 +233,55 @@ public class KeyboardHooks
 			});
 	}
 
+	private static List<XC_MethodHook.Unhook> hookPunctuationAutoSpace(PackageTree param)
+	{
+
+		//The putuator takes a few string inputs and throws them at a native method.
+		//It is only called when triggering a single key.
+		//Most keys will just get you INS_PREDICTION,
+		//but puncuation will call INS_SPACE (or the other one) too,
+		//and BACKSPACE first if adding multiple dots.
+		//The retuned actions are executed in order.
+		//The rules applied are loaded from punctuation_default.json in res/raw,
+		//so modifying them there for more exotic results is also a possibility.
+		// 0       BACKSPACE,
+		// 1       INS_SPACE,
+		// 2       INS_LANG_SPECIFIC_SPACE,
+		// 3       INS_PREDICTION,
+		// 4       INS_FOCUS,
+		// 5       DUMB_MODE
+
+		//For the time being, if there are more than 1 actions, replace with INS_FOCUS.
+
+		ArrayList<XC_MethodHook.Unhook> hooks = new ArrayList<>();
+
+
+		for (final Method method : KeyboardClassManager.punctuatorImplClass_PunctuateMethod)
+		{
+			hooks.add(XposedBridge.hookMethod(method, new XC_MethodHook()
+			{
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					if (Settings.DISABLE_PUNCTUATION_AUTO_SPACE)
+					{
+						int[] ret = (int[])param.getResult();
+						if (ret  != null)
+						{
+							if (ret.length > 1)
+							{
+								param.setResult( new int[]{4} );
+							}
+						}
+					}
+				}
+			}));
+		}
+
+		return hooks;
+
+	}
+
 	public static boolean HookAll(final PackageTree lpparam)
 	{
 		try
@@ -229,6 +297,10 @@ public class KeyboardHooks
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
 
+				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
+				{
+					Hooks.baseHooks_punctuationSpace.addAll( hookPunctuationAutoSpace(lpparam) );
+				}
 
 				if (Hooks.baseHooks_invalidateLayout.isRequirementsMet())
 				{
