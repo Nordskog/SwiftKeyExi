@@ -2,6 +2,8 @@ package com.mayulive.swiftkeyexi.xposed.selection;
 
 import android.content.Context;
 import android.os.Vibrator;
+import android.view.KeyEvent;
+import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
@@ -71,6 +73,16 @@ public class SelectionActions
 			v.vibrate(25);
 
 			KeyCommons.PerformTextAction( KeyboardClassManager.getInputConnection(), action);
+		}
+	}
+
+	protected static void sendKeyPress(int keyEvent, int repeatCount)
+	{
+		InputConnection connection =  KeyboardClassManager.getInputConnection();
+		if (connection != null)
+		{
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, keyEvent, repeatCount) );
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, keyEvent, 0) );
 		}
 	}
 }

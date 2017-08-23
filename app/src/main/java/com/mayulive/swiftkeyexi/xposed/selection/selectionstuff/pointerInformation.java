@@ -25,12 +25,12 @@ public class pointerInformation
 	public float xDistanceLast = 0;
 	public float yDistanceLast = 0;
 
-
-	public float distance = 0;
-
-	public float xDistanceChangeLast = 0;
 	public float xDistanceChange = 0;
-	public float cursorBank = 0;
+	public float xCursorBank = 0;
 
-	public float cursorDistanceChange = 0;
+	public float yDistanceChange = 0;
+	public float yCursorBank = 0;
+
+	public float xCursorDistanceChange = 0;
+	public float yCursorDistanceChange = 0;
 }

@@ -23,7 +23,9 @@ import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SelectionBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeSpeedModifier;
 
+import android.text.Selection;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
@@ -31,6 +33,7 @@ import android.view.inputmethod.InputConnection;
 import static com.mayulive.swiftkeyexi.util.ContextUtils.getModuleContext;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.isDelete;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.isShift;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastExtractedText;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.LEFT_SWIPE;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.RIGHT_SWIPE;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.SWIPE;
@@ -252,7 +255,7 @@ public class SelectionMethods
 				//In this scenario the primary pointer likely won't be moving.
 				//To avoid it jumping at the beginning of the operation, 
 				//null its position bank.
-				firstPointerInfo.cursorBank = 0;
+				firstPointerInfo.xCursorBank = 0;
 				
 				return;
 			}	
@@ -314,7 +317,7 @@ public class SelectionMethods
 					//In this scenario the primary pointer likely won't be moving.
 					//To avoid it jumping at the beginning of the operation,
 					//null its position bank.
-					otherPointer.cursorBank = 0;
+					otherPointer.xCursorBank = 0;
 
 					return;
 				}
@@ -700,14 +703,63 @@ public class SelectionMethods
 					if (SelectionState.mSwiping && PointerState.isSwipe(currentPointerInfo.state))
 					{
 						//Cast to int to floor
-						int cursorChange = (int) currentPointerInfo.cursorDistanceChange;
+						int xCursorChange = (int) currentPointerInfo.xCursorDistanceChange;
+						int yCursorChange = (int) currentPointerInfo.yCursorDistanceChange;
 
-						if (cursorChange != 0)
+						//Prioritize vertical change
+						if (yCursorChange != 0 && !SelectionState.isSelecting())
 						{
+							//Update selection so we can check if we can actually move anywhere
+							SelectionState.updateSelection();
+
+
+							//Negative should move up, positive down
+							//Note that regardless of how much we want to move it, we limit it to 1.
+							//This is because dpad cursor keys will move the focus to the next field
+							//or item if we are at the beginning /end of the text.
+							if (yCursorChange > 0)
+							{
+								if (!SelectionState.cursorAtEnd() )
+								{
+									yCursorChange = 1;
+									SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
+								}
+							}
+							else
+							{
+								if (!SelectionState.cursorAtBeginning())
+								{
+									yCursorChange = 1;
+									SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
+								}
+							}
+
 							if (Settings.DISABLE_SWIPE_AUTO_CORRECT)
 								PredictionCommons.requestLiteralPrimarySuggestion(true);
 
-							setSelectionChange(cursorChange, currentPointerInfo.state);
+							SelectionState.mCursorMovedVertical = true;
+
+							//Clear bank of other axis to make it less finicky
+							currentPointerInfo.xCursorBank = 0;
+						}
+						else if (xCursorChange != 0)
+						{
+							//We have no idea where the cursor ends up when we move vertically,
+							//so selection must be updated before we can move horizontally again.
+							//TODO cursor order?
+							if (SelectionState.mCursorMovedVertical)
+							{
+								SelectionState.mCursorMovedVertical = false;
+								SelectionState.updateSelection();
+							}
+
+							if (Settings.DISABLE_SWIPE_AUTO_CORRECT)
+								PredictionCommons.requestLiteralPrimarySuggestion(true);
+
+							setSelectionChange(xCursorChange, currentPointerInfo.state);
+
+							//Clear bank of other axis to make it less finicky
+							currentPointerInfo.yCursorBank = 0;
 						}
 					}
 				}
@@ -750,17 +802,7 @@ public class SelectionMethods
 				KeyCommons.requestCancelNextKey();
 			}
 
-
-			//If we were swiping, we exit batch mode in clearState()
-			//When this happens, swiftkey will sometimes move the cursor to the end
-			//of the current word. It will do this if you move it normally too.
-			//This behavior only triggers if the cursor is moved between words,
-			//so setting the position again after exiting batch lets it stay
-			//at the position the user actually selected.
-			boolean wasSwiping = SelectionState.mSwiping;
 			SelectionState.clearState(0);
-			if (wasSwiping)
-				finalizeSelection();
 
 			SelectionState.mPointerInformation.remove(pointerID);
 
@@ -806,11 +848,7 @@ public class SelectionMethods
 		}
 		else if (action == MotionEvent.ACTION_CANCEL)
 		{
-			//See ACTION_UP for explanation
-			boolean wasSwiping = SelectionState.mSwiping;
 			SelectionState.clearState(0);
-			if (wasSwiping)
-				finalizeSelection();
 		}
 
 		return false;
