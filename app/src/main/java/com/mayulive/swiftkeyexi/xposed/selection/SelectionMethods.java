@@ -552,7 +552,7 @@ public class SelectionMethods
 
 					))
 					{
-						if (Math.abs(currentPointerInfo.xDistance) > Settings.SWIPE_THRESHOLD)
+						if (Math.abs(currentPointerInfo.xDistance) > Settings.SWIPE_THRESHOLD || ( Math.abs(currentPointerInfo.yDistance) > Settings.SWIPE_THRESHOLD && Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.SPACE_SWIPE ) )
 						{
 							if (SelectionState.isSwipeAllowed())
 							{
