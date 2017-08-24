@@ -82,11 +82,13 @@
     <string name="pref_remove_suggestion_padding_summary">Make suggestions bar fill screen</string>
 
 
+    <string name="pref_disable_punctuation_autospace_key">pref_disable_punctuation_autospace</string>
+    <string name="pref_disable_punctuation_autospace_title">No punctuation auto-space</string>
+    <string name="pref_disable_punctuation_autospace_summary">Space will not be inserted after punctuation</string>
+
     <string name="pref_dictionary_toggle_key">pref_dictionary_toggle</string>
         <string name="pref_dictionary_toggle_title">Dictionary</string>
         <string name="pref_dictionary_toggle_summary">Toggle custom dictionary shortcuts</string>
-
-
 
 
     <!-- Swipe behavior -->

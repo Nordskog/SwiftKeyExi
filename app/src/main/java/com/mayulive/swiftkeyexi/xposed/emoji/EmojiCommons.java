@@ -64,6 +64,10 @@ public class EmojiCommons
 
 				if (currentConnection != null)
 				{
+					//If the cursor is after a letter or digit, swiftkey will insist on
+					//putting us into composing mode. Committing text in this state will replace
+					//the composing text. Finish composing to prevent. Might confuse swiftkey state?
+					currentConnection.finishComposingText();
 					currentConnection.commitText(text,1);
 				}
 			}

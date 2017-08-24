@@ -68,6 +68,9 @@ public class SelectionState
 	//Cursor position. Only modify with setSelectionChange()
 	///////////////
 
+	//If true, update cursor position from extracted text before moving horizontally
+	protected static boolean mCursorMovedVertical = false;
+
 	//Active cursor position while we're messing with it
 	protected static int mCursorPosition = 0;
 	protected static int mLeftSelectPosition = 0;
@@ -235,6 +238,30 @@ public class SelectionState
 		}
 	}
 
+	protected static boolean cursorAtBeginning()
+	{
+		//We should consider the offset, but is is extremely unlikely
+		//that the user will ever be able to move anywhere near it
+		//without triggering a selection update
+		return mCursorPosition == 0;
+	}
+
+	protected static boolean cursorAtEnd()
+	{
+		//Was there an offset here? I don't remember
+		if (mCursorPosition >= mLastExtractedText.length() )
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	protected static boolean isSelecting()
+	{
+		return mLeftSelectPosition != mRightSelectPosition;
+	}
+
 
 	protected static void updateSelection()
 	{
@@ -293,9 +320,7 @@ public class SelectionState
 					if ( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() )
 					{
 						if (mShiftDown || mDeleteDown)
-						{
 							return true;
-						}
 					}
 
 					break;
@@ -310,10 +335,9 @@ public class SelectionState
 					if ( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() )
 					{
 						if (mShiftDown || mDeleteDown)
-						{
 							return true;
-						}
 					}
+
 
 					break;
 				}
@@ -325,10 +349,9 @@ public class SelectionState
 					if ( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() )
 					{
 						if (mShiftDown || mDeleteDown)
-						{
 							return true;
-						}
 					}
+
 
 					if (mSpaceDown)
 						return true;
@@ -377,6 +400,7 @@ public class SelectionState
 			SelectionMethods.inputBatchMode(false);
 		}
 
+		mCursorMovedVertical = false;
 		SelectionState.mFirstDown = new KeyDefinition();
 		mSwiping = false;
 		mValidFirstDown = false;
@@ -407,33 +431,37 @@ public class SelectionState
 
 	static void calculateDistance(pointerInformation pointer, float newX, float newY)
 	{
-		pointer.xDistanceChangeLast = pointer.xDistanceChange;
-
 		pointer.xDistanceLast = pointer.xDistance;
 		pointer.yDistanceLast = pointer.yDistance;
 
 		pointer.xDistance = pointer.downX - newX;
 		pointer.yDistance = pointer.downY - newY;
 
-		pointer.distance = distance(pointer.downX, pointer.downY, newX, newY);
 		pointer.xDistanceChange = (pointer.xDistanceLast - pointer.xDistance);
+		pointer.yDistanceChange = (pointer.yDistanceLast - pointer.yDistance);
 
 		switch(pointer.modifier)
 		{
 			case DEFAULT:
-				pointer.cursorDistanceChange = pointer.xDistanceChange;
+				pointer.xCursorDistanceChange = pointer.xDistanceChange;
+				pointer.yCursorDistanceChange = pointer.yDistanceChange;
 				break;
 			case ZERO:
-				pointer.cursorDistanceChange = 0;
+				pointer.xCursorDistanceChange = 0;
+				pointer.yCursorDistanceChange = 0;
 				break;
 			case DOUBLE:
-				pointer.cursorDistanceChange = pointer.xDistanceChange * 10;
+				pointer.xCursorDistanceChange = pointer.xDistanceChange * 10;
+				pointer.yCursorDistanceChange = pointer.yDistanceChange * 10;
 				break;
 		}
 
+		pointer.xCursorDistanceChange +=  pointer.xCursorBank;
+		pointer.xCursorBank = pointer.xCursorDistanceChange % Settings.SWIPE_CURSOR_UNITS;
+		pointer.xCursorDistanceChange /= Settings.SWIPE_CURSOR_UNITS;
 
-		pointer.cursorDistanceChange +=  pointer.cursorBank;
-		pointer.cursorBank = pointer.cursorDistanceChange % Settings.SWIPE_CURSOR_UNITS;
-		pointer.cursorDistanceChange /= Settings.SWIPE_CURSOR_UNITS;
+		pointer.yCursorDistanceChange +=  pointer.yCursorBank;
+		pointer.yCursorBank = pointer.yCursorDistanceChange % Settings.SWIPE_CURSOR_UNITS;
+		pointer.yCursorDistanceChange /= Settings.SWIPE_CURSOR_UNITS;
 	}
 }

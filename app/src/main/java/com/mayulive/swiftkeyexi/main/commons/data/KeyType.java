@@ -34,15 +34,15 @@ public enum KeyType
 			return SPACE;
 		if (tag.equals("SymbolKey") || tag.contains("LetterKey") || tag.contains("LayoutMappedLetterKey"))
 			return SYMBOL;
-		if (tag.equals("DeleteKey"))
+		if (tag.contains("DeleteKey"))
 			return DELETE;
-		if (tag.equals("ShiftKey"))
+		if (tag.contains("ShiftKey"))
 			return SHIFT;
 		if (tag.equals("SwitchLayoutKey"))
 			return SWITCH_LAYOUT;
 		if (tag.equals("EmojiLayoutKey"))
 			return EMOJI;
-		if (tag.equals("IMEGoKey") || tag.equals("EnterKey"))
+		if (tag.equals("IMEGoKey") || tag.contains("EnterKey"))
 			return ENTER;
 		if (tag.equals("PuncKey"))
 			return PERIOD;

@@ -9,7 +9,7 @@ Exi for Swiftkey is an Xposed Framework module that adds a number of features to
 A short list of features:
 
 * Swipe selection
-  * Cursor movement
+  * Cursor movement (Horizontal and vertical)
   * Selection (Gesture or swipe-from-key)
   * Multiple modes (Anywhere, spacebar, hold-and-swipe)
 * More Suggestions
@@ -34,6 +34,7 @@ A short list of features:
   * Remove empty space next to suggestions
   * Prevent period key from triggering on tap
   * Cursor stays where you place it, rather than moving to end word
+  * Ability to remove auto-space after punctuation
   
 ## Libraries used
 

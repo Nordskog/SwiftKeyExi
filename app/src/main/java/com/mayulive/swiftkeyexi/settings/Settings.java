@@ -63,9 +63,14 @@ public class Settings
 
 	public static int EMOJI_TEXT_SIZE = 12;
 
+	public static boolean DISABLE_PUNCTUATION_AUTO_SPACE = false;
+
 	//We want to keep track of some settings, specifically to make changes when they change
 	public static boolean changed_REMOVE_SUGGESTIONS_PADDING = true;
 	public static boolean changed_EMOJI_TEXT_SIZE = true;
+
+	//Set to true if any setting that requires a realod of the keyboard is changed
+	public static boolean request_KEYBOARD_RELOAD = false;
 
 
 	public static void loadSettings(SharedPreferences prefs)
@@ -78,6 +83,7 @@ public class Settings
 		FLOW_SUGGESTIONS_ENABLED = prefs.getBoolean(PreferenceConstants.pref_flow_suggestions_key, false);
 		PREDICTION_SUGGESTIONS_ENABLED = prefs.getBoolean(PreferenceConstants.pref_prediction_suggestions_key, true);
 
+		DISABLE_PUNCTUATION_AUTO_SPACE = prefs.getBoolean(PreferenceConstants.pref_disable_punctuation_autospace_key, false);
 
 		DISABLE_SWIPE_AUTO_CORRECT = prefs.getBoolean(PreferenceConstants.pref_disable_auto_correct_on_cursor_move_key, true);
 
@@ -108,9 +114,17 @@ public class Settings
 		LAST_DICTIONARY_UPDATE = prefs.getLong(PreferenceConstants.pref_dictionary_last_update_key, 0);
 		LAST_EMOJI_UPDATE = prefs.getLong(PreferenceConstants.pref_emoji_last_update_key, 0);
 		LAST_ADDITIONAL_KEYS_UPDATE = prefs.getLong(PreferenceConstants.pref_additional_keys_last_update_key, 0);
-		LAST_POPUP_UPDATE = prefs.getLong(PreferenceConstants.pref_popup_last_update_key, 0);
 		LAST_HOTKEYS_UPDATE = prefs.getLong(PreferenceConstants.pref_hotkeys_last_update_key, 0);
 
+		//Require keyboard reload
+		{
+			{
+				long existingValue = LAST_POPUP_UPDATE;
+				LAST_POPUP_UPDATE = prefs.getLong(PreferenceConstants.pref_popup_last_update_key, 0);
+				if (LAST_POPUP_UPDATE != existingValue)
+					request_KEYBOARD_RELOAD = true;
+			}
+		}
 
 		changed_REMOVE_SUGGESTIONS_PADDING = REMOVE_SUGGESTIONS_PADDING;
 

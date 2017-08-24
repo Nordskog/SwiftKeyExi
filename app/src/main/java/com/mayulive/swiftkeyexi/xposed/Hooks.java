@@ -61,6 +61,7 @@ public class Hooks
 	public static HookCategory baseHooks_viewCreated= new HookCategory("KeyboardHooks ViewCreated", overlayHooks_base);
 	public static HookCategory baseHooks_invalidateLayout = new HookCategory("KeyboardHooks InvalidateLayout", popupHooks_modify);
 	public static HookCategory baseHooks_layoutChange = new HookCategory("KeyboardHooks LayoutChange", overlayHooks_base);
+	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 
 
 
@@ -69,7 +70,9 @@ public class Hooks
 																						baseHooks_invalidateLayout,
 																						keyHooks_keyDefinition,
 																						emojiHooks_base,
-																						predictionHooks_base );
+																						predictionHooks_base,
+																						baseHooks_punctuationSpace
+	);
 
 	public static class HookCategory extends ArrayList<XC_MethodHook.Unhook>
 	{
