@@ -178,7 +178,7 @@ public class KeyHooks
 						KeyHandlers.handleKeyConstructed(returnKey, KeyCommons.mLastTag);
 						KeyCommons.mLastTag = null;
 					}
-					else
+					else if (DebugSettings.DEBUG_KEYS)
 					{
 						Log.i(LOGTAG, "Key?: "+(returnKey!=null)+", tag?: "+(KeyCommons.mLastTag!=null) );
 					}
