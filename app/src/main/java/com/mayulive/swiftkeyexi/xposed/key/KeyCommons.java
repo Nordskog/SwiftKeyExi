@@ -39,10 +39,12 @@ public class KeyCommons
 	public static String sLastSymbolDefined = null;
 	protected static KeyDefinition mLastKeyDefined = null;
 
+	static boolean mKeyFieldsSetIntCalled = false;
+	static String mLastTag = null;
+
 	////////////
 	//Misc
 	////////////
-
 
 	public static void clearKeys()
 	{

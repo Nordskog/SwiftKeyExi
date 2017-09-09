@@ -1,19 +1,23 @@
 package com.mayulive.swiftkeyexi.xposed.key;
 
-import android.graphics.RectF;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.util.TextUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
+import com.mayulive.xposed.classhunter.ClassHunter;
+import com.mayulive.xposed.classhunter.Modifiers;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
+import com.mayulive.xposed.classhunter.profiles.ClassItem;
+import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -120,139 +124,73 @@ public class KeyHooks
 		return returnSet;
 	}
 
-	//Called after key definition
-	public static XC_MethodHook.Unhook hookKeyDefinition( ) throws NoSuchFieldException
+
+	public static Set<XC_MethodHook.Unhook> hookKeyFields(PackageTree param)
 	{
-			return XposedBridge.hookMethod(KeyClassManager.keyFactory_DownKeyDefinitionMethod, new XC_MethodHook()
+
+		Set<XC_MethodHook.Unhook> returnSet = new HashSet<>();
+
+		returnSet.add( XposedBridge.hookMethod(KeyClassManager.keyFieldsClass_setIntegerMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				if (DebugSettings.DEBUG_KEYS)
+					Log.i(LOGTAG, "Param int set");
+				KeyCommons.mKeyFieldsSetIntCalled = true;
+			}
+		}) );
+
+		for (Method method : KeyClassManager.keyFieldsClass_setStringMethods)
+		{
+			returnSet.add( XposedBridge.hookMethod(method, new XC_MethodHook()
 			{
 				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-					try
+					if (KeyCommons.mKeyFieldsSetIntCalled)
 					{
-						//This is the LAST  method that is called during the creation of a key.
-						//Shared variables will be cleared at the end of it.
 						if (DebugSettings.DEBUG_KEYS)
-						{
-							if (KeyCommons.sLastSymbolDefined != null)
-							{
-								Log.i(LOGTAG, "Definition, Last symbols is: "+KeyCommons.sLastSymbolDefined);
-							}
-							else
-							{
-								Log.i(LOGTAG, "Definition, Last symbols is: NULL");
-							}
-						}
-
-						String tag = (String)param.args[KeyClassManager.keyFactory_DownKeyDefinitionMethod_STRING_PARAM_POSITION];
-						Object returnKey = param.getResult();
-
-						RectF hitbox = KeyCommons.getKeyArea(returnKey);
-
-						KeyType type = KeyType.getType(tag);
-
-						if (DebugSettings.DEBUG_KEYS)
-						{
-							Log.i(LOGTAG, "Key defined. Tag: "+tag);
-						}
-
-						if (KeyType.SPACE == type)
-						{
-
-							if (KeyboardMethods.isLayoutWeird())
-							{
-								// Figure out the real positions of the keys in weird layouts
-								// would be entirely too much work, so they will not support
-								// swipe-from-space-to-key hotkeys. They should still support
-								// the hotkey menu though, meaning we at the very least need to
-								// figure out where the spacebar is.
-
-								// In weird layouts, the bottom row of keys is in its own window,
-								// and hitbox coordinates are for positions inside it. If arrow
-								// keys are enabled they go in the same box below this row,
-								// so spacebar will take up half the vertical space, rather than all of it).
-								// In horizontal mode the arrows go on the right side instead.
-								// The height of the spacebar is the same regardless, only being squished
-								// if the user also enabled the number row. Maybe take that into consideration later.
-
-
-
-								//If it fills its box it's at the bottom, if not there are two rows.
-								boolean spacebarAtBottom = hitbox.height() > 0.75f;
-
-								if (spacebarAtBottom)
-								{
-									//Space key at the very bottom in a normal layout, without number row
-									//Area: RectF(0.25250053, 0.75625, 0.74750054, 0.99375) }
-
-									hitbox = new RectF(hitbox.left, 0.75625f, hitbox.right, 0.99375f);
-
-
-								}
-								else
-								{	//With arrow keys row
-									//Hitbox: RectF(0.25250053, 0.6368421, 0.74750054, 0.8368421)
-									hitbox = new RectF(hitbox.left, 0.6368421f, hitbox.right, 0.8368421f);
-								}
-							}
-						}
-
-						if (KeyCommons.sLastSymbolDefined == null)
-						{
-							KeyCommons.sLastSymbolDefined = "";
-						}
-
-						{
-							KeyDefinition newKey = new KeyDefinition(KeyCommons.sLastSymbolDefined, type, hitbox);
-							KeyCommons.addKeyDefinition(returnKey, newKey);
-							KeyCommons.mLastKeyDefined = newKey;
-
-							//If we can't track layout changes, we shouldn't bother with this.
-							if (Hooks.baseHooks_layoutChange.isRequirementsMet())
-							{
-								KeyCommons.HitboxMap map = KeyCommons.getHitboxMap();
-
-								//Don't bother adding anything but space for weird layouts
-								if (map != null && ( !KeyboardMethods.isLayoutWeird() || type == KeyType.SPACE ) )
-								{
-									String key = "";
-									if (KeyCommons.sLastSymbolDefined != null)
-										key = KeyCommons.sLastSymbolDefined;
-									if (key.isEmpty())
-									{
-										key = tag+System.identityHashCode(returnKey);
-									}
-
-									map.put(key, newKey);
-								}
-							}
-						}
-
-						//They changed the call order. May cause problems if things break, but do not invalidate last symbol anymore.
-						/*
-						if (DebugSettings.DEBUG_KEYS)
-						{
-							Log.i(LOGTAG, "Key define finished, resetting last symbol");
-						}
-
-						KeyCommons.sLastSymbolDefined = null;
-						*/
-
-						//With the key created, clear recycled variables
-						KeyCommons.sLastSymbolDefined = null;
-
-					}
-					catch (Throwable ex)
-					{
-						Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in keyDefinition hook");
+							Log.i(LOGTAG, "Got param tag: "+ KeyCommons.mLastTag);
+						KeyCommons.mLastTag = (String)param.args[0];
+						KeyCommons.mKeyFieldsSetIntCalled = false;
 					}
 				}
-			});
+			}) );
+		}
+
+		return returnSet;
 	}
 
+	public static Set<XC_MethodHook.Unhook> hookKeyConstructor(PackageTree param)
+	{
 
+		return XposedBridge.hookAllConstructors(KeyClassManager.simpleKeyClass, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				try
+				{
+					Object returnKey = param.thisObject;
+					if (returnKey != null && KeyCommons.mLastTag != null)
+					{
+						KeyHandlers.handleKeyConstructed(returnKey, KeyCommons.mLastTag);
+						KeyCommons.mLastTag = null;
+					}
+					else
+					{
+						Log.i(LOGTAG, "Key?: "+(returnKey!=null)+", tag?: "+(KeyCommons.mLastTag!=null) );
+					}
+				}
+				catch (Throwable ex)
+				{
+					Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in KeyConstructor hook");
+				}
 
-
+			}
+		});
+	}
 
 	public static XC_MethodHook.Unhook newKeyHook( ) throws NoSuchFieldException
 	{
@@ -301,7 +239,9 @@ public class KeyHooks
 			{
 				Hooks.keyHooks_keyDefinition.add( newKeyHook() );
 				Hooks.keyHooks_keyDefinition.add( hookOnKeyDown() );
-				Hooks.keyHooks_keyDefinition.add( hookKeyDefinition() );
+
+				Hooks.keyHooks_keyDefinition.addAll( hookKeyFields(param));
+				Hooks.keyHooks_keyDefinition.addAll( hookKeyConstructor(param));
 			}
 
 			if (Hooks.keyHooks_keyCancel.isRequirementsMet())
