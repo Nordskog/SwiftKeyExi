@@ -18,6 +18,7 @@ import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -71,8 +72,6 @@ public class KeyHooks
 				{
 					Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in onKeyDown hook");
 				}
-
-
 			}
 
 		});
@@ -115,8 +114,6 @@ public class KeyHooks
 					{
 						Hooks.keyHooks_keyCancel.invalidate(ex, "Unexpected problem in preventNormalButtonInput hook");
 					}
-
-
 				}
 			}));
 		}
@@ -130,11 +127,26 @@ public class KeyHooks
 
 		Set<XC_MethodHook.Unhook> returnSet = new HashSet<>();
 
+
+
+
 		returnSet.add( XposedBridge.hookMethod(KeyClassManager.keyFieldsClass_setIntegerMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
+				//We should only pass through this once for every key.
+				//The Symbol is not actually defined for all keys, and that method is thus not always run.
+				//Null here if symbol has not changed
+				if (KeyCommons.sSymboledDefinedOnLastKeyLoop == KeyCommons.sLastSymbolDefined)
+				{
+					if (DebugSettings.DEBUG_KEYS)
+						Log.i(LOGTAG, "Symbol unchanged, nulling");
+					KeyCommons.sLastSymbolDefined = null;
+				}
+				KeyCommons.sSymboledDefinedOnLastKeyLoop = KeyCommons.sLastSymbolDefined;
+
+
 				if (DebugSettings.DEBUG_KEYS)
 					Log.i(LOGTAG, "Param int set");
 				KeyCommons.mKeyFieldsSetIntCalled = true;
@@ -150,6 +162,7 @@ public class KeyHooks
 				{
 					if (KeyCommons.mKeyFieldsSetIntCalled)
 					{
+
 						if (DebugSettings.DEBUG_KEYS)
 							Log.i(LOGTAG, "Got param tag: "+ KeyCommons.mLastTag);
 						KeyCommons.mLastTag = (String)param.args[0];
@@ -175,8 +188,11 @@ public class KeyHooks
 					Object returnKey = param.thisObject;
 					if (returnKey != null && KeyCommons.mLastTag != null)
 					{
+						//Note that this is actually called multiple times for each key,
+						//Once for the parent, and again for all its popups.
+						//This means all the children will have the same content as their parent,
+						//but this shouldn't be a problem.
 						KeyHandlers.handleKeyConstructed(returnKey, KeyCommons.mLastTag);
-						KeyCommons.mLastTag = null;
 					}
 					else if (DebugSettings.DEBUG_KEYS)
 					{
@@ -206,11 +222,6 @@ public class KeyHooks
 						KeyCommons.sLastSymbolDefined = (String)param.getResult();
 						KeyCommons.sLastSymbolDefined = KeyCommons.sLastSymbolDefined.split(" ")[0];
 						KeyCommons.sLastSymbolDefined = TextUtils.stripZeroWidthJoiner(KeyCommons.sLastSymbolDefined);
-
-						if (KeyCommons.mLastKeyDefined != null)
-						{
-
-						}
 
 						if (DebugSettings.DEBUG_KEYS)
 						{

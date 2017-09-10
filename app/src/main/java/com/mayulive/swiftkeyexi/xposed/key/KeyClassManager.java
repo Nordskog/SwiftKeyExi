@@ -189,8 +189,6 @@ public class KeyClassManager
 		updateDependencyState();
 	}
 
-
-
 	protected static void updateDependencyState()
 	{
 

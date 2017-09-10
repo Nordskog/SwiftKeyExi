@@ -10,6 +10,8 @@ import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
+import java.util.Map;
+
 /**
  * Created by Roughy on 9/9/2017.
  */
@@ -36,6 +38,9 @@ public class KeyHandlers
 		}
 
 		RectF hitbox = KeyCommons.getKeyArea(returnKey);
+
+		if (hitbox == null)	//No hitbox, no key we care about
+			return;
 
 		KeyType type = KeyType.getType(tag);
 
@@ -117,7 +122,7 @@ public class KeyHandlers
 		}
 
 		//With the key created, clear recycled variables
-		KeyCommons.sLastSymbolDefined = null;
+		//KeyCommons.sLastSymbolDefined = null;
 	}
 
 }
