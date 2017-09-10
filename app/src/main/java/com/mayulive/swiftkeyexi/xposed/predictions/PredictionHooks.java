@@ -15,6 +15,7 @@ import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import android.util.Log;
+import android.view.ViewGroup;
 
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -142,19 +143,63 @@ public class PredictionHooks
 			{
 				
 	        	   @Override
-	        	   protected void afterHookedMethod(MethodHookParam param) throws Throwable
+	        	   protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 	        	   {
 					   try
 					   {
-						   PredictionHandlers.handleCandidateViewHook(param);
+						   PredictionHandlers.handleCandidateViewHook_parameters(param);
+
 					   }
 					   catch (Throwable ex)
 					   {
 						   Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
 					   }
-
-
 	        	   }
+
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					try
+					{
+						if ( PredictionClassManager.LEGACY_CANDIDATES_VIEW_FACTORY )
+						{
+							//Otherwise handeled in getViewWrapper below
+							PredictionHandlers.handleCandidateViewHook_replace( (ViewGroup)param.getResult());
+						}
+
+					}
+					catch (Throwable ex)
+					{
+						Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
+					}
+				}
+			});
+
+
+		}
+	}
+
+	public static XC_MethodHook.Unhook hookCandidatesDisplayView_getViewWrapper( ) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
+	{
+		/////////////////
+		//Candidate bar
+		////////////////
+		{
+			return XposedBridge.hookMethod(PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod, new XC_MethodHook()
+					//XposedBridge.hookAllConstructors(keyboardEventClass, new XC_MethodHook()
+			{
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					try
+					{
+						PredictionHandlers.handleCandidateViewHook_replace((ViewGroup) param.args[ PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition ]);
+					}
+					catch (Throwable ex)
+					{
+						Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
+					}
+				}
 			});
 
 
@@ -322,6 +367,10 @@ public class PredictionHooks
 			if (Hooks.predictionHooks_more.isRequirementsMet())
 			{
 				Hooks.predictionHooks_more.add( hookCandidatesDisplayView() );
+
+				if (!PredictionClassManager.LEGACY_CANDIDATES_VIEW_FACTORY)
+					hookCandidatesDisplayView_getViewWrapper();
+
 				Hooks.predictionHooks_more.add( hookBu() );
 			}
 

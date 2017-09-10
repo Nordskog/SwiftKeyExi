@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
@@ -21,6 +24,7 @@ import com.mayulive.swiftkeyexi.xposed.Hooks;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -190,88 +194,135 @@ public class PredictionHandlers
 		}
 	}
 
-	public static void handleCandidateViewHook(XC_MethodHook.MethodHookParam param)
+	static private Object[] candidateViewArgs = null;
+
+	public static void handleCandidateViewHook_parameters(XC_MethodHook.MethodHookParam param)
 	{
+		//To create a single candidate view we need 5 args.
+		//4 of these are passed to the method we are hooking, while the last
+		//is an enum. The enum we're after is "CANDIDATE".
+		candidateViewArgs = new Object[PredictionClassManager.candidateViewClass_Constructor.getParameterTypes().length];
+
+		{
+			for (int i = 0; i < PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions.length; i++)
+			{
+				if (PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions[i] != -1)
+				{
+					candidateViewArgs[i] = param.args[ PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions[i] ];
+				}
+			}
+
+			Object someEnum =  CodeUtils.findEnumByName( (Enum[])  PredictionClassManager.candidateViewClass_Constructor.getParameterTypes()[PredictionClassManager.getViewMethod_EnumArgPosition].getEnumConstants(), "CANDIDATE");
+			candidateViewArgs[PredictionClassManager.getViewMethod_EnumArgPosition] = someEnum;
+		}
+	}
+
+	public static void handleCandidateViewHook_replace(ViewGroup childFrame)
+	{
+		if (candidateViewArgs == null)
+		{
+			Log.e(LOGTAG, "Expeceted candidateViewArgs to be popuplated, cannot create candidate views");
+			return;
+		}
+
 
 		//I did consider not adding it for disabled, but then the user would
 		//require a reboot/app-restart to re-enable it.
 		//If disabled we don't do any of the work required later anyway,
 		//so we should be good to just keep this here regardless.
-		//if (Settings.MORE_SUGGESTIONS_ENABLED)
+
+		//Log.i(LOGTAG, "Hello world!");
+		//Log.i(LOGTAG, "I am: "+ frameLayout.toString());
+		//View top = CodeUtils.getTopParent(frameLayout);
+		//CodeUtils.traverseLayout(top,0);
+
+		//if (true)
 		{
-
-			//To create a single candidate view we need 5 args.
-			//4 of these are passed to the method we are hooking, while the last
-			//is an enum. The enum we're after is "CANDIDATE".
-			final Object[] candidateViewArgs = new Object[PredictionClassManager.candidateViewClass_Constructor.getParameterTypes().length];
-
-			{
-				for (int i = 0; i < PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions.length; i++)
-				{
-					if (PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions[i] != -1)
-					{
-						candidateViewArgs[i] = param.args[ PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions[i] ];
-					}
-				}
-
-				Object someEnum =  CodeUtils.findEnumByName( (Enum[])  PredictionClassManager.candidateViewClass_Constructor.getParameterTypes()[PredictionClassManager.getViewMethod_EnumArgPosition].getEnumConstants(), "CANDIDATE");
-				candidateViewArgs[PredictionClassManager.getViewMethod_EnumArgPosition] = someEnum;
-			}
-
-
 			//Due to changes, now actually a linear layout wrapping the framelayout and a few other views
-			ViewGroup frameLayout = (ViewGroup)param.getResult();
+			//ViewGroup frameLayout = (ViewGroup)param.getResult();
 
 			//Full and compact layouts are fine. The two-thumb one has a weird split candidate view.
 			//It turns out it is actually two separate instances of the candidates view, each calling this method on their own.
 			//We could probably could with this somehow, but I'm not sure what we'd do about it.
 			//Full and compact both and 3 children now. Two-thumb only has two.  Skip if two.
-			if (frameLayout.getChildCount() == 2)
+			if (childFrame.getChildCount() <= 2)
+			{
+				//Log.i(LOGTAG, "Insufficient children, doing nothing");
 				return;
+			}
 
-			ViewGroup originalReturnView = frameLayout;
+
+			ViewGroup centerLinear = childFrame;
+			//ViewGroup parentFrame = (ViewGroup)childFrame.getParent();
 
 			//This method now returns a linear layout containing 2... thingies,
 			//with a framelayout containing the candidates view inbetween.
 
-			//Though they may revert this change
-
-			//Check if we already have the framelayout
-			if ( !FrameLayout.class.isAssignableFrom( frameLayout.getClass() ) )
 			{
-				//Otherwise look for it in children
-				for (int i = 0; i < frameLayout.getChildCount(); i++)
-				{
-					if (FrameLayout.class.isAssignableFrom( frameLayout.getChildAt(i).getClass()   )   )
-					{
-						frameLayout = (ViewGroup)frameLayout.getChildAt(i);
-						break;
-					}
-				}
 
+
+				childFrame = (ViewGroup)centerLinear.getChildAt(1);
+
+				//Some changes have been made that cause some of these views to persist.
+				//Childframe should only have a single child, but our old ones may also be present.
+				//Remove any linear layouts or slowrecyclerviews
+				//Realistically we could just leave them where they are in this case but... ehhh...
+				{
+					ArrayList<View> killList = new ArrayList<>();
+					for (int i = 0; i < childFrame.getChildCount(); i++)
+					{
+						Class clazz = childFrame.getChildAt(i).getClass();
+						if (clazz == LinearLayout.class || SlowRecyclerView.class.isAssignableFrom( clazz ))
+						{
+							killList.add(childFrame.getChildAt(i));
+						}
+					}
+
+					for (View view : killList)
+					{
+						if (view.getClass() == LinearLayout.class)
+						{
+							//We kinda left the existing view inside this
+							ViewGroup group = (ViewGroup)view;
+							if (group.getChildCount() > 0)
+							{
+								View kview = group.getChildAt(0);
+								group.removeView(kview);
+								childFrame.addView(kview);
+							}
+						}
+
+						childFrame.removeView(view);
+					}
+
+
+
+				}
 
 				//Try hiding spacers?
 				//Works! Maybe only hide one side like in asian layouts? Hmmm
-				if (originalReturnView.getChildCount() == 3)
+				if (centerLinear.getChildCount() == 3)
 				{
-					PredictionCommons.mSuggestionsPadding[0] = new WeakReference<View>( originalReturnView.getChildAt(0) );
-					PredictionCommons.mSuggestionsPadding[1] = new WeakReference<View>( originalReturnView.getChildAt(2) );
+					PredictionCommons.mSuggestionsPadding[0] = new WeakReference<View>( centerLinear.getChildAt(0) );
+					PredictionCommons.mSuggestionsPadding[1] = new WeakReference<View>( centerLinear.getChildAt(2) );
 
 					PredictionCommons.setSuggestionsPaddingVisibility(!Settings.REMOVE_SUGGESTIONS_PADDING );
 				}
+
 			}
 
-
+			//if(false)
 			{
-				final View kView = frameLayout.getChildAt(0);
-				frameLayout.removeView(kView);
+				final View kView = childFrame.getChildAt(0);
+				childFrame.removeView(kView);
 
 				ViewGroup.LayoutParams kViewParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-				kView.setLayoutParams(kViewParams);
 
 				final LinearLayout headerScroller = new LinearLayout(kView.getContext());
 				headerScroller.setLayoutParams(kViewParams);
+
 				headerScroller.addView(kView);
+
 
 				class dummyHeaderLayout extends FrameLayout
 				{
@@ -376,6 +427,7 @@ public class PredictionHandlers
 				PredictionCommons.mCandidatesAdapter.notifyDataSetChanged();
 				PredictionCommons.mCandidatesRecycler = new SlowRecyclerView(kView.getContext());
 
+				PredictionCommons.mCandidatesRecycler.setId( View.generateViewId() );
 
 				PredictionCommons.mCandidatesRecycler.setItemAnimator(null);
 				PredictionCommons.mCandidatesRecycler.setLayoutParams(kViewParams);
@@ -397,23 +449,24 @@ public class PredictionHandlers
 					{
 						int firstVisibleIndex = PredictionCommons.mCandidatesManager.findFirstVisibleItemPosition();
 
-						// Log.e("###", "Scroll position: "+recyclerView.computeHorizontalScrollOffset()+", visible: "+firstVisibleIndex);
+						int scrollPosition = recyclerView.computeHorizontalScrollOffset();
 
 						if (firstVisibleIndex == 0)
 						{
-							headerScroller.scrollTo(recyclerView.computeHorizontalScrollOffset(), 0);
+							headerScroller.scrollTo(scrollPosition, 0);
 						}
 						else
 						{
 							headerScroller.scrollTo(headerScroller.getMeasuredWidth(), 0);
 						}
-
 					}
 				});
 
 
-				frameLayout.addView(headerScroller);
-				frameLayout.addView(PredictionCommons.mCandidatesRecycler);
+				childFrame.addView(headerScroller);
+				childFrame.addView(PredictionCommons.mCandidatesRecycler);
+
+
 			}
 		}
 	}
