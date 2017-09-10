@@ -48,7 +48,7 @@ public class PredictionProfiles
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//a
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT )),	//b
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )),	//c
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )),	//d
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )),	//d
 
 				});
 /////////////////////////
@@ -110,7 +110,7 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -119,17 +119,6 @@ public class PredictionProfiles
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(int.class)
-
-								),
-
-						//Method #8: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(java.util.List.class)
 
 								),
 
@@ -144,7 +133,7 @@ public class PredictionProfiles
 						new ConstructorProfile
 								(		PUBLIC | EXACT ,
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.util.List.class),
 										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )
@@ -694,21 +683,16 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PROTECTED | EXACT , 	new ClassItem(java.lang.String.class)),	//a
-						new FieldItem( PROTECTED | EXACT , 	new ClassItem(android.graphics.Paint.class)),	//b
-						new FieldItem( PROTECTED | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//c
-						new FieldItem( PROTECTED | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates.view" , FINAL | EXACT )),	//d
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//h
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(int.class)),	//i
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//j
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.text.TextPaint.class)),	//k
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.graphics.Rect.class)),	//l
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//m
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(float.class)),	//n
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(android.graphics.RectF.class)),	//o
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(android.graphics.Rect.class)),	//p
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//q
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(float.class)),	//r
+						new FieldItem( PROTECTED | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//a
+						new FieldItem( PROTECTED | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates.view" , FINAL | EXACT )),	//b
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//f
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(int.class)),	//g
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//h
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.text.TextPaint.class)),	//i
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.graphics.Rect.class)),	//j
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//k
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(float.class)),	//l
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//m
 
 				});
 /////////////////////////
@@ -722,22 +706,12 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #1: draw
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.graphics.Canvas.class)
-
-								),
-
-						//Method #2: getContentDrawable
+						//Method #1: getContentDrawable
 						new MethodProfile
 								(
 										PROTECTED | EXACT ,
@@ -745,7 +719,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #3: onAttachedToWindow
+						//Method #2: onAttachedToWindow
 						new MethodProfile
 								(
 										PROTECTED | EXACT ,
@@ -753,7 +727,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #4: onDetachedFromWindow
+						//Method #3: onDetachedFromWindow
 						new MethodProfile
 								(
 										PROTECTED | EXACT ,
@@ -761,7 +735,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #5: onMeasure
+						//Method #4: onMeasure
 						new MethodProfile
 								(
 										PROTECTED | EXACT ,
@@ -772,7 +746,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #6: onSizeChanged
+						//Method #5: onSizeChanged
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -785,7 +759,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #7: setCandidate
+						//Method #6: setCandidate
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -795,7 +769,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #8: setShortcutText
+						//Method #7: setShortcutText
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -805,7 +779,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #9: setStyleId
+						//Method #8: setStyleId
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -815,21 +789,13 @@ public class PredictionProfiles
 
 								),
 
-						//Method #10: a
+						//Method #9: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #11: b
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class)
 
 								),
 
@@ -848,7 +814,7 @@ public class PredictionProfiles
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-										new ClassItem("com.touchtype.emojipanel" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -893,21 +859,21 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//b
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
+						new FieldItem( FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
+						new FieldItem( EXACT , 	new ClassItem(int.class)),	//b
+						new FieldItem( EXACT , 	new ClassItem(android.view.inputmethod.InputConnection.class)),	//c
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//d
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//e
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//f
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//g
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//h
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//i
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//j
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(int.class)),	//k
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy" , PUBLIC | FINAL | EXACT )),	//l
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//m
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//n
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(android.view.inputmethod.InputConnection.class)),	//o
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//j
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//k
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//l
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(int.class)),	//m
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy" , PUBLIC | FINAL | EXACT )),	//n
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//o
 
 				});
 /////////////////////////
@@ -939,7 +905,7 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(boolean.class)
 
 								),
@@ -994,6 +960,7 @@ public class PredictionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(android.net.Uri.class),
+										new ClassItem(android.net.Uri.class),
 										new ClassItem(java.lang.String.class)
 
 								),
@@ -1001,10 +968,10 @@ public class PredictionProfiles
 						//Method #8: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem(android.view.inputmethod.InputConnection.class)
 
 								),
 
@@ -1014,8 +981,7 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(android.view.inputmethod.CompletionInfo.class)
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -1025,9 +991,8 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class)
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(android.view.inputmethod.CompletionInfo.class)
 
 								),
 
@@ -1037,9 +1002,9 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+										new ClassItem(int.class)
 
 								),
 
@@ -1049,10 +1014,9 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -1062,11 +1026,10 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1076,9 +1039,11 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -1088,11 +1053,9 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1102,10 +1065,11 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.google.common" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -1115,10 +1079,10 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.common.chinese.predictionfilters.SpellingHint" , PUBLIC | EXACT )
+										new ClassItem("com.google.common" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -1128,10 +1092,10 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
+										new ClassItem("com.touchtype.common" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -1141,13 +1105,10 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -1157,11 +1118,12 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(int.class),
 										new ClassItem(boolean.class)
 
 								),
@@ -1172,11 +1134,12 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
-										new ClassItem(java.util.List.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -1186,7 +1149,7 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
@@ -1200,9 +1163,10 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.util.List.class)
 
 								),
 
@@ -1212,10 +1176,9 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -1225,9 +1188,10 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class),
 										new ClassItem(boolean.class),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(boolean.class)
 
 								),
 
@@ -1237,13 +1201,25 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #27: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(boolean.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #27: a
+						//Method #28: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1257,7 +1233,19 @@ public class PredictionProfiles
 
 								),
 
-						//Method #28: b
+						//Method #29: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #30: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1267,17 +1255,17 @@ public class PredictionProfiles
 
 								),
 
-						//Method #29: b
+						//Method #31: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
-						//Method #30: b
+						//Method #32: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1285,7 +1273,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #31: b
+						//Method #33: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1296,19 +1284,19 @@ public class PredictionProfiles
 
 								),
 
-						//Method #32: b
+						//Method #34: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(int.class)
 
 								),
 
-						//Method #33: c
+						//Method #35: c
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1316,19 +1304,19 @@ public class PredictionProfiles
 
 								),
 
-						//Method #34: c
+						//Method #36: c
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(int.class)
 
 								),
 
-						//Method #35: d
+						//Method #37: d
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1336,7 +1324,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #36: a
+						//Method #38: a
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -1346,17 +1334,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #37: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(android.view.inputmethod.InputConnection.class)
-
-								),
-
-						//Method #38: a
+						//Method #39: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -1366,7 +1344,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #39: a
+						//Method #40: a
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -1374,17 +1352,6 @@ public class PredictionProfiles
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | THIS | EXACT ),
 										new ClassItem(android.view.inputmethod.InputConnection.class)
-
-								),
-
-						//Method #40: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1410,76 +1377,6 @@ public class PredictionProfiles
 										new ClassItem(java.lang.String.class),
 										new ClassItem(java.lang.String.class),
 										new ClassItem(boolean.class)
-
-								),
-
-						//Method #43: b
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.view.inputmethod.InputConnection.class),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem(android.view.inputmethod.InputConnection.class)
-
-								),
-
-						//Method #44: b
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | THIS | EXACT )
-
-								),
-
-						//Method #45: b
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(android.view.inputmethod.InputConnection.class)
-
-								),
-
-						//Method #46: c
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(int.class),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | THIS | EXACT )
-
-								),
-
-						//Method #47: c
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(android.view.inputmethod.InputConnection.class)
-
-								),
-
-						//Method #48: c
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem(android.view.inputmethod.InputConnection.class)
-
-								),
-
-						//Method #49: e
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1544,8 +1441,8 @@ public class PredictionProfiles
 				{
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.emojipanel" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.emojipanel" , PUBLIC | FINAL | EXACT )),	//d
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT )),	//d
 
 				});
 /////////////////////////
@@ -1591,8 +1488,8 @@ public class PredictionProfiles
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.emojipanel" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.emojipanel" , PUBLIC | FINAL | EXACT )
+										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -1606,7 +1503,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.e.ab");
+		newProfile.setFullPath("com.touchtype.keyboard.e.aa");
 		newProfile.setKnownPath("com.touchtype.keyboard");
 
 		newProfile.setMinDepth(1);
@@ -1658,6 +1555,7 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem(android.net.Uri.class),
+										new ClassItem(android.net.Uri.class),
 										new ClassItem(java.lang.String.class)
 
 								),
@@ -1708,7 +1606,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -1718,7 +1616,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
 										new ClassItem(int.class),
 										new ClassItem(int.class),
@@ -1734,7 +1632,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT )
 
@@ -1746,7 +1644,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(android.view.inputmethod.CompletionInfo.class)
 
 								),
@@ -1757,9 +1655,9 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(android.view.inputmethod.EditorInfo.class),
-										new ClassItem("com.touchtype.util.android" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("android.view.inputmethod.EditorInfo" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
 										new ClassItem(boolean.class),
 										new ClassItem(boolean.class)
 
@@ -1771,8 +1669,12 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.google.common" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("android.view.inputmethod.EditorInfo" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -1782,8 +1684,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.common" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.google.common" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -1793,9 +1695,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.common" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -1805,10 +1706,9 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(java.util.EnumSet.class)
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -1818,8 +1718,10 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(java.util.EnumSet.class)
 
 								),
 
@@ -1829,8 +1731,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -1840,8 +1742,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.Tokenizer" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1851,8 +1753,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.LanguageLoadState" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.Tokenizer" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1862,8 +1764,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.LanguageLoadState" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -1873,7 +1775,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem(int.class)
@@ -1886,8 +1788,9 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.FluencyCandidate" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1897,8 +1800,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.FluencyCandidate" , PUBLIC | EXACT )
 
 								),
 
@@ -1908,11 +1811,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -1922,8 +1822,10 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem(boolean.class)
 
 								),
@@ -1934,7 +1836,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class),
 										new ClassItem(boolean.class)
 
 								),
@@ -1945,9 +1848,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -1957,7 +1859,9 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype_fluency.Punctuator" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -1967,7 +1871,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.util.List.class)
+										new ClassItem("com.touchtype_fluency.Punctuator" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1977,7 +1881,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(boolean.class)
+										new ClassItem(java.util.List.class)
 
 								),
 
@@ -1985,29 +1889,33 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(android.view.KeyEvent.class)
-
-								),
-
-						//Method #31: b
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #32: b
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #31: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("android.view.KeyEvent" , PUBLIC | EXACT )
+
+								),
+
+						//Method #32: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -2015,9 +1923,7 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT )
+										new ClassItem(void.class)
 
 								),
 
@@ -2027,7 +1933,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2037,11 +1943,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(android.view.inputmethod.EditorInfo.class),
-										new ClassItem("com.touchtype.util.android" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -2051,7 +1953,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.google.common" , PUBLIC | ABSTRACT | EXACT )
 
 								),
@@ -2062,7 +1964,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class)
 
 								),
@@ -2071,22 +1973,19 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
+										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("android.view.KeyEvent" , PUBLIC | EXACT )
 
 								),
 
-						//Method #39: b
+						//Method #39: c
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(android.view.KeyEvent.class)
+										new ClassItem(void.class)
 
 								),
 
@@ -2094,7 +1993,9 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class)
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -2104,18 +2005,18 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class)
 
 								),
 
-						//Method #42: c
+						//Method #42: d
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -2123,13 +2024,11 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem(boolean.class)
 
 								),
 
-						//Method #44: d
+						//Method #44: e
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2137,7 +2036,31 @@ public class PredictionProfiles
 
 								),
 
-						//Method #45: e
+						//Method #45: f
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #46: g
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #47: h
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #48: i
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2145,7 +2068,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #46: f
+						//Method #49: j
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2153,31 +2076,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #47: g
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #48: h
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #49: i
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #50: j
+						//Method #50: k
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2185,7 +2084,15 @@ public class PredictionProfiles
 
 								),
 
-						//Method #51: k
+						//Method #51: l
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #52: m
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2193,7 +2100,15 @@ public class PredictionProfiles
 
 								),
 
-						//Method #52: l
+						//Method #53: n
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #54: o
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2201,7 +2116,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #53: m
+						//Method #55: p
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2262,8 +2177,8 @@ public class PredictionProfiles
 						"LAST_USED",
 						"FLOW_FAILED",
 						"FLOW_SUCCEEDED",
-						"ASIAN",
 						"EXPANDED",
+						"FLOW_LIFT_OFF",
 
 				});
 /////////////////////////
@@ -2271,16 +2186,17 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),
-						new FieldItem( PRIVATE | STATIC | FINAL | SYNTHETIC | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | ARRAY | EXACT )),
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(int.class)),	//j
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//a
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//b
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//c
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//d
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//e
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//f
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//g
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//h
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//i
+						new FieldItem( PRIVATE | STATIC | FINAL | SYNTHETIC | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | THIS | ARRAY | EXACT )),	//k
 
 				});
 /////////////////////////
@@ -2288,7 +2204,15 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredMethods(new MethodProfile[]
 				{
-						//Method #0
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #1: valueOf
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -2298,7 +2222,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #1
+						//Method #2: values
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -2318,6 +2242,16 @@ public class PredictionProfiles
 								(		PRIVATE | EXACT ,
 
 										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Constructor #1
+						new ConstructorProfile
+								(		PRIVATE | EXACT ,
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
 										new ClassItem(int.class)
 
 								),
@@ -2367,7 +2301,7 @@ public class PredictionProfiles
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//c
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.report.TouchTypeStats" , PUBLIC | EXACT )),	//d
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.emojipanel" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )),	//f
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )),	//f
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//g
 
 				});
@@ -2383,10 +2317,9 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.util.List.class)
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2397,9 +2330,10 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.FlowAutoCommitCandidate" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.util.List.class)
 
 								),
 
@@ -2410,11 +2344,9 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.FlowAutoCommitCandidate" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2428,7 +2360,8 @@ public class PredictionProfiles
 										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem(int.class),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -2441,7 +2374,8 @@ public class PredictionProfiles
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
@@ -2452,13 +2386,26 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
 						//Method #6: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
+
+								),
+
+						//Method #7: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2471,25 +2418,14 @@ public class PredictionProfiles
 
 								),
 
-						//Method #7: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
 						//Method #8: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
@@ -2501,11 +2437,22 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #10: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(boolean.class)
 
 								),
 
-						//Method #10: b
+						//Method #11: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2518,7 +2465,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #11: a
+						//Method #12: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -2528,7 +2475,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #12: a
+						//Method #13: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -2539,7 +2486,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #13: a
+						//Method #14: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -2551,7 +2498,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #14: b
+						//Method #15: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -2562,7 +2509,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #15: b
+						//Method #16: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -2590,7 +2537,7 @@ public class PredictionProfiles
 										new ClassItem("com.touchtype.report.TouchTypeStats" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.FluencyServiceProxy" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.emojipanel" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2634,7 +2581,6 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
 
 				});
 /////////////////////////
@@ -2645,186 +2591,26 @@ public class PredictionProfiles
 						//Method #0: a
 						new MethodProfile
 								(
-										PRIVATE | STATIC | EXACT ,
+										PUBLIC | STATIC | EXACT ,
 										new ClassItem(android.app.Dialog.class),
 
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem(android.content.Context.class),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(android.view.View.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(android.content.DialogInterface.OnClickListener.class)
+										new ClassItem(int.class)
 
 								),
 
 						//Method #1: a
 						new MethodProfile
 								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(android.app.Dialog.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.view.View.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(android.content.DialogInterface.OnClickListener.class),
-										new ClassItem(android.content.DialogInterface.OnClickListener.class)
-
-								),
-
-						//Method #2: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.app.Dialog.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class),
-										new ClassItem("com.touchtype.emojipanel" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #3: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.app.Dialog.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #4: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(android.content.DialogInterface.OnClickListener.class)
-
-								),
-
-						//Method #5: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(android.content.DialogInterface.OnClickListener.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class),
-										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #6: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.emojipanel" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #7: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #8: a
-						new MethodProfile
-								(
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem(android.view.View.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #9: a
-						new MethodProfile
-								(
-										STATIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #10: b
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(android.app.Dialog.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.view.View.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(android.content.DialogInterface.OnClickListener.class),
-										new ClassItem(android.content.DialogInterface.OnClickListener.class)
-
-								),
-
-						//Method #11: b
-						new MethodProfile
-								(
-										STATIC | EXACT ,
-										new ClassItem(android.content.DialogInterface.OnClickListener.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class),
-										new ClassItem("com.touchtype.emojipanel" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #12: b
-						new MethodProfile
-								(
-										STATIC | EXACT ,
-										new ClassItem(android.content.DialogInterface.OnClickListener.class),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
@@ -2876,17 +2662,16 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.concurrent.Executor.class)),	//a
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.FluencyServiceProxy" , PUBLIC | EXACT )),	//b
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )),	//c
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//d
+						new FieldItem( FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//a
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.concurrent.Executor.class)),	//b
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.FluencyServiceProxy" , PUBLIC | EXACT )),	//c
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )),	//d
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//e
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.util.concurrent.Future.class)),	//f
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )),	//g
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//h
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT )),	//i
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//i
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//j
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//k
 
 				});
 /////////////////////////
@@ -2908,19 +2693,13 @@ public class PredictionProfiles
 						//Method #1: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										EXACT ,
+										new ClassItem(java.util.List.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | EXACT ),
-										new ClassItem(java.util.Set.class),
-										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(java.util.Set.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2930,12 +2709,31 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
+										new ClassItem(java.lang.String.class),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | EXACT ),
+										new ClassItem(java.util.Set.class),
+										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(java.util.Set.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
 										new ClassItem(boolean.class),
 										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #3: b
+						//Method #4: b
 						new MethodProfile
 								(
 										EXACT ,
@@ -2943,231 +2741,6 @@ public class PredictionProfiles
 
 										new ClassItem(boolean.class),
 										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #4: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #5: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #6: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #7: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #8: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #9: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #10: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #11: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #12: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #13: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem(java.util.Set.class),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #14: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #15: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #16: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #17: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #18: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #19: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #20: a
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(java.util.Set.class),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #21: b
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | THIS | EXACT ),
-										new ClassItem(java.util.Set.class),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
-
-								),
-
-						//Method #22: b
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(java.util.Set.class),
-										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
 
 								),
 
