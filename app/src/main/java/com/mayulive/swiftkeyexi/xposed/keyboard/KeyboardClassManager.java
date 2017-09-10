@@ -71,7 +71,6 @@ public class KeyboardClassManager
 	public static void loadKnownClasses(PackageTree param)
 	{
 		keyboardServiceClass = ClassHunter.loadClass("com.touchtype.KeyboardService", param.getClassLoader());
-		breadcrumbClass = ClassHunter.loadClass("com.touchtype.telemetry.Breadcrumb", param.getClassLoader());
 		layoutClass = ClassHunter.loadClass("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout", param.getClassLoader());
 
 		punctuatorImplClass = ClassHunter.loadClass("com.touchtype_fluency.impl.PunctuatorImpl", param.getClassLoader());
@@ -79,6 +78,8 @@ public class KeyboardClassManager
 
 	public static void loadUnknownClasses(PackageTree param)
 	{
+		breadcrumbClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_BREADCRUMB_CLASS_PROFILE(), param );
+
 		keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
 	}
 

@@ -6,6 +6,7 @@ package com.mayulive.swiftkeyexi.xposed.key;
 
 
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 import com.mayulive.xposed.classhunter.Modifiers;
@@ -36,9 +37,12 @@ public class KeyClassManager
 	protected static Class keyDefinitionKeyClass = null;
 
 	protected static Class pointerLocationClass = null;
-	protected static Class keyFactory = null;
 
 	public static Class keyRawDefinitionClass = null;
+
+	protected static Class simpleKeyClass = null;
+
+	protected static Class keyFieldsClass = null;
 
 	/////////////////////////
 	//Methods
@@ -49,15 +53,15 @@ public class KeyClassManager
 
 	protected static Method keyboardSingleKeyDownMethod = null;
 
-	protected static Method keyFactory_DownKeyDefinitionMethod = null;
-
 	protected static Method keyRawDefinitionClass_newKeyMethod = null;
+
+	protected static Method keyFieldsClass_setIntegerMethod = null;
+	protected static List<Method> keyFieldsClass_setStringMethods = new ArrayList<>();
 
 	/////////////////////////
 	//Fields
 	/////////////////////////
-	//protected static Field popupKeyItemClass_stringField = null; 	//Deprecated key-up
-	protected static int keyFactory_DownKeyDefinitionMethod_STRING_PARAM_POSITION = 2;
+
 
 	public static void loadUnknownClasses_A(PackageTree param ) throws IOException
 	{
@@ -70,9 +74,9 @@ public class KeyClassManager
 			keyDefinitionKeyClass = 			ProfileHelpers.loadProfiledClass(	KeyProfiles.get_KEY_DEFINITION_KEY_CLASS_PROFILE(), 	param);
 			pointerLocationClass = 				ProfileHelpers.loadProfiledClass(	KeyProfiles.get_POINTER_LOCATION_PROFILE(), 			param);
 			keyRawDefinitionClass = 			ProfileHelpers.loadProfiledClass(	KeyProfiles.get_KEY_RAW_DEFINITION_CLASS_PROFILE(),	param);
-			keyFactory = 						ProfileHelpers.loadProfiledClass(	KeyProfiles.get_KEY_FACTORY_CLASS_PROFILE(),			param);
 
-
+			simpleKeyClass = ProfileHelpers.loadProfiledClass(	KeyProfiles.get_SIMPLE_KEY_CLASS_PROFILE(),	param);
+			keyFieldsClass =  ProfileHelpers.loadProfiledClass(	KeyProfiles.get_KEY_FIELDS_CLASS_PROFILE(),	param);
 		}
 
 
@@ -140,31 +144,26 @@ public class KeyClassManager
 			}
 		}
 
-		if (keyFactory != null)
+		if (keyFieldsClass != null)
 		{
-			keyFactory_DownKeyDefinitionMethod = ProfileHelpers.findMostSimilar(new MethodProfile
+			keyFieldsClass_setIntegerMethod = ProfileHelpers.findFirstProfileMatch(new MethodProfile
 					(
-							PRIVATE | EXACT ,
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+							Modifiers.PUBLIC,
+							new ClassItem(null),
 
+							new ClassItem(Integer.class)
 
-							new ClassItem(android.content.Context.class),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | STATIC | EXACT ),
-							new ClassItem(java.lang.String.class),
-							new ClassItem(float.class),
-							new ClassItem(float.class),
-							new ClassItem(android.content.res.XmlResourceParser.class),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | EXACT ),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | EXACT ),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+					), keyFieldsClass.getDeclaredMethods(), keyFieldsClass);
 
-					),
-					keyFactory.getDeclaredMethods(), keyFactory);
+			keyFieldsClass_setStringMethods = ProfileHelpers.findAllProfileMatches(new MethodProfile
+					(
+							Modifiers.PUBLIC,
+							new ClassItem(null),
 
-			if (keyFactory_DownKeyDefinitionMethod != null)
-			{
-				keyFactory_DownKeyDefinitionMethod_STRING_PARAM_POSITION = ProfileHelpers.findFirstClassIndex(String.class, keyFactory_DownKeyDefinitionMethod.getParameterTypes());
-			}
+							new ClassItem(String.class)
+
+					), keyFieldsClass.getDeclaredMethods(), keyFieldsClass);
+
 		}
 
 
@@ -190,8 +189,6 @@ public class KeyClassManager
 		updateDependencyState();
 	}
 
-
-
 	protected static void updateDependencyState()
 	{
 
@@ -199,11 +196,15 @@ public class KeyClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyRawDefinitionClass", 	keyRawDefinitionClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyRawDefinitionClass_newKeyMethod", 	keyRawDefinitionClass_newKeyMethod );
 
-		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyFactory", 	keyFactory );
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyDefinitionKeyClass", 	keyDefinitionKeyClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "pointerLocationClass", 	pointerLocationClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyboardSingleKeyDownMethod", 	keyboardSingleKeyDownMethod );
-		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyFactory_DownKeyDefinitionMethod", 	keyFactory_DownKeyDefinitionMethod );
+
+		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyFieldsClass", 	keyFieldsClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "simpleKeyClass", 	simpleKeyClass );
+
+		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyFieldsClass_setIntegerMethod", 	keyFieldsClass_setIntegerMethod );
+		Hooks.logSetRequirement( Hooks.keyHooks_keyDefinition,	 "keyFieldsClass_setStringMethods", 	!keyFieldsClass_setStringMethods.isEmpty() );
 
 		//Key cancellation
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyCancel,	 "normalButtonClickItemClass", 	normalButtonClickItemClass );

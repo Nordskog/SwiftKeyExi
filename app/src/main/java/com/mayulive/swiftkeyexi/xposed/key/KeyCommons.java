@@ -37,12 +37,17 @@ public class KeyCommons
 	private static Map<Integer, KeyDefinition> mKeyDefinitions = new HashMap<>();
 
 	public static String sLastSymbolDefined = null;
+	public static String sSymboledDefinedOnLastKeyLoop = null;
+
+
 	protected static KeyDefinition mLastKeyDefined = null;
+
+	static boolean mKeyFieldsSetIntCalled = false;
+	static String mLastTag = null;			//Last tag defined
 
 	////////////
 	//Misc
 	////////////
-
 
 	public static void clearKeys()
 	{
@@ -62,9 +67,10 @@ public class KeyCommons
 		//Expected output
 		//ag { Content: {Bottom: com.touchtype.keyboard.e.f.j@ec9390a, Top: {Text: , Label: }}, Area: RectF(0.0025000572, 0.42631578, 0.14750004, 0.6263158) }
 		float[] values = new float[4];
-		Matcher matcher = AREA_RECTF_STRING_PATTERN.matcher(key.toString());
+
 		try
 		{
+			Matcher matcher = AREA_RECTF_STRING_PATTERN.matcher(key.toString());
 			if (matcher.find())
 			{
 				for (int i = 0; i < 4; i++)
@@ -74,6 +80,10 @@ public class KeyCommons
 		catch (NumberFormatException ex)
 		{
 			ex.printStackTrace();
+		}
+		catch (NullPointerException ex)	//ToString calls toString on null objects
+		{
+			return null;
 		}
 
 		return new RectF(values[0], values[1], values[2], values[3] );
@@ -87,6 +97,11 @@ public class KeyCommons
 	public static void addKeyDefinition(Object swiftkeyKey, KeyDefinition key)
 	{
 		mKeyDefinitions.put( System.identityHashCode(swiftkeyKey), key);
+	}
+
+	public static void removeKeyDefinition(Object swiftkeyObject)
+	{
+		mKeyDefinitions.remove( System.identityHashCode(swiftkeyObject) );
 	}
 
 	public static KeyDefinition getKeyDefinition(Object swiftkeyKey)

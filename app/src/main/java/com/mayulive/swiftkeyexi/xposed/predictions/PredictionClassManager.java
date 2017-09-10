@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.LoadPackageHook;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
@@ -18,6 +20,8 @@ import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import android.app.Dialog;
+import android.util.Log;
+import android.widget.LinearLayout;
 
 import de.robv.android.xposed.XposedHelpers;
 
@@ -25,6 +29,8 @@ import static com.mayulive.xposed.classhunter.Modifiers.*;
 
 public class PredictionClassManager
 {
+	private static String LOGTAG = ExiModule.getLogTag(PredictionClassManager.class);
+
 	//All the classes we'll be using will be loaded here and shared
 		
 	
@@ -65,6 +71,7 @@ public class PredictionClassManager
 
 	protected static Class candidatesViewFactory;
 
+
 	//protected static Class canAClass;
 
 	///////////
@@ -74,6 +81,8 @@ public class PredictionClassManager
 	protected static Field UpdateCandidateTaskClass_FutureField ;
 
 	protected static Field keyboardFrameClass_buField;
+
+
 	//protected static Field breadcrumbCandidateWrapperInterfaceClass_candidateField;
 
 	///////////
@@ -100,6 +109,8 @@ public class PredictionClassManager
 
 	protected static List<Method> dialogConstructorMethods = null;
 
+	protected static Method candidatesViewFactory_ReturnWrapperClass_GetViewMethod = null;
+
 	//////////
 	//Instances
 	////////////
@@ -123,6 +134,10 @@ public class PredictionClassManager
 
 	protected static int UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition = 1;
 	protected static int UpdateCandidateTaskClass_getTopCandidateMethod_intPosition = 4;
+
+	protected static int candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition = 1;
+
+	protected static boolean LEGACY_CANDIDATES_VIEW_FACTORY = false;
 	
 
 	public static void loadKnownClasses(PackageTree param) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException
@@ -148,7 +163,18 @@ public class PredictionClassManager
 		candidateClickCLass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_CLICK_CLASS_PROFILE(), param );
 		commitTextClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_COMMIT_TEXT_CLASS_PROFILE(), param );
 		candidateViewClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_VIEW_CLASS_PROFILE(), param );
+
+
+		//Targets >= 6.6.7.24
 		candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE(), param );
+		if (candidatesViewFactory.getDeclaredMethods().length < 4)	//Target currently has 5, one its mistaken for only has 2. Not sure why it matches.
+		{
+			Log.i(LOGTAG, "Using < 6.6.7.24 candidates view factory");
+			LEGACY_CANDIDATES_VIEW_FACTORY = true;
+			//Target class is far more complex than this. This must be the wrong one.
+			candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_legacy_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE(), param );
+		}
+
 
 		if (updateCandidateDisplayClass != null)
 		{
@@ -317,31 +343,86 @@ public class PredictionClassManager
 			//Edit: Aaaaand they changed something. It's okay with most similar though maybe?
 			//Edit2: Nope. Lots of changes later we're back. Can tell the method apart now.
 
-			candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
-							(
-									PRIVATE | STATIC | EXACT ,
-									new ClassItem(android.view.View.class),
+			if (LEGACY_CANDIDATES_VIEW_FACTORY)
+			{
+				candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(android.view.View.class),
 
-									new ClassItem(android.content.Context.class),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.report.TouchTypeStats" , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem(int.class),
-									new ClassItem("com.touchtype.util" , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT ),
-									new ClassItem(android.view.View.class),
-									new ClassItem("com.touchtype.emojipanel" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.emojipanel" , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard.candidates.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(android.content.Context.class),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.report.TouchTypeStats" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("com.touchtype.util" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT ),
+										new ClassItem(android.view.View.class),
+										new ClassItem("com.touchtype.emojipanel" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.emojipanel" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+								),
+						candidatesViewFactory.getDeclaredMethods(), candidatesViewFactory);
+			}
+			else
+			{
+				candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-							),
-					candidatesViewFactory.getDeclaredMethods(), candidatesViewFactory);
+										new ClassItem(android.content.Context.class),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.view.View.class),
+										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs.searchbox" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT )
+
+								),
+						candidatesViewFactory.getDeclaredMethods(), candidatesViewFactory);
+
+				candidatesViewFactory_ReturnWrapperClass_GetViewMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
+								(
+										STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem(android.widget.LinearLayout.class),
+										new ClassItem(android.view.View.class),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT )
+								),
+						candidatesViewFactory.getDeclaredMethods(), candidatesViewFactory);
+
+			}
+
+			if (candidatesViewFactory_ReturnWrapperClass_GetViewMethod != null)
+			{
+				candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition = ProfileHelpers.findFirstClassIndex( LinearLayout.class, candidatesViewFactory_ReturnWrapperClass_GetViewMethod.getParameterTypes() );
+			}
 		}
 
 		if (candidateRemoveDialogFactoryClass != null)

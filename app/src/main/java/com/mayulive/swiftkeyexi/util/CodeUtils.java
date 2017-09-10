@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Roughy on 5/20/2017.
@@ -19,7 +21,7 @@ import java.lang.reflect.Field;
 public class CodeUtils
 {
 
-	private static String LOGTAG = CodeUtils.class.getSimpleName();
+	private static String LOGTAG = "Exi/"+CodeUtils.class.getSimpleName();
 
 	public static void printStackTrace()
 	{
@@ -82,6 +84,11 @@ public class CodeUtils
 		catch(Exception ex)
 		{
 
+		}
+
+		if (viewIdName == null && viewID != View.NO_ID)
+		{
+			viewIdName = "#"+viewID;
 		}
 
 
@@ -186,6 +193,23 @@ public class CodeUtils
 		}
 
 		return -1;
+	}
+
+	private List<View> getAllChildren(View view)
+	{
+		ArrayList<View> views = new ArrayList<>();
+
+		if ( !ViewGroup.class.isAssignableFrom( view.getClass() ) )
+			return views;
+
+		ViewGroup viewGroup = (ViewGroup)view;
+
+		for (int i = 0; i < viewGroup.getChildCount(); i++)
+		{
+			views.addAll( getAllChildren( (viewGroup.getChildAt(i)) ) );
+		}
+
+		return views;
 	}
 
 	public static boolean isPrimitive(Class clazz)
