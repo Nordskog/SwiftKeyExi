@@ -24,7 +24,9 @@ import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
+import java.io.ByteArrayInputStream;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -282,6 +284,23 @@ public class KeyboardHooks
 
 	}
 
+	private static XC_MethodHook.Unhook hookPunctuationRules()
+	{
+		return XposedBridge.hookMethod(KeyboardClassManager.punctuatorImplClass_AddRulesMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				//This method is only called when the app is launched.
+				//I guess punctuation rules never really change between languages.
+				//Since our settings won't be loaded at this point anyway, we deal with this
+				//in a keyboardLoded callback instead.
+				KeyboardClassManager.punctuatorImplInstance = param.thisObject;
+			}
+
+		});
+	}
+
 	public static boolean HookAll(final PackageTree lpparam)
 	{
 		try
@@ -299,7 +318,7 @@ public class KeyboardHooks
 
 				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
 				{
-					Hooks.baseHooks_punctuationSpace.addAll( hookPunctuationAutoSpace(lpparam) );
+					Hooks.baseHooks_punctuationSpace.add( hookPunctuationRules() );
 				}
 
 				if (Hooks.baseHooks_invalidateLayout.isRequirementsMet())
@@ -318,6 +337,25 @@ public class KeyboardHooks
 					Hooks.baseHooks_layoutChange.add( hookLayoutChanged(lpparam) );
 					Hooks.baseHooks_layoutChange.add( hookLayoutInvalidated(lpparam) );
 				}
+
+				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+				{
+					@Override
+					public void beforeKeyboardOpened()
+					{
+						KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
+								KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
+								false );
+					}
+
+					@Override
+					public void beforeKeyboardClosed() {}
+					@Override
+					public void keyboardInvalidated() {}
+					@Override
+					public void afterKeyboardConfigurationChanged() {}
+				});
+
 			}
 		}
 		catch(Exception ex)

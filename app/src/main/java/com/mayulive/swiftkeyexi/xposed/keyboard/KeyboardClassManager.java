@@ -15,6 +15,7 @@ import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -51,7 +52,8 @@ public class KeyboardClassManager
 	public static Method keyboardLoader_loadMethod = null;
 	public static Method keyboardLoader_clearCacheMethod = null;
 
-	protected static List<Method> punctuatorImplClass_PunctuateMethod = new ArrayList<>();
+	protected static Method punctuatorImplClass_AddRulesMethod = null;
+	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 
 
 
@@ -66,6 +68,7 @@ public class KeyboardClassManager
 	//////////////////
 	public static Object keyboardServiceInstance = null;
 	public static InputConnection currentInputConnection = null;
+	public static Object punctuatorImplInstance = null;
 
 
 	public static void loadKnownClasses(PackageTree param)
@@ -129,7 +132,21 @@ public class KeyboardClassManager
 
 		if (punctuatorImplClass != null)
 		{
-			punctuatorImplClass_PunctuateMethod = ProfileHelpers.findAllMethodsWithReturnType(int[].class, punctuatorImplClass.getDeclaredMethods());
+			punctuatorImplClass_AddRulesMethod = ProfileHelpers.findFirstProfileMatch(
+
+					new MethodProfile
+							(
+									PUBLIC,
+									new ClassItem(void.class),
+
+									new ClassItem(InputStream.class )
+							),
+
+					punctuatorImplClass.getDeclaredMethods(), punctuatorImplClass);
+
+			punctuatorImplClass_ClearRulesMethod = ProfileHelpers.findFirstMethodByName(punctuatorImplClass.getDeclaredMethods(), "resetRules");
+
+
 		}
 
 	}
@@ -148,8 +165,6 @@ public class KeyboardClassManager
 		loadUnknownClasses(param);
 		loadMethods();
 		loadFields();
-
-		//Util.printFieldValues(KeyboardClassManager.class);
 
 		updateDependencyState();
 	}
@@ -178,8 +193,8 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoader_clearCacheMethod", 	keyboardLoader_clearCacheMethod );
 
 		//Punctuation space
-		Hooks.logSetRequirement(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_PunctuateMethod", !punctuatorImplClass_PunctuateMethod.isEmpty());
-
+		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_AddRulesMethod", punctuatorImplClass_AddRulesMethod);
+		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_ClearRulesMethod", punctuatorImplClass_ClearRulesMethod);
 
 		//View created (Overlay)
 		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "KeyboardServiceClass", 	keyboardServiceClass );
