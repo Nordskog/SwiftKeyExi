@@ -235,55 +235,6 @@ public class KeyboardHooks
 			});
 	}
 
-	private static List<XC_MethodHook.Unhook> hookPunctuationAutoSpace(PackageTree param)
-	{
-
-		//The putuator takes a few string inputs and throws them at a native method.
-		//It is only called when triggering a single key.
-		//Most keys will just get you INS_PREDICTION,
-		//but puncuation will call INS_SPACE (or the other one) too,
-		//and BACKSPACE first if adding multiple dots.
-		//The retuned actions are executed in order.
-		//The rules applied are loaded from punctuation_default.json in res/raw,
-		//so modifying them there for more exotic results is also a possibility.
-		// 0       BACKSPACE,
-		// 1       INS_SPACE,
-		// 2       INS_LANG_SPECIFIC_SPACE,
-		// 3       INS_PREDICTION,
-		// 4       INS_FOCUS,
-		// 5       DUMB_MODE
-
-		//For the time being, if there are more than 1 actions, replace with INS_FOCUS.
-
-		ArrayList<XC_MethodHook.Unhook> hooks = new ArrayList<>();
-
-
-		for (final Method method : KeyboardClassManager.punctuatorImplClass_PunctuateMethod)
-		{
-			hooks.add(XposedBridge.hookMethod(method, new XC_MethodHook()
-			{
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
-				{
-					if (Settings.DISABLE_PUNCTUATION_AUTO_SPACE)
-					{
-						int[] ret = (int[])param.getResult();
-						if (ret  != null)
-						{
-							if (ret.length > 1)
-							{
-								param.setResult( new int[]{4} );
-							}
-						}
-					}
-				}
-			}));
-		}
-
-		return hooks;
-
-	}
-
 	private static XC_MethodHook.Unhook hookPunctuationRules()
 	{
 		return XposedBridge.hookMethod(KeyboardClassManager.punctuatorImplClass_AddRulesMethod, new XC_MethodHook()
