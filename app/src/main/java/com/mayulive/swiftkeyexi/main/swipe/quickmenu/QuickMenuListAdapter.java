@@ -38,7 +38,6 @@ public class QuickMenuListAdapter extends RecyclerView.Adapter<QuickMenuListAdap
 	private String[] sMenuItems = new String[mDropdownOptions.length];
 
 	private OnHotkeyMenuItemChangedListener mChangedListener = null;
-	private OnDragStartedListener mDragListener = null;
 
 
 	public QuickMenuListAdapter(Context context, List<? extends HotkeyPanel.HotkeyMenuItem> items)
@@ -58,10 +57,7 @@ public class QuickMenuListAdapter extends RecyclerView.Adapter<QuickMenuListAdap
 		mChangedListener = listener;
 	}
 
-	public void setOnDragStartedListener(OnDragStartedListener listener)
-	{
-		mDragListener = listener;
-	}
+
 
 	@Override
 	public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -181,12 +177,6 @@ public class QuickMenuListAdapter extends RecyclerView.Adapter<QuickMenuListAdap
 	public interface OnHotkeyMenuItemChangedListener
 	{
 		void onHotkeyMenuItemChanged(HotkeyPanel.HotkeyMenuItem item, KeyboardInteraction.TextAction action, String displayText);
-	}
-
-	public interface OnDragStartedListener
-	{
-		void onDragStarted(ItemViewHolder holder);
-		void onSwipeStarted(ItemViewHolder holder);
 	}
 
 
