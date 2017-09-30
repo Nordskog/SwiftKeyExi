@@ -179,7 +179,6 @@ public class QuickMenuConfigFragment extends Fragment
 								downY = e.getY();
 								intercepted  = true;
 								eventTriggered = false;	//For some reason we sometimes get a down event before a move event ...
-								Log.i(LOGTAG, "Intercepting!");
 								mLayoutManager.setScrollEnabled(false);
 
 								//Let's just use a fraction of the view height as the drag trigger threshold
@@ -386,7 +385,7 @@ public class QuickMenuConfigFragment extends Fragment
 			{
 				ColorPickerDialogBuilder
 						.with(QuickMenuConfigFragment.this.getContext())
-						.setTitle("Choose color")
+						.setTitle(R.string.action_choose_color)
 						.initialColor(mHighlightColor)
 						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 						.density(12)
