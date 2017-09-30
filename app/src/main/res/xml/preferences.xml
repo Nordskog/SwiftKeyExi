@@ -79,13 +79,6 @@
         android:summary="@string/pref_disable_period_click_summary"
         android:defaultValue="false" />
 
-    <com.kizitonwose.colorpreferencecompat.ColorPreferenceCompat
-        android:key="@string/pref_quick_menu_color_key"
-        android:title="@string/pref_quick_menu_color_title"
-        android:summary="@string/pref_quick_menu_color_summary"
-        android:defaultValue="@color/quick_men_default_color" />
-
-
     </PreferenceCategory>
 
     <PreferenceCategory

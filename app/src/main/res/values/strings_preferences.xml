@@ -13,13 +13,6 @@
     <string name="category_pref_app">App</string>
     <string name="category_pref_keys">Keys</string>
 
-
-    <!-- Quick menu color  -->
-    <string name="pref_quick_menu_color_key">pref_quick_menu_color</string>
-    <string name="pref_quick_menu_color_title">Quick-Menu color</string>
-    <string name="pref_quick_menu_color_summary">Highlight color</string>
-
-
     <!-- App Theme -->
     <string name="pref_app_theme_key">pref_app_theme</string>
     <string name="pref_app_theme_title">App Theme</string>
