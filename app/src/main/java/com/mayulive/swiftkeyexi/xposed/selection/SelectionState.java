@@ -472,4 +472,6 @@ public class SelectionState
 		pointer.yCursorBank = pointer.yCursorDistanceChange % Settings.SWIPE_CURSOR_UNITS;
 		pointer.yCursorDistanceChange /= Settings.SWIPE_CURSOR_UNITS;
 	}
+
+
 }

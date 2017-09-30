@@ -9,6 +9,7 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
+import com.mayulive.swiftkeyexi.xposed.selection.SelectionMethods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -190,11 +191,21 @@ public class KeyCommons
 				}
 				case GO_TO_END:
 				{
+					/*
 					//KEYCODE_MOVE_END only moves to the end of the line. We usually want to move to the end of the text, which
 					//can be accomplished by selecting all before triggering the key.
 					connection.performContextMenuAction(android.R.id.selectAll);
 					connection.sendKeyEvent( new KeyEvent( KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MOVE_END ));
 					connection.sendKeyEvent( new KeyEvent( KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MOVE_END ));
+					*/
+
+					SelectionMethods.moveCursorToEnd();
+
+					return true;
+				}
+				case GO_TO_START:
+				{
+					SelectionMethods.moveCursorToStart();
 
 					return true;
 				}

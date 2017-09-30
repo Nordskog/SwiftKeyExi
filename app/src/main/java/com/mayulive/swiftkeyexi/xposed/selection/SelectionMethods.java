@@ -59,6 +59,8 @@ public class SelectionMethods
 		}
 	}
 
+
+
 	//Return cursor position to where it was on last swipe start
 	protected static void resetCursorPosition()
 	{
@@ -67,9 +69,27 @@ public class SelectionMethods
 			setSelectionWithOffset(connection, SelectionState.mLeftSelectPosition_Original, SelectionState.mRightSelectPosition_Original);
 	}
 
-	private static boolean setSelectionWithOffset(InputConnection connection, int start, int end)
+	protected static boolean setSelectionWithOffset(InputConnection connection, int start, int end)
 	{
 		return connection.setSelection(SelectionState.mLastExtractedTextOffset+start, SelectionState.mLastExtractedTextOffset+end);
+	}
+
+	protected static boolean setSelectionWithoutOffset(InputConnection connection, int start, int end)
+	{
+		return connection.setSelection(start,end);
+	}
+
+	public static void moveCursorToStart()
+	{
+		InputConnection connection = KeyboardClassManager.getInputConnection();
+		SelectionMethods.setSelectionWithoutOffset(connection, 0,0 );
+	}
+
+	public static void moveCursorToEnd()
+	{
+		InputConnection connection = KeyboardClassManager.getInputConnection();
+		SelectionState.updateSelection();
+		SelectionMethods.setSelectionWithOffset( connection, SelectionState.mLastExtractedText.length(), SelectionState.mLastExtractedText.length());
 	}
 
 	//Set selection using the previous values.

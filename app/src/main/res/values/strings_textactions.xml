@@ -5,4 +5,5 @@
     <string name="textaction_cut">Cut</string>
     <string name="textaction_paste">Paste</string>
     <string name="textaction_gotoend">Go to End</string>
+    <string name="textaction_gotostart">Go to Start</string>
 </resources>
