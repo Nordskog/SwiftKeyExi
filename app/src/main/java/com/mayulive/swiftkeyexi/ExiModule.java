@@ -1,5 +1,7 @@
 package com.mayulive.swiftkeyexi;
 
+import android.content.Context;
+
 import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
@@ -53,10 +55,10 @@ public class ExiModule
 		return "Exi/"+thiz.getSimpleName();
 	}
 
-	public static void initialize(WrappedDatabase db)
+	public static void initialize(Context context, WrappedDatabase db)
 	{
 		clear(db);
-		loadDefaults(db);
+		loadDefaults(context, db);
 	}
 
 	public static void clear(WrappedDatabase db, ModuleDatabaseType type)
@@ -112,16 +114,16 @@ public class ExiModule
 		}
 	}
 
-	public static void loadDefaults(WrappedDatabase db)
+	public static void loadDefaults(Context context, WrappedDatabase db)
 	{
 		for (ModuleDatabaseType type : ModuleDatabaseType.values())
 		{
-			loadDefaults(db,type);
+			loadDefaults(context, db,type);
 		}
 	}
 
 
-	public static void loadDefaults(WrappedDatabase db, ModuleDatabaseType type )
+	public static void loadDefaults(final Context context, WrappedDatabase db, ModuleDatabaseType type )
 	{
 		switch(type)
 		{
@@ -203,10 +205,10 @@ public class ExiModule
 				List<DB_HotkeyMenuItem> items = new ArrayList<DB_HotkeyMenuItem>()
 				{{
 					//new HotkeyMenuItem ("↑", 	0.5f),
-					add(new DB_HotkeyMenuItem ("ALL", KeyboardInteraction.TextAction.SELECT_ALL, 	1f, 0));
-					add(new DB_HotkeyMenuItem ("COPY", KeyboardInteraction.TextAction.COPY, 	1f, 1));
-					add(new DB_HotkeyMenuItem ("PASTE", KeyboardInteraction.TextAction.PASTE, 	1f, 2));
-					add(new DB_HotkeyMenuItem ("END", 	KeyboardInteraction.TextAction.GO_TO_END, 	0.5f, 3));
+					add(new DB_HotkeyMenuItem (KeyboardInteraction.TextAction.getShortTextRepresentation(context, KeyboardInteraction.TextAction.SELECT_ALL) , KeyboardInteraction.TextAction.SELECT_ALL, 	1f, 0));
+					add(new DB_HotkeyMenuItem (KeyboardInteraction.TextAction.getShortTextRepresentation(context, KeyboardInteraction.TextAction.COPY), KeyboardInteraction.TextAction.COPY, 	1f, 1));
+					add(new DB_HotkeyMenuItem (KeyboardInteraction.TextAction.getShortTextRepresentation(context, KeyboardInteraction.TextAction.PASTE), KeyboardInteraction.TextAction.PASTE, 	1f, 2));
+					add(new DB_HotkeyMenuItem (KeyboardInteraction.TextAction.getShortTextRepresentation(context, KeyboardInteraction.TextAction.GO_TO_END), 	KeyboardInteraction.TextAction.GO_TO_END, 	0.5f, 3));
 				}};
 
 				DatabaseMethods.updateAllItems( db, items, HOTKEY_MENU_ITEMS_TABLE_INFO,true);

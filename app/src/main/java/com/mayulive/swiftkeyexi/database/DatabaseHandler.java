@@ -14,6 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String DATABASE_NAME = "exi_main.db";
 
 	private SQLiteDatabase mDb = null;
+	private static Context mContext = null;
 	
 	//////////////////////////////////////////////////////////////////
 
@@ -46,6 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public DatabaseHandler(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		mContext = context;
 		
 	}
 	
@@ -96,7 +98,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					String query = "CREATE TABLE " + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableName + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableDefinition;
 					db.execSQL(query);
 
-					ExiModule.loadDefaults(new WrappedDatabase(db), ExiModule.ModuleDatabaseType.HOTKEY_MENU_ITEM);
+					ExiModule.loadDefaults(mContext, new WrappedDatabase(db), ExiModule.ModuleDatabaseType.HOTKEY_MENU_ITEM);
 					break;
 				}
 			}

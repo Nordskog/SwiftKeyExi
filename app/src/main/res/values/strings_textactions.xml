@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Full-sized strings -->
     <string name="textaction_selectall">Select All</string>
     <string name="textaction_copy">Copy</string>
     <string name="textaction_cut">Cut</string>
     <string name="textaction_paste">Paste</string>
     <string name="textaction_gotoend">Go to End</string>
     <string name="textaction_gotostart">Go to Start</string>
+
+    <!-- Short-hand for quick menu -->
+    <string name="textaction_short_selectall">All</string>
+    <string name="textaction_short_copy">Copy</string>
+    <string name="textaction_short_cut">Cut</string>
+    <string name="textaction_short_paste">Paste</string>
+    <string name="textaction_short_gotoend">End</string>
+    <string name="textaction_short_gotostart">Start</string>
+
 </resources>

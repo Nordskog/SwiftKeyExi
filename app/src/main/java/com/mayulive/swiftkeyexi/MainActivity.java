@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 			if (mDbWrap != null)
 			{
 				Log.i(LOGTAG, "Loading default values");
-				ExiModule.initialize(mDbWrap);
+				ExiModule.initialize(this.getApplicationContext(),mDbWrap);
 
 				//Let hook-side know that data has changed
 				SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);

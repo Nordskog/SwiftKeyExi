@@ -251,10 +251,22 @@ public class QuickMenuConfigFragment extends Fragment
 			@Override
 			public void onHotkeyMenuItemChanged(HotkeyPanel.HotkeyMenuItem item, KeyboardInteraction.TextAction action, String displayText)
 			{
+
+				boolean actionChanged = item.action != action;
+
 				item.action = action;
 				item.text = displayText;
+
+				if (actionChanged)
+				{
+					//Changed display text to match action if action changed
+					item.text = KeyboardInteraction.TextAction.getShortTextRepresentation(getContext(), item.action);
+					mAdapter.notifyItemChanged( mItems.indexOf(item) );
+				}
+
 				mHotkeyMenuPanel.refresh();
 				mItems.update((DB_HotkeyMenuItem) item);
+
 				setLastUpdateTime();
 			}
 		});
