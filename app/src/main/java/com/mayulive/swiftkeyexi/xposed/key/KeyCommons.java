@@ -2,6 +2,7 @@ package com.mayulive.swiftkeyexi.xposed.key;
 
 import android.content.Context;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
 
