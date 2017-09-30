@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi;
 
+import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
@@ -7,10 +8,12 @@ import com.mayulive.swiftkeyexi.main.commons.data.DB_KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_ModifierKeyItem;
 import com.mayulive.swiftkeyexi.database.DatabaseMethods;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
+import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelTemplates;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.ADDITIONAL_DELETE_KEYS_TABLE_INFO;
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.ADDITIONAL_SHIFT_KEYS_TABLE_INFO;
@@ -18,6 +21,7 @@ import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.ADDI
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.DICTIONARY_SHORTCUT_TABLE_INFO;
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO;
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO;
+import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO;
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.MODIFIER_KEY_TABLE_INFO;
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.POPUP_KEY_TABLE_INFO;
 
@@ -40,7 +44,8 @@ public class ExiModule
 		EMOJI_KEYBOARD,
 		HOTKEY,
 		POPUP,
-		KEYS
+		KEYS,
+		HOTKEY_MENU_ITEM
 	}
 
 	public static String getLogTag(Class thiz)
@@ -89,6 +94,11 @@ public class ExiModule
 				DatabaseMethods.clearTable( db, ADDITIONAL_DELETE_KEYS_TABLE_INFO);
 				DatabaseMethods.clearTable( db, ADDITIONAL_SHIFT_KEYS_TABLE_INFO);
 
+				break;
+			}
+			case HOTKEY_MENU_ITEM:
+			{
+				DatabaseMethods.clearTable( db, HOTKEY_MENU_ITEMS_TABLE_INFO);
 				break;
 			}
 		}
@@ -185,6 +195,21 @@ public class ExiModule
 					keys.add( new DB_KeyDefinition("", KeyType.SHIFT));
 					DatabaseMethods.updateAllItems( db, keys, ADDITIONAL_SHIFT_KEYS_TABLE_INFO,true);
 				}
+
+				break;
+			}
+			case HOTKEY_MENU_ITEM:
+			{
+				List<DB_HotkeyMenuItem> items = new ArrayList<DB_HotkeyMenuItem>()
+				{{
+					//new HotkeyMenuItem ("↑", 	0.5f),
+					add(new DB_HotkeyMenuItem ("ALL", KeyboardInteraction.TextAction.SELECT_ALL, 	1f, 0));
+					add(new DB_HotkeyMenuItem ("COPY", KeyboardInteraction.TextAction.COPY, 	1f, 1));
+					add(new DB_HotkeyMenuItem ("PASTE", KeyboardInteraction.TextAction.PASTE, 	1f, 2));
+					add(new DB_HotkeyMenuItem ("END", 	KeyboardInteraction.TextAction.GO_TO_END, 	0.5f, 3));
+				}};
+
+				DatabaseMethods.updateAllItems( db, items, HOTKEY_MENU_ITEMS_TABLE_INFO,true);
 
 				break;
 			}

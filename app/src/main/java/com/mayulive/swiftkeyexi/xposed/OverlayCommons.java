@@ -14,6 +14,7 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 /**
@@ -196,7 +197,7 @@ public class OverlayCommons
 	}
 
 	//Full-screen coordinates
-	public static void displayHotkeyMenu(float fromBottom, float coverTopFromBottom, float xCenter)
+	public static void displayHotkeyMenu(float fromBottom, float coverTopFromBottom, float xCenter, List<? extends HotkeyPanel.HotkeyMenuItem> items)
 	{
 		if (mKeyboardOverlay == null)
 		{
@@ -204,7 +205,17 @@ public class OverlayCommons
 			return;
 		}
 
-		mHotkeyMenuPanel = new HotkeyPanel( mKeyboardOverlay.getContext(), Settings.QUICK_MENU_HIGHLIGHT_COLOR );
+
+		//if (mHotkeyMenuPanel == null)
+		{
+			mHotkeyMenuPanel = new HotkeyPanel( mKeyboardOverlay.getContext(), Settings.QUICK_MENU_HIGHLIGHT_COLOR );
+			RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+			mHotkeyMenuPanel.setLayoutParams(params);
+		}
+
+
+		mHotkeyMenuPanel.setHighlightColor(Settings.QUICK_MENU_HIGHLIGHT_COLOR);
+		mHotkeyMenuPanel.setItems(items);
 
 		//Max radius calculated from height. Actual panel will take care of horizontal fitting
 		float maxRadius_Y = coverTopFromBottom - fromBottom;
@@ -214,11 +225,9 @@ public class OverlayCommons
 		mHotkeyMenuPanel.setTargetRadius( maxRadius_Y);
 		mHotkeyMenuPanel.setBottomMargin(fromBottom);
 		mHotkeyMenuPanel.setCoverTop(mKeyboardOverlay.getMeasuredHeight() - coverTopFromBottom);
+		mHotkeyMenuPanel.setTextSizeRatio(Settings.QUICKMENU_TEXT_SIZE_RATIO);
 
 		///////////////////
-
-		RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		mHotkeyMenuPanel.setLayoutParams(params);
 
 		mKeyboardOverlay.addView(mHotkeyMenuPanel);
 	}

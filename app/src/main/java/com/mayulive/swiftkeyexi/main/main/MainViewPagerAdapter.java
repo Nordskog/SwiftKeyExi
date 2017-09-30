@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.mayulive.swiftkeyexi.main.swipe.quickmenu.QuickMenuConfigFragment;
 import com.mayulive.swiftkeyexi.main.dictionary.DictionaryFragment;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiFragment;
 import com.mayulive.swiftkeyexi.main.shortcutkeys.ShortcutkeysFragment;
@@ -71,7 +72,6 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter
 				return new ShortcutkeysFragment();
 			case 4:
 				return new PopupkeysFragment();
-				//return new TestFragment();
 			default:
 				return null;
 		}

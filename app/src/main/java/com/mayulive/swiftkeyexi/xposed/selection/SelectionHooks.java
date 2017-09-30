@@ -217,6 +217,7 @@ public class SelectionHooks
 						{
 							SelectionSetup.populateActions();
 							SelectionSetup.populateKeys();
+							SelectionSetup.populateQuickMenu();
 						}
 
 					});

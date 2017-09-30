@@ -636,7 +636,7 @@ public class SelectionMethods
 
 
 
-							OverlayCommons.displayHotkeyMenu( spaceDistanceFromBottom, view.getMeasuredHeight(), currentPointerInfo.downX + xOffset );
+							OverlayCommons.displayHotkeyMenu( spaceDistanceFromBottom, view.getMeasuredHeight(), currentPointerInfo.downX + xOffset, SelectionState.mHotkeyMenuItems );
 						}
 
 						OverlayCommons.handleDisplayHotkeyMenuTouch(event.getX() + xOffset , event.getY(), view.getMeasuredHeight());

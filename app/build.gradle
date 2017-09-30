@@ -101,6 +101,12 @@ repositories
 dependencies
         {
             provided 'de.robv.android.xposed:api:82:sources'
+
+            compile ('com.github.QuadFlask:colorpicker:0.0.13')
+                    {
+                        exclude group: 'com.android.support'
+                    }
+
             compile('com.github.kizitonwose.colorpreference:support:1.0.3') {
                 exclude group: 'com.android.support'
             }
@@ -113,7 +119,6 @@ dependencies
             compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
 
             compile 'com.mayulive.xposed.classhunter:classhunter:1.0.0'
-
 
             provided 'de.robv.android.xposed:api:82'
         }

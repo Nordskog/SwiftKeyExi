@@ -5,7 +5,9 @@ import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -18,9 +20,11 @@ import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -99,11 +103,15 @@ public class SelectionState
 	protected static Map<Integer,pointerInformation> mPointerInformation = new HashMap<Integer,pointerInformation>();
 
 	protected static PointerState mLastState = PointerState.DEFAULT;
+
+	protected static List<DB_HotkeyMenuItem> mHotkeyMenuItems = new ArrayList<DB_HotkeyMenuItem>();
+
 	//////////
 
 	//Keeping track of settings
 	static long mLastAdditionalKeysUpdateTime = -1;
 	static long mLastHotkeyUpdateTime = -1;
+	static long mLastQuickmenuUpdateTime = -1;
 
 	protected static SpaceModifierBehavior getSpaceModifierBehavior()
 	{

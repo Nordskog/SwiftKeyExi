@@ -160,6 +160,11 @@ public class MathUtils
 			return this;
 		}
 
+		public float distance(Vector2D other)
+		{
+			return this.subtract(other).length();
+		}
+
 		public Vector2D add(PointF other)
 		{
 			return new Vector2D(other).addInPlace(this);
@@ -189,6 +194,28 @@ public class MathUtils
 		public Vector2D divide(float other)
 		{
 			return new Vector2D(this).divideInPlace(other);
+		}
+
+
+
+		public Vector2D normalize()
+		{
+			Vector2D ret = new Vector2D(this);
+			return ret.normalizeInPlace();
+		}
+
+		public Vector2D normalizeInPlace()
+		{
+			float length = length();
+			if (length == 0)
+				return this;
+			else
+			{
+				this.x = x/length;
+				this.y = y/length;
+			}
+
+			return this;
 		}
 
 		@Override

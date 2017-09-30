@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_choose_color">Choose color</string>
+    <string name="quickmenu_highlight_color">Highlight</string>
+    <string name="quickmenu_text_size">Size</string>
+</resources>

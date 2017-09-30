@@ -45,6 +45,13 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
+        <activity
+            android:name=".main.swipe.quickmenu.QuickMenuActivity"
+            android:label="@string/quick_menu_title"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
         <provider
             android:name=".providers.Provider"
             android:authorities="${applicationId}.database"

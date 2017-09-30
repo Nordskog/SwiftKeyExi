@@ -33,6 +33,7 @@ public class PreferenceConstants
 	public static final String pref_additional_keys_last_update_key = "pref_additional_keys_last_update";
 	public static final String pref_popup_last_update_key = "pref_popup_last_update";
 	public static final String pref_hotkeys_last_update_key = "pref_hotkeys_last_update";
+	public static final String pref_quickmenu_last_update_key = "pref_quickmenu_last_update";
 
 
 	//More!
@@ -59,6 +60,8 @@ public class PreferenceConstants
 
 
 	public static final String pref_disable_auto_correct_on_cursor_move_key = "pref_disable_auto_correct_on_cursor_move";
+
+	public static final String pref_hotkey_menu_text_size_key = "pref_hotkey_menu_text_size";
 
 
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/quick_menu_item_parent"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              style="@style/ContainerPadding"
+              android:layout_marginTop="2dp"
+              android:layout_marginBottom="2dp"
+              android:background="?attr/draggableCardColor"
+    >
+
+
+    <FrameLayout
+        android:id="@+id/quick_menu_drag_handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="10dp"
+            app:srcCompat="@drawable/ic_draghandle"
+            android:layout_height="match_parent">
+
+        </ImageView>
+        <TextView
+            android:id="@+id/quick_menu_index"
+            android:text="1"
+            android:gravity="center"
+            android:textSize="40dp"
+            android:layout_width="80dp"
+            android:layout_height="match_parent">
+        </TextView>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_weight="0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <Spinner
+                android:id="@+id/quick_menu_action_picker"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                />
+
+            <EditText
+                android:id="@+id/quick_menu_action_display_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Display Text"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    
+    <LinearLayout
+        android:layout_weight="0.4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

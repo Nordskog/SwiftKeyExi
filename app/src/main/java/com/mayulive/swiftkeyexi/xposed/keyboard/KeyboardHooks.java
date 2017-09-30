@@ -1,6 +1,9 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -25,6 +28,7 @@ import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -77,7 +81,6 @@ public class KeyboardHooks
 					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 					cover.setLayoutParams(params);
 					view.addView(cover);
-
 					OverlayCommons.mKeyboardOverlay = cover;
 				}
 				catch (Throwable ex)
