@@ -15,6 +15,7 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorSelection;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.pointerInformation;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
@@ -45,6 +46,8 @@ public class SelectionState
 	//////////////////////////////
 	// KEy down and some states
 	//////////////////////////////
+
+	protected static SwipeOverlay mSwipeOverlay = null;
 
 
 	protected static boolean mSpaceModifierTriggered = false;	//swipe-from-space hotkey down
@@ -164,6 +167,16 @@ public class SelectionState
 		 }
 
 		 return false;
+	 }
+
+	 public static int getSwipeOverlayHeight()
+	 {
+		 if (mSwipeOverlay != null)
+		 {
+			 return mSwipeOverlay.getMeasuredHeight();
+		 }
+
+		 return 0;
 	 }
 
 	static void setInternalSelectionValue(int startValue, int endValue, PointerState state)

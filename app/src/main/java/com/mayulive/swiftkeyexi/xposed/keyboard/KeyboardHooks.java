@@ -14,6 +14,7 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
@@ -22,6 +23,7 @@ import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -122,6 +124,13 @@ public class KeyboardHooks
 						Settings.request_KEYBOARD_RELOAD = false;
 						KeyboardMethods.requestKeyboardReload();
 					}
+				}
+
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					if (DebugSettings.DEBUG_HITBOXES)
+						OverlayCommons.displayDebugHithoxes(ContextUtils.getHookContext(), SelectionState.getSwipeOverlayHeight());
 				}
 
 			});
@@ -300,6 +309,8 @@ public class KeyboardHooks
 						KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
 								KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
 								false );
+
+
 					}
 
 					@Override
