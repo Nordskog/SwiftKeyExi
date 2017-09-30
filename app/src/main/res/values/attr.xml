@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="draggableCardColor" format="color" />
+    <attr name="textColor" format="color" />
+    <attr name="dialogStyle" format="reference" />
+
     <declare-styleable name="BoundedView">
         <attr name="bounded_width" format="dimension" />
         <attr name="bounded_height" format="dimension" />
@@ -20,5 +24,8 @@
     <declare-styleable name="UnitCharDisplayView">
         <attr name="comparison_bar_length" format="dimension" />
     </declare-styleable>
+
+
+
 
 </resources>

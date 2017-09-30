@@ -1,25 +1,14 @@
 <resources>
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
+
     <style name="AppBaseTheme" parent="Theme.AppCompat">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+
+        <!--    Wisdom of the ancients: While just about everything will work fine even if you don't
+                define an AppBaseTheme like this, custom attributes will silently fail with cryptic error
+                messages. -->
     </style>
 
-    <style name="AppBaseThemeLight" parent="Theme.AppCompat.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
 
-    </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
@@ -28,7 +17,13 @@
        <!-- <item name="android:alertDialogStyle"> @style/mydialogtheme </item> -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="android:colorBackground">@color/background_material_dark</item>
-        <item name="android:popupBackground">?attr/colorPrimaryDark</item>
+        <item name="android:colorForeground">@color/foreground_material_dark</item>
+
+        <item name="android:dialogTheme">@style/DialogTheme</item>
+        <item name="android:alertDialogTheme">@style/DialogTheme</item>
+
+        <item name="textColor">@color/primary_text_material_dark</item>
+        <item name="draggableCardColor">@color/card_background_dark</item>
     </style>
 
     <style name="AppThemeLight" parent="Theme.AppCompat.Light">
@@ -36,9 +31,23 @@
 
         <!-- <item name="android:alertDialogStyle"> @style/mydialogtheme </item> -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:colorBackground">@color/background_material_light</item>
         <item name="android:colorForeground">@color/foreground_material_light</item>
-        <item name="android:textColorPrimary">@color/primary_text_material_light</item>
-        <item name="android:popupBackground">?attr/colorPrimaryDark</item>
+
+        <item name="android:dialogTheme">@style/DialogTheme</item>
+
+        <item name="textColor">@color/primary_text_material_light</item>
+        <item name="draggableCardColor">@color/card_background_light</item>
+    </style>
+
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@color/background_material_dark</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
     </style>
 
 

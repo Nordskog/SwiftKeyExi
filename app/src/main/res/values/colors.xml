@@ -4,19 +4,29 @@
     <color name="global_background_color">#232323</color>
     <color name="standard_text_color">#777777</color>
 
-    <!-- Duplicate of material colors because kitkat is kitkat -->
+
+    <!-- Duplicate of material colors because kitkat is kitkat. Are these still needed? -->
     <color name="colorAccent">#FFC94E4E</color>
     <color name="accent_material_light_1">#003df5</color>
 
 
+    <color name="transparent">#00FFFFFF</color>
+
+    <!-- Non-default style values -->
     <color name="quick_men_default_color">#2d5bc6</color>
-    <color name="accent_material_light">#c94e4e</color>
+
+    <color name="card_background_light">#dee6e6e6</color>
+    <color name="card_background_dark">#de262626</color>
+
+
+    <color name="accent_material_light">#ff4873</color>
+    <color name="accent_material_dark">#c94e4e</color>
     <color name="primary_dark_material_dark">#0f0f0f</color>
     <color name="primary_dark_material_light">#c4c4c4</color>
     <color name="primary_material_dark">#1a1a1a</color>
     <color name="background_material_dark">#1d1d1d</color>
     <color name="foreground_material_light">#212121</color>
-    <color name="primary_text_default_material_light">#de1c1c1c</color>
-    <color name="primary_text_material_light">#de262626</color>
+    <color name="primary_text_material_dark">#e9e9e9</color>
+    <color name="primary_text_material_light">#262626</color>
 
 </resources>
