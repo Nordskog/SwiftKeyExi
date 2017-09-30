@@ -50,14 +50,6 @@
         android:summary="@string/pref_flow_suggestions_summary"
         android:defaultValue="false" />
 
-
-    <!-- Swiftkey has added their own switch for this now
-    CheckBoxPreference
-        android:key="@string/pref_old_flow_behavior_key"
-        android:title="@string/pref_old_flow_behavior_title"
-        android:summary="@string/pref_old_flow_behavior_summary"
-        android:defaultValue="false" / -->
-
     <CheckBoxPreference
         android:key="@string/pref_disable_auto_correct_on_cursor_move_key"
         android:title="@string/pref_disable_auto_correct_on_cursor_move_title"
@@ -71,27 +63,6 @@
         android:defaultValue="false" />
 
     </PreferenceCategory>
-
-
-    <!-- Moved to swipe fragment
-
-    <PreferenceCategory
-        android:title="Hotkeys">
-
-    <ListPreferenceShowSummary
-        android:key="@string/pref_space_swipe_modifier_mode_key"
-        android:title="@string/pref_space_swipe_modifier_mode_title"
-        android:summary="@string/pref_space_swipe_modifier_mode_summary"
-        android:entries="@array/pref_space_swipe_modifier_mode_display_entries"
-        android:entryValues="@array/pref_space_swipe_modifier_mode_values"
-        android:defaultValue="KEY"
-        />
-
-
-
-    </PreferenceCategory>
-
-    -->
 
     <PreferenceCategory
         android:title="@string/category_pref_misc">
@@ -118,7 +89,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Keys">
+        android:title="@string/category_pref_keys">
 
 
     <Preference
@@ -139,7 +110,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="App">
+        android:title="@string/category_pref_app">
 
         <com.mayulive.swiftkeyexi.util.view.ListPreferenceShowSummary
             android:key="@string/pref_app_theme_key"
