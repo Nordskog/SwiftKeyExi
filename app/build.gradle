@@ -13,14 +13,14 @@ android
                         applicationId 'com.mayulive.swiftkeyexi'
                         minSdkVersion 19
                         targetSdkVersion 23
-                        versionCode 4
-                        versionName "1.0.3"
+                        versionCode 5
+                        versionName "1.1.0"
 
 
 
                         //About fields
-                        def SWIFTKEY_SUPORTED_VERSION = "6.6.6.21"
-                        def SWIFTKEY_BETA_SUPORTED_VERSION = "6.6.7.28"
+                        def SWIFTKEY_SUPORTED_VERSION = "6.6.6.26"
+                        def SWIFTKEY_BETA_SUPORTED_VERSION = "6.6.9.19"
                         def APP_AUTHOR_NAME = "Roughy"
 
 
@@ -101,9 +101,12 @@ repositories
 dependencies
         {
             provided 'de.robv.android.xposed:api:82:sources'
-            compile('com.github.kizitonwose.colorpreference:support:1.0.3') {
-                exclude group: 'com.android.support'
-            }
+
+            compile ('com.github.QuadFlask:colorpicker:0.0.13')
+                    {
+                        exclude group: 'com.android.support'
+                    }
+
             compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
             compile "com.android.support:support-v13:$rootProject.supportLibraryVersion"
             compile "com.android.support:design:$rootProject.supportLibraryVersion"
@@ -113,7 +116,6 @@ dependencies
             compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
 
             compile 'com.mayulive.xposed.classhunter:classhunter:1.0.0'
-
 
             provided 'de.robv.android.xposed:api:82'
         }

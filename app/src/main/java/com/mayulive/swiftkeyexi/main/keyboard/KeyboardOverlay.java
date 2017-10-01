@@ -11,12 +11,13 @@ import android.view.View;
 
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 
+import java.util.Collection;
 import java.util.List;
 
 //For debugging key hitboxes
 public class KeyboardOverlay extends View
 {
-	List<KeyDefinition> mKeys = null;
+	Collection<KeyDefinition> mKeys = null;
 
 	public KeyboardOverlay(Context context)
 	{
@@ -33,7 +34,7 @@ public class KeyboardOverlay extends View
 		super(context, attrs, defStyleAttr);
 	}
 
-	public void setDisplayKeys(List<KeyDefinition> keys)
+	public void setDisplayKeys(Collection<KeyDefinition> keys)
 	{
 		this.mKeys = keys;
 		this.setWillNotDraw( mKeys == null );

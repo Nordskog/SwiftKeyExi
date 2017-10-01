@@ -5,7 +5,9 @@ import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -13,14 +15,17 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorSelection;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.pointerInformation;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +46,8 @@ public class SelectionState
 	//////////////////////////////
 	// KEy down and some states
 	//////////////////////////////
+
+	protected static SwipeOverlay mSwipeOverlay = null;
 
 
 	protected static boolean mSpaceModifierTriggered = false;	//swipe-from-space hotkey down
@@ -99,11 +106,15 @@ public class SelectionState
 	protected static Map<Integer,pointerInformation> mPointerInformation = new HashMap<Integer,pointerInformation>();
 
 	protected static PointerState mLastState = PointerState.DEFAULT;
+
+	protected static List<DB_HotkeyMenuItem> mHotkeyMenuItems = new ArrayList<DB_HotkeyMenuItem>();
+
 	//////////
 
 	//Keeping track of settings
 	static long mLastAdditionalKeysUpdateTime = -1;
 	static long mLastHotkeyUpdateTime = -1;
+	static long mLastQuickmenuUpdateTime = -1;
 
 	protected static SpaceModifierBehavior getSpaceModifierBehavior()
 	{
@@ -156,6 +167,16 @@ public class SelectionState
 		 }
 
 		 return false;
+	 }
+
+	 public static int getSwipeOverlayHeight()
+	 {
+		 if (mSwipeOverlay != null)
+		 {
+			 return mSwipeOverlay.getMeasuredHeight();
+		 }
+
+		 return 0;
 	 }
 
 	static void setInternalSelectionValue(int startValue, int endValue, PointerState state)
@@ -464,4 +485,6 @@ public class SelectionState
 		pointer.yCursorBank = pointer.yCursorDistanceChange % Settings.SWIPE_CURSOR_UNITS;
 		pointer.yCursorDistanceChange /= Settings.SWIPE_CURSOR_UNITS;
 	}
+
+
 }

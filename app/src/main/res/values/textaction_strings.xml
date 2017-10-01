@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="textaction_selectall">Select All</string>
-    <string name="textaction_copy">Copy</string>
-    <string name="textaction_cut">Cut</string>
-    <string name="textaction_paste">Paste</string>
-    <string name="textaction_gotoend">Go to End</string>
-</resources>

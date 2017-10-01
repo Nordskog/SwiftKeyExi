@@ -21,8 +21,20 @@ public class SettingsCommons
 		return prefs.edit();
 	}
 
+	public static SharedPreferences.Editor getSharedPreferencesEditor(Context context)
+	{
+		SharedPreferences prefs = context.getSharedPreferences(MODULE_SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+		return prefs.edit();
+	}
+
 	public static SharedPreferences getSharedPreferences(Context context, String preference)
 	{
 		return context.getSharedPreferences(preference, MODE_PRIVATE);
 	}
+
+	public static SharedPreferences getSharedPreferences(Context context)
+	{
+		return context.getSharedPreferences(MODULE_SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+	}
+
 }

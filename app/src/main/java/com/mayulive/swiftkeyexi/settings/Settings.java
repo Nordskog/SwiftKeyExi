@@ -59,9 +59,13 @@ public class Settings
 
 	public static long LAST_HOTKEYS_UPDATE = 0;
 
+	public static long LAST_QUICKMENU_UPDATE = 0;
+
 	public static int QUICK_MENU_HIGHLIGHT_COLOR = 0xFF2d5bc6;
 
 	public static int EMOJI_TEXT_SIZE = 12;
+
+	public static float QUICKMENU_TEXT_SIZE_RATIO = 0.15f;
 
 	public static boolean DISABLE_PUNCTUATION_AUTO_SPACE = false;
 
@@ -115,6 +119,7 @@ public class Settings
 		LAST_EMOJI_UPDATE = prefs.getLong(PreferenceConstants.pref_emoji_last_update_key, 0);
 		LAST_ADDITIONAL_KEYS_UPDATE = prefs.getLong(PreferenceConstants.pref_additional_keys_last_update_key, 0);
 		LAST_HOTKEYS_UPDATE = prefs.getLong(PreferenceConstants.pref_hotkeys_last_update_key, 0);
+		LAST_QUICKMENU_UPDATE = prefs.getLong(PreferenceConstants.pref_quickmenu_last_update_key, 0);
 
 		//Require keyboard reload
 		{
@@ -140,6 +145,8 @@ public class Settings
 		DISABLE_PERIOD_CLICK = prefs.getBoolean(PreferenceConstants.pref_disable_period_click_key, false);
 
 		QUICK_MENU_HIGHLIGHT_COLOR = prefs.getInt(PreferenceConstants.pref_quick_menu_color_key, 0xFF2d5bc6);
+		QUICKMENU_TEXT_SIZE_RATIO = prefs.getFloat(PreferenceConstants.pref_hotkey_menu_text_size_key, 0.15f);
+
 
 		checkSettingRequirements();
 	}

@@ -7,6 +7,7 @@ import android.provider.BaseColumns;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -302,7 +303,7 @@ public class DatabaseMethods
 	}
 
 	//Updates if ID is != -1, otherwise adds as new item
-	public static void updateAllItems(DatabaseWrapper db, ArrayList<? extends DatabaseItem> items, TableInfo tableInfo, boolean createIfNotFound)
+	public static void updateAllItems(DatabaseWrapper db, List<? extends DatabaseItem> items, TableInfo tableInfo, boolean createIfNotFound)
 	{
 		db.beginTransaction();
 

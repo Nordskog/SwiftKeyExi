@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed;
 
+import android.content.Context;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -10,10 +11,13 @@ import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
+import com.mayulive.swiftkeyexi.main.keyboard.KeyboardOverlay;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 /**
@@ -26,6 +30,8 @@ public class OverlayCommons
 
 	public static RelativeLayout mKeyboardOverlay = null;
 
+
+
 	public static String mLastKeyDisplayed = null;
 
 	private static ArrayList<TextView> mPopupViews = new ArrayList<>();
@@ -36,6 +42,8 @@ public class OverlayCommons
 	private static int mPopupPaddingY = 0;
 
 	private static HotkeyPanel mHotkeyMenuPanel = null;
+
+	private static KeyboardOverlay mDebugOverlay = null;
 
 	public static void setPopupDimensions(float textSize, int paddingX, int paddingY)
 	{
@@ -185,6 +193,8 @@ public class OverlayCommons
 		mLastKeyDisplayed = null;
 	}
 
+
+
 	public static void handleDisplayHotkeyMenuTouch(float x, float y, float viewHeight)
 	{
 
@@ -195,8 +205,9 @@ public class OverlayCommons
 		}
 	}
 
+
 	//Full-screen coordinates
-	public static void displayHotkeyMenu(float fromBottom, float coverTopFromBottom, float xCenter)
+	public static void displayHotkeyMenu(float fromBottom, int height, float xCenter, List<? extends HotkeyPanel.HotkeyMenuItem> items)
 	{
 		if (mKeyboardOverlay == null)
 		{
@@ -204,21 +215,28 @@ public class OverlayCommons
 			return;
 		}
 
-		mHotkeyMenuPanel = new HotkeyPanel( mKeyboardOverlay.getContext(), Settings.QUICK_MENU_HIGHLIGHT_COLOR );
 
-		//Max radius calculated from height. Actual panel will take care of horizontal fitting
-		float maxRadius_Y = coverTopFromBottom - fromBottom;
+		//if (mHotkeyMenuPanel == null)
+		{
+			mHotkeyMenuPanel = new HotkeyPanel( mKeyboardOverlay.getContext(), Settings.QUICK_MENU_HIGHLIGHT_COLOR );
+			RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+			params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			mHotkeyMenuPanel.setLayoutParams(params);
+		}
+
+
+		mHotkeyMenuPanel.setHighlightColor(Settings.QUICK_MENU_HIGHLIGHT_COLOR);
+		mHotkeyMenuPanel.setItems(items);
+
 		float centerRatio = mKeyboardOverlay.getMeasuredWidth() != 0 ? xCenter /  mKeyboardOverlay.getMeasuredWidth() : 0.5f;
 
 		mHotkeyMenuPanel.setHorizontalCenterRadio( centerRatio );
-		mHotkeyMenuPanel.setTargetRadius( maxRadius_Y);
+		//mHotkeyMenuPanel.setTargetRadius( maxRadius_Y);
 		mHotkeyMenuPanel.setBottomMargin(fromBottom);
-		mHotkeyMenuPanel.setCoverTop(mKeyboardOverlay.getMeasuredHeight() - coverTopFromBottom);
+		mHotkeyMenuPanel.setCoverTop(0);
+		mHotkeyMenuPanel.setTextSizeRatio(Settings.QUICKMENU_TEXT_SIZE_RATIO);
 
 		///////////////////
-
-		RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		mHotkeyMenuPanel.setLayoutParams(params);
 
 		mKeyboardOverlay.addView(mHotkeyMenuPanel);
 	}
@@ -226,6 +244,39 @@ public class OverlayCommons
 	public static HotkeyPanel getHotkeyPanel()
 	{
 		return mHotkeyMenuPanel;
+	}
+
+	public static void clearDebugOverlay()
+	{
+		if (mKeyboardOverlay != null)
+		{
+			if (mDebugOverlay != null)
+			{
+				mKeyboardOverlay.removeView(mDebugOverlay);
+				mDebugOverlay = null;
+			}
+		}
+	}
+
+	public static void displayDebugHithoxes(Context context,int height)
+	{
+		clearDebugOverlay();
+		if (mKeyboardOverlay == null)
+		{
+			Log.e(LOGTAG, "Strange, overlay was null");
+			return;
+		}
+
+
+		mDebugOverlay = new KeyboardOverlay(context);
+		mDebugOverlay.setDisplayKeys( KeyCommons.getHitboxMap().values() );
+
+		RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		mDebugOverlay.setLayoutParams(params);
+
+		mKeyboardOverlay.addView(mDebugOverlay);
+
 	}
 
 

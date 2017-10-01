@@ -7,6 +7,9 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
 
+import java.io.ByteArrayInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +17,11 @@ import java.util.Set;
 
 public class KeyboardMethods
 {
+	public enum PunctuationRuleMode
+	{
+		STOCK, MODIFIED
+	}
+
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardMethods.class);
 
 	protected static Object mKeyboardLoadObject = null;
@@ -22,6 +30,8 @@ public class KeyboardMethods
 	protected static boolean mLayoutIsWeird = false;
 	protected static boolean mLayoutIsExtendedPredictions = false;	//Assume false if we have a hook failure or something
 	protected static boolean mIsSymbols = false;
+
+	protected static PunctuationRuleMode mActivePunctuationMode = PunctuationRuleMode.STOCK;
 
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
 
@@ -127,6 +137,51 @@ public class KeyboardMethods
 			}
 		}
 		mKeyboardReloadLastRequested = time;
+	}
+
+	public static boolean loadPunctuationRules(PunctuationRuleMode mode, boolean force)
+	{
+		//Don't bother changing if mode already matches
+		if (mode != mActivePunctuationMode || force)
+		{
+			mActivePunctuationMode = mode;
+
+			//PunctuatorImpl instance must be present
+			if (KeyboardClassManager.punctuatorImplInstance != null)
+			{
+				try
+				{
+					KeyboardClassManager.punctuatorImplClass_ClearRulesMethod.invoke(KeyboardClassManager.punctuatorImplInstance);
+
+					Object[] args = new Object[1];
+
+					switch(mActivePunctuationMode)
+					{
+						case STOCK:
+						{
+							args[0] = new ByteArrayInputStream( KeyboardStrings.PUNCTUATION_STOCK_RULES.getBytes(StandardCharsets.UTF_8.name()));
+							break;
+						}
+						case MODIFIED:
+						{
+							args[0] = new ByteArrayInputStream( KeyboardStrings.PUNCTUATION_MODIFIED_RULES.getBytes(StandardCharsets.UTF_8.name()));
+							break;
+						}
+					}
+
+					KeyboardClassManager.punctuatorImplClass_AddRulesMethod.invoke(KeyboardClassManager.punctuatorImplInstance, args);
+
+				}
+				catch (Throwable ex)
+				{
+					Log.i(LOGTAG, "Something went wrong updating punctuation rules.");
+					ex.printStackTrace();
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 

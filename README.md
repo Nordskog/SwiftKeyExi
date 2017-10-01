@@ -40,7 +40,7 @@ A short list of features:
 
 * Rovo89's Xposed Framework
 
-* kizitonwose's [ColorPreference](https://github.com/kizitonwose/colorpreference)
+* QuadFlask's [Color Picker](https://github.com/QuadFlask/colorpicker)
 
 * [FreeType](https://www.freetype.org/)
 

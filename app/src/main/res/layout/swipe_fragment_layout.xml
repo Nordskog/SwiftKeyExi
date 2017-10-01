@@ -23,7 +23,7 @@
 
             <TextView
                 style="@style/SectionTitle"
-                android:text="@string/settings_title" />
+                android:text="@string/sensitivity_title" />
             <FrameLayout style="@style/SectionSeparator"
                 />
 
@@ -158,8 +158,29 @@
             <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
                 style="@style/WidthLimitedContainer">
 
-                <include layout="@layout/swipe_mode_item"
-                         android:id="@+id/space_modifier_select_mode_menu"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5">
+
+                    <include layout="@layout/swipe_mode_item"
+                             android:id="@+id/space_modifier_select_mode_menu"/>
+
+                    <android.support.v7.widget.AppCompatImageView
+                                android:id="@+id/quick_menu_config_button"
+                                android:layout_width="50dp"
+                                 android:layout_height="50dp"
+                                 android:adjustViewBounds="true"
+                                 android:scaleType="fitCenter"
+                                app:srcCompat="@drawable/settings_icon"
+                        >
+
+
+                    </android.support.v7.widget.AppCompatImageView>
+
+
+                </FrameLayout>
+
                 <include layout="@layout/swipe_mode_item"
                          android:id="@+id/space_modifier_select_mode_key"/>
 

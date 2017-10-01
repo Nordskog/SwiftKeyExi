@@ -42,11 +42,25 @@ public class KeyHandlers
 		if (hitbox == null)	//No hitbox, no key we care about
 			return;
 
+		//Since this was moved to hook a method that gets called multiple times for every key,
+		//we started occasionally getting some extra bogus keys.
+		//Filter any keys that are 0,0,0,0, or that span the entire screen.
+		if (hitbox.top == 0 && hitbox.bottom == 1)
+			return;
+		if (hitbox.left == 0 && hitbox.right == 1)
+			return;
+		if (hitbox.left == 0 &&
+				hitbox.top == 0 &&
+				hitbox.right == 0 &&
+				hitbox.bottom == 0)
+			return;
+
 		KeyType type = KeyType.getType(tag);
 
 		if (DebugSettings.DEBUG_KEYS)
 		{
 			Log.i(LOGTAG, "Key defined. Tag: "+tag);
+			Log.i(LOGTAG, "Hitbox. Tag: "+hitbox);
 		}
 
 		if (KeyType.SPACE == type)

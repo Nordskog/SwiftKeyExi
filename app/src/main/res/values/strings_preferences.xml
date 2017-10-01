@@ -10,13 +10,8 @@
     <string name="category_pref_emoji_panel">Emoji Panel</string>
     <string name="category_pref_flow_suggestions">Flow &amp; Suggestions </string>
     <string name="category_pref_misc">Misc</string>
-
-
-    <!-- Quick menu color  -->
-    <string name="pref_quick_menu_color_key">pref_quick_menu_color</string>
-    <string name="pref_quick_menu_color_title">Quick-Menu color</string>
-    <string name="pref_quick_menu_color_summary">Highlight color</string>
-
+    <string name="category_pref_app">App</string>
+    <string name="category_pref_keys">Keys</string>
 
     <!-- App Theme -->
     <string name="pref_app_theme_key">pref_app_theme</string>
@@ -135,6 +130,8 @@
 
     <string name="pref_about_key">pref_about</string>
     <string name="pref_about_title">About</string>
+
+    <string name="pref_hotkey_menu_text_size_key">pref_hotkey_menu_text_size</string>
 
 
 

@@ -59,12 +59,12 @@ public class SelectionHooks
 							int currentPosition = CodeUtils.findViewPosition(targetParent, target);
 
 							ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-							SwipeOverlay overlay = new SwipeOverlay(thiz.getContext());
-							overlay.setLayoutParams(params);
+							SelectionState.mSwipeOverlay = new SwipeOverlay(thiz.getContext());
+							SelectionState.mSwipeOverlay.setLayoutParams(params);
 
 							targetParent.removeView(target);
-							overlay.addView(target);
-							targetParent.addView(overlay,currentPosition);
+							SelectionState.mSwipeOverlay.addView(target);
+							targetParent.addView(SelectionState.mSwipeOverlay,currentPosition);
 						}
 					}
 					catch (Throwable ex)
@@ -217,6 +217,7 @@ public class SelectionHooks
 						{
 							SelectionSetup.populateActions();
 							SelectionSetup.populateKeys();
+							SelectionSetup.populateQuickMenu();
 						}
 
 					});

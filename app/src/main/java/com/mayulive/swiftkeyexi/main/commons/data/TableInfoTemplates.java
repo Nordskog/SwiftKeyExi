@@ -29,6 +29,9 @@ public class TableInfoTemplates
 	protected static final String ADDITIONAL_DELETE_KEYS_TABLE_NAME = "delete_keys";
 	protected static final String ADDITIONAL_SYMBOL_KEYS_TABLE_NAME = "symbol_keys";
 
+	protected static final String HOTKEY_MENU_ITEMS_TABLE_NAME = "hotkey_menu_items";
+
+
 	public static TableInfo MODIFIER_KEY_TABLE_INFO = new TableInfo(
 			new DB_ModifierKeyItem(),
 			DB_ModifierKeyItem.PROJECTION,
@@ -90,6 +93,13 @@ public class TableInfoTemplates
 			DB_KeyDefinition.PROJECTION,
 			DB_KeyDefinition.DEFINITION,
 			ADDITIONAL_SYMBOL_KEYS_TABLE_NAME
+	);
+
+	public static TableInfo HOTKEY_MENU_ITEMS_TABLE_INFO = new TableInfo(
+			new DB_HotkeyMenuItem(),
+			DB_HotkeyMenuItem.PROJECTION,
+			DB_HotkeyMenuItem.DEFINITION,
+			HOTKEY_MENU_ITEMS_TABLE_NAME
 	);
 
 }

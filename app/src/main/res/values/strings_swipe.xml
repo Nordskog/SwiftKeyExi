@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="settings_title">Sensitivity</string>
+    <string name="sensitivity_title">Sensitivity</string>
     <string name="swipe_mode_title">Swipe Mode</string>
     <string name="selection_mode_title">Selection Mode</string>
     <string name="space_up_swipe_mode_title">Space Up-Swipe Mode</string>

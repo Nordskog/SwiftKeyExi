@@ -45,7 +45,7 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 
 	public enum DatabaseOperation
 	{
-		ADD, REMOVE, UPDATE, CLEAR
+		ADD, REMOVE, UPDATE, CLEAR, UPDATE_ALL
 	}
 
 	private class PendingOperation
@@ -155,6 +155,11 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 					mPendingOperations.add(new PendingOperation(DatabaseOperation.CLEAR, null));
 					break;
 				}
+				case UPDATE_ALL:
+				{
+					mPendingOperations.add(new PendingOperation(DatabaseOperation.UPDATE_ALL, null));
+					break;
+				}
 			}
 		}
 		else if (force || mMode.performDbOp())
@@ -181,6 +186,11 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 					case CLEAR:
 					{
 						dbClear();
+						break;
+					}
+					case UPDATE_ALL:
+					{
+						dbUpdateAll();
 						break;
 					}
 				}
@@ -244,11 +254,17 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 	//Bad things will probably happen if item is not part of table
 	//Not sure if I should even allow this.
 	//Could check first, but would be somewhat expensive.
-	public int dbUpdate(T item)
+	private int dbUpdate(T item)
 	{
 		DatabaseMethods.updateItem(mDbWrap, item, mInfo, true);
 		return 0;
 	}
+
+	private void dbUpdateAll()
+	{
+		DatabaseMethods.updateAllItems(mDbWrap, this, getTableInfo(), false);
+	}
+
 
 	////////////////////////////////////////////////////
 	////////////////////////////////////////////////////
@@ -348,8 +364,12 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 		return removedItem;
 	}
 
-	//////////////
+	public void updateAll()
+	{
+		performDbOperation(DatabaseOperation.UPDATE_ALL, null, false);
+	}
 
+	//////////////
 
 	public void startBatchEdit()
 	{

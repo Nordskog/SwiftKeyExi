@@ -1,6 +1,9 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -11,6 +14,7 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
@@ -19,12 +23,16 @@ import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
+import java.io.ByteArrayInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +83,6 @@ public class KeyboardHooks
 					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 					cover.setLayoutParams(params);
 					view.addView(cover);
-
 					OverlayCommons.mKeyboardOverlay = cover;
 				}
 				catch (Throwable ex)
@@ -117,6 +124,13 @@ public class KeyboardHooks
 						Settings.request_KEYBOARD_RELOAD = false;
 						KeyboardMethods.requestKeyboardReload();
 					}
+				}
+
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					if (DebugSettings.DEBUG_HITBOXES)
+						OverlayCommons.displayDebugHithoxes(ContextUtils.getHookContext(), SelectionState.getSwipeOverlayHeight());
 				}
 
 			});
@@ -233,53 +247,21 @@ public class KeyboardHooks
 			});
 	}
 
-	private static List<XC_MethodHook.Unhook> hookPunctuationAutoSpace(PackageTree param)
+	private static XC_MethodHook.Unhook hookPunctuationRules()
 	{
-
-		//The putuator takes a few string inputs and throws them at a native method.
-		//It is only called when triggering a single key.
-		//Most keys will just get you INS_PREDICTION,
-		//but puncuation will call INS_SPACE (or the other one) too,
-		//and BACKSPACE first if adding multiple dots.
-		//The retuned actions are executed in order.
-		//The rules applied are loaded from punctuation_default.json in res/raw,
-		//so modifying them there for more exotic results is also a possibility.
-		// 0       BACKSPACE,
-		// 1       INS_SPACE,
-		// 2       INS_LANG_SPECIFIC_SPACE,
-		// 3       INS_PREDICTION,
-		// 4       INS_FOCUS,
-		// 5       DUMB_MODE
-
-		//For the time being, if there are more than 1 actions, replace with INS_FOCUS.
-
-		ArrayList<XC_MethodHook.Unhook> hooks = new ArrayList<>();
-
-
-		for (final Method method : KeyboardClassManager.punctuatorImplClass_PunctuateMethod)
+		return XposedBridge.hookMethod(KeyboardClassManager.punctuatorImplClass_AddRulesMethod, new XC_MethodHook()
 		{
-			hooks.add(XposedBridge.hookMethod(method, new XC_MethodHook()
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
-				{
-					if (Settings.DISABLE_PUNCTUATION_AUTO_SPACE)
-					{
-						int[] ret = (int[])param.getResult();
-						if (ret  != null)
-						{
-							if (ret.length > 1)
-							{
-								param.setResult( new int[]{4} );
-							}
-						}
-					}
-				}
-			}));
-		}
+				//This method is only called when the app is launched.
+				//I guess punctuation rules never really change between languages.
+				//Since our settings won't be loaded at this point anyway, we deal with this
+				//in a keyboardLoded callback instead.
+				KeyboardClassManager.punctuatorImplInstance = param.thisObject;
+			}
 
-		return hooks;
-
+		});
 	}
 
 	public static boolean HookAll(final PackageTree lpparam)
@@ -299,7 +281,7 @@ public class KeyboardHooks
 
 				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
 				{
-					Hooks.baseHooks_punctuationSpace.addAll( hookPunctuationAutoSpace(lpparam) );
+					Hooks.baseHooks_punctuationSpace.add( hookPunctuationRules() );
 				}
 
 				if (Hooks.baseHooks_invalidateLayout.isRequirementsMet())
@@ -318,6 +300,27 @@ public class KeyboardHooks
 					Hooks.baseHooks_layoutChange.add( hookLayoutChanged(lpparam) );
 					Hooks.baseHooks_layoutChange.add( hookLayoutInvalidated(lpparam) );
 				}
+
+				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+				{
+					@Override
+					public void beforeKeyboardOpened()
+					{
+						KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
+								KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
+								false );
+
+
+					}
+
+					@Override
+					public void beforeKeyboardClosed() {}
+					@Override
+					public void keyboardInvalidated() {}
+					@Override
+					public void afterKeyboardConfigurationChanged() {}
+				});
+
 			}
 		}
 		catch(Exception ex)

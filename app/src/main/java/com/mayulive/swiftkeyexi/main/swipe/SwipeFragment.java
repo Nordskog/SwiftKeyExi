@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.main.swipe;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,10 @@ import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.MainActivity;
+import com.mayulive.swiftkeyexi.main.settings.AboutFragment;
+import com.mayulive.swiftkeyexi.main.settings.SettingsActivity;
+import com.mayulive.swiftkeyexi.main.swipe.quickmenu.QuickMenuActivity;
+import com.mayulive.swiftkeyexi.main.swipe.quickmenu.QuickMenuConfigFragment;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.util.MathUtils;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
@@ -99,14 +104,8 @@ public class SwipeFragment extends Fragment
 	boolean mSelectionShiftDeleteState = true;
 	boolean mSelectionTwoFingerState = true;
 
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	private void setupButtons()
 	{
-
-		// Inflate the layout for this fragment
-		mRootView = inflater.inflate(R.layout.swipe_fragment_layout, container, false);
-
 		/////////////////////////
 		//Buttons
 		/////////////////////////
@@ -120,6 +119,27 @@ public class SwipeFragment extends Fragment
 				((MainActivity)getActivity()).displayInputTest();
 			}
 		});
+
+		View quickMenuConfigButton = mRootView.findViewById(R.id.quick_menu_config_button);
+		quickMenuConfigButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(SwipeFragment.this.getContext(), QuickMenuActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+
+		// Inflate the layout for this fragment
+		mRootView = inflater.inflate(R.layout.swipe_fragment_layout, container, false);
+
+		setupButtons();
 
 		//////////////////////////
 		//Swipe and select modes
