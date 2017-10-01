@@ -6,9 +6,10 @@ Dates are in the format dd/mm/yyyy
 ### Fixed
 - Disable auto-space after punctuation accidentally removing all punctuation rules
 - Numerous style and theming issues
+- Swipe-to-hotkey sometimes not working properly
 
 ### Added
-- Ability to configure Quick-Menu options
+- Ability to configure the Quick-Menu 
 - Go-to-start text action
 
 ## [1.0.3] - 10-09-2017
