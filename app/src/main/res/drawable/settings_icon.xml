@@ -6,7 +6,7 @@
 
 
     <path
-        android:fillColor="?attr/editTextColor"
+        android:fillColor="#FFFFFF"
 
         android:pathData="M 5 5 L 5 19 L 19 19 L 19 5 Z"/>
 
