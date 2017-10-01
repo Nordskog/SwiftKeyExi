@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [1.1.0] - 01-10-2017
+### Fixed
+- Disable auto-space after punctuation accidentally removing all punctuation rules
+- Numerous style and theming issues
+
+### Added
+- Ability to configure Quick-Menu options
+- Go-to-start text action
+
 ## [1.0.3] - 10-09-2017
 ### Fixed
 - Compatibility targeting Swiftkey Beta 6.6.7.28
