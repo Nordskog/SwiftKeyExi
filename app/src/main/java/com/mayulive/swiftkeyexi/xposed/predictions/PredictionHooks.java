@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.predictions;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -86,8 +87,11 @@ public class PredictionHooks
 						}
 					}
 
+					//Method changed from single candidate to list.
+					boolean returnList = ((Method)param.method).getReturnType() == List.class;
+
 					PredictionCommons.mLastCandidateResultType = param.args[PredictionClassManager.UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition];
-					PredictionHandlers.handleGetTopCandidateHook(param);
+					PredictionHandlers.handleGetTopCandidateHook(param, returnList);
 				}
 				catch (Throwable ex)
 				{

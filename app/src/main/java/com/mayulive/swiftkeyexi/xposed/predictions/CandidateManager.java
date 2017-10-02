@@ -112,21 +112,24 @@ public class CandidateManager
 
 	public static String getCandidateText(Object candidate)
 	{
+
+		String returnString = "";
+
 		if (candidate == null)
-			return "";
+			return returnString;
 
 		try
 		{
 			//Candidate toString implementation removed, this added instead.
 			if (candidate_getCorrectionSpanReplacementText != null)
-				return (String)candidate_getCorrectionSpanReplacementText.invoke(candidate);
+				returnString = (String)candidate_getCorrectionSpanReplacementText.invoke(candidate);
 		}
 		catch (Exception ex)
 		{
-			return "";
+			return returnString;
 		}
 
-		return candidate.toString();
+		return returnString;
 	}
 
 	public static WrappedCandidate getWrappedCandidate(Object key)

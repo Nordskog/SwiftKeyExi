@@ -376,7 +376,8 @@ public class PredictionCommons
 		}
 		catch (Exception ex)
 		{
-			//I can imagine locale and stuff messing this up, better to let them have the shortcut as-is then.
+			//I can imagine locale and stuff messing this up, better to let them have the shortcut as-is then
+			//Log.e(LOGTAG, "Something went wrong trying to match case");
 		}
 
 		return matchMe;
@@ -447,6 +448,10 @@ public class PredictionCommons
 				if ( PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow_success  )
 					shortcut = getKeyItems(lastInput);
 
+				//Beyond this, lastInput is only used to match text case.
+				//It may be an empty string, in which case we'll be inserting based on teh candidate.
+				if (lastInput == null || lastInput.isEmpty())
+					lastInput = CandidateManager.getCandidateText(primaryCandidate);
 
 				if ( (shortcut == null || shortcut.get_items().isEmpty()) )
 				{

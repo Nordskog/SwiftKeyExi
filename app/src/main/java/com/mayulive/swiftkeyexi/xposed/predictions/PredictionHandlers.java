@@ -505,7 +505,7 @@ public class PredictionHandlers
 		PredictionCommons.handleCandidateInsertionHook(candidatesList, true);
 	}
 
-	public static void handleGetTopCandidateHook(XC_MethodHook.MethodHookParam param)
+	public static void handleGetTopCandidateHook(XC_MethodHook.MethodHookParam param, boolean returnList)
 	{
 
 
@@ -555,7 +555,11 @@ public class PredictionHandlers
 			if (PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow)
 			{
 				PredictionCommons.handleCandidateInsertionHook(candidatesList ,false);
-				param.setResult(candidatesList.get(0));
+
+				if (returnList)
+					param.setResult(candidatesList);
+				else
+					param.setResult(candidatesList.get(0));
 			}
 			else
 			{
@@ -588,7 +592,16 @@ public class PredictionHandlers
 					// and doesn't pass through the handle candidate method.
 					if (insertedCandidate != null)
 					{
-						param.setResult(insertedCandidate);
+						if (returnList)
+						{
+							ArrayList<Object> insertedCandidateList = new ArrayList<>();
+							insertedCandidateList.add(insertedCandidate);
+							param.setResult(insertedCandidateList);
+						}
+						else
+						{
+							param.setResult(insertedCandidate);
+						}
 
 						if (DebugSettings.DEBUG_PREDICTIONS)
 						{
