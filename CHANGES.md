@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [1.1.1] - 02-10-2017
+### Fixed
+- Crash when flow shortcuts enabled
+
 ## [1.1.0] - 01-10-2017
 ### Fixed
 - Disable auto-space after punctuation accidentally removing all punctuation rules
