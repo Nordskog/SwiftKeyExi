@@ -323,7 +323,16 @@ public class FontLoader
 
 		//Emoji are... pretty much always full-width characters,
 		// so if width is > 1.5x height, it's rendering as multiple chars.
-		return !( ((float)bounds.width())  >  ((float)bounds.height()) * 1.5f );
+		boolean result = !( ((float)bounds.width())  >  ((float)bounds.height()) * 1.5f );
+
+		//But this may be a non-emoji character, in which case we height/width will differ
+		if (!result)
+		{
+			if (FontLoader.containsEmoji(text) != GLYPH_TYPE.BITMAP)
+				return true;
+		}
+
+		return result;
 	}
 
 
