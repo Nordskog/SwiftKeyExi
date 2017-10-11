@@ -36,6 +36,20 @@ enum GlyphType
     BITMAP = 2
 };
 
+const uint32_t  VARIANT_SELECTOR_START = 0xFE00;
+const uint32_t VARIANT_SELECTOR_END = 0xFE0F;
+
+const uint32_t MONGOLIAN_VARIANT_SELECTOR_START = 0x180B;
+const uint32_t MONGOLIAN_VARIANT_SELECTOR_END = 0x180D;
+
+bool isVariantSelector(uint32_t charcode)
+{
+    return (
+            (charcode >= VARIANT_SELECTOR_START && charcode <= VARIANT_SELECTOR_END) ||
+            (charcode >= MONGOLIAN_VARIANT_SELECTOR_START && charcode <= MONGOLIAN_VARIANT_SELECTOR_END)
+    );
+}
+
 int loadFont(const char* path)
 {
     FT_Face face;
@@ -73,6 +87,10 @@ int loadFont(const char* path)
 //Returns 1 if glyph found, 2 if glyph is bitmap. 0 if nothing found.
 GlyphType findGlyph(uint32_t charcode)
 {
+    //Variant selectors don't always have renderable equivalents (sometimes do though).
+    if (isVariantSelector(charcode))
+        return GlyphType::NORMAL;
+
     for (int i = 0; i < faces.size(); i++)
     {
         uint glyph_index = FT_Get_Char_Index(faces[i], charcode);
@@ -154,8 +172,7 @@ extern "C"
         }
     }
 
-
-    JNIEXPORT jint JNICALL Java_com_mayulive_swiftkeyexi_util_FontLoader_nGetGlyphInfo(JNIEnv* env, jobject  thiz, jbyteArray string)
+    JNIEXPORT jint JNICALL Java_com_mayulive_swiftkeyexi_util_FontLoader_nGetGlyphInfo(JNIEnv* env, jobject  thiz, jbyteArray string, jboolean returnOnUnrenderable)
     {
         if (libraryInit)
         {
@@ -180,6 +197,14 @@ extern "C"
                 reverseChar(&buffer);
 
                 GlyphType value = findGlyph(buffer);
+
+                //Sometimes we just want to check if there are any bitmap characters,
+                //other times if /everything/ is renderable
+                if (returnOnUnrenderable && value == GlyphType::NONE)
+                {
+                    topState = GlyphType::NONE;
+                    break;
+                }
 
                 if (value>topState)
                     topState = value;
