@@ -209,10 +209,8 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 				NormalEmojiItem emojiView = new NormalEmojiItem(context);
 				//emojiView.setRenderImmediate(true);
 
-				//For some reason they get cut off if they have padding here, but display correctly.
-				//Vice-versa everywhere else. I figured it was because tablayout was't centering
-				//them vertically, but it's fine in the config app, even with the padding. I haven't a clue.
-				emojiView.setPadding(emojiView.getPaddingLeft(),0,emojiView.getPaddingRight(),0);
+				emojiView.setPadding(0,0,0,0);
+
 
 				emojiView.setSingleLine(true);
 

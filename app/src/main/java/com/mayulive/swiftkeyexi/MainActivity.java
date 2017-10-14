@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
+import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
@@ -52,9 +53,31 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		mDbWrap = DatabaseHolder.getWrapped(this);
 	}
 
+	//
+	private void handleEmojiUpdate()
+	{
+
+		//Check what version of emojis we are using, currently have Marshmallow and Nougat.
+		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+		int emojiVersion = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
+
+		if (ExiModule.needsEmojiUpdate(emojiVersion))
+		{
+			//Update emoji
+			int newVersion = ExiModule.update(this,mDbWrap);
+
+			//Update emoji version pref
+			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+			editor.putInt(PreferenceConstants.status_api_version_emoji, newVersion);
+			editor.apply();
+
+		}
+	}
+
 	private void handleFirstLaunch()
 	{
 		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 
 		boolean isFirstLaunch = prefs.getBoolean(PreferenceConstants.status_first_launch_key, true);
 
@@ -63,14 +86,18 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 
 		if (isFirstLaunch)
 		{
+
+
+			//Proper emoji will be populated anyway if first launch
+			editor.putInt(PreferenceConstants.status_api_version_emoji, ExiModule.getEmojiVersionForSDK());
+			editor.apply();
+
 			if (mDbWrap != null)
 			{
 				Log.i(LOGTAG, "Loading default values");
 				ExiModule.initialize(this.getApplicationContext(),mDbWrap);
 
 				//Let hook-side know that data has changed
-				SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
-
 				long currentTime = System.currentTimeMillis();
 				editor.putLong(PreferenceConstants.pref_emoji_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_dictionary_last_update_key, currentTime);
@@ -85,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 				Log.e(LOGTAG, "Tried to perform first-time setup, but the database was not initialized");
 			}
 
-			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+
 			editor.putBoolean(PreferenceConstants.status_first_launch_key, false);
 			editor.apply();
 		}
@@ -94,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		{
 			//Emoji that were previously not renderable may now be so, and vice versa. TODO Carefully reinit stock panels here.
 			//TODO Should probably allow them to be added to panels and just marked as do-not-display instead.
-			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 			editor.putInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
 			editor.apply();
 		}
@@ -137,12 +163,13 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		////////////////////
 		//EmojiResources.loadResources(this);
 
-		Typeface simpleFont = Typeface.createFromAsset(this.getAssets(), "fonts/NotoEmoji_der.ttf");
+		Typeface simpleFont = Typeface.createFromAsset(this.getAssets(), "fonts/NotoEmoji_der_nougat.ttf");
 		FontLoader.initFontLoader(getFontPathArray());
 		NormalEmojiItem.loadAssets(simpleFont);
 
 		//Load defaults on first launch
 		handleFirstLaunch();
+		handleEmojiUpdate();
 
 		//Child fragments are re-instanced inside of super,
 		//so any data they depend on, such as the database,

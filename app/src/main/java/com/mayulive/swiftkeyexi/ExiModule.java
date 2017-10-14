@@ -1,21 +1,29 @@
 package com.mayulive.swiftkeyexi;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 
+import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_ModifierKeyItem;
 import com.mayulive.swiftkeyexi.database.DatabaseMethods;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
+import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
 import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelTemplates;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.ADDITIONAL_DELETE_KEYS_TABLE_INFO;
 import static com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates.ADDITIONAL_SHIFT_KEYS_TABLE_INFO;
@@ -106,6 +114,125 @@ public class ExiModule
 		}
 	}
 
+	public static boolean needsEmojiUpdate(int currentEmoji)
+	{
+		int currentSDK = Build.VERSION.SDK_INT;
+
+		//If emoji are below N, and we are currently above M, nuke things.
+		if (currentEmoji < Build.VERSION_CODES.N && currentSDK > Build.VERSION_CODES.M)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	//Deletes and re-created the emoji panels, including new emoji and panels
+	//Returns the version of the new emoji
+	public static int update(Context context, WrappedDatabase db)
+	{
+		removeEmoji(db);
+		loadDefaults(context, db, ModuleDatabaseType.EMOJI_KEYBOARD);
+		loadDefaults(context, db, ModuleDatabaseType.EMOJI_DICTIONARY);
+
+		return getEmojiVersionForSDK();
+	}
+
+	public static int getEmojiVersionForSDK()
+	{
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
+			return Build.VERSION_CODES.M;
+		else
+			return Build.VERSION_CODES.N;
+	}
+
+	public static ArrayList<DB_EmojiPanelItem> getEmojiTemplatesForSDK(int sdk)
+	{
+		switch(sdk)
+		{
+			case Build.VERSION_CODES.N:
+				return FancyEmojiPanelTemplates.getEmojiPanelTemplates();
+			default:
+				return EmojiPanelTemplates.getEmojiPanelTemplates();
+		}
+	}
+
+	public static void removeEmoji(WrappedDatabase db)
+	{
+		//The template panels can't be modified, and even have a key set, so they'll be fine.
+		//The editable panels are a bit more of a headache, and we have to be careful.
+		TableList<DB_EmojiPanelItem> dictionaryPanels = new TableList<>(db, TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO);
+		TableList<DB_EmojiPanelItem> keyboardPanels = new TableList<>(db, TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO);
+
+		int templateCount = 0;
+		int deleteCount = 0;
+		//For each existing template panel whose source is app, find any similar looking panels and remove them.
+		ListIterator<DB_EmojiPanelItem> templateIterator = dictionaryPanels.listIterator();
+		while(templateIterator.hasNext())
+		{
+			DB_EmojiPanelItem templatePanel  =templateIterator.next();
+			if (templatePanel.get_source() == EmojiPanelItem.PANEL_SOURCE.TEMPLATE)
+			{
+				templateCount++;
+
+				ListIterator<DB_EmojiPanelItem> keyboardIterator = keyboardPanels.listIterator();
+
+				while(keyboardIterator.hasNext())
+				{
+					DB_EmojiPanelItem keyboardPanel = keyboardIterator.next();
+					int countDiff = Math.abs( templatePanel.get_items().size() - keyboardPanel.get_items().size() );
+					if (countDiff <= 5)
+					{
+						//User may have added a few extra emoji at the bottom while testing stuff.
+						//Removing these is acceptable
+						//Compare all but the last... 10 characters?
+						int diffCount = 0;
+						for (int i = 0; i < keyboardPanel.get_items().size() - 10; i++)
+						{
+							if ( !keyboardPanel.get_items().get(i).get_text().equals( templatePanel.get_items().get(i) .get_text() ) )
+							{
+								diffCount++;
+								if (diffCount > 5)
+									break;
+							}
+						}
+
+						if (diffCount < 5)
+						{
+							keyboardIterator.remove();
+							deleteCount++;
+						}
+					}
+				}
+
+				//Finally delete the template
+				templateIterator.remove();
+
+			}
+
+		}
+
+		//To make life easier, reset recents too
+		ListIterator<DB_EmojiPanelItem> keyboardIterator = keyboardPanels.listIterator();
+		while(keyboardIterator.hasNext())
+		{
+			DB_EmojiPanelItem keyboardPanel = keyboardIterator.next();
+			if(keyboardPanel.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
+			{
+				keyboardIterator.remove();
+				break;
+			}
+		}
+
+		//If we didn't delete any existing panels, then user has either modified everything or
+		//deleted all the panels. Probably shouldn't add anytihng. Let them do it themselves.
+		int panelCountDiff = Math.abs( templateCount -deleteCount);
+		if (panelCountDiff < 2)
+		{
+
+		}
+	}
+
 	public static void clear(WrappedDatabase db)
 	{
 		for (ModuleDatabaseType type : ModuleDatabaseType.values())
@@ -132,34 +259,61 @@ public class ExiModule
 				//Nothing
 				break;
 			}
+
 			case EMOJI_DICTIONARY:
 			{
-				ArrayList<DB_EmojiPanelItem> dictionaryTemplates = EmojiPanelTemplates.getEmojiPanelTemplates();
-				DatabaseMethods.updateAllItems( db, dictionaryTemplates, EMOJI_DICTIONARY_PANEL_TABLE_INFO,true);
-				break;
-			}
-			case EMOJI_KEYBOARD:
-			{
-				//Once added to the keyboard the user should be free to do whatever, so mark them as user.
-				ArrayList<DB_EmojiPanelItem> keyboardTemplates = EmojiPanelTemplates.getEmojiPanelTemplates();
-				for (DB_EmojiPanelItem item : keyboardTemplates)
-					item.set_source(EmojiPanelItem.PANEL_SOURCE.USER);
+				TableList<DB_EmojiPanelItem> dictionaryPanels = new TableList<>(db, TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO);
 
-				//Additionally, the keyboard items should contain a special recents panel
-				//This panel will not be editable by the user. Should probably have some indicator.
-				keyboardTemplates.add(0, EmojiPanelTemplates.getRecentsPanelItem());
+
+
+				ArrayList<DB_EmojiPanelItem> keyboardTemplates = getEmojiTemplatesForSDK(getEmojiVersionForSDK());
+				Collections.reverse(keyboardTemplates);
+				for (DB_EmojiPanelItem item : keyboardTemplates)
+					dictionaryPanels.add(0,item);
 
 				//Recents is added as the first item, but position is configurable. Update indices here.
 				{
 					int iterator = 0;
-					for (DB_EmojiPanelItem item : keyboardTemplates)
+					for (DB_EmojiPanelItem item : dictionaryPanels)
 					{
 						item.set_index(iterator);
 						iterator++;
 					}
 				}
 
-				DatabaseMethods.updateAllItems( db, keyboardTemplates, EMOJI_KEYBOARD_PANEL_TABLE_INFO,true);
+				DatabaseMethods.updateAllItems( db, dictionaryPanels, EMOJI_DICTIONARY_PANEL_TABLE_INFO,true);
+
+				break;
+			}
+			case EMOJI_KEYBOARD:
+			{
+				TableList<DB_EmojiPanelItem> keyboardPanels = new TableList<>(db, TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO);
+				ArrayList<DB_EmojiPanelItem> keyboardTemplates =  getEmojiTemplatesForSDK(getEmojiVersionForSDK());
+				Collections.reverse(keyboardTemplates);
+				for (DB_EmojiPanelItem item : keyboardTemplates)
+					keyboardPanels.add(0,item);
+
+				//Once added to the keyboard the user should be free to do whatever, so mark them as user.
+				for (DB_EmojiPanelItem item : keyboardPanels)
+					item.set_source(EmojiPanelItem.PANEL_SOURCE.USER);
+
+				//Additionally, the keyboard items should contain a special recents panel
+				//This panel will not be editable by the user. Should probably have some indicator.
+				keyboardPanels.add(0, EmojiPanelTemplates.getRecentsPanelItem());
+
+
+				//Recents is added as the first item, but position is configurable. Update indices here.
+				{
+					int iterator = 0;
+					for (DB_EmojiPanelItem item : keyboardPanels)
+					{
+						item.set_index(iterator);
+						iterator++;
+					}
+				}
+
+				DatabaseMethods.updateAllItems( db, keyboardPanels, EMOJI_KEYBOARD_PANEL_TABLE_INFO,true);
+
 				break;
 			}
 			case HOTKEY:
