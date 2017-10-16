@@ -47,8 +47,7 @@ public class Hooks
 	public static HookCategory popupHooks_read = new HookCategory("PopupHooks Read", popupHooks_modify);
 
 	//Emoji
-	public static HookCategory emojiHooks_theme = new HookCategory("EmojiHooks Theme");
-	public static HookCategory emojiHooks_base = new HookCategory("EmojiHooks Base", emojiHooks_theme);
+	public static HookCategory emojiHooks_base = new HookCategory("EmojiHooks Base");
 
 	//Key
 	public static HookCategory keyHooks_keyCancel = new HookCategory("KeyHooks Cancel");
@@ -58,6 +57,7 @@ public class Hooks
 	public static HookCategory overlayHooks_base = new HookCategory("overlayHooks base");
 
 	//Keyboard
+	public static HookCategory baseHooks_theme= new HookCategory("KeyboardHooks Theme");
 	public static HookCategory baseHooks_viewCreated= new HookCategory("KeyboardHooks ViewCreated", overlayHooks_base);
 	public static HookCategory baseHooks_invalidateLayout = new HookCategory("KeyboardHooks InvalidateLayout", popupHooks_modify);
 	public static HookCategory baseHooks_layoutChange = new HookCategory("KeyboardHooks LayoutChange", overlayHooks_base);
@@ -71,7 +71,8 @@ public class Hooks
 																						keyHooks_keyDefinition,
 																						emojiHooks_base,
 																						predictionHooks_base,
-																						baseHooks_punctuationSpace
+																						baseHooks_punctuationSpace,
+																						baseHooks_theme
 	);
 
 	public static class HookCategory extends ArrayList<XC_MethodHook.Unhook>

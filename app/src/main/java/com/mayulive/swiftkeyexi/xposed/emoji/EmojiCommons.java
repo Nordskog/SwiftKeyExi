@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.emoji;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.inputmethod.InputConnection;
 import android.widget.FrameLayout;
@@ -46,6 +47,9 @@ public class EmojiCommons
 	private static final int DARK_THEME_ACCENT_COLOR = 0xFF1a1a1c;
 	private static final int LIGHT_THEME_ACCENT_COLOR = 0xFFe4e7e8;
 
+	private static final int DARK_THEME_ACCENT_COLOR_NOUGAT = 0xFF393941;
+	private static final int LIGHT_THEME_ACCENT_COLOR_NOUGAT = 0xFFffffff;
+
 	private final static int RECENTS_COUNT = 32;
 
 
@@ -80,17 +84,21 @@ public class EmojiCommons
 
 	public static void setEmojiTheme(int theme)
 	{
+		//Log.i(LOGTAG, "Setting theme to: "+theme);
 		//0 light
 		//1 dark
 		if (mOuterTabsWrapper != null)
 		{
 			if (theme == 0)
-				mOuterTabsWrapper.setBackgroundColor( LIGHT_THEME_ACCENT_COLOR );
+			{
+				mOuterTabsWrapper.setBackgroundColor( Build.VERSION.SDK_INT < Build.VERSION_CODES.N ? LIGHT_THEME_ACCENT_COLOR : LIGHT_THEME_ACCENT_COLOR_NOUGAT );
+			}
 			else
-				mOuterTabsWrapper.setBackgroundColor( DARK_THEME_ACCENT_COLOR );
+			{
+				mOuterTabsWrapper.setBackgroundColor( Build.VERSION.SDK_INT < Build.VERSION_CODES.N ? DARK_THEME_ACCENT_COLOR : DARK_THEME_ACCENT_COLOR_NOUGAT );
+			}
+
 		}
-
-
 	}
 
 	//Will usually use panel style rather than item style
@@ -184,7 +192,7 @@ public class EmojiCommons
 			mEmojiPanelRecentsTabIndex = -1;
 			{
 				int iterator = 0;
-				for (DB_EmojiPanelItem item : panels)
+				for (DB_EmojiPanelItem item : mPanelItems)
 				{
 					if (item.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
 					{
@@ -205,7 +213,7 @@ public class EmojiCommons
 
 			//Only clear if changed.
 			EmojiCache.clearCache();
-			com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels( getHookContext(), panels );
+			com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels( getHookContext(), mPanelItems );
 
 			if (mEmojiPanelAdapter != null)
 				mEmojiPanelAdapter.notifyDataSetChanged();

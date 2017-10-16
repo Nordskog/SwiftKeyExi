@@ -264,6 +264,27 @@ public class KeyboardHooks
 		});
 	}
 
+	private static XC_MethodHook.Unhook hookTheme(PackageTree param)
+	{
+		Class someClass = ClassHunter.loadClass("com.touchtype.v.a.t", param.getClassLoader());
+		Method returnIntMethod = ProfileHelpers.findAllMethodsWithReturnType(int.class, someClass.getDeclaredMethods()).get(0);
+
+		return XposedBridge.hookMethod(returnIntMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				int newValue = (int)param.getResult();
+				if (newValue != KeyboardMethods.mTheme)
+				{
+					KeyboardMethods.mTheme = newValue;
+					KeyboardMethods.callThemeChangedListeners(newValue);
+				}
+
+			}
+		});
+	}
+
 	public static boolean HookAll(final PackageTree lpparam)
 	{
 		try
@@ -272,12 +293,16 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
-				//Absolutely necessary
-
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.addAll( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
+
+
+				if (Hooks.baseHooks_theme.isRequirementsMet())
+				{
+					Hooks.baseHooks_theme.add( hookTheme(lpparam) );
+				}
 
 				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
 				{

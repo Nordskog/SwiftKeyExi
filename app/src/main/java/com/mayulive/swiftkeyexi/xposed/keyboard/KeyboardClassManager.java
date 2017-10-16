@@ -43,6 +43,7 @@ public class KeyboardClassManager
 	/////////////////
 
 	public static Class keyboardLoaderClass = null;
+	public static Class emojiThemeLoaderClass = null;
 
 	/////////////////////////
 	//Methods
@@ -55,6 +56,7 @@ public class KeyboardClassManager
 	protected static Method punctuatorImplClass_AddRulesMethod = null;
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 
+	protected static Method emojiThemeLoaderClass_getThemeMethod = null;
 
 
 	////////////////////
@@ -84,6 +86,8 @@ public class KeyboardClassManager
 		breadcrumbClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_BREADCRUMB_CLASS_PROFILE(), param );
 
 		keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
+
+		emojiThemeLoaderClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_EMOJI_THEME_LOADER_CLASS_PROFILE(), param );
 	}
 
 
@@ -149,6 +153,13 @@ public class KeyboardClassManager
 
 		}
 
+		if (emojiThemeLoaderClass != null)
+		{
+			List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType(int.class, emojiThemeLoaderClass.getDeclaredMethods());
+			if (!methods.isEmpty())
+			emojiThemeLoaderClass_getThemeMethod = methods.get(0);
+		}
+
 	}
 
 	public static void loadFields()
@@ -201,6 +212,10 @@ public class KeyboardClassManager
 
 		//Popup
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_invalidateLayout,	 "keyboardLoader_onSharedPreferenceChangedMethod", 	keyboardLoader_onSharedPreferenceChangedMethod );
+
+		//Theme
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", 	emojiThemeLoaderClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", 	emojiThemeLoaderClass_getThemeMethod );
 
 		//Hitbox
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "layoutClass", 	layoutClass );

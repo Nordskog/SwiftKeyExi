@@ -19,8 +19,6 @@ public class EmojiClassManager
 	/////////////////
 
 	protected static Class emojiPanelClass = null;
-	protected static Class emojiPanelThemeClass = null;
-
 
 	/////////////////
 	//Unknown classes
@@ -34,13 +32,9 @@ public class EmojiClassManager
 
 	protected static Method emojiPanel_staticConstructorMethod = null;
 
-	protected static Method emojiPanelThemeClass_getThemeTypeMethod = null;
-
 	protected static void loadKnownClasses( PackageTree param )
 	{
 		emojiPanelClass = ClassHunter.loadClass("com.touchtype.keyboard.view.fancy.emoji.EmojiPanel", param.getClassLoader());
-
-		emojiPanelThemeClass = ProfileHelpers.loadProfiledClass( EmojiProfiles.get_EMOJI_PANEL_THEME_PROFILE(), param );
 	}
 
 
@@ -50,22 +44,6 @@ public class EmojiClassManager
 		{
 			emojiPanel_staticConstructorMethod = ProfileHelpers.findAllMethodsWithReturnType(EmojiClassManager.emojiPanelClass, EmojiClassManager.emojiPanelClass.getDeclaredMethods()).get(0);
 			emojiPanel_staticConstructorMethod.setAccessible(true);
-		}
-
-		if (emojiPanelThemeClass != null)
-		{
-			List<Method> intMethods = ProfileHelpers.findAllMethodsWithReturnType(int.class, emojiPanelThemeClass.getDeclaredMethods());
-			for (Method method : intMethods)
-			{
-				if (method.getName() != "hashCode")
-				{
-					emojiPanelThemeClass_getThemeTypeMethod = method;
-					break;
-
-				}
-			}
-
-
 		}
 	}
 
@@ -81,8 +59,6 @@ public class EmojiClassManager
 	{
 		Hooks.logSetRequirementFalseIfNull( Hooks.emojiHooks_base,	 "emojiPanelClass", 	emojiPanelClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.emojiHooks_base,	 "emojiPanel_staticConstructorMethod", 	emojiPanel_staticConstructorMethod );
-
-		Hooks.logSetRequirementFalseIfNull( Hooks.emojiHooks_theme, "emojiPanelThemeClass_getThemeTypeMethod", emojiPanelThemeClass_getThemeTypeMethod );
 	}
 
 }
