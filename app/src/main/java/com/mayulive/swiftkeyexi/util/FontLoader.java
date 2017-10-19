@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FontLoader
 {
@@ -319,21 +320,19 @@ public class FontLoader
 	//return NONE if it instead renders as multiple. See family emoji
 	public static boolean isSingleChar(String text)
 	{
-		Rect bounds = new Rect();
-		mPaint.getTextBounds(text, 0, text.length(), bounds);
+		float[] widths = new float[text.length()];
+		mPaint.getTextWidths(text,widths);
 
-		//Emoji are... pretty much always full-width characters,
-		// so if width is > 1.5x height, it's rendering as multiple chars.
-		boolean result = !( ((float)bounds.width())  >  ((float)bounds.height()) * 1.5f );
-
-		//But this may be a non-emoji character, in which case we height/width will differ
-		if (!result)
+		//So this basically returns the render width of each individual character.
+		//If the whole lot is rendered as a single character, only the first elemnent will be non-zero
+		//So if any of the other values are non-zero, it is rendering as multiple characters
+		for (int i = 1; i< widths.length; i++)
 		{
-			if (FontLoader.containsEmoji(text) != GLYPH_TYPE.BITMAP)
-				return true;
+			if (widths[i] != 0.0f)
+				return false;
 		}
 
-		return result;
+		return true;
 	}
 
 
