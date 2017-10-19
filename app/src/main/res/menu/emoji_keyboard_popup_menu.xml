@@ -3,25 +3,28 @@
       tools:context=".MainActivity" >
 
     <item
+        android:icon="@drawable/ic_menu_add"
         android:id="@+id/new_menu_item"
         android:orderInCategory="100"
         android:title="@string/emoji_new_panel"/>
 
 
     <item
+        android:icon="@drawable/ic_menu_clear"
         android:id="@+id/clear_menu_item"
         android:orderInCategory="100"
         android:title="@string/emoji_clear_panel"/>
 
     <item
+        android:icon="@drawable/ic_menu_delete"
         android:id="@+id/delete_menu_item"
         android:orderInCategory="100"
         android:title="@string/emoji_delete_panel"/>
 
     <item
+        android:icon="@drawable/ic_menu_emoji_column_width"
         android:id="@+id/column_size_menu_item"
         android:orderInCategory="100"
         android:title="@string/emoji_column_size"/>
-
 
 </menu>

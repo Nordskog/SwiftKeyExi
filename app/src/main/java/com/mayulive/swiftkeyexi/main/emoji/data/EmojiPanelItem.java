@@ -34,6 +34,16 @@ public class EmojiPanelItem
 		this._source = _source;
 	}
 
+	public int get_panel_identifier()
+	{
+		return _panel_identifier;
+	}
+
+	public void set_panel_identifier(int _panel_identifier)
+	{
+		this._panel_identifier = _panel_identifier;
+	}
+
 	public enum PANEL_TYPE
 	{
 		TEXT, GIF
@@ -42,7 +52,22 @@ public class EmojiPanelItem
 
 	public enum PANEL_SOURCE
 	{
-		TEMPLATE, USER, RECENTS
+		TEMPLATE, USER, RECENTS;
+
+		public boolean isEditable()
+		{
+			return this != TEMPLATE && this != RECENTS;
+		}
+
+		public boolean isTemplateDeletable()
+		{
+			return this == USER;
+		}
+
+		public boolean isKeyboardDeleteable()
+		{
+			return this != RECENTS;
+		}
 	}
 
 	protected int _index = -1;
@@ -54,6 +79,7 @@ public class EmojiPanelItem
 
 	protected PANEL_TYPE _type = TEXT;
 	protected PANEL_SOURCE _source = USER;
+	private int _panel_identifier = -1;
 
 	protected TableList<DB_EmojiItem> _items = new TableList<DB_EmojiItem>();
 

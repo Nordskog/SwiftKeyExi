@@ -286,6 +286,14 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				mKeyboardInfoView.dismissSilently();
 				mDictionaryInfoView.dismissSilently();
 
+
+				EmojiPanelView dictionarView = getCurrentPanel(EmojiPanelType.DICTIONARY);
+				EmojiPanelView keyboardView = getCurrentPanel(EmojiPanelType.KEYBOARD);
+
+				///////////////////////////
+				//Dictionary menu setup
+				///////////////////////////
+
 				final PopupLinearLayout dictionaryPopup = new PopupLinearLayout(dictionaryPanelMenuButton.getContext());
 				NavigationView dictionaryMenuView = new NavigationView(dictionaryPanelMenuButton.getContext());
 				dictionaryMenuView.inflateMenu(R.menu.emoji_dictionary_popup_menu);
@@ -306,28 +314,28 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				}
 
 
-				EmojiPanelView dictionarView = getCurrentPanel(EmojiPanelType.DICTIONARY);
-				EmojiPanelView keyboardView = getCurrentPanel(EmojiPanelType.KEYBOARD);
-
 				//A template item may not be edited, that means no adding items, deleting, or editing the icon
 				//Also no deleting panels that don't exist
 
-				if (dictionarView == null || dictionarView.getPanelItem().get_source() != DB_EmojiPanelItem.PANEL_SOURCE.USER)
+				if (dictionarView == null || !dictionarView.getPanelItem().get_source().isEditable())
 				{
 					dictionaryMenuView.getMenu().removeItem(R.id.column_add_single_emoji);
 					dictionaryMenuView.getMenu().removeItem(R.id.delete_menu_item);
 				}
 
-				if (keyboardView == null || keyboardView.getPanelItem().get_source() != EmojiPanelItem.PANEL_SOURCE.USER)
+				if (keyboardView == null || !keyboardView.getPanelItem().get_source().isEditable())
 				{
 					//Cannot edit current keyboard panel, remove relevant menu items
-					dictionaryMenuView.getMenu().removeItem(R.id.add_all_menu_item);
+					dictionaryMenuView.getMenu().removeItem(R.id.copy_emoji_to_panel_menu_item);
 				}
 
 				Space space = new Space(getContext());
 				space.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dictionaryPanelMenuButton.getMeasuredHeight() / 2 ));
 				dictionaryPopup.addItem(space);
 
+				/////////////////////////
+				//Keyboard menu setup
+				/////////////////////////
 
 				NavigationView keyboardMenuView = new NavigationView(dictionaryPanelMenuButton.getContext());
 				keyboardMenuView.inflateMenu(R.menu.emoji_keyboard_popup_menu);
@@ -344,16 +352,18 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 					dictionaryPopup.addItem(keyboardMenuView, params);
 				}
 
-
-
-				//No deleting panels that don't exist
-
-				if (keyboardView == null || keyboardView.getPanelItem().get_source() != EmojiPanelItem.PANEL_SOURCE.USER)
+				//No deleting panels that don't exist, or recents
+				if (keyboardView == null || !keyboardView.getPanelItem().get_source().isKeyboardDeleteable())
 				{
 					keyboardMenuView.getMenu().removeItem(R.id.delete_menu_item);
-					keyboardMenuView.getMenu().removeItem(R.id.clear_menu_item);
-					keyboardMenuView.getMenu().removeItem(R.id.column_size_menu_item);
 				}
+
+				//and no clearing stock panels
+				if (keyboardView == null || !keyboardView.getPanelItem().get_source().isEditable())
+				{
+					keyboardMenuView.getMenu().removeItem(R.id.clear_menu_item);
+				}
+
 
 
 				////////////////////
@@ -484,7 +494,13 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		{
 			case R.id.new_menu_item:
 			{
-				addPanel(panelType);
+				addPanel(panelType, null);
+				break;
+			}
+
+			case R.id.copy_panel_to_keyboard_menu_item:
+			{
+				addPanel(EmojiPanelType.KEYBOARD, getCurrentPanel(EmojiPanelType.DICTIONARY).getPanelItem());
 				break;
 			}
 
@@ -502,7 +518,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				break;
 			}
 
-			case R.id.add_all_menu_item:
+			case R.id.copy_emoji_to_panel_menu_item:
 			{
 
 				addAllDictionaryPanelToKeyboardPanel();
@@ -543,7 +559,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		if(!mIconPickMode)
 		{
 
-			if (sourcePanelType == EmojiPanelType.KEYBOARD && sourcePanelView.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER )
+			if (sourcePanelType == EmojiPanelType.KEYBOARD && sourcePanelView.getPanelItem().get_source().isEditable() )
 			{
 				sourcePanelView.removeItem(position);
 
@@ -554,6 +570,10 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 						getCurrentPanel(EmojiPanelType.DICTIONARY).subtractMark(item.get_text());
 					}
 				}
+			}
+			else
+			{
+				displayUneditableWarning();
 			}
 
 			setLastUpdateTime();
@@ -584,12 +604,16 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 					{
 						EmojiPanelView currentKeyboardPanelView = getCurrentPanel(EmojiPanelType.KEYBOARD);
 
-						if (currentKeyboardPanelView.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+						if (currentKeyboardPanelView.getPanelItem().get_source().isEditable())
 						{
 							sourcePanelView.addMark(item.get_text());
 
 							currentKeyboardPanelView.addItem(new DB_EmojiItem( item.get_text() ) );
 							currentKeyboardPanelView.scrollToEnd();
+						}
+						else
+						{
+							displayUneditableWarning();
 						}
 					}
 
@@ -897,7 +921,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 		if (destionationPanel != null)
 		{
-			if (destionationPanel.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+			if (destionationPanel.getPanelItem().get_source().isEditable())
 			{
 				destionationPanel.addItem( new DB_EmojiItem(string) );
 				setLastUpdateTime();
@@ -932,10 +956,14 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		return getCurrentPanel(EmojiPanelType.DICTIONARY) != null && getCurrentPanel(EmojiPanelType.KEYBOARD) != null;
 	}
 
-	DB_EmojiPanelItem addPanel(EmojiPanelType panelType)
+	DB_EmojiPanelItem addPanel(EmojiPanelType panelType, DB_EmojiPanelItem copyFrom)
 	{
 		//I changed my mind, all panels will now use the b/w icon style
-		DB_EmojiPanelItem newPanel = new DB_EmojiPanelItem( -1,-1,1,"◯", "◯", 0, 1 );
+		DB_EmojiPanelItem newPanel;
+		if (copyFrom != null)
+			newPanel = new DB_EmojiPanelItem(copyFrom);
+		else
+			newPanel = new DB_EmojiPanelItem( -1,-1,1,"◯", "◯", 0, 1 );
 
 		switch(panelType)
 		{
@@ -1085,6 +1113,16 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		{
 			super.onActivityResult(requestCode, resultCode, resultData);
 		}
+	}
+
+	private void displayUneditableWarning()
+	{
+		AlertDialog dialog = new AlertDialog.Builder(this.getContext())
+				.setTitle(R.string.emoji_uneditable_title)
+				.setMessage(R.string.emoji_uneditable_message)
+				.setPositiveButton(R.string.button_ok, null)
+				.create();
+		dialog.show();
 	}
 
 	@Override

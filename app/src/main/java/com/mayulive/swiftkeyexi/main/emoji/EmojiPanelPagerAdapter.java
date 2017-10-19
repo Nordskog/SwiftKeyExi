@@ -91,8 +91,6 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 	{
 		final DB_EmojiPanelItem panelItem = mItems.get(panelPosition);
 
-
-
 		if (panelItem.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
 		{
 			final RecentsEmojiPanelView newPanel = new RecentsEmojiPanelView(container.getContext());

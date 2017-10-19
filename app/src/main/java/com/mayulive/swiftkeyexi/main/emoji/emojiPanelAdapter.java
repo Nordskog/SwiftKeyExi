@@ -154,6 +154,7 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 			}
 		});
 
+		//Reents is weird
 		if (mPanelItem.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
 		{
 			if ( emojiItem.item.get_type() == EmojiItem.EmojiType.CONTAINS_EMOJI )

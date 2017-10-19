@@ -3,32 +3,44 @@
       tools:context=".MainActivity" >
 
     <item
+        android:icon="@drawable/ic_menu_add"
         android:id="@+id/new_menu_item"
         android:orderInCategory="100"
         android:title="@string/emoji_new_panel"/>
 
     <item
+        android:icon="@drawable/ic_menu_import"
         android:id="@+id/load_menu_item"
         android:orderInCategory="100"
         android:title="@string/emoji_load_panel"/>
 
 
     <item
+        android:icon="@drawable/ic_menu_delete"
         android:id="@+id/delete_menu_item"
         android:orderInCategory="100"
         android:title="@string/emoji_delete_panel"/>
 
     <item
-        android:id="@+id/add_all_menu_item"
+        android:icon="@drawable/ic_menu_copy_panel"
+        android:id="@+id/copy_panel_to_keyboard_menu_item"
         android:orderInCategory="100"
-        android:title="@string/emoji_add_all"/>
+        android:title="@string/emoji_copy_panel_to_keyboard"/>
 
     <item
+        android:icon="@drawable/ic_menu_copy_all_emoji"
+        android:id="@+id/copy_emoji_to_panel_menu_item"
+        android:orderInCategory="100"
+        android:title="@string/emoji_copy_emoji_to_panel"/>
+
+    <item
+        android:icon="@drawable/ic_menu_emoji_column_width"
         android:id="@+id/column_size_menu_item"
         android:orderInCategory="100"
         android:title="@string/emoji_column_size"/>
 
     <item
+        android:icon="@drawable/ic_menu_input"
         android:id="@+id/column_add_single_emoji"
         android:orderInCategory="100"
         android:title="@string/emoji_input_emoji"/>

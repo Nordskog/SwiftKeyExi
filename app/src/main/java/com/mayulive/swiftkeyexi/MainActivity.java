@@ -3,7 +3,6 @@ package com.mayulive.swiftkeyexi;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
-import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
@@ -23,11 +22,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 
 
@@ -54,23 +51,32 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 	}
 
 	//
-	private void handleEmojiUpdate()
+	private void handleSdkUpdate()
 	{
 
 		//Check what version of emojis we are using, currently have Marshmallow and Nougat.
 		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 		int emojiVersion = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
+		int lastApiVersion = prefs.getInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
 
-		if (ExiModule.needsEmojiUpdate(emojiVersion))
+
+
+
+		if (ExiModule.needsEmojiUpdate(emojiVersion, lastApiVersion))
 		{
+			Log.i(LOGTAG, "Updating emoji");
 			//Update emoji
-			int newVersion = ExiModule.update(this,mDbWrap);
+			int newVersion = ExiModule.update(this,mDbWrap,emojiVersion);
 
 			//Update emoji version pref
-			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 			editor.putInt(PreferenceConstants.status_api_version_emoji, newVersion);
 			editor.apply();
+		}
 
+		{
+			editor.putInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
+			editor.apply();
 		}
 	}
 
@@ -81,13 +87,8 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 
 		boolean isFirstLaunch = prefs.getBoolean(PreferenceConstants.status_first_launch_key, true);
 
-		int lastApiVersion = prefs.getInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
-
-
 		if (isFirstLaunch)
 		{
-
-
 			//Proper emoji will be populated anyway if first launch
 			editor.putInt(PreferenceConstants.status_api_version_emoji, ExiModule.getEmojiVersionForSDK());
 			editor.apply();
@@ -117,13 +118,6 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 			editor.apply();
 		}
 
-		if (lastApiVersion != Build.VERSION.SDK_INT)
-		{
-			//Emoji that were previously not renderable may now be so, and vice versa. TODO Carefully reinit stock panels here.
-			//TODO Should probably allow them to be added to panels and just marked as do-not-display instead.
-			editor.putInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
-			editor.apply();
-		}
 	}
 
 	public void displayInputTest()
@@ -169,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 
 		//Load defaults on first launch
 		handleFirstLaunch();
-		handleEmojiUpdate();
+		handleSdkUpdate();
 
 		//Child fragments are re-instanced inside of super,
 		//so any data they depend on, such as the database,

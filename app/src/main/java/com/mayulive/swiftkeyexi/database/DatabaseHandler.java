@@ -1,16 +1,24 @@
 package com.mayulive.swiftkeyexi.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.LoadPackageHook;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
+import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
+
+import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper
 {
 
-	public static final int DATABASE_VERSION = 2;
+	private static String LOGTAG = ExiModule.getLogTag(DatabaseHandler.class);
+
+	public static final int DATABASE_VERSION = 3;
 	public static final String DATABASE_NAME = "exi_main.db";
 
 	private SQLiteDatabase mDb = null;
@@ -88,6 +96,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
+		Log.i(LOGTAG, "DB version: "+oldVersion+", upgrading to: "+newVersion);
+
 		int presentVersion = oldVersion;
 		while(presentVersion < newVersion)
 		{
@@ -100,6 +110,15 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
 					ExiModule.loadDefaults(mContext, new WrappedDatabase(db), ExiModule.ModuleDatabaseType.HOTKEY_MENU_ITEM);
 					break;
+				}
+
+				case 2:
+				{
+
+					String query = "ALTER TABLE "+TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO.tableName+" ADD COLUMN "+ DB_EmojiPanelItem.EmojiPanelContract.IDENTIFIER_TABLE_COLUMN+" INTEGER DEFAULT -1";
+					db.execSQL(query);
+					query = "ALTER TABLE "+TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO.tableName+" ADD COLUMN "+ DB_EmojiPanelItem.EmojiPanelContract.IDENTIFIER_TABLE_COLUMN+" INTEGER DEFAULT -1";
+					db.execSQL(query);
 				}
 			}
 

@@ -2,11 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:icon="@drawable/ic_menu_import"
         android:id="@+id/import_menu_item"
         android:orderInCategory="100"
         android:title="@string/dictionary_import_dictionary"/>
 
     <item
+        android:icon="@drawable/ic_menu_clear"
         android:id="@+id/clear_menu_item"
         android:orderInCategory="100"
         android:title="@string/dictionary_clear_dictionary"/>
