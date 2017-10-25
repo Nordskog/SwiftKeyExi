@@ -318,6 +318,7 @@ public class FontLoader
 
 	//Given a string that should render as a single emoji character,
 	//return NONE if it instead renders as multiple. See family emoji
+	//Oddly enough this fails to detect emoji with unrenderable modifiers.
 	public static boolean isSingleChar(String text)
 	{
 		float[] widths = new float[text.length()];

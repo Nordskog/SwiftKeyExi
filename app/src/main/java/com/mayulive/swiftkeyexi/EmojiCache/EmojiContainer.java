@@ -20,4 +20,5 @@ public interface EmojiContainer
 	void setSingleLine(boolean singleLine);
 	void setTint(int tintColor);
 	void clearTint();
+	void setModifable(boolean modifiable);
 }

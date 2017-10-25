@@ -340,6 +340,24 @@ public class ExiModule
 				template.get_items().replaceTableWithContents();
 			}
 		}
+
+		//Do a check for emoji modifier support in all user panels
+		for (DB_EmojiPanelItem item : dictionaryPanels)
+		{
+			if (item.get_source().isEditable())
+			{
+				item.updateModifierSupport();
+				item.get_items().updateAll();
+			}
+		}
+		for (DB_EmojiPanelItem item : keyboardPanels)
+		{
+			if (item.get_source().isEditable())
+			{
+				item.updateModifierSupport();
+				item.get_items().updateAll();
+			}
+		}
 	}
 
 	public static void clear(WrappedDatabase db)

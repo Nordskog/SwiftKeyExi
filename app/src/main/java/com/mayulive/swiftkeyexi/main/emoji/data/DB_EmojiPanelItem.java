@@ -136,11 +136,11 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 		int sourceColumnIndex = c.getColumnIndex(EmojiPanelContract.SOURCE_COLUMN);
 
 		int identifierColumnIndex = c.getColumnIndex(EmojiPanelContract.IDENTIFIER_TABLE_COLUMN);
-		
+
 		set_id( c.getInt(idColumnIndex) );
 		set_index( c.getInt(indexColumnIndex));
 		set_column_width( c.getInt(columnWidthIndex) );
-		set_caption( c.getString(captionColumnIndex) );	
+		set_caption( c.getString(captionColumnIndex) );
 		set_icon( c.getString(iconsColumnIndex) );
 		set_style( c.getInt(styleColumnIndex));
 		set_icon_style( c.getInt(iconStyleColumn));
@@ -152,7 +152,7 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 		TableInfo itemsTableInfo = new TableInfo(new DB_EmojiItem(), DB_EmojiItem.PROJECTION, DB_EmojiItem.DEFINITION, c.getString(items_table_ColumnIndex));
 		_items.populateFromDb(dbWrap, itemsTableInfo);
 
-		
+
 	}
 
 

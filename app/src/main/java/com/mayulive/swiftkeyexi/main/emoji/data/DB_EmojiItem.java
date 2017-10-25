@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi.main.emoji.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.mayulive.swiftkeyexi.database.DatabaseItem;
 import com.mayulive.swiftkeyexi.database.DatabaseWrapper;
@@ -14,7 +15,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 
 	public DB_EmojiItem copy()
 	{
-		return new DB_EmojiItem(-1,get_text(),get_style(),get_type());
+		return new DB_EmojiItem(this);
 	}
 
 	public DB_EmojiItem(){ super(); };
@@ -22,7 +23,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 	public DB_EmojiItem(DB_EmojiItem other)
 	{
 		super(other);
-		this.set_id(other.get_id());
+		this.set_id(-1);
 	}
 
 	public DB_EmojiItem(int id, String text, int style, EmojiType type)
@@ -78,6 +79,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
         public static final String STYLE_COLUMN = "style";
 		public static final String TYPE_COLUMN = "type";
 		public static final String VARIANTS_COLUMN = "variants";
+		public static final String MODIFIERS_SUPPORTED_COLUMN = "modifiers_supported";
     }
 	//}
 	
@@ -88,6 +90,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 			EmojiEntry.STYLE_COLUMN,
 			EmojiEntry.TYPE_COLUMN,
 			EmojiEntry.VARIANTS_COLUMN,
+			EmojiEntry.MODIFIERS_SUPPORTED_COLUMN
 	};
 
 	public static final String DEFINITION =
@@ -96,7 +99,8 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 					EmojiEntry.TEXT_COLUMN +" TEXT, " +
 					EmojiEntry.STYLE_COLUMN +" NUMBER, " +
 					EmojiEntry.TYPE_COLUMN +" TEXT, " +
-					EmojiEntry.VARIANTS_COLUMN +" TEXT " +
+					EmojiEntry.VARIANTS_COLUMN +" TEXT, " +
+					EmojiEntry.MODIFIERS_SUPPORTED_COLUMN +" INTEGER " +
 			");";
 
 	@Override
@@ -109,6 +113,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 		values.put(EmojiEntry.STYLE_COLUMN, get_style());
 		values.put(EmojiEntry.TYPE_COLUMN, get_type().toString());
 		values.put(EmojiEntry.VARIANTS_COLUMN, get_variants());
+		values.put(EmojiEntry.MODIFIERS_SUPPORTED_COLUMN, get_modifiers_supported() ? 1 : 0);
 
 		return values;
 	}
@@ -123,12 +128,14 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 		int styleColumnIndex = c.getColumnIndex(EmojiEntry.STYLE_COLUMN);
 		int typeColumnIndex = c.getColumnIndex(EmojiEntry.TYPE_COLUMN);
 		int variantsColumnIndex = c.getColumnIndex(EmojiEntry.VARIANTS_COLUMN);
+		int intModifiersSupportedColumn = c.getColumnIndex(EmojiEntry.MODIFIERS_SUPPORTED_COLUMN);
 		
 		set_id( c.getInt(idColumnIndex) );
 		set_text( c.getString(textColumnIndex) );
 		set_style( c.getInt(styleColumnIndex) );
 		set_type( EmojiType.valueOf( c.getString(typeColumnIndex) ) );
 		set_variants( c.getString(variantsColumnIndex) );
+		set_modifiers_supported( c.getInt(intModifiersSupportedColumn) != 0 );
 
 	}
 

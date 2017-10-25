@@ -223,4 +223,12 @@ public class EmojiPanelItem
 		return -1;
 	}
 
+	public void updateModifierSupport()
+	{
+		for (DB_EmojiItem item : _items)
+		{
+			item.set_modifiers_supported( EmojiModifiers.supportsModifiers(item.get_text()) );
+		}
+	}
+
 }

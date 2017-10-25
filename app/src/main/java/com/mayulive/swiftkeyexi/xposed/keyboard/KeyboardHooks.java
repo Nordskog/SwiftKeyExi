@@ -111,10 +111,9 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-
-
-
-
+					//Something may trigger the keyboard to close without the user interacting with it,
+					//which would leave our popups visible when it is opened next.
+					OverlayCommons.clearPopups();
 
 					KeyboardMethods.loadSettings(ContextUtils.getHookContext());
 

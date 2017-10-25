@@ -99,15 +99,15 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 			newPanel.setOnEmojiItemClickedListener(new EmojiPanelView.OnEmojiItemClickListener()
 			{
 				@Override
-				public void onClick(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+				public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 				{
-					mItemClickListener.onClick( item, newPanel, mItems.get(panelPosition), position);
+					mItemClickListener.onClick( item, view,newPanel, mItems.get(panelPosition), position);
 				}
 
 				@Override
-				public void onLongPress(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+				public void onLongPress(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 				{
-					mItemClickListener.onLongPress(item, newPanel, panelItem, position);
+					mItemClickListener.onLongPress(item, view, newPanel, panelItem, position);
 				}
 			});
 
@@ -137,7 +137,7 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 
 					if (mItemClickListener != null)
 					{
-						mItemClickListener.onClick( mItems.get(panelPosition).get_items().get(position), newPanel, mItems.get(panelPosition), position);
+						mItemClickListener.onClick( mItems.get(panelPosition).get_items().get(position), item.itemView, newPanel, mItems.get(panelPosition), position);
 					}
 				}
 
@@ -146,7 +146,7 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 				{
 					if (mItemClickListener != null)
 					{
-						mItemClickListener.onLongPress(mItems.get(panelPosition).get_items().get(position), newPanel, panelItem, position);
+						mItemClickListener.onLongPress(mItems.get(panelPosition).get_items().get(position), item.itemView, newPanel, panelItem, position);
 					}
 				}
 			});

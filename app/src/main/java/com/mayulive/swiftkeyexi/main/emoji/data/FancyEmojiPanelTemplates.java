@@ -162,6 +162,7 @@ public class FancyEmojiPanelTemplates
 
 		for (String string : strings)
 		{
+
 			boolean renderable = FontLoader.isRenderable(string);
 			boolean singleChar = ( !emojiOnly || FontLoader.isSingleChar(string) );
 
@@ -176,6 +177,11 @@ public class FancyEmojiPanelTemplates
 
 				Log.i(LOGTAG, "Discarding "+string+" as unrenderable. Renderable: "+renderable+", single char: "+singleChar);
 			}
+		}
+
+		if (emojiOnly)
+		{
+			newItem.updateModifierSupport();
 		}
 
 		//newItem.set_needsUpdate(true);

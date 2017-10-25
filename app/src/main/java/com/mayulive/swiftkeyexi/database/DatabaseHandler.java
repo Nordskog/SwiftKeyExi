@@ -9,7 +9,9 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.LoadPackageHook;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
+import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
+import com.mayulive.swiftkeyexi.util.CursorUtils;
 
 import java.util.List;
 
@@ -115,10 +117,48 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				case 2:
 				{
 
+					//Add identifier column to template and keyboard panels
 					String query = "ALTER TABLE "+TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO.tableName+" ADD COLUMN "+ DB_EmojiPanelItem.EmojiPanelContract.IDENTIFIER_TABLE_COLUMN+" INTEGER DEFAULT -1";
 					db.execSQL(query);
 					query = "ALTER TABLE "+TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO.tableName+" ADD COLUMN "+ DB_EmojiPanelItem.EmojiPanelContract.IDENTIFIER_TABLE_COLUMN+" INTEGER DEFAULT -1";
 					db.execSQL(query);
+
+					//Add modifiers supported column to emoji lists.
+					//Since the projection has changed we can't use the usual simplified databaseitem interface
+					Cursor c = db.query(
+							TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO.tableName,
+							new String[]{DB_EmojiPanelItem.EmojiPanelContract.ITEMS_TABLE_COLUMN},
+							null,
+							null,
+							null,
+							null,
+							null
+					);
+
+					List<String> tableNames = CursorUtils.getStringsFromCursor(c);
+					c.close();
+					for (String item : tableNames)
+					{
+						query = "ALTER TABLE "+item+" ADD COLUMN "+ DB_EmojiItem.EmojiEntry.MODIFIERS_SUPPORTED_COLUMN+" INTEGER DEFAULT 0";
+						db.execSQL(query);
+					}
+
+					c = db.query(
+							TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO.tableName,
+							new String[]{DB_EmojiPanelItem.EmojiPanelContract.ITEMS_TABLE_COLUMN},
+							null,
+							null,
+							null,
+							null,
+							null
+					);
+					tableNames = CursorUtils.getStringsFromCursor(c);
+					c.close();
+					for (String item : tableNames)
+					{
+						query = "ALTER TABLE "+item+" ADD COLUMN "+ DB_EmojiItem.EmojiEntry.MODIFIERS_SUPPORTED_COLUMN+" INTEGER DEFAULT 0";
+						db.execSQL(query);
+					}
 				}
 			}
 

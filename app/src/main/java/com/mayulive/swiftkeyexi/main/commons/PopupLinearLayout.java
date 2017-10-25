@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.util.VersionTools;
 import com.mayulive.swiftkeyexi.R;
 
@@ -26,6 +27,8 @@ public class PopupLinearLayout extends PopupWindow
 
 	int mXoffset = 0;
 	int mYoffset = 0;
+
+	private static final int WINDOW_ELEVATION_DP = 5;
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public PopupLinearLayout(Context context)
@@ -43,9 +46,13 @@ public class PopupLinearLayout extends PopupWindow
 		this.setWidth(1);
 
 
+
+		this.setBackgroundDrawable(new ColorDrawable(Color.RED));
+
+
 		if (VersionTools.isLollipopOrGreater())
 		{
-			this.setElevation( mContext.getResources().getDimension(R.dimen.popup_window_elevation) );
+			this.setElevation(DimenUtils.calculatePixelFromDp(context, WINDOW_ELEVATION_DP)) ;
 		}
 
 
@@ -130,6 +137,25 @@ public class PopupLinearLayout extends PopupWindow
 	{
 		mMenuLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 		this.showAsDropDown(anchor,0,-(anchor.getMeasuredHeight() + mMenuLayout.getMeasuredHeight()), Gravity.CENTER);
+	}
+
+	//PopupWindow does not seem to work correctly when given a viewholder view anchor. The position is offset
+	//by a certain percentage of the view of the anchor view.
+	public void showAboveViewHolder(View anchor)
+	{
+		mMenuLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+		int xOffset = (anchor.getMeasuredWidth() / 2) - (mMenuLayout.getMeasuredWidth() / 2);
+
+		//The offset appears to be exactly width or height * 0.2, so I'm going to assume it's a constant weirdo thing.
+		int viewHolderOffsetX = (int) ((float)anchor.getMeasuredWidth() * 0.2f);
+		int viewHolderOffsetY = (int) ((float)anchor.getMeasuredHeight() * 0.2f);
+
+		this.showAsDropDown(
+				anchor,
+				xOffset+viewHolderOffsetX,
+				(-(anchor.getMeasuredHeight() + mMenuLayout.getMeasuredHeight()))+viewHolderOffsetY,
+				Gravity.CENTER);
 	}
 
 

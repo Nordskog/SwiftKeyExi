@@ -105,6 +105,7 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 
 		//holder.getContainer().getView().setPadding(mHorizontalPadding, mVerticalPadding, mHorizontalPadding, mVerticalPadding);
 		holder.getContainer().setMarked(emojiItem.marked);
+		holder.getContainer().setModifable(emojiItem.item.get_modifiers_supported());
 
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(mContext);
 

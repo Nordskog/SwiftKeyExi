@@ -2,6 +2,7 @@ package com.mayulive.swiftkeyexi;
 
 import android.util.Log;
 
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.shared.SharedStyles;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -39,7 +40,6 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 
 		PackageTree classTree = new PackageTree(lpparam.appInfo.sourceDir, lpparam.classLoader);
 
-
 		ProfileCache.setSaveLocation(lpparam.appInfo.dataDir+"/files/EXI_CLASS_CACHE_"+ ExiXposed.HOOK_PACKAGE_NAME);
 
 		//Automatically reset class cache on update
@@ -53,6 +53,12 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 
 		XposedBridge.log(LOGTAG+", "+"Finished hooking work in"+lpparam.packageName);
 		Log.i(LOGTAG, "Finished hooking work in "+ExiXposed.HOOK_PACKAGE_NAME);
+
+		//Bonus: While it's convenient to load classes only when they are needed,
+		//they cause a bit of a hiccup if they have a long initialization process.
+		//Force load stuff here
+		EmojiModifiers.forceInit();
+
 	}
 }
 

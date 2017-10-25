@@ -2,12 +2,17 @@ package com.mayulive.swiftkeyexi.main.emoji;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
+import com.mayulive.swiftkeyexi.EmojiCache.ImageEmojiItem;
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifierBackgroundDrawable;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
+import com.mayulive.swiftkeyexi.util.ColorUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.util.TextUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
@@ -17,10 +22,12 @@ import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.main.commons.PopupLinearLayout;
+import com.mayulive.swiftkeyexi.util.view.ViewTools;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,14 +40,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.Space;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,7 +58,6 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 
 import static android.content.ContentValues.TAG;
-import static com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels;
 import static com.mayulive.swiftkeyexi.main.emoji.EmojiFragment.EmojiPanelType.DEFAULT;
 
 public class EmojiFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -222,15 +231,15 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		pagerAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
 		{
 			@Override
-			public void onClick(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+			public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 			{
-				handleEmojiItemClick(type, view, item, position);
+				handleEmojiItemClick(type, panelView, item, position);
 			}
 
 			@Override
-			public void onLongPress(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+			public void onLongPress(DB_EmojiItem item,View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 			{
-				handleEmojiItemLongPress(type, view, item, position);
+				handleEmojiItemLongPress(type, panelView, item, position);
 			}
 
 		});
@@ -595,7 +604,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			{
 				case KEYBOARD:
 				{
-					//Does nothing at the moment.
+
 					break;
 				}
 				case DICTIONARY:
@@ -923,7 +932,10 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		{
 			if (destionationPanel.getPanelItem().get_source().isEditable())
 			{
-				destionationPanel.addItem( new DB_EmojiItem(string) );
+				DB_EmojiItem newItem = new DB_EmojiItem(string);
+				newItem.set_modifiers_supported( EmojiModifiers.supportsModifiers(newItem.get_text()) );
+
+				destionationPanel.addItem( newItem );
 				setLastUpdateTime();
 			}
 		}
@@ -1067,6 +1079,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		{
 			e.printStackTrace();
 		}
+
+		newPanel.updateModifierSupport();
 
 		mDictionaryPanels.add(newPanel);
 		mDictionaryPagerAdapter.notifyDataSetChanged();

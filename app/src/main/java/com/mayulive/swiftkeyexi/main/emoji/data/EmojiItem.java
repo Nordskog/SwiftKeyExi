@@ -1,5 +1,7 @@
 package com.mayulive.swiftkeyexi.main.emoji.data;
 
+import android.util.Log;
+
 import com.mayulive.swiftkeyexi.util.FontLoader;
 
 
@@ -12,6 +14,8 @@ import static com.mayulive.swiftkeyexi.util.FontLoader.containsEmoji;
 
 public class EmojiItem
 {
+
+
 
 	public enum EmojiType
 	{
@@ -29,6 +33,7 @@ public class EmojiItem
 	protected int _style = 0;
 	protected EmojiType _type = TEXT;
 	protected String _variants = "";
+	protected boolean _modifiers_supported = false;
 
 	public EmojiItem copy()
 	{
@@ -42,6 +47,8 @@ public class EmojiItem
 		this.set_text(other.get_text());
 		this.set_style( other.get_style());
 		this.set_type(other.get_type());
+		this.set_variants(other.get_variants());
+		this.set_modifiers_supported(other.get_modifiers_supported());
 	}
 
 	public EmojiItem(String text, int style, EmojiType type)
@@ -49,17 +56,6 @@ public class EmojiItem
 		set_text(text);
 		set_style(style);
 		set_type(type);
-	}
-
-	public EmojiItem(int id, String text, int style)
-	{
-		set_text(text);
-		set_style(style);
-
-		set_type( EmojiType.getType(text) );
-
-		//Log.e("###", get_text()+", Type: "+get_type());
-
 	}
 
 	public EmojiItem(String text, EmojiType type)
@@ -112,6 +108,16 @@ public class EmojiItem
 	public void set_style(int _style)
 	{
 		this._style = _style;
+	}
+
+	public boolean get_modifiers_supported()
+	{
+		return _modifiers_supported;
+	}
+
+	public void set_modifiers_supported(boolean _supports_modifiers)
+	{
+		this._modifiers_supported = _supports_modifiers;
 	}
 
 

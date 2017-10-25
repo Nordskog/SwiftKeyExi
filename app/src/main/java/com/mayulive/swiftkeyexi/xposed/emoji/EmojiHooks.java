@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.emoji.EmojiModifiersPopup;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
@@ -34,6 +36,7 @@ import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
@@ -74,6 +77,7 @@ public class EmojiHooks
 						if (Settings.EMOJI_PANEL_ENABLED)
 						{
 							RelativeLayout thiz = (RelativeLayout) param.getResult();
+							EmojiCommons.mEmojiTopRelative = thiz;
 
 							//These are the two views we want to replace.
 							int pagerID = thiz.getResources().getIdentifier("emoji_pager", "id", ExiXposed.HOOK_PACKAGE_NAME);
@@ -128,16 +132,33 @@ public class EmojiHooks
 								EmojiCommons.mEmojiPanelAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
 								{
 									@Override
-									public void onClick(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+									public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 									{
-
 										EmojiCommons.handleEmojiClick(panel.get_items().get(position), panel.get_style(), panel.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS);
 									}
 
 									@Override
-									public void onLongPress(DB_EmojiItem  item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+									public void onLongPress(DB_EmojiItem  item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 									{
-										//Nothing
+										if (item.get_modifiers_supported())
+										{
+											EmojiModifiersPopup popup = new EmojiModifiersPopup(view.getContext(), item.get_text());
+											popup.setOnEmojiClickedListener(new EmojiModifiersPopup.OnEmojiClickedListener()
+											{
+												@Override
+												public void onEmojiClicked(String emoji)
+												{
+													DB_EmojiItem newItem = new DB_EmojiItem(emoji);
+													newItem.set_modifiers_supported(false);	//Recents panel should only display the chosen emoji
+													newItem.set_type(EmojiItem.EmojiType.CONTAINS_EMOJI);
+
+													EmojiCommons.handleEmojiClick(newItem, 0, false);
+
+													OverlayCommons.clearPopups();
+												}
+											});
+											popup.showInOverlay(OverlayCommons.mKeyboardOverlay, EmojiCommons.mEmojiTopRelative, view);
+										}
 									}
 
 								});
@@ -206,7 +227,7 @@ public class EmojiHooks
 							tabParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
 							EmojiCommons.mOuterTabsWrapper.setLayoutParams( tabParams );
 
-							EmojiCommons.setEmojiTheme( KeyboardMethods.getTheme());
+							EmojiCommons.refreshEmojiTheme( );
 
 							//We are in relative layout, and the actualy pager needs to be placed below the tablayout
 							EmojiCommons.mOuterTabsWrapper.setId( View.generateViewId() );
@@ -479,7 +500,7 @@ public class EmojiHooks
 					@Override
 					public void themeChanged(int newTheme)
 					{
-						EmojiCommons.setEmojiTheme(newTheme);
+						EmojiCommons.refreshEmojiTheme();
 					}
 				});
 
