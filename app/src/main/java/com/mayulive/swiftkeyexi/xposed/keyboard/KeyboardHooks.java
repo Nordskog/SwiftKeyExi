@@ -5,12 +5,15 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.R;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
@@ -66,17 +69,22 @@ public class KeyboardHooks
 
 	}
 
-	public static XC_MethodHook.Unhook hookViewCreated()
+	public static void hookViewCreatedFallback(PackageTree param)
 	{
-		return XposedHelpers.findAndHookMethod(KeyboardClassManager.keyboardServiceClass, "onCreateInputView", new XC_MethodHook()
+		XposedBridge.hookMethod(KeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod, new XC_MethodHook()
 		{
-
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
 				try
 				{
 					ViewGroup view = (ViewGroup) param.getResult();
+
+					//If cover is not null, maker sure we have not already added something
+					if (OverlayCommons.mKeyboardOverlay != null)
+					{
+						view.removeView(OverlayCommons.mKeyboardOverlay);
+					}
 
 					RelativeLayout cover = new RelativeLayout(view.getContext());
 
@@ -90,10 +98,9 @@ public class KeyboardHooks
 					Hooks.baseHooks_viewCreated.invalidate(ex, "Unexpected problem in viewCreated hook");
 				}
 
-
-
 			}
 		});
+
 	}
 
 	public static XC_MethodHook.Unhook hookKeyboardOpened()
@@ -104,6 +111,10 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
+
+
+
+
 
 					KeyboardMethods.loadSettings(ContextUtils.getHookContext());
 
@@ -266,15 +277,17 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookTheme(PackageTree param)
 	{
-		Class someClass = ClassHunter.loadClass("com.touchtype.v.a.t", param.getClassLoader());
-		Method returnIntMethod = ProfileHelpers.findAllMethodsWithReturnType(int.class, someClass.getDeclaredMethods()).get(0);
-
-		return XposedBridge.hookMethod(returnIntMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(KeyboardClassManager.emojiThemeLoaderClass_getThemeMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
 				int newValue = (int)param.getResult();
+
+				//Update regardless.
+				//This value is 0-1, matching the values that exist in SharedTheme
+				SharedTheme.setCurrenThemeType( ContextUtils.getHookContext(), newValue );
+
 				if (newValue != KeyboardMethods.mTheme)
 				{
 					KeyboardMethods.mTheme = newValue;
@@ -293,6 +306,10 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
+
+
+
+
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.addAll( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
@@ -317,7 +334,8 @@ public class KeyboardHooks
 
 				if (Hooks.baseHooks_viewCreated.isRequirementsMet())
 				{
-					Hooks.baseHooks_viewCreated.add( hookViewCreated() );
+					//Hooks.baseHooks_viewCreated.add( hookViewCreated() );
+					hookViewCreatedFallback(lpparam);
 				}
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())

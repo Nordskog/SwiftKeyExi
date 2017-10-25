@@ -44,6 +44,7 @@ public class KeyboardClassManager
 
 	public static Class keyboardLoaderClass = null;
 	public static Class emojiThemeLoaderClass = null;
+	public static Class keyboardSizerClass = null;
 
 	/////////////////////////
 	//Methods
@@ -58,6 +59,7 @@ public class KeyboardClassManager
 
 	protected static Method emojiThemeLoaderClass_getThemeMethod = null;
 
+	protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
 
 	////////////////////
 	//Fields
@@ -88,6 +90,8 @@ public class KeyboardClassManager
 		keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
 
 		emojiThemeLoaderClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_EMOJI_THEME_LOADER_CLASS_PROFILE(), param );
+
+		keyboardSizerClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEYBOARD_SIZER_CLASS_PROFILE(), param );
 	}
 
 
@@ -96,6 +100,23 @@ public class KeyboardClassManager
 		if (keyboardServiceClass != null)
 		{
 			getCurrentInputConnectionMethod = KeyboardClassManager.keyboardServiceClass.getMethod("getCurrentInputConnection", (Class[])null);
+		}
+
+		if (keyboardSizerClass != null)
+		{
+
+			keyboardSizerClass_sizeKeyboardMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
+					(
+							PUBLIC | STATIC | EXACT ,
+							new ClassItem(android.view.View.class),
+
+							new ClassItem(android.content.Context.class),
+							new ClassItem(android.view.View.class),
+							new ClassItem(int.class),
+							new ClassItem(int.class)
+
+					), keyboardSizerClass.getDeclaredMethods(), keyboardSizerClass );
+
 		}
 
 		if (keyboardLoaderClass != null)

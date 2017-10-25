@@ -1,9 +1,11 @@
 package com.mayulive.swiftkeyexi.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
@@ -29,6 +31,13 @@ public class Theme
 	//Just sets the theme
 	public static void setTheme( ThemeApplicable activity, int theme)
 	{
+		//On the config app side, this is responsbile for setting the
+		//SharedTheme values
+		if (theme == R.style.AppTheme)
+			SharedTheme.setCurrenThemeType( activity.getContext(), SharedTheme.DARK_THEME_IDENTIFIER);
+		else
+			SharedTheme.setCurrenThemeType(activity.getContext(), SharedTheme.LIGHT_THEME_IDENTIFIER);
+
 		mCurrentTheme = theme;
 		activity.setAppliedTheme(theme);
 		activity.setTheme(theme);
@@ -64,6 +73,7 @@ public class Theme
 		//Exist already
 		void setTheme(int themeResId);
 		void recreate();
+		Context getContext();
 	}
 
 }

@@ -13,6 +13,7 @@ import com.mayulive.swiftkeyexi.util.FontLoader;
 import com.mayulive.swiftkeyexi.util.KeyboardUtil;
 import com.mayulive.swiftkeyexi.util.view.BackCallbackEditText;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -286,5 +287,11 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 	public void setAppliedTheme(int themeResId)
 	{
 		mAppliedTheme = themeResId;
+	}
+
+	@Override
+	public Context getContext()
+	{
+		return this;
 	}
 }

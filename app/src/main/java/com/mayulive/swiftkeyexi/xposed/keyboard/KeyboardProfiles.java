@@ -251,6 +251,102 @@ public class KeyboardProfiles
 		return newProfile;
 	}
 
+	public static ClassProfile get_KEYBOARD_SIZER_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("com.touchtype.j");
+		newProfile.setKnownPath("com.touchtype");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem(android.widget.FrameLayout.class));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//a
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem(android.view.View.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(int.class)
+
+								),
+
+						//Method #2: drawChild
+						new MethodProfile
+								(
+										PROTECTED | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(android.graphics.Canvas.class),
+										new ClassItem(android.view.View.class),
+										new ClassItem(long.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem(android.content.Context.class)
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
+
 
 
 

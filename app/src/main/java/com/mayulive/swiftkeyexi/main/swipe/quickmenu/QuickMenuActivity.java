@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.main.swipe.quickmenu;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -103,4 +104,9 @@ public class QuickMenuActivity extends AppCompatActivity implements Theme.ThemeA
 		});
 	}
 
+	@Override
+	public Context getContext()
+	{
+		return this;
+	}
 }
