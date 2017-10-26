@@ -1,7 +1,5 @@
 package com.mayulive.swiftkeyexi.xposed.popupkeys;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -87,20 +85,8 @@ public class PopupkeysClassManager
 
 		extraKeyPopupRunnableClass = 		ProfileHelpers.loadProfiledClass( PopupkeyProfiles._get_EXTRA_KEY_POPUP_RUNNABLE_PROFILE(), param);
 
+		keyLongPressPopupConfigureClass = ProfileHelpers.loadProfiledClass( PopupkeyProfiles.get_KEY_LONGPRESS_POPUP_CONFIGURE_PROFILE(), param);
 
-		//TODO Old class remains, but all the content has moved to a different class. Can be removed once this reacehs stable
-		keyLongPressPopupConfigureClass = 	ProfileHelpers.loadProfiledClass( PopupkeyProfiles.POST_6_6_4_14_get_KEY_LONGPRESS_POPUP_CONFIGURE_PROFILE(), param);
-		if (keyLongPressPopupConfigureClass == null || keyLongPressPopupConfigureClass.getDeclaredClasses().length < 1)
-		{
-			Log.i(LOGTAG, "Loading keyLongPressPopupConfigureClass for >6.6.4.14");
-
-			//Version is >= 6_6_4_14, use new profile
-			keyLongPressPopupConfigureClass = ProfileHelpers.loadProfiledClass( PopupkeyProfiles.PRE_6_6_4_14_get_KEY_LONGPRESS_POPUP_CONFIGURE_PROFILE(), param);
-		}
-		else
-		{
-			Log.i(LOGTAG, "Loading keyLongPressPopupConfigureClass for <6.6.4.14");
-		}
 
 		{
 			//btSubClass = XposedHelpers.findClassIfExists("com.touchtype.keyboard.bt.a", classLoader);

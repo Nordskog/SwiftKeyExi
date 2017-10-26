@@ -87,7 +87,7 @@ public class PopupkeyProfiles
 	}
 
 
-	public static ClassProfile PRE_6_6_4_14_get_KEY_LONGPRESS_POPUP_CONFIGURE_PROFILE()
+	public static ClassProfile get_KEY_LONGPRESS_POPUP_CONFIGURE_PROFILE()
 	{
 		ClassProfile newProfile = new ClassProfile();
 
@@ -271,117 +271,6 @@ public class PopupkeyProfiles
 	}
 
 
-
-	protected static ClassProfile POST_6_6_4_14_get_KEY_LONGPRESS_POPUP_CONFIGURE_PROFILE()
-	{
-		ClassProfile newProfile = new ClassProfile();
-
-		newProfile.setFullPath("com.touchtype.keyboard.az");
-		newProfile.setKnownPath("com.touchtype.keyboard");
-
-		newProfile.setMinDepth(0);
-		newProfile.setMaxDepth(0);
-		newProfile.setModifiers(PUBLIC | FINAL );
-
-		newProfile.setTypeParamCount(0);
-		newProfile.setSuperClass(	new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT ));
-/////////////////////////
-//Interfaces
-/////////////////////////
-		newProfile.setInterfaces(new ClassItem[]
-				{
-
-				});
-/////////////////////////
-//Nested Classes
-/////////////////////////
-		newProfile.setNestedClasses(new ClassItem[]
-				{
-
-				});
-/////////////////////////
-//Declared fields
-/////////////////////////
-		newProfile.setDeclaredFields(new FieldItem[]
-				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(int.class)),	//d
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT )),	//e
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.graphics.RectF.class)),	//f
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//g
-
-				});
-/////////////////////////
-//Declared Methods
-/////////////////////////
-		newProfile.setDeclaredMethods(new MethodProfile[]
-				{
-						//Method #0: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #1: e
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.RectF.class)
-
-								),
-
-						//Method #2: k
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #3: l
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(float.class)
-
-								),
-
-
-				});
-/////////////////////////
-//Declared Constructors
-/////////////////////////
-		newProfile.setDeclaredConstructors(new ConstructorProfile[]
-				{
-						//Constructor #0
-						new ConstructorProfile
-								(		EXACT ,
-
-										new ClassItem(java.util.List.class),
-										new ClassItem(int.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(java.util.Set.class),
-										new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(android.graphics.RectF.class),
-										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-
-				});
-
-		return newProfile;
-	}
 
 
 	protected static ClassProfile _get_POPUP_SCHEDULER_CLASS_PROFILE()

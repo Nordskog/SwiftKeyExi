@@ -31,19 +31,21 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 		//Some assets as shared between the app and xposed, requirement some management
 		SharedStyles.setStyleContext(SharedStyles.StyleContext.HOOK);	//Defaults to app
 
+		int CRC32 = ClassHunter.getApkCRC32(lpparam.appInfo.sourceDir);
 		XposedBridge.log(LOGTAG+", "+"Module loaded in "+lpparam.packageName);
 		Log.i(
 				LOGTAG,
 				"Module loaded in "+ExiXposed.HOOK_PACKAGE_NAME+
-						", CRC: "+Integer.toHexString(ClassHunter.getApkCRC32(lpparam.appInfo.sourceDir))+
+						", CRC: "+Integer.toHexString(CRC32)+
 						", Module version: "+BuildConfig.VERSION_NAME);
 
 		PackageTree classTree = new PackageTree(lpparam.appInfo.sourceDir, lpparam.classLoader);
 
 		ProfileCache.setSaveLocation(lpparam.appInfo.dataDir+"/files/EXI_CLASS_CACHE_"+ ExiXposed.HOOK_PACKAGE_NAME);
 
-		//Automatically reset class cache on update
+		//Automatically reset class cache on update of module or swiftkey
 		ClassHunter.MODULE_SIGNATURE = BuildConfig.VERSION_CODE;
+		ClassHunter.HOOK_SIGNATURE = CRC32;
 
 		ProfileCache.loadCache();
 
