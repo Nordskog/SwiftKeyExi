@@ -151,7 +151,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.l.i");
+		newProfile.setFullPath("com.touchtype.keyboard.l.k");
 		newProfile.setKnownPath("com.touchtype.keyboard");
 
 		newProfile.setMinDepth(1);
@@ -233,14 +233,13 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class),
+										new ClassItem(int.class),
 
-										new ClassItem(boolean.class),
-										new ClassItem(android.content.res.Resources.class)
+										new ClassItem(boolean.class)
 
 								),
 
-						//Method #5: c
+						//Method #5: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -251,7 +250,18 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #6: d
+						//Method #6: c
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #7: d
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -262,7 +272,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #7: e
+						//Method #8: e
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -273,7 +283,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #8: f
+						//Method #9: f
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,

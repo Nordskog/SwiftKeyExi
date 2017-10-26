@@ -40,8 +40,6 @@ public class KeyClassManager
 
 	public static Class keyRawDefinitionClass = null;
 
-	protected static Class simpleKeyClass = null;
-
 	protected static Class keyFieldsClass = null;
 
 	/////////////////////////
@@ -75,7 +73,6 @@ public class KeyClassManager
 			pointerLocationClass = 				ProfileHelpers.loadProfiledClass(	KeyProfiles.get_POINTER_LOCATION_PROFILE(), 			param);
 			keyRawDefinitionClass = 			ProfileHelpers.loadProfiledClass(	KeyProfiles.get_KEY_RAW_DEFINITION_CLASS_PROFILE(),	param);
 
-			simpleKeyClass = ProfileHelpers.loadProfiledClass(	KeyProfiles.get_SIMPLE_KEY_CLASS_PROFILE(),	param);
 			keyFieldsClass =  ProfileHelpers.loadProfiledClass(	KeyProfiles.get_KEY_FIELDS_CLASS_PROFILE(),	param);
 		}
 
@@ -201,7 +198,6 @@ public class KeyClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyboardSingleKeyDownMethod", 	keyboardSingleKeyDownMethod );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyFieldsClass", 	keyFieldsClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "simpleKeyClass", 	simpleKeyClass );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyFieldsClass_setIntegerMethod", 	keyFieldsClass_setIntegerMethod );
 		Hooks.logSetRequirement( Hooks.keyHooks_keyDefinition,	 "keyFieldsClass_setStringMethods", 	!keyFieldsClass_setStringMethods.isEmpty() );
