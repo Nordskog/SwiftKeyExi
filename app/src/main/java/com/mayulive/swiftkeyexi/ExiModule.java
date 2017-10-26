@@ -202,7 +202,7 @@ public class ExiModule
 					templateEmoji.add(item.get_text());
 				}
 
-				//Find all keybaord panels that match this template. TODO: >=Nougat version
+				//Find all keybaord panels that match this template.
 				if (removeKeyboardPanels)
 				{
 					ListIterator<DB_EmojiPanelItem> keyboardIterator = keyboardPanels.listIterator();

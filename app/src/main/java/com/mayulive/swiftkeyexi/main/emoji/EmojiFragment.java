@@ -759,6 +759,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			}
 		});
 
+		infoView.setIconEditability( item.get_source().isEditable() );
+
 		infoView.show();
 	}
 

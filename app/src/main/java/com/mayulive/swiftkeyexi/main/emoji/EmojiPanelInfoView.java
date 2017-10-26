@@ -3,6 +3,8 @@ package com.mayulive.swiftkeyexi.main.emoji;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +67,23 @@ public class EmojiPanelInfoView extends BoundedFrameLayout
 	public void hide()
 	{
 		this.setVisibility(View.GONE);
+	}
+
+	public void setIconEditability(boolean editable)
+	{
+		if (editable)
+		{
+			mPickButton.setEnabled(true);
+
+			mIconText.setInputType(InputType.TYPE_CLASS_TEXT);
+			mIconText.setEnabled(true);
+		}
+		else
+		{
+			mPickButton.setEnabled(false);
+			mIconText.setInputType(InputType.TYPE_NULL);
+			mIconText.setEnabled(false);
+		}
 	}
 
 
