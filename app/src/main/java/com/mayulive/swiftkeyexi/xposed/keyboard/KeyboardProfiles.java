@@ -147,104 +147,150 @@ public class KeyboardProfiles
 	}
 
 
-	public static ClassProfile get_EMOJI_THEME_LOADER_CLASS_PROFILE()
+	public static ClassProfile get_THEME_LOADER_CLASS_PROFILE()
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.v.a.t");
-		newProfile.setKnownPath("com.touchtype");
+		newProfile.setFullPath("com.touchtype.keyboard.l.i");
+		newProfile.setKnownPath("com.touchtype.keyboard");
 
-		newProfile.setMinDepth(2);
-		newProfile.setMaxDepth(2);
+		newProfile.setMinDepth(1);
+		newProfile.setMaxDepth(1);
 		newProfile.setModifiers(PUBLIC | FINAL );
 
 		newProfile.setTypeParamCount(0);
 		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
-		/////////////////////////
-		//Interfaces
-		/////////////////////////
+/////////////////////////
+//Interfaces
+/////////////////////////
 		newProfile.setInterfaces(new ClassItem[]
 				{
 
 				});
-		/////////////////////////
-		//Nested Classes
-		/////////////////////////
+/////////////////////////
+//Nested Classes
+/////////////////////////
 		newProfile.setNestedClasses(new ClassItem[]
 				{
 
 				});
-		/////////////////////////
-		//Declared fields
-		/////////////////////////
+/////////////////////////
+//Declared fields
+/////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//b
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//c
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(int.class)),	//d
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//e
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//f
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//g
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//h
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//i
 
 				});
-		/////////////////////////
-		//Declared Methods
-		/////////////////////////
+/////////////////////////
+//Declared Methods
+/////////////////////////
 		newProfile.setDeclaredMethods(new MethodProfile[]
 				{
 						//Method #0: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(java.lang.Integer.class)
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(boolean.class)
 
 								),
 
-						//Method #1: b
+						//Method #1: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(int.class)
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
 
 								),
 
-						//Method #2: equals
+						//Method #2: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.Object.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #3: hashCode
+						//Method #4: b
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(int.class)
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #5: c
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #6: d
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #7: e
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #8: f
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
 
 								),
 
 
 				});
-		/////////////////////////
-		//Declared Constructors
-		/////////////////////////
+/////////////////////////
+//Declared Constructors
+/////////////////////////
 		newProfile.setDeclaredConstructors(new ConstructorProfile[]
 				{
-						//Constructor #0
-						new ConstructorProfile
-								(		PUBLIC | EXACT ,
-
-										new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
-
-								),
-
 
 				});
 

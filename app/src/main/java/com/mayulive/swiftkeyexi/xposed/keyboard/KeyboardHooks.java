@@ -1,44 +1,25 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
-import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
-import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
-import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
-import java.io.ByteArrayInputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -276,12 +257,12 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookTheme(PackageTree param)
 	{
-		return XposedBridge.hookMethod(KeyboardClassManager.emojiThemeLoaderClass_getThemeMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(KeyboardClassManager.ThemeLoaderClass_getThemeMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
-				int newValue = (int)param.getResult();
+				int newValue = ((boolean)param.getResult()) ? SharedTheme.DARK_THEME_IDENTIFIER : SharedTheme.LIGHT_THEME_IDENTIFIER;
 
 				//Update regardless.
 				//This value is 0-1, matching the values that exist in SharedTheme

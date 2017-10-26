@@ -6,6 +6,7 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyProfiles;
 import com.mayulive.xposed.classhunter.ClassHunter;
@@ -19,7 +20,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.mayulive.xposed.classhunter.Modifiers.*;
@@ -27,6 +27,8 @@ import static com.mayulive.xposed.classhunter.Modifiers.*;
 
 public class KeyboardClassManager
 {
+
+	private static String LOGTAG = ExiModule.getLogTag(KeyboardClassManager.class);
 
 	/////////////////
 	//Known classes
@@ -43,7 +45,7 @@ public class KeyboardClassManager
 	/////////////////
 
 	public static Class keyboardLoaderClass = null;
-	public static Class emojiThemeLoaderClass = null;
+	public static Class ThemeLoaderClass = null;
 	public static Class keyboardSizerClass = null;
 
 	/////////////////////////
@@ -57,7 +59,7 @@ public class KeyboardClassManager
 	protected static Method punctuatorImplClass_AddRulesMethod = null;
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 
-	protected static Method emojiThemeLoaderClass_getThemeMethod = null;
+	protected static Method ThemeLoaderClass_getThemeMethod = null;
 
 	protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
 
@@ -89,7 +91,7 @@ public class KeyboardClassManager
 
 		keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
 
-		emojiThemeLoaderClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_EMOJI_THEME_LOADER_CLASS_PROFILE(), param );
+		ThemeLoaderClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_THEME_LOADER_CLASS_PROFILE(), param );
 
 		keyboardSizerClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEYBOARD_SIZER_CLASS_PROFILE(), param );
 	}
@@ -174,11 +176,11 @@ public class KeyboardClassManager
 
 		}
 
-		if (emojiThemeLoaderClass != null)
+		if (ThemeLoaderClass != null)
 		{
-			List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType(int.class, emojiThemeLoaderClass.getDeclaredMethods());
+			List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, ThemeLoaderClass.getDeclaredMethods());
 			if (!methods.isEmpty())
-			emojiThemeLoaderClass_getThemeMethod = methods.get(0);
+				ThemeLoaderClass_getThemeMethod = methods.get(0);
 		}
 
 	}
@@ -235,8 +237,8 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_invalidateLayout,	 "keyboardLoader_onSharedPreferenceChangedMethod", 	keyboardLoader_onSharedPreferenceChangedMethod );
 
 		//Theme
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", 	emojiThemeLoaderClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", 	emojiThemeLoaderClass_getThemeMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", ThemeLoaderClass);
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", ThemeLoaderClass_getThemeMethod);
 
 		//Hitbox
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "layoutClass", 	layoutClass );
