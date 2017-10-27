@@ -214,7 +214,7 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 
 				EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
 				//TODO panel key for tablayout icons ... ?
-				emojiView.setEmojiText(item.get_icon(), dimens.default_emojiTextSize, null, item.get_icon_style());
+				emojiView.setEmojiText(item.get_icon(), dimens.default_emojiTextSize * 0.8f, null, item.get_icon_style());
 				tab.setCustomView(emojiView);
 
 			}
