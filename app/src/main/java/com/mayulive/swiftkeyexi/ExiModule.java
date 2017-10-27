@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
@@ -16,6 +17,8 @@ import com.mayulive.swiftkeyexi.main.commons.data.DB_ModifierKeyItem;
 import com.mayulive.swiftkeyexi.database.DatabaseMethods;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
+import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
+import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelTemplates;
 
@@ -156,6 +159,9 @@ public class ExiModule
 			Log.i(LOGTAG, "Updating from Nougat emoji");
 			refreshAllPanels(db);
 		}
+
+		//Let hook know of update
+		SettingsCommons.updateTimePreference(context, PreferenceConstants.pref_emoji_last_update_key);
 
 		return getEmojiVersionForSDK();
 	}
