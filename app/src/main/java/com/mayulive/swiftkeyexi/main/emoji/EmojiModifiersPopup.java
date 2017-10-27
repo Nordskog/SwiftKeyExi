@@ -2,6 +2,7 @@ package com.mayulive.swiftkeyexi.main.emoji;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Point;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifierBackgroundDrawable;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.util.ColorUtils;
+import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 
 import java.util.Arrays;
@@ -139,26 +141,10 @@ public class EmojiModifiersPopup extends RelativeLayout
 		int x = 0; int y = 0;
 
 		//Get position in parent
-		View currentView = anchor;
-		ViewParent currentParent;
-		while(true)
 		{
-			currentParent = currentView.getParent();
-
-			//TODO fix dirty nested position workaround
-			//In its current form this bit gets called 3 times.
-			//EVerything works fine for Y, but X will have an extra
-			//full-screen width value in the middle. Something is broken.
-			//Ditch widths that match parent.
-			if (emojiParent.getMeasuredWidth() != currentView.getX())
-				x += currentView.getX();
-
-			y += currentView.getY();
-
-			if (currentParent == emojiParent)
-				break;
-
-			currentView = (View)currentParent;
+			Point relativePosition = ViewTools.getPositionInParent(emojiParent, anchor);
+			x = relativePosition.x;
+			y = relativePosition.y;
 		}
 
 		//Offset to center at top of anchor
