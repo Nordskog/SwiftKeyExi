@@ -617,7 +617,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 						{
 							sourcePanelView.addMark(item.get_text());
 
-							currentKeyboardPanelView.addItem(new DB_EmojiItem( item.get_text() ) );
+							currentKeyboardPanelView.addItem(new DB_EmojiItem( item ) );
 							currentKeyboardPanelView.scrollToEnd();
 						}
 						else
