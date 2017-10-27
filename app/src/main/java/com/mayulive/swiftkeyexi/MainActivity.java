@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 			int newVersion = ExiModule.update(this,mDbWrap,emojiVersion);
 
 			//Update emoji version pref
+
 			editor.putInt(PreferenceConstants.status_api_version_emoji, newVersion);
 			editor.apply();
 		}
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 				editor.putLong(PreferenceConstants.pref_hotkeys_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_popup_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_additional_keys_last_update_key, currentTime);
+				editor.putLong(PreferenceConstants.pref_quickmenu_last_update_key, currentTime);
 
 				editor.apply();
 			}
