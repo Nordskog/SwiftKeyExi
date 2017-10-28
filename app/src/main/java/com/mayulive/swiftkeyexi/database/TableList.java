@@ -281,8 +281,7 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 
 		if (mInfo != null)
 		{
-			//This should be a new, empty able
-			mDbWrap.deleteTable(mInfo.tableName);
+			DatabaseMethods.deleteTable(mDbWrap, mInfo);
 			mInfo = null;
 			mDbWrap = null;
 		}

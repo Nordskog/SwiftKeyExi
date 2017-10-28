@@ -324,4 +324,11 @@ public class DatabaseMethods
 		db.endTransaction();
 	}
 
+	public static void deleteTable(DatabaseWrapper db, TableInfo tableInfo)
+	{
+		TableSyncer.removeTime(tableInfo.tableName);
+		db.deleteTable(tableInfo.tableName);
+
+	}
+
 }
