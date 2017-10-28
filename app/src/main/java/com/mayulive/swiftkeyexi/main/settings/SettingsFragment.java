@@ -154,4 +154,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
 					"android.support.v7.preference.PreferenceFragment.DIALOG");
 		} else super.onDisplayPreferenceDialog(preference);
 	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		getActivity().setTitle(R.string.settings_title);
+	}
 }

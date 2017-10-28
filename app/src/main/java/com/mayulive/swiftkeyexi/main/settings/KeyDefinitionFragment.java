@@ -261,6 +261,9 @@ public class KeyDefinitionFragment extends Fragment
 		}
 
 		super.onResume();
+
+		getActivity().setTitle(R.string.category_pref_keys);
+
 	}
 
 	@Override
@@ -271,4 +274,6 @@ public class KeyDefinitionFragment extends Fragment
 
 		super.onPause();
 	}
+
+
 }
