@@ -150,4 +150,10 @@ public class NormalEmojiItem extends AppCompatTextView implements EmojiContainer
 	{
 		return this;
 	}
+
+	@Override
+	public void setModifable(boolean modifiable)
+	{
+		//Stub, will never be used
+	}
 }

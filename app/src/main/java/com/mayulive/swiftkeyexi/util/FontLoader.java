@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FontLoader
 {
@@ -37,7 +38,8 @@ public class FontLoader
 		INVALID, NONE, NORMAL, BITMAP
 	}
 
-	private static native int nGetGlyphInfo(byte[] string);
+	//Returns the top glyph value (unrenderable, normal, bitmap), or the lowest if returnOnUnrenderable == true
+	private static native int nGetGlyphInfo(byte[] string, boolean returnOnUnrenderable);
 	public static native void nInitFontLoader(String[] paths);
 
 	static
@@ -282,10 +284,10 @@ public class FontLoader
 
 	public static boolean isRenderable(String string)
 	{
-		return getGlyphType(string) != GLYPH_TYPE.NONE;
+		return getGlyphType(string,true) != GLYPH_TYPE.NONE;
 	}
 
-	public static GLYPH_TYPE getGlyphType(String string)
+	private static GLYPH_TYPE getGlyphType(String string, boolean returnOnUnrenderable)
 	{
 		if (!mLibraryLoaded)
 			return GLYPH_TYPE.NORMAL;
@@ -295,7 +297,7 @@ public class FontLoader
 			//Thinking about MUTF-8 is too much work
 			byte[] bytes = string.getBytes("UTF-8");
 
-			switch( nGetGlyphInfo(bytes) )
+			switch( nGetGlyphInfo(bytes, returnOnUnrenderable) )
 			{
 				case 0:
 					return GLYPH_TYPE.NONE;
@@ -316,21 +318,29 @@ public class FontLoader
 
 	//Given a string that should render as a single emoji character,
 	//return NONE if it instead renders as multiple. See family emoji
+	//Oddly enough this fails to detect emoji with unrenderable modifiers.
 	public static boolean isSingleChar(String text)
 	{
-		Rect bounds = new Rect();
-		mPaint.getTextBounds(text, 0, text.length(), bounds);
+		float[] widths = new float[text.length()];
+		mPaint.getTextWidths(text,widths);
 
-		//Emoji are... pretty much always full-width characters,
-		// so if width is > 1.5x height, it's rendering as multiple chars.
-		return !( ((float)bounds.width())  >  ((float)bounds.height()) * 1.5f );
+		//So this basically returns the render width of each individual character.
+		//If the whole lot is rendered as a single character, only the first elemnent will be non-zero
+		//So if any of the other values are non-zero, it is rendering as multiple characters
+		for (int i = 1; i< widths.length; i++)
+		{
+			if (widths[i] != 0.0f)
+				return false;
+		}
+
+		return true;
 	}
 
 
 
 	public static GLYPH_TYPE containsEmoji(String string)
 	{
-		GLYPH_TYPE type = getGlyphType(string);
+		GLYPH_TYPE type = getGlyphType(string, false);
 
 		return type;
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
@@ -42,16 +43,28 @@ public class ShortcutkeysFragment extends Fragment
 	{
 		super.onCreate(savedInstanceState);
 		setupReferences();
+		loadItems();
+	}
 
-		if ( mItems == null)
+	private void loadItems()
+	{
+		if (mItems == null)
 		{
 			mItems = new TableList<>(mDbWrap, TableInfoTemplates.MODIFIER_KEY_TABLE_INFO);
+		}
+
+		if (mItems.sync())
+		{
+			if (mAdapter != null)
+				mAdapter.notifyDataSetChanged();
 		}
 	}
 
 	private void setupReferences()
 	{
 		mDbWrap = DatabaseHolder.getWrapped(this.getContext());
+
+
 	}
 
 	private void setLastUpdateTime()
@@ -139,6 +152,12 @@ public class ShortcutkeysFragment extends Fragment
 			}
 		};
 		dialog.show();
+	}
+
+	public void onResume()
+	{
+		loadItems();
+		super.onResume();
 	}
 
 }

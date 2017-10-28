@@ -159,24 +159,6 @@ public class PredictionHooks
 						   Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
 					   }
 	        	   }
-
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
-				{
-					try
-					{
-						if ( PredictionClassManager.LEGACY_CANDIDATES_VIEW_FACTORY )
-						{
-							//Otherwise handeled in getViewWrapper below
-							PredictionHandlers.handleCandidateViewHook_replace( (ViewGroup)param.getResult());
-						}
-
-					}
-					catch (Throwable ex)
-					{
-						Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
-					}
-				}
 			});
 
 
@@ -372,8 +354,7 @@ public class PredictionHooks
 			{
 				Hooks.predictionHooks_more.add( hookCandidatesDisplayView() );
 
-				if (!PredictionClassManager.LEGACY_CANDIDATES_VIEW_FACTORY)
-					hookCandidatesDisplayView_getViewWrapper();
+				hookCandidatesDisplayView_getViewWrapper();
 
 				Hooks.predictionHooks_more.add( hookBu() );
 			}

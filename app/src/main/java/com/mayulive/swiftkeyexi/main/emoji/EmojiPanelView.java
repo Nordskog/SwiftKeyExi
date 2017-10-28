@@ -5,6 +5,8 @@ package com.mayulive.swiftkeyexi.main.emoji;
  */
 
 
+import android.view.View;
+
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 
@@ -50,7 +52,7 @@ public interface EmojiPanelView
 
 	interface OnEmojiItemClickListener
 	{
-		void onClick(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position);
-		void onLongPress(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position);
+		void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position);
+		void onLongPress(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position);
 	}
 }

@@ -178,7 +178,7 @@ public class KeyHooks
 	public static Set<XC_MethodHook.Unhook> hookKeyConstructor(PackageTree param)
 	{
 
-		return XposedBridge.hookAllConstructors(KeyClassManager.simpleKeyClass, new XC_MethodHook()
+		return XposedBridge.hookAllConstructors(KeyClassManager.keyDefinitionKeyClass, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable

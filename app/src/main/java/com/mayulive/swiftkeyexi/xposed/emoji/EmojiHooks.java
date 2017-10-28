@@ -1,9 +1,12 @@
 package com.mayulive.swiftkeyexi.xposed.emoji;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,10 +21,14 @@ import android.widget.TextView;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.emoji.EmojiModifiersPopup;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
+import com.mayulive.swiftkeyexi.util.ThemeUtils;
 import com.mayulive.swiftkeyexi.util.VersionTools;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -29,6 +36,8 @@ import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
+import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -38,7 +47,9 @@ import com.mayulive.swiftkeyexi.util.ContextUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -51,29 +62,6 @@ public class EmojiHooks
 {
 
 	private static String LOGTAG = ExiModule.getLogTag(EmojiHooks.class);
-
-	public static XC_MethodHook.Unhook hookEmojiPanelStyle(final PackageTree packageParam) throws NoSuchMethodException
-	{
-
-			//XposedBridge.hookAllConstructors(emojiPanelClass, new XC_MethodHook()
-			return XposedBridge.hookMethod(EmojiClassManager.emojiPanelThemeClass_getThemeTypeMethod, new XC_MethodHook()
-			{
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
-				{
-					try
-					{
-						EmojiCommons.setEmojiTheme( (int) param.getResult() );
-					}
-					catch (Throwable ex)
-					{
-						Hooks.emojiHooks_theme.invalidate(ex, "Unexpected problem in Emoji Panel Theme hook");
-					}
-
-				}
-			});
-
-	}
 
 	public static XC_MethodHook.Unhook hookEmojiPanel(final PackageTree packageParam) throws NoSuchMethodException
 	{
@@ -89,6 +77,7 @@ public class EmojiHooks
 						if (Settings.EMOJI_PANEL_ENABLED)
 						{
 							RelativeLayout thiz = (RelativeLayout) param.getResult();
+							EmojiCommons.mEmojiTopRelative = thiz;
 
 							//These are the two views we want to replace.
 							int pagerID = thiz.getResources().getIdentifier("emoji_pager", "id", ExiXposed.HOOK_PACKAGE_NAME);
@@ -143,16 +132,33 @@ public class EmojiHooks
 								EmojiCommons.mEmojiPanelAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
 								{
 									@Override
-									public void onClick(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+									public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 									{
-
 										EmojiCommons.handleEmojiClick(panel.get_items().get(position), panel.get_style(), panel.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS);
 									}
 
 									@Override
-									public void onLongPress(DB_EmojiItem  item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+									public void onLongPress(DB_EmojiItem  item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 									{
-										//Nothing
+										if (item.get_modifiers_supported())
+										{
+											EmojiModifiersPopup popup = new EmojiModifiersPopup(view.getContext(), item.get_text());
+											popup.setOnEmojiClickedListener(new EmojiModifiersPopup.OnEmojiClickedListener()
+											{
+												@Override
+												public void onEmojiClicked(String emoji)
+												{
+													DB_EmojiItem newItem = new DB_EmojiItem(emoji);
+													newItem.set_modifiers_supported(false);	//Recents panel should only display the chosen emoji
+													newItem.set_type(EmojiItem.EmojiType.CONTAINS_EMOJI);
+
+													EmojiCommons.handleEmojiClick(newItem, 0, false);
+
+													OverlayCommons.clearPopups();
+												}
+											});
+											popup.showInOverlay(OverlayCommons.mKeyboardOverlay, EmojiCommons.mEmojiTopRelative, view);
+										}
 									}
 
 								});
@@ -221,8 +227,7 @@ public class EmojiHooks
 							tabParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
 							EmojiCommons.mOuterTabsWrapper.setLayoutParams( tabParams );
 
-							//Color is set in a separate hook to match theme. Default background color is a midpoint that looks okay-ish regardless of theme.
-							EmojiCommons.mOuterTabsWrapper.setBackgroundColor( Color.argb( (int)(0.10f*255f),0,0,0 ) );
+							EmojiCommons.refreshEmojiTheme( );
 
 							//We are in relative layout, and the actualy pager needs to be placed below the tablayout
 							EmojiCommons.mOuterTabsWrapper.setId( View.generateViewId() );
@@ -259,10 +264,6 @@ public class EmojiHooks
 			});
 		}
 	}
-
-
-
-
 
 
 	public static XC_MethodHook.Unhook hookResourceLookup( PackageTree param) throws NoSuchMethodException
@@ -459,14 +460,6 @@ public class EmojiHooks
 
 				//Swiftkey hooks
 				Hooks.emojiHooks_base.add( hookEmojiPanel(param) );
-				//Hooks.emojiHooks_base.add( hookRecentsView() );
-
-
-				if (Hooks.emojiHooks_theme.isRequirementsMet())
-				{
-					Hooks.emojiHooks_theme.add( hookEmojiPanelStyle(param) );
-				}
-
 
 				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
 				{
@@ -501,6 +494,16 @@ public class EmojiHooks
 						EmojiCommons.mEmojiPanelAdapter = null;
 					}
 				});
+
+				KeyboardMethods.addThemeChangedListener(new KeyboardMethods.ThemeChangedListener()
+				{
+					@Override
+					public void themeChanged(int newTheme)
+					{
+						EmojiCommons.refreshEmojiTheme();
+					}
+				});
+
 			}
         }
         catch(Exception ex)

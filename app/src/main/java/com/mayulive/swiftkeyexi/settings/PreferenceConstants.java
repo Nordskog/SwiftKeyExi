@@ -49,6 +49,7 @@ public class PreferenceConstants
 	//App
 	public static final String status_first_launch_key = "pref_first_launch";
 	public static final String status_api_version_last_launch = "pref_api_version_last_launch";
+	public static final String status_api_version_emoji = "pref_api_version_emoji";
 	public static final String pref_app_theme_key = "pref_app_theme";
 
 

@@ -1,41 +1,25 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
-import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
-import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
-import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
-import java.io.ByteArrayInputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -66,17 +50,22 @@ public class KeyboardHooks
 
 	}
 
-	public static XC_MethodHook.Unhook hookViewCreated()
+	public static void hookViewCreatedFallback(PackageTree param)
 	{
-		return XposedHelpers.findAndHookMethod(KeyboardClassManager.keyboardServiceClass, "onCreateInputView", new XC_MethodHook()
+		XposedBridge.hookMethod(KeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod, new XC_MethodHook()
 		{
-
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
 				try
 				{
 					ViewGroup view = (ViewGroup) param.getResult();
+
+					//If cover is not null, maker sure we have not already added something
+					if (OverlayCommons.mKeyboardOverlay != null)
+					{
+						view.removeView(OverlayCommons.mKeyboardOverlay);
+					}
 
 					RelativeLayout cover = new RelativeLayout(view.getContext());
 
@@ -90,10 +79,9 @@ public class KeyboardHooks
 					Hooks.baseHooks_viewCreated.invalidate(ex, "Unexpected problem in viewCreated hook");
 				}
 
-
-
 			}
 		});
+
 	}
 
 	public static XC_MethodHook.Unhook hookKeyboardOpened()
@@ -104,12 +92,15 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
+					//Something may trigger the keyboard to close without the user interacting with it,
+					//which would leave our popups visible when it is opened next.
+					OverlayCommons.clearPopups();
 
 					KeyboardMethods.loadSettings(ContextUtils.getHookContext());
 
 					if (!NormalEmojiItem.isAssetsLoaded())
 					{
-						NormalEmojiItem.loadAssets( FontProvider.getFont(ContextUtils.getHookContext(), "NotoEmoji_der.ttf") );
+						NormalEmojiItem.loadAssets( FontProvider.getFont(ContextUtils.getHookContext(), "NotoEmoji_der_nougat.ttf") );
 					}
 
 					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
@@ -264,6 +255,29 @@ public class KeyboardHooks
 		});
 	}
 
+	private static XC_MethodHook.Unhook hookTheme(PackageTree param)
+	{
+		return XposedBridge.hookMethod(KeyboardClassManager.ThemeLoaderClass_getThemeMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				int newValue = ((boolean)param.getResult()) ? SharedTheme.DARK_THEME_IDENTIFIER : SharedTheme.LIGHT_THEME_IDENTIFIER;
+
+				//Update regardless.
+				//This value is 0-1, matching the values that exist in SharedTheme
+				SharedTheme.setCurrenThemeType( ContextUtils.getHookContext(), newValue );
+
+				if (newValue != KeyboardMethods.mTheme)
+				{
+					KeyboardMethods.mTheme = newValue;
+					KeyboardMethods.callThemeChangedListeners(newValue);
+				}
+
+			}
+		});
+	}
+
 	public static boolean HookAll(final PackageTree lpparam)
 	{
 		try
@@ -272,12 +286,20 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
-				//Absolutely necessary
+
+
+
 
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.addAll( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
+
+
+				if (Hooks.baseHooks_theme.isRequirementsMet())
+				{
+					Hooks.baseHooks_theme.add( hookTheme(lpparam) );
+				}
 
 				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
 				{
@@ -292,7 +314,8 @@ public class KeyboardHooks
 
 				if (Hooks.baseHooks_viewCreated.isRequirementsMet())
 				{
-					Hooks.baseHooks_viewCreated.add( hookViewCreated() );
+					//Hooks.baseHooks_viewCreated.add( hookViewCreated() );
+					hookViewCreatedFallback(lpparam);
 				}
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())

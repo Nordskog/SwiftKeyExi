@@ -78,7 +78,7 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(this.getContext());
 
-		EmojiContainer itemView;
+		final EmojiContainer itemView;
 		if (item.get_type() == EmojiItem.EmojiType.CONTAINS_EMOJI)
 		{
 			itemView = new ImageEmojiItem(this.getContext());
@@ -91,8 +91,11 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 
 		itemView.setItemWidth(EmojiContainer.AUTO);
 		itemView.setEmojiText(item.get_text(), dimens.configured_emojiTextSize, null, 0 );
+		itemView.setModifable(item.get_modifiers_supported());
 
 		EmojiPanelCommons.setTouchAnimation((View)itemView);
+
+
 
 		((View)itemView).setOnClickListener(new OnClickListener()
 		{
@@ -102,7 +105,7 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 				if (mClickListener != null)
 				{
 					int position = mFlow.indexOfChild(v);
-     					mClickListener.onClick( mItem.get_items().get(position), RecentsEmojiPanelView.this, mItem, position );
+     					mClickListener.onClick( mItem.get_items().get(position), (View)itemView, RecentsEmojiPanelView.this, mItem, position );
 				}
 			}
 		});
@@ -115,7 +118,7 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 				if (mClickListener != null)
 				{
 					int position = mFlow.indexOfChild(v);
-					mClickListener.onLongPress( mItem.get_items().get(position), RecentsEmojiPanelView.this, mItem, position );
+					mClickListener.onLongPress( mItem.get_items().get(position), (View)itemView, RecentsEmojiPanelView.this, mItem, position );
 
 					return true;
 				}

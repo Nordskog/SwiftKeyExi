@@ -26,6 +26,7 @@ public class FixedTabLayout extends TabLayout
 	private OnTabLongPressedListener mOnTabLongPressedListener = null;
 
 	private static Field mParentField = null;
+	private static Field mTabViewField = null;
 
 	static
 	{
@@ -37,6 +38,34 @@ public class FixedTabLayout extends TabLayout
 		{
 			e.printStackTrace();
 		}
+
+		try
+		{
+			mTabViewField = Tab.class.getDeclaredField("mView");
+			mTabViewField.setAccessible(true);
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public View getTabView(Tab tab)
+	{
+		View view = null;
+
+		if (mTabViewField != null)
+		{
+			try
+			{
+				view = (View)mTabViewField.get(tab);
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return view;
 	}
 
 	private ViewParent getParentFieldValue()
@@ -174,8 +203,6 @@ public class FixedTabLayout extends TabLayout
 		}
 
 		super.addTab(tab, position, setSelected);
-
-
 	}
 
 	//So we can set the icon

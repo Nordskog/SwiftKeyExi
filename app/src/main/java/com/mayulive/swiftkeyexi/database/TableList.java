@@ -4,6 +4,7 @@ package com.mayulive.swiftkeyexi.database;
 
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,8 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 	private TableInfo mInfo = null;
 
 	private ArrayList<PendingOperation> mPendingOperations = new ArrayList<>();
+
+	private long mLastOperation = 0;
 
 
 	public enum DatabaseMode
@@ -195,6 +198,8 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 					}
 				}
 			}
+
+			mLastOperation = TableSyncer.getTime(getTableName());
 		}
 	}
 
@@ -276,12 +281,10 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 
 		if (mInfo != null)
 		{
-			//This should be a new, empty able
-			mDbWrap.deleteTable(mInfo.tableName);
+			DatabaseMethods.deleteTable(mDbWrap, mInfo);
 			mInfo = null;
 			mDbWrap = null;
 		}
-
 	}
 
 	//The TableInfo should include the table name, which should not have been created yet.
@@ -294,6 +297,22 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 
 		//This should be a new, empty table
 		DatabaseMethods.addAllItems(mDbWrap, mInfo, this);
+
+		mLastOperation = TableSyncer.getTime(getTableName());
+
+	}
+
+	//Compare last update time to table info,
+	public boolean sync()
+	{
+		if (TableSyncer.needsSync(getTableName(), mLastOperation))
+		{
+			mLastOperation = TableSyncer.getTime(getTableName());
+			populateFromDb();
+			return true;
+		}
+
+		return false;
 	}
 
 	//Info and db not set.
@@ -308,6 +327,7 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 		mInfo = info;
 
 		populateFromDb();
+
 	}
 
 	//Info and db already set, just grabs items
@@ -318,6 +338,8 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 			super.clear();
 			ArrayList<T> dbItems = (ArrayList<T>)DatabaseMethods.getAllItems(mDbWrap, mInfo);
 			super.addAll(dbItems);
+
+			TableSyncer.getTime(getTableName());
 		}
 	}
 

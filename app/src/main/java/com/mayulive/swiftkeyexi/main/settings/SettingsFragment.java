@@ -84,6 +84,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			}
 		});
 
+		Preference resetPreference = findPreference(this.getContext().getResources().getString( R.string.pref_reset_key ));
+		resetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayResetDialog();
+				return true;
+			}
+		});
+
 
 	}
 
@@ -121,6 +132,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 				.commit();
 	}
 
+	private void displayResetDialog()
+	{
+		ResetFragment nextFrag= new ResetFragment();
+
+		this.getFragmentManager().beginTransaction()
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
+				.addToBackStack(null)
+				.commit();
+	}
+
 	//Needed for custom prefs to work... ? I don't even
 	@Override
 	public void onDisplayPreferenceDialog(Preference preference) {
@@ -131,5 +153,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			fragment.show(getFragmentManager(),
 					"android.support.v7.preference.PreferenceFragment.DIALOG");
 		} else super.onDisplayPreferenceDialog(preference);
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		getActivity().setTitle(R.string.settings_title);
 	}
 }

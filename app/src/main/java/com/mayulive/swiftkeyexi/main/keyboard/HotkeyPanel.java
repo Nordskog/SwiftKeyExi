@@ -823,6 +823,9 @@ public class HotkeyPanel extends View
 
 	public void refresh()
 	{
+		if (mItems == null)
+			return;
+
 		updateCenters();
 		initPath();
 		initItems();

@@ -20,6 +20,7 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 		this(other.get_id(), other.get_index(), other.get_column_width(), new String(other.get_caption()), new String(other.get_icon()), other.get_style(), other.get_icon_style());
 
 		this.set_source(other.get_source());
+		this.set_panel_identifier(other.get_panel_identifier());
 
 		for (DB_EmojiItem currentItem : other.get_items())
 		{
@@ -55,6 +56,7 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 		public static final String TYPE_COLUMN = "type";
 		public static final String SOURCE_COLUMN = "source";
         public static final String ITEMS_TABLE_COLUMN = "items";
+		public static final String IDENTIFIER_TABLE_COLUMN = "identifier";
     }
 
 	public static final String[] PROJECTION =
@@ -70,7 +72,9 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 			EmojiPanelContract.TYPE_COLUMN,
 			EmojiPanelContract.SOURCE_COLUMN,
 
-			EmojiPanelContract.ITEMS_TABLE_COLUMN
+			EmojiPanelContract.ITEMS_TABLE_COLUMN,
+
+			EmojiPanelContract.IDENTIFIER_TABLE_COLUMN
 	};
 	
 	public static final String DEFINITION =
@@ -84,7 +88,8 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 					EmojiPanelContract.ICON_STYLE_COLUMN +" NUMBER, " +
 					EmojiPanelContract.TYPE_COLUMN +" TEXT, " +
 					EmojiPanelContract.SOURCE_COLUMN +" TEXT, " +
-					EmojiPanelContract.ITEMS_TABLE_COLUMN +" TEXT " +
+					EmojiPanelContract.ITEMS_TABLE_COLUMN +" TEXT, " +
+					EmojiPanelContract.IDENTIFIER_TABLE_COLUMN +" INTEGER " +
 			");";
 
 	
@@ -105,6 +110,8 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 		values.put(EmojiPanelContract.SOURCE_COLUMN, get_source().toString());
 
 		values.put(EmojiPanelContract.ITEMS_TABLE_COLUMN, _items.getTableName());
+
+		values.put(EmojiPanelContract.IDENTIFIER_TABLE_COLUMN, get_panel_identifier());
 		
 		return values;
 	}
@@ -127,14 +134,17 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 
 		int typeColumnIndex = c.getColumnIndex(EmojiPanelContract.TYPE_COLUMN);
 		int sourceColumnIndex = c.getColumnIndex(EmojiPanelContract.SOURCE_COLUMN);
-		
+
+		int identifierColumnIndex = c.getColumnIndex(EmojiPanelContract.IDENTIFIER_TABLE_COLUMN);
+
 		set_id( c.getInt(idColumnIndex) );
 		set_index( c.getInt(indexColumnIndex));
 		set_column_width( c.getInt(columnWidthIndex) );
-		set_caption( c.getString(captionColumnIndex) );	
+		set_caption( c.getString(captionColumnIndex) );
 		set_icon( c.getString(iconsColumnIndex) );
 		set_style( c.getInt(styleColumnIndex));
 		set_icon_style( c.getInt(iconStyleColumn));
+		set_panel_identifier( c.getInt(identifierColumnIndex) );
 
 		set_type( PANEL_TYPE.valueOf( c.getString(typeColumnIndex)  ) );
 		set_source( PANEL_SOURCE.valueOf( c.getString(sourceColumnIndex)  ) );
@@ -142,7 +152,7 @@ public class DB_EmojiPanelItem extends EmojiPanelItem implements DatabaseItem
 		TableInfo itemsTableInfo = new TableInfo(new DB_EmojiItem(), DB_EmojiItem.PROJECTION, DB_EmojiItem.DEFINITION, c.getString(items_table_ColumnIndex));
 		_items.populateFromDb(dbWrap, itemsTableInfo);
 
-		
+
 	}
 
 

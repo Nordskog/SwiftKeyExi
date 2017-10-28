@@ -37,4 +37,12 @@ public class SettingsCommons
 		return context.getSharedPreferences(MODULE_SHARED_PREFERENCES_KEY, MODE_PRIVATE);
 	}
 
+	//Set the preference to the current time
+	public static void updateTimePreference(Context context, String pref)
+	{
+		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(context);
+		editor.putLong(pref, System.currentTimeMillis());
+		editor.apply();
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.EmojiCache;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.TypedValue;
 
@@ -63,7 +64,8 @@ public class EmojiResources
 
 	//This is a singleton. Beware that changes will affect other classes accessing it.
 	//Please don't do that.
-	public static EmojiPixelDimensions getDimensions(Context context)
+	//Context is nullable, but will return null if not already initialized
+	public static EmojiPixelDimensions getDimensions(@Nullable Context context)
 	{
 		if (mDimensions == null)
 		{
@@ -72,6 +74,8 @@ public class EmojiResources
 
 		return mDimensions;
 	}
+
+
 
 	private static void initDimensions(Context context)
 	{

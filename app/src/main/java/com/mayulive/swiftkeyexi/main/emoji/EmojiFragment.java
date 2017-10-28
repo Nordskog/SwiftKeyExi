@@ -2,12 +2,17 @@ package com.mayulive.swiftkeyexi.main.emoji;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
+import com.mayulive.swiftkeyexi.EmojiCache.ImageEmojiItem;
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifierBackgroundDrawable;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
+import com.mayulive.swiftkeyexi.util.ColorUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.util.TextUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
@@ -17,10 +22,12 @@ import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.main.commons.PopupLinearLayout;
+import com.mayulive.swiftkeyexi.util.view.ViewTools;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,14 +40,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.Space;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,7 +58,6 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 
 import static android.content.ContentValues.TAG;
-import static com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels;
 import static com.mayulive.swiftkeyexi.main.emoji.EmojiFragment.EmojiPanelType.DEFAULT;
 
 public class EmojiFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -106,9 +115,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 	{
 		super.onCreate(savedInstanceState);
 		setupReferences();
-
-		updateTextSize();
 		loadEmoij();
+		updateTextSize();
 	}
 
 	private void loadEmoij()
@@ -121,7 +129,21 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			sortAndValidatePanelIndices(mDictionaryPanels,true);
 			sortAndValidatePanelIndices(mKeyboardPanels,true);
 
-			EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
+			//EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
+		}
+
+		boolean syncDict = mDictionaryPanels.sync();
+		boolean syncKeyboard = mKeyboardPanels.sync();
+		if (syncDict || syncKeyboard)
+		{
+			sortAndValidatePanelIndices(mDictionaryPanels,true);
+			sortAndValidatePanelIndices(mKeyboardPanels,true);
+
+			if (mKeyboardPagerAdapter != null)
+				mKeyboardPagerAdapter.notifyDataSetChanged();
+			if (mDictionaryPagerAdapter != null)
+				mDictionaryPagerAdapter.notifyDataSetChanged();
+
 		}
 	}
 
@@ -134,7 +156,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			EmojiCache.clearCache();
 
 			//Invalidate panels
-			if (mDictionaryPanels != null || mKeyboardPanels != null)
+			if (mKeyboardPagerAdapter != null && mDictionaryPagerAdapter != null)
 			{
 				EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
 				mKeyboardPagerAdapter.notifyDataSetChanged();
@@ -222,15 +244,15 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		pagerAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
 		{
 			@Override
-			public void onClick(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+			public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 			{
-				handleEmojiItemClick(type, view, item, position);
+				handleEmojiItemClick(type, panelView, item, position);
 			}
 
 			@Override
-			public void onLongPress(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+			public void onLongPress(DB_EmojiItem item,View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 			{
-				handleEmojiItemLongPress(type, view, item, position);
+				handleEmojiItemLongPress(type, panelView, item, position);
 			}
 
 		});
@@ -286,6 +308,14 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				mKeyboardInfoView.dismissSilently();
 				mDictionaryInfoView.dismissSilently();
 
+
+				EmojiPanelView dictionarView = getCurrentPanel(EmojiPanelType.DICTIONARY);
+				EmojiPanelView keyboardView = getCurrentPanel(EmojiPanelType.KEYBOARD);
+
+				///////////////////////////
+				//Dictionary menu setup
+				///////////////////////////
+
 				final PopupLinearLayout dictionaryPopup = new PopupLinearLayout(dictionaryPanelMenuButton.getContext());
 				NavigationView dictionaryMenuView = new NavigationView(dictionaryPanelMenuButton.getContext());
 				dictionaryMenuView.inflateMenu(R.menu.emoji_dictionary_popup_menu);
@@ -306,28 +336,28 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				}
 
 
-				EmojiPanelView dictionarView = getCurrentPanel(EmojiPanelType.DICTIONARY);
-				EmojiPanelView keyboardView = getCurrentPanel(EmojiPanelType.KEYBOARD);
-
 				//A template item may not be edited, that means no adding items, deleting, or editing the icon
 				//Also no deleting panels that don't exist
 
-				if (dictionarView == null || dictionarView.getPanelItem().get_source() != DB_EmojiPanelItem.PANEL_SOURCE.USER)
+				if (dictionarView == null || !dictionarView.getPanelItem().get_source().isEditable())
 				{
 					dictionaryMenuView.getMenu().removeItem(R.id.column_add_single_emoji);
 					dictionaryMenuView.getMenu().removeItem(R.id.delete_menu_item);
 				}
 
-				if (keyboardView == null || keyboardView.getPanelItem().get_source() != EmojiPanelItem.PANEL_SOURCE.USER)
+				if (keyboardView == null || !keyboardView.getPanelItem().get_source().isEditable())
 				{
 					//Cannot edit current keyboard panel, remove relevant menu items
-					dictionaryMenuView.getMenu().removeItem(R.id.add_all_menu_item);
+					dictionaryMenuView.getMenu().removeItem(R.id.copy_emoji_to_panel_menu_item);
 				}
 
 				Space space = new Space(getContext());
 				space.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dictionaryPanelMenuButton.getMeasuredHeight() / 2 ));
 				dictionaryPopup.addItem(space);
 
+				/////////////////////////
+				//Keyboard menu setup
+				/////////////////////////
 
 				NavigationView keyboardMenuView = new NavigationView(dictionaryPanelMenuButton.getContext());
 				keyboardMenuView.inflateMenu(R.menu.emoji_keyboard_popup_menu);
@@ -344,16 +374,18 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 					dictionaryPopup.addItem(keyboardMenuView, params);
 				}
 
-
-
-				//No deleting panels that don't exist
-
-				if (keyboardView == null || keyboardView.getPanelItem().get_source() != EmojiPanelItem.PANEL_SOURCE.USER)
+				//No deleting panels that don't exist, or recents
+				if (keyboardView == null || !keyboardView.getPanelItem().get_source().isKeyboardDeleteable())
 				{
 					keyboardMenuView.getMenu().removeItem(R.id.delete_menu_item);
-					keyboardMenuView.getMenu().removeItem(R.id.clear_menu_item);
-					keyboardMenuView.getMenu().removeItem(R.id.column_size_menu_item);
 				}
+
+				//and no clearing stock panels
+				if (keyboardView == null || !keyboardView.getPanelItem().get_source().isEditable())
+				{
+					keyboardMenuView.getMenu().removeItem(R.id.clear_menu_item);
+				}
+
 
 
 				////////////////////
@@ -484,7 +516,13 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		{
 			case R.id.new_menu_item:
 			{
-				addPanel(panelType);
+				addPanel(panelType, null);
+				break;
+			}
+
+			case R.id.copy_panel_to_keyboard_menu_item:
+			{
+				addPanel(EmojiPanelType.KEYBOARD, getCurrentPanel(EmojiPanelType.DICTIONARY).getPanelItem());
 				break;
 			}
 
@@ -502,7 +540,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				break;
 			}
 
-			case R.id.add_all_menu_item:
+			case R.id.copy_emoji_to_panel_menu_item:
 			{
 
 				addAllDictionaryPanelToKeyboardPanel();
@@ -543,7 +581,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		if(!mIconPickMode)
 		{
 
-			if (sourcePanelType == EmojiPanelType.KEYBOARD && sourcePanelView.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER )
+			if (sourcePanelType == EmojiPanelType.KEYBOARD && sourcePanelView.getPanelItem().get_source().isEditable() )
 			{
 				sourcePanelView.removeItem(position);
 
@@ -554,6 +592,10 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 						getCurrentPanel(EmojiPanelType.DICTIONARY).subtractMark(item.get_text());
 					}
 				}
+			}
+			else
+			{
+				displayUneditableWarning();
 			}
 
 			setLastUpdateTime();
@@ -575,7 +617,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			{
 				case KEYBOARD:
 				{
-					//Does nothing at the moment.
+
 					break;
 				}
 				case DICTIONARY:
@@ -584,12 +626,16 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 					{
 						EmojiPanelView currentKeyboardPanelView = getCurrentPanel(EmojiPanelType.KEYBOARD);
 
-						if (currentKeyboardPanelView.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+						if (currentKeyboardPanelView.getPanelItem().get_source().isEditable())
 						{
 							sourcePanelView.addMark(item.get_text());
 
-							currentKeyboardPanelView.addItem(new DB_EmojiItem( item.get_text() ) );
+							currentKeyboardPanelView.addItem(new DB_EmojiItem( item ) );
 							currentKeyboardPanelView.scrollToEnd();
+						}
+						else
+						{
+							displayUneditableWarning();
 						}
 					}
 
@@ -725,6 +771,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 			}
 		});
+
+		infoView.setIconEditability( item.get_source().isEditable() );
 
 		infoView.show();
 	}
@@ -897,9 +945,12 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 		if (destionationPanel != null)
 		{
-			if (destionationPanel.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+			if (destionationPanel.getPanelItem().get_source().isEditable())
 			{
-				destionationPanel.addItem( new DB_EmojiItem(string) );
+				DB_EmojiItem newItem = new DB_EmojiItem(string);
+				newItem.set_modifiers_supported( EmojiModifiers.supportsModifiers(newItem.get_text()) );
+
+				destionationPanel.addItem( newItem );
 				setLastUpdateTime();
 			}
 		}
@@ -932,10 +983,14 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		return getCurrentPanel(EmojiPanelType.DICTIONARY) != null && getCurrentPanel(EmojiPanelType.KEYBOARD) != null;
 	}
 
-	DB_EmojiPanelItem addPanel(EmojiPanelType panelType)
+	DB_EmojiPanelItem addPanel(EmojiPanelType panelType, DB_EmojiPanelItem copyFrom)
 	{
 		//I changed my mind, all panels will now use the b/w icon style
-		DB_EmojiPanelItem newPanel = new DB_EmojiPanelItem( -1,-1,1,"◯", "◯", 0, 1 );
+		DB_EmojiPanelItem newPanel;
+		if (copyFrom != null)
+			newPanel = new DB_EmojiPanelItem(copyFrom);
+		else
+			newPanel = new DB_EmojiPanelItem( -1,-1,1,"◯", "◯", 0, 1 );
 
 		switch(panelType)
 		{
@@ -1040,6 +1095,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			e.printStackTrace();
 		}
 
+		newPanel.updateModifierSupport();
+
 		mDictionaryPanels.add(newPanel);
 		mDictionaryPagerAdapter.notifyDataSetChanged();
 		mDictionaryPager.setCurrentItem(mDictionaryPanels.size()-1,true);
@@ -1087,6 +1144,16 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		}
 	}
 
+	private void displayUneditableWarning()
+	{
+		AlertDialog dialog = new AlertDialog.Builder(this.getContext())
+				.setTitle(R.string.emoji_uneditable_title)
+				.setMessage(R.string.emoji_uneditable_message)
+				.setPositiveButton(R.string.button_ok, null)
+				.create();
+		dialog.show();
+	}
+
 	@Override
 	public void onPause()
 	{
@@ -1097,9 +1164,11 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 	@Override
 	public void onResume()
 	{
-		super.onResume();
 		updateTextSize();
+		loadEmoij();
+		super.onResume();
 		SettingsCommons.getSharedPreferences(this.getContext(), SettingsCommons.MODULE_SHARED_PREFERENCES_KEY).registerOnSharedPreferenceChangeListener(this);
+
 	}
 
 }

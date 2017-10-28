@@ -125,7 +125,11 @@ public class OverlayCommons
 		mLastKeyDisplayed = key;
 
 		if (mKeyboardOverlay == null)
+		{
 			Log.e(LOGTAG, "Strange, overlay was null");
+
+			return;
+		}
 
 		TextView button = getPopup();
 
@@ -169,15 +173,8 @@ public class OverlayCommons
 
 	public static void clearPopups()
 	{
-
 		if (mKeyboardOverlay != null)
 		{
-			if (mHotkeyMenuPanel != null)
-			{
-				mKeyboardOverlay.removeView(mHotkeyMenuPanel);
-				mHotkeyMenuPanel = null;
-			}
-
 			ListIterator<TextView> iterator = mCheckedPopupViews.listIterator();
 			while(iterator.hasNext())
 			{
@@ -185,13 +182,19 @@ public class OverlayCommons
 				returnPopup(view);
 				mKeyboardOverlay.removeView(view);
 			}
+
+			mKeyboardOverlay.removeAllViews();
 		}
 		else
 			Log.e(LOGTAG, "Strange, overlay was null");
 
 
+		mHotkeyMenuPanel = null;
 		mLastKeyDisplayed = null;
+
+
 	}
+
 
 
 

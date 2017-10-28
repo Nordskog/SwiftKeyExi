@@ -1,11 +1,15 @@
 package com.mayulive.swiftkeyexi.xposed.emoji;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
@@ -42,9 +46,8 @@ public class EmojiCommons
 	protected static int mEmojiPanelRecentsTabIndex = -1;
 	protected static FixedViewPager mEmojiPanelPager;
 	protected static FrameLayout mOuterTabsWrapper = null;
+	protected static RelativeLayout mEmojiTopRelative = null;
 
-	private static final int DARK_THEME_ACCENT_COLOR = 0xFF1a1a1c;
-	private static final int LIGHT_THEME_ACCENT_COLOR = 0xFFe4e7e8;
 
 	private final static int RECENTS_COUNT = 32;
 
@@ -78,19 +81,12 @@ public class EmojiCommons
 		}
 	}
 
-	public static void setEmojiTheme(int theme)
+	public static void refreshEmojiTheme()
 	{
-		//0 light
-		//1 dark
 		if (mOuterTabsWrapper != null)
 		{
-			if (theme == 0)
-				mOuterTabsWrapper.setBackgroundColor( LIGHT_THEME_ACCENT_COLOR );
-			else
-				mOuterTabsWrapper.setBackgroundColor( DARK_THEME_ACCENT_COLOR );
+			mOuterTabsWrapper.setBackgroundColor(SharedTheme.getSwiftkeyThemeAccentColor());
 		}
-
-
 	}
 
 	//Will usually use panel style rather than item style
@@ -184,7 +180,7 @@ public class EmojiCommons
 			mEmojiPanelRecentsTabIndex = -1;
 			{
 				int iterator = 0;
-				for (DB_EmojiPanelItem item : panels)
+				for (DB_EmojiPanelItem item : mPanelItems)
 				{
 					if (item.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
 					{
@@ -205,7 +201,7 @@ public class EmojiCommons
 
 			//Only clear if changed.
 			EmojiCache.clearCache();
-			com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels( getHookContext(), panels );
+			com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels( getHookContext(), mPanelItems );
 
 			if (mEmojiPanelAdapter != null)
 				mEmojiPanelAdapter.notifyDataSetChanged();
@@ -230,9 +226,6 @@ public class EmojiCommons
 
 	public static void saveRecents()
 	{
-
-
-
 		if (mEmojiPanelRecentsTabIndex != -1)
 		{
 			DB_EmojiPanelItem recentsItem = mPanelItems.get(mEmojiPanelRecentsTabIndex);

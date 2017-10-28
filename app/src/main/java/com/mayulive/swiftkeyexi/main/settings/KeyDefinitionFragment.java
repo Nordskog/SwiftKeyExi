@@ -51,6 +51,7 @@ public class KeyDefinitionFragment extends Fragment
 	String mHeaderTitle = "";
 
 
+
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
@@ -248,6 +249,23 @@ public class KeyDefinitionFragment extends Fragment
 		editor.apply();
 	}
 
+	public void onResume()
+	{
+		if (mItems != null)
+		{
+			if (mItems.sync())
+			{
+				if (mAdapter != null)
+					mAdapter.notifyDataSetChanged();
+			}
+		}
+
+		super.onResume();
+
+		getActivity().setTitle(R.string.category_pref_keys);
+
+	}
+
 	@Override
 	public void onPause()
 	{
@@ -256,4 +274,6 @@ public class KeyDefinitionFragment extends Fragment
 
 		super.onPause();
 	}
+
+
 }

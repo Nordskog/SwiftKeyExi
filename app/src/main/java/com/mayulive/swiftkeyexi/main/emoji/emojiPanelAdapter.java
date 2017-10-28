@@ -105,6 +105,7 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 
 		//holder.getContainer().getView().setPadding(mHorizontalPadding, mVerticalPadding, mHorizontalPadding, mVerticalPadding);
 		holder.getContainer().setMarked(emojiItem.marked);
+		holder.getContainer().setModifable(emojiItem.item.get_modifiers_supported());
 
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(mContext);
 
@@ -154,6 +155,7 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 			}
 		});
 
+		//Reents is weird
 		if (mPanelItem.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
 		{
 			if ( emojiItem.item.get_type() == EmojiItem.EmojiType.CONTAINS_EMOJI )

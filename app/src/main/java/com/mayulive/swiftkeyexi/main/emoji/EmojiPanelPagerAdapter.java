@@ -91,8 +91,6 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 	{
 		final DB_EmojiPanelItem panelItem = mItems.get(panelPosition);
 
-
-
 		if (panelItem.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
 		{
 			final RecentsEmojiPanelView newPanel = new RecentsEmojiPanelView(container.getContext());
@@ -101,15 +99,15 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 			newPanel.setOnEmojiItemClickedListener(new EmojiPanelView.OnEmojiItemClickListener()
 			{
 				@Override
-				public void onClick(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+				public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 				{
-					mItemClickListener.onClick( item, newPanel, mItems.get(panelPosition), position);
+					mItemClickListener.onClick( item, view,newPanel, mItems.get(panelPosition), position);
 				}
 
 				@Override
-				public void onLongPress(DB_EmojiItem item, EmojiPanelView view, DB_EmojiPanelItem panel, int position)
+				public void onLongPress(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 				{
-					mItemClickListener.onLongPress(item, newPanel, panelItem, position);
+					mItemClickListener.onLongPress(item, view, newPanel, panelItem, position);
 				}
 			});
 
@@ -139,7 +137,7 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 
 					if (mItemClickListener != null)
 					{
-						mItemClickListener.onClick( mItems.get(panelPosition).get_items().get(position), newPanel, mItems.get(panelPosition), position);
+						mItemClickListener.onClick( mItems.get(panelPosition).get_items().get(position), item.itemView, newPanel, mItems.get(panelPosition), position);
 					}
 				}
 
@@ -148,7 +146,7 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 				{
 					if (mItemClickListener != null)
 					{
-						mItemClickListener.onLongPress(mItems.get(panelPosition).get_items().get(position), newPanel, panelItem, position);
+						mItemClickListener.onLongPress(mItems.get(panelPosition).get_items().get(position), item.itemView, newPanel, panelItem, position);
 					}
 				}
 			});
@@ -209,16 +207,14 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 				NormalEmojiItem emojiView = new NormalEmojiItem(context);
 				//emojiView.setRenderImmediate(true);
 
-				//For some reason they get cut off if they have padding here, but display correctly.
-				//Vice-versa everywhere else. I figured it was because tablayout was't centering
-				//them vertically, but it's fine in the config app, even with the padding. I haven't a clue.
-				emojiView.setPadding(emojiView.getPaddingLeft(),0,emojiView.getPaddingRight(),0);
+				emojiView.setPadding(0,0,0,0);
+
 
 				emojiView.setSingleLine(true);
 
 				EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
 				//TODO panel key for tablayout icons ... ?
-				emojiView.setEmojiText(item.get_icon(), dimens.default_emojiTextSize, null, item.get_icon_style());
+				emojiView.setEmojiText(item.get_icon(), dimens.default_emojiTextSize * 0.8f, null, item.get_icon_style());
 				tab.setCustomView(emojiView);
 
 			}

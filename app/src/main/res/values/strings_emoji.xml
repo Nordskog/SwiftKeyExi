@@ -17,6 +17,10 @@
     <string name="emoji_column_size">Column size</string>
     <string name="emoji_input_emoji">Input Emoji</string>
 
-
+    <!-- Post nougat menu stuff -->
+    <string name="emoji_copy_panel_to_keyboard">Copy Panel to Keyboard</string>
+    <string name="emoji_copy_emoji_to_panel">Copy Emoji to Panel</string>
+    <string name="emoji_uneditable_title">Panel uneditable</string>
+    <string name="emoji_uneditable_message">The stock Emoji panels cannot be edited.\n Please create a new panel to customize it.</string>
 
 </resources>

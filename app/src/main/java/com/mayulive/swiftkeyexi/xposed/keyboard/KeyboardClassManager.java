@@ -6,6 +6,7 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyProfiles;
 import com.mayulive.xposed.classhunter.ClassHunter;
@@ -19,7 +20,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.mayulive.xposed.classhunter.Modifiers.*;
@@ -27,6 +27,8 @@ import static com.mayulive.xposed.classhunter.Modifiers.*;
 
 public class KeyboardClassManager
 {
+
+	private static String LOGTAG = ExiModule.getLogTag(KeyboardClassManager.class);
 
 	/////////////////
 	//Known classes
@@ -43,6 +45,8 @@ public class KeyboardClassManager
 	/////////////////
 
 	public static Class keyboardLoaderClass = null;
+	public static Class ThemeLoaderClass = null;
+	public static Class keyboardSizerClass = null;
 
 	/////////////////////////
 	//Methods
@@ -55,7 +59,9 @@ public class KeyboardClassManager
 	protected static Method punctuatorImplClass_AddRulesMethod = null;
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 
+	protected static Method ThemeLoaderClass_getThemeMethod = null;
 
+	protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
 
 	////////////////////
 	//Fields
@@ -84,6 +90,10 @@ public class KeyboardClassManager
 		breadcrumbClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_BREADCRUMB_CLASS_PROFILE(), param );
 
 		keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
+
+		ThemeLoaderClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_THEME_LOADER_CLASS_PROFILE(), param );
+
+		keyboardSizerClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEYBOARD_SIZER_CLASS_PROFILE(), param );
 	}
 
 
@@ -92,6 +102,23 @@ public class KeyboardClassManager
 		if (keyboardServiceClass != null)
 		{
 			getCurrentInputConnectionMethod = KeyboardClassManager.keyboardServiceClass.getMethod("getCurrentInputConnection", (Class[])null);
+		}
+
+		if (keyboardSizerClass != null)
+		{
+
+			keyboardSizerClass_sizeKeyboardMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
+					(
+							PUBLIC | STATIC | EXACT ,
+							new ClassItem(android.view.View.class),
+
+							new ClassItem(android.content.Context.class),
+							new ClassItem(android.view.View.class),
+							new ClassItem(int.class),
+							new ClassItem(int.class)
+
+					), keyboardSizerClass.getDeclaredMethods(), keyboardSizerClass );
+
 		}
 
 		if (keyboardLoaderClass != null)
@@ -149,6 +176,13 @@ public class KeyboardClassManager
 
 		}
 
+		if (ThemeLoaderClass != null)
+		{
+			List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, ThemeLoaderClass.getDeclaredMethods());
+			if (!methods.isEmpty())
+				ThemeLoaderClass_getThemeMethod = methods.get(0);
+		}
+
 	}
 
 	public static void loadFields()
@@ -201,6 +235,10 @@ public class KeyboardClassManager
 
 		//Popup
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_invalidateLayout,	 "keyboardLoader_onSharedPreferenceChangedMethod", 	keyboardLoader_onSharedPreferenceChangedMethod );
+
+		//Theme
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", ThemeLoaderClass);
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", ThemeLoaderClass_getThemeMethod);
 
 		//Hitbox
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "layoutClass", 	layoutClass );

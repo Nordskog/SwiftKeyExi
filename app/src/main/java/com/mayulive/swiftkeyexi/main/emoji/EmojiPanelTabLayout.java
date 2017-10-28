@@ -1,9 +1,13 @@
 package com.mayulive.swiftkeyexi.main.emoji;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiContainer;
+import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.shared.SharedStyles;
 import com.mayulive.swiftkeyexi.util.ThemeUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedTabLayout;
@@ -57,6 +61,28 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 		setCurrentHighlight();
 	}
 
+	@Override
+	public void addTab(@NonNull final Tab tab, int position, boolean setSelected)
+	{
+		//Set tab padding to roughly half, remove min width
+		View view = getTabView(tab);
+
+
+		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(this.getContext());
+
+		//In the swiftkey hook, there is no default padding, in the config app there is.
+		//Basing the padding on the emoji width seems reasonable.
+		view.setPadding( (int) (dimens.singleEmojiWidth * 0.1f),
+				view.getPaddingTop(),
+				(int) (dimens.singleEmojiWidth * 0.1f),
+				view.getPaddingBottom());
+
+		//So it can resize itself to whatever
+		view.setMinimumWidth(1 );
+
+		super.addTab(tab, position, setSelected);
+	}
+
 	private void setCurrentHighlight()
 	{
 		OnTabSelectedListener listener = new OnTabSelectedListener()
@@ -68,7 +94,6 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 				{
 					EmojiContainer view = (EmojiContainer)tab.getCustomView();
 					view.setTint(mSelectedColor);
-
 				}
 
 			}

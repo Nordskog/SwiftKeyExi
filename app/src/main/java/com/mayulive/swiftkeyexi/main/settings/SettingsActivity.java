@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.main.settings;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -81,5 +82,11 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 	public void setAppliedTheme(int themeResId)
 	{
 		//Only changed here, not necessary
+	}
+
+	@Override
+	public Context getContext()
+	{
+		return this;
 	}
 }

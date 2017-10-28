@@ -34,6 +34,14 @@ public class KeyboardMethods
 	protected static PunctuationRuleMode mActivePunctuationMode = PunctuationRuleMode.STOCK;
 
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
+	protected static ArrayList<ThemeChangedListener> mThemeChangedListeners = new ArrayList<>();
+
+	protected static int mTheme = -1;
+
+	public static int getTheme()
+	{
+		return mTheme;
+	}
 
 	static protected Set<String> mExtendedPredictionsLayouts = new HashSet<>();
 	static
@@ -74,9 +82,23 @@ public class KeyboardMethods
 		return mCurrentLayoutName;
 	}
 
+	public static void addThemeChangedListener(ThemeChangedListener listener)
+	{
+		mThemeChangedListeners.add(listener);
+	}
+
 	public static void addKeyboardEventListener(KeyboardEventListener listener)
 	{
 		mKeyboardEventListeners.add(listener);
+	}
+
+	protected static void callThemeChangedListeners(int theme)
+	{
+		for (ThemeChangedListener listener : mThemeChangedListeners)
+		{
+			if (listener != null)
+				listener.themeChanged(theme);
+		}
 	}
 
 	public static void removeKeyboardEventListener(KeyboardEventListener listener)
@@ -90,6 +112,11 @@ public class KeyboardMethods
 		void beforeKeyboardClosed();
 		void keyboardInvalidated();
 		void afterKeyboardConfigurationChanged();
+	}
+
+	public interface ThemeChangedListener
+	{
+		void themeChanged(int newTheme);
 	}
 
 	private static long mKeyboardReloadLastRequested = -1;

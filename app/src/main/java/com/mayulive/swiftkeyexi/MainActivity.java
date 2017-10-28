@@ -13,6 +13,7 @@ import com.mayulive.swiftkeyexi.util.FontLoader;
 import com.mayulive.swiftkeyexi.util.KeyboardUtil;
 import com.mayulive.swiftkeyexi.util.view.BackCallbackEditText;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -22,11 +23,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 
 
@@ -52,31 +51,63 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		mDbWrap = DatabaseHolder.getWrapped(this);
 	}
 
-	private void handleFirstLaunch()
+	//
+	private void handleSdkUpdate()
 	{
+
+		//Check what version of emojis we are using, currently have Marshmallow and Nougat.
 		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
-
-		boolean isFirstLaunch = prefs.getBoolean(PreferenceConstants.status_first_launch_key, true);
-
+		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+		int emojiVersion = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
 		int lastApiVersion = prefs.getInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
 
 
+
+
+		if (ExiModule.needsEmojiUpdate(emojiVersion, lastApiVersion))
+		{
+			Log.i(LOGTAG, "Updating emoji");
+			//Update emoji
+			int newVersion = ExiModule.update(this,mDbWrap,emojiVersion);
+
+			//Update emoji version pref
+
+			editor.putInt(PreferenceConstants.status_api_version_emoji, newVersion);
+			editor.apply();
+		}
+
+		{
+			editor.putInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
+			editor.apply();
+		}
+	}
+
+	private void handleFirstLaunch()
+	{
+		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+
+		boolean isFirstLaunch = prefs.getBoolean(PreferenceConstants.status_first_launch_key, true);
+
 		if (isFirstLaunch)
 		{
+			//Proper emoji will be populated anyway if first launch
+			editor.putInt(PreferenceConstants.status_api_version_emoji, ExiModule.getEmojiVersionForSDK());
+			editor.apply();
+
 			if (mDbWrap != null)
 			{
 				Log.i(LOGTAG, "Loading default values");
 				ExiModule.initialize(this.getApplicationContext(),mDbWrap);
 
 				//Let hook-side know that data has changed
-				SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
-
 				long currentTime = System.currentTimeMillis();
 				editor.putLong(PreferenceConstants.pref_emoji_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_dictionary_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_hotkeys_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_popup_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_additional_keys_last_update_key, currentTime);
+				editor.putLong(PreferenceConstants.pref_quickmenu_last_update_key, currentTime);
 
 				editor.apply();
 			}
@@ -85,19 +116,11 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 				Log.e(LOGTAG, "Tried to perform first-time setup, but the database was not initialized");
 			}
 
-			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+
 			editor.putBoolean(PreferenceConstants.status_first_launch_key, false);
 			editor.apply();
 		}
 
-		if (lastApiVersion != Build.VERSION.SDK_INT)
-		{
-			//Emoji that were previously not renderable may now be so, and vice versa. TODO Carefully reinit stock panels here.
-			//TODO Should probably allow them to be added to panels and just marked as do-not-display instead.
-			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
-			editor.putInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
-			editor.apply();
-		}
 	}
 
 	public void displayInputTest()
@@ -137,12 +160,13 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		////////////////////
 		//EmojiResources.loadResources(this);
 
-		Typeface simpleFont = Typeface.createFromAsset(this.getAssets(), "fonts/NotoEmoji_der.ttf");
+		Typeface simpleFont = Typeface.createFromAsset(this.getAssets(), "fonts/NotoEmoji_der_nougat.ttf");
 		FontLoader.initFontLoader(getFontPathArray());
 		NormalEmojiItem.loadAssets(simpleFont);
 
 		//Load defaults on first launch
 		handleFirstLaunch();
+		handleSdkUpdate();
 
 		//Child fragments are re-instanced inside of super,
 		//so any data they depend on, such as the database,
@@ -265,5 +289,11 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 	public void setAppliedTheme(int themeResId)
 	{
 		mAppliedTheme = themeResId;
+	}
+
+	@Override
+	public Context getContext()
+	{
+		return this;
 	}
 }
