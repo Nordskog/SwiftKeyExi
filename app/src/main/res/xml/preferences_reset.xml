@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                   android:title="@string/preferences_about_title"
+                   android:key="customPrefKey">
+
+    <Preference
+        android:key="@string/pref_emoji_reset_key"
+        android:title="@string/tab_name_emoji"/>
+
+    <Preference
+        android:key="@string/pref_hotkeys_reset_key"
+        android:title="@string/tab_name_hotkeys"/>
+
+    <Preference
+       android:key="@string/pref_quickmenu_reset_key"
+        android:title="@string/quick_menu_title"/>
+
+    <Preference
+        android:key="@string/pref_keys_reset_key"
+        android:title="@string/category_pref_keys"/>
+
+
+</PreferenceScreen>

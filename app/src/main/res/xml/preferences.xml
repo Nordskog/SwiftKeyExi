@@ -115,6 +115,10 @@
             />
 
     <Preference
+        android:key="@string/pref_reset_key"
+        android:title="@string/pref_reset_title"/>
+
+    <Preference
         android:key="@string/pref_about_key"
         android:title="@string/pref_about_title"/>
 

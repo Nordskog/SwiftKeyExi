@@ -22,6 +22,8 @@ public class DatabaseMethods
 	{
 		//ensureOpen();
 
+		TableSyncer.setTime(tableInfo.tableName, System.currentTimeMillis());
+
 		int updatedRows = 0;
 
 		if (tableInfo.item.hasChildTables())
@@ -52,9 +54,7 @@ public class DatabaseMethods
 
 	public static void addItem(DatabaseWrapper db, DatabaseItem item, TableInfo tableInfo)
 	{
-		//ensureOpen();
-
-		//Log.e("###", "Added item to "+tableInfo.tableName);
+		TableSyncer.setTime(tableInfo.tableName, System.currentTimeMillis());
 
 		ContentValues values = item.getValues(false);
 
@@ -82,7 +82,7 @@ public class DatabaseMethods
 	//When deleting by ID
 	public static boolean deleteItem(DatabaseWrapper db, DatabaseItem item, TableInfo tableInfo)
 	{
-		//ensureOpen();
+		TableSyncer.setTime(tableInfo.tableName, System.currentTimeMillis());
 
 		item.deleteChildTables();
 
@@ -142,6 +142,9 @@ public class DatabaseMethods
 
 	public static <T> boolean updateItem(DatabaseWrapper db, DatabaseItem item, TableInfo tableInfo, boolean createIfNotFound)
 	{
+
+		TableSyncer.setTime(tableInfo.tableName, System.currentTimeMillis());
+
 		//ensureOpen();
 		ContentValues values = item.getValues(true);
 
@@ -172,7 +175,9 @@ public class DatabaseMethods
 
 	public static <T> boolean updateItem(DatabaseWrapper db, DatabaseItem item, TableInfo tableInfo,  String... columns)
 	{
-		//ensureOpen();
+
+		TableSyncer.setTime(tableInfo.tableName, System.currentTimeMillis());
+
 		ContentValues values = item.getValues(true);
 
 		//Filter the values we want, rather convoluted.

@@ -115,9 +115,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 	{
 		super.onCreate(savedInstanceState);
 		setupReferences();
-
-		updateTextSize();
 		loadEmoij();
+		updateTextSize();
 	}
 
 	private void loadEmoij()
@@ -131,6 +130,20 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			sortAndValidatePanelIndices(mKeyboardPanels,true);
 
 			EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
+		}
+
+		boolean syncDict = mDictionaryPanels.sync();
+		boolean syncKeyboard = mKeyboardPanels.sync();
+		if (syncDict || syncKeyboard)
+		{
+			sortAndValidatePanelIndices(mDictionaryPanels,true);
+			sortAndValidatePanelIndices(mKeyboardPanels,true);
+
+			if (mKeyboardPagerAdapter != null)
+				mKeyboardPagerAdapter.notifyDataSetChanged();
+			if (mDictionaryPagerAdapter != null)
+				mDictionaryPagerAdapter.notifyDataSetChanged();
+
 		}
 	}
 
@@ -1151,9 +1164,11 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 	@Override
 	public void onResume()
 	{
-		super.onResume();
 		updateTextSize();
+		loadEmoij();
+		super.onResume();
 		SettingsCommons.getSharedPreferences(this.getContext(), SettingsCommons.MODULE_SHARED_PREFERENCES_KEY).registerOnSharedPreferenceChangeListener(this);
+
 	}
 
 }

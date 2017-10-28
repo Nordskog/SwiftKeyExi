@@ -1,7 +1,6 @@
 package com.mayulive.swiftkeyexi;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
@@ -55,13 +54,30 @@ public class ExiModule
 
 	public enum ModuleDatabaseType
 	{
-		DICTIONARY,
-		EMOJI_DICTIONARY,
-		EMOJI_KEYBOARD,
-		HOTKEY,
-		POPUP,
-		KEYS,
-		HOTKEY_MENU_ITEM
+		DICTIONARY(PreferenceConstants.pref_dictionary_last_update_key),
+		EMOJI(PreferenceConstants.pref_emoji_last_update_key),
+		HOTKEY(PreferenceConstants.pref_hotkeys_last_update_key),
+		POPUP(PreferenceConstants.pref_popup_last_update_key),
+		KEYS(PreferenceConstants.pref_additional_keys_last_update_key),
+		HOTKEY_MENU_ITEM(PreferenceConstants.pref_hotkeys_last_update_key);
+
+		private String mLastUpdateTimePref;
+
+		ModuleDatabaseType(String lastUpdateTimePref)
+		{
+			mLastUpdateTimePref = lastUpdateTimePref;
+		}
+
+		//Update last update time pref and invaliate at the same time
+		public void setUpdateItem(Context context)
+		{
+			SettingsCommons.updateTimePreference(context, mLastUpdateTimePref);
+		}
+
+		public String getTimeUpdatePref()
+		{
+			return mLastUpdateTimePref;
+		}
 	}
 
 	public static String getLogTag(Class thiz)
@@ -71,11 +87,11 @@ public class ExiModule
 
 	public static void initialize(Context context, WrappedDatabase db)
 	{
-		clear(db);
+		clear(context, db);
 		loadDefaults(context, db);
 	}
 
-	public static void clear(WrappedDatabase db, ModuleDatabaseType type)
+	public static void clear(Context context, WrappedDatabase db, ModuleDatabaseType type)
 	{
 		switch(type)
 		{
@@ -84,14 +100,10 @@ public class ExiModule
 				DatabaseMethods.clearTable( db, DICTIONARY_SHORTCUT_TABLE_INFO);
 				break;
 			}
-			case EMOJI_DICTIONARY:
-			{
-				DatabaseMethods.clearTable( db, EMOJI_DICTIONARY_PANEL_TABLE_INFO);
-				break;
-			}
-			case EMOJI_KEYBOARD:
+			case EMOJI:
 			{
 				DatabaseMethods.clearTable( db, EMOJI_KEYBOARD_PANEL_TABLE_INFO);
+				DatabaseMethods.clearTable( db, EMOJI_DICTIONARY_PANEL_TABLE_INFO);
 				break;
 			}
 			case HOTKEY:
@@ -118,6 +130,8 @@ public class ExiModule
 				break;
 			}
 		}
+
+		type.setUpdateItem(context);
 	}
 
 	public static boolean needsEmojiUpdate(int currentEmoji, int previousSDK)
@@ -150,18 +164,14 @@ public class ExiModule
 		{
 			Log.i(LOGTAG, "Updating from Marshmallow emoji");
 			removeStockMarshmallowEmojiPanels(db,true);
-			loadDefaults(context, db, ModuleDatabaseType.EMOJI_KEYBOARD);
-			loadDefaults(context, db, ModuleDatabaseType.EMOJI_DICTIONARY);
+			loadDefaults(context, db, ModuleDatabaseType.EMOJI);
 
 		}
 		else	//New fancy insertions for nougat and beyond
 		{
 			Log.i(LOGTAG, "Updating from Nougat emoji");
-			refreshAllPanels(db);
+			refreshAllPanels(context, db);
 		}
-
-		//Let hook know of update
-		SettingsCommons.updateTimePreference(context, PreferenceConstants.pref_emoji_last_update_key);
 
 		return getEmojiVersionForSDK();
 	}
@@ -286,7 +296,7 @@ public class ExiModule
 	}
 
 	//Refresh emoji. Before marshmallow panels are just removed instead.
-	public static void refreshAllPanels(WrappedDatabase db)
+	public static void refreshAllPanels(Context context, WrappedDatabase db)
 	{
 		//The template panels can't be modified, and even have a key set, so they'll be fine.
 		//The editable panels are a bit more of a headache, and we have to be careful.
@@ -364,13 +374,16 @@ public class ExiModule
 				item.get_items().updateAll();
 			}
 		}
+
+		//Let hook know of update
+		ModuleDatabaseType.EMOJI.setUpdateItem(context);
 	}
 
-	public static void clear(WrappedDatabase db)
+	public static void clear(Context context, WrappedDatabase db)
 	{
 		for (ModuleDatabaseType type : ModuleDatabaseType.values())
 		{
-			clear(db,type);
+			clear(context, db,type);
 		}
 	}
 
@@ -393,12 +406,20 @@ public class ExiModule
 				break;
 			}
 
-			case EMOJI_DICTIONARY:
+			case EMOJI:
 			{
+
+
+				ArrayList<DB_EmojiPanelItem> keyboardTemplates =  getEmojiTemplatesForSDK(getEmojiVersionForSDK());
+				Collections.reverse(keyboardTemplates);
+
+				//////////////
+				//Templates
+				//////////////
+
 				TableList<DB_EmojiPanelItem> dictionaryPanels = new TableList<>(db, TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO);
 
-				ArrayList<DB_EmojiPanelItem> keyboardTemplates = getEmojiTemplatesForSDK(getEmojiVersionForSDK());
-				Collections.reverse(keyboardTemplates);
+
 				for (DB_EmojiPanelItem item : keyboardTemplates)
 					dictionaryPanels.add(0,item);
 
@@ -414,13 +435,16 @@ public class ExiModule
 
 				DatabaseMethods.updateAllItems( db, dictionaryPanels, EMOJI_DICTIONARY_PANEL_TABLE_INFO,true);
 
-				break;
-			}
-			case EMOJI_KEYBOARD:
-			{
-				TableList<DB_EmojiPanelItem> keyboardPanels = new TableList<>(db, TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO);
-				ArrayList<DB_EmojiPanelItem> keyboardTemplates =  getEmojiTemplatesForSDK(getEmojiVersionForSDK());
+				/////////////
+				//Keyboard
+				/////////////
+
+				//Templates are modified when adding, so grab a fresh copy
+				keyboardTemplates =  getEmojiTemplatesForSDK(getEmojiVersionForSDK());
 				Collections.reverse(keyboardTemplates);
+
+				TableList<DB_EmojiPanelItem> keyboardPanels = new TableList<>(db, TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO);
+
 				for (DB_EmojiPanelItem item : keyboardTemplates)
 					keyboardPanels.add(0,item);
 
@@ -445,12 +469,13 @@ public class ExiModule
 			}
 			case HOTKEY:
 			{
-				ArrayList<DB_ModifierKeyItem> modifierKeys = new ArrayList<DB_ModifierKeyItem>();
+				TableList<DB_ModifierKeyItem> modifierKeys = new TableList<DB_ModifierKeyItem>( db, TableInfoTemplates.MODIFIER_KEY_TABLE_INFO);
+				modifierKeys.startBatchEdit();
 				modifierKeys.add( new DB_ModifierKeyItem(-1, "a", KeyboardInteraction.TextAction.SELECT_ALL));
 				modifierKeys.add( new DB_ModifierKeyItem(-1, "x", KeyboardInteraction.TextAction.CUT));
 				modifierKeys.add( new DB_ModifierKeyItem(-1, "c", KeyboardInteraction.TextAction.COPY));
 				modifierKeys.add( new DB_ModifierKeyItem(-1, "v", KeyboardInteraction.TextAction.PASTE));
-				DatabaseMethods.updateAllItems( db, modifierKeys, MODIFIER_KEY_TABLE_INFO,true);
+				modifierKeys.endBatchEdit();
 
 				break;
 			}
@@ -497,6 +522,9 @@ public class ExiModule
 				break;
 			}
 		}
+
+		//Let hook know of update
+		type.setUpdateItem(context);
 	}
 
 

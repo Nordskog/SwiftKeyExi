@@ -51,6 +51,7 @@ public class KeyDefinitionFragment extends Fragment
 	String mHeaderTitle = "";
 
 
+
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
@@ -246,6 +247,20 @@ public class KeyDefinitionFragment extends Fragment
 		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this.getContext(), MODULE_SHARED_PREFERENCES_KEY);
 		editor.putLong(PreferenceConstants.pref_additional_keys_last_update_key, System.currentTimeMillis());
 		editor.apply();
+	}
+
+	public void onResume()
+	{
+		if (mItems != null)
+		{
+			if (mItems.sync())
+			{
+				if (mAdapter != null)
+					mAdapter.notifyDataSetChanged();
+			}
+		}
+
+		super.onResume();
 	}
 
 	@Override

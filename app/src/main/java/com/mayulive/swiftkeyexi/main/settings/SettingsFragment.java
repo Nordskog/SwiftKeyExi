@@ -84,6 +84,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			}
 		});
 
+		Preference resetPreference = findPreference(this.getContext().getResources().getString( R.string.pref_reset_key ));
+		resetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayResetDialog();
+				return true;
+			}
+		});
+
 
 	}
 
@@ -113,6 +124,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 	private void displayAboutFragment()
 	{
 		AboutFragment nextFrag= new AboutFragment();
+
+		this.getFragmentManager().beginTransaction()
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
+				.addToBackStack(null)
+				.commit();
+	}
+
+	private void displayResetDialog()
+	{
+		ResetFragment nextFrag= new ResetFragment();
 
 		this.getFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)

@@ -68,13 +68,6 @@ public class QuickMenuConfigFragment extends Fragment
 	private void setupReferences()
 	{
 		mDbWrap = DatabaseHolder.getWrapped(this.getContext());
-
-		if (mItems == null)
-		{
-			mItems = new TableList<>(mDbWrap, TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO);
-			Collections.sort(mItems, new HotkeyPanel.HotkeyMenuItem.HotkeyMenuItemComparator() );
-
-		}
 	}
 
 	private void loadTextSizePref()
@@ -115,9 +108,30 @@ public class QuickMenuConfigFragment extends Fragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
 		setupReferences();
 		loadTextSizePref();
 		loadHighlightColorPref();
+		loadItems();
+	}
+
+	private void loadItems()
+	{
+		if (mItems == null)
+		{
+			mItems = new TableList<>(mDbWrap, TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO);
+			Collections.sort(mItems, new HotkeyPanel.HotkeyMenuItem.HotkeyMenuItemComparator() );
+		}
+
+		if (mItems.sync())
+		{
+			Collections.sort(mItems, new HotkeyPanel.HotkeyMenuItem.HotkeyMenuItemComparator() );
+			if (mAdapter != null)
+				mAdapter.notifyDataSetChanged();
+			if (mHotkeyMenuPanel != null)
+				mHotkeyMenuPanel.refresh();
+		}
+
 	}
 
 	private void setupList()
@@ -467,5 +481,11 @@ public class QuickMenuConfigFragment extends Fragment
 		setupColorPicker();
 
 		return mRootView;
+	}
+
+	public void onResume()
+	{
+		loadItems();
+		super.onResume();
 	}
 }
