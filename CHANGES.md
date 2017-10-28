@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
-## [1.2.0] - 02-10-2017
+## [1.2.0] - 28-10-2017
 
 ### Fixed
 - More suggestions
