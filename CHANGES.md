@@ -2,6 +2,26 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [1.2.0] - 02-10-2017
+
+### Fixed
+- More suggestions
+- Dark/Light theming in emoji panel
+- Overlay hook sometimes not being called, breaking the quick-menu
+
+### Added
+- Diverse Emoji support
+- Icons to all menus
+- Ability to partially restore stock configuration
+
+### Changed
+- Emoji panels to match Nougat
+- Stock Emoji panels to be unmodifiable
+- Emoji menus to be more intuitive
+
+### Broke
+- Support for Swiftkey 6.6.7.24
+
 ## [1.1.1] - 02-10-2017
 ### Fixed
 - Crash when flow shortcuts enabled
