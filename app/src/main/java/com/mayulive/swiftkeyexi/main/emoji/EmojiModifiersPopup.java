@@ -142,19 +142,26 @@ public class EmojiModifiersPopup extends RelativeLayout
 
 		//Get position in parent
 		{
-			Point relativePosition = ViewTools.getPositionInParent(emojiParent, anchor);
+			Point relativePosition = ViewTools.getPositionInParent(overlay, anchor);
 			x = relativePosition.x;
 			y = relativePosition.y;
 		}
 
-		//Offset to center at top of anchor
-		x += anchor.getMeasuredWidth() / 2;
+		//For reasons unknown, any method of getting a recyclerview viewholder's position will
+		//result in a result that is offset by 20% of the viewholder's height and width.
+		//That goes for the above method, and if you try to loop through until you reach the parent yourself.
+		x += anchor.getMeasuredWidth()*0.2;
+		//A bit of extra space makes them a lot easier to click, so leave this out.
+		//y+= anchor.getMeasuredHeight()*0.2;
 
 		//Measure content view
 		mContentWindow.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 
+		//Offset to center at top of anchor
+		x += anchor.getMeasuredWidth() / 2;
+
 		//adjust positions to top/left layout values
-		y -= mContentWindow.getMeasuredHeight() *2;	//Should only be times once, must be extra parents adding stuff
+		y -= mContentWindow.getMeasuredHeight();
 		x -= mContentWindow.getMeasuredWidth() / 2;
 
 		//Depending on the position of the anchor and the width of the content view
@@ -163,14 +170,10 @@ public class EmojiModifiersPopup extends RelativeLayout
 			x = 0;
 
 
-		if (x + mContentWindow.getMeasuredWidth() >= emojiParent.getMeasuredWidth() )
+		if (x + mContentWindow.getMeasuredWidth() >= overlay.getMeasuredWidth() )
 		{
-			x = emojiParent.getMeasuredWidth() - mContentWindow.getMeasuredWidth();
+			x = overlay.getMeasuredWidth() - mContentWindow.getMeasuredWidth();
 		}
-
-		//Ultimately the overlay covers the whole window, so we need to offset
-		//the y position by overlay-keyboard
-		y += (overlay.getMeasuredHeight() - emojiParent.getMeasuredHeight());
 
 		//Set params for content
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

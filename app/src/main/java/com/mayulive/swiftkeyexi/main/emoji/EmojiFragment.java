@@ -129,7 +129,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			sortAndValidatePanelIndices(mDictionaryPanels,true);
 			sortAndValidatePanelIndices(mKeyboardPanels,true);
 
-			EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
+			//EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
 		}
 
 		boolean syncDict = mDictionaryPanels.sync();
@@ -156,7 +156,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			EmojiCache.clearCache();
 
 			//Invalidate panels
-			if (mDictionaryPanels != null || mKeyboardPanels != null)
+			if (mKeyboardPagerAdapter != null && mDictionaryPagerAdapter != null)
 			{
 				EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
 				mKeyboardPagerAdapter.notifyDataSetChanged();

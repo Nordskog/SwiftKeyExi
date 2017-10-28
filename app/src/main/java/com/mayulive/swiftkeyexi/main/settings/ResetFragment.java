@@ -92,7 +92,7 @@ public class ResetFragment extends PreferenceFragmentCompat
 
 				.setTitle(R.string.pref_reset_title)
 				.setMessage(warning)
-				.setPositiveButton(R.string.button_clear, new DialogInterface.OnClickListener()
+				.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener()
 				{
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i)
