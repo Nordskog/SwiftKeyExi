@@ -159,10 +159,6 @@ public class SelectionHooks
 					{
 						param.setResult(false);
 					}
-					else
-					{
-						Log.i(LOGTAG, "Allowing!");
-					}
 				}
 			});
 		}
