@@ -61,4 +61,9 @@ public class TextUtils
 
 		return builder.toString();
 	}
+
+	public static String addEmojiVariantSelector(String string)
+	{
+		return string+"\uFE0F";
+	}
 }

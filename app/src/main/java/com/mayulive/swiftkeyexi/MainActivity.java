@@ -60,11 +60,12 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 		int emojiVersion = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
 		int lastApiVersion = prefs.getInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
+		int lastExiVersion = prefs.getInt(PreferenceConstants.status_exi_version_code_last_launch_key, 0);
 
 
 
 
-		if (ExiModule.needsEmojiUpdate(emojiVersion, lastApiVersion))
+		if (ExiModule.needsEmojiUpdate(emojiVersion, lastApiVersion, lastExiVersion))
 		{
 			Log.i(LOGTAG, "Updating emoji");
 			//Update emoji
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 
 		{
 			editor.putInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
+			editor.apply();
+
+			editor.putInt(PreferenceConstants.status_exi_version_code_last_launch_key, BuildConfig.VERSION_CODE);
 			editor.apply();
 		}
 	}

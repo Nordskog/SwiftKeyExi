@@ -5,6 +5,7 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.util.FontLoader;
+import com.mayulive.swiftkeyexi.util.TextUtils;
 
 import java.util.ArrayList;
 
@@ -258,6 +259,12 @@ public class EmojiPanelTemplates
 
 		for (String string : strings)
 		{
+			//Add the display-as-emoji variant selector.
+			//If you don't include this, there is no telling how it will be displayed
+			//on any given system. Android may render it as a text symbol, firefox as an emoji.
+			//I guess we just need to add this to everything ... ?
+			if (emojiOnly)
+				string = TextUtils.addEmojiVariantSelector(string);
 
 			//Skip items that are completely unrenderable, and emoji that should be single-char that are not renderd as such.
 			if (FontLoader.isRenderable(string) && ( !emojiOnly || FontLoader.isSingleChar(string) ))

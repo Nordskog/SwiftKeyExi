@@ -52,6 +52,8 @@ public class ExiModule
 	public static String SWIFTKEY_PACKAGE_NAME = "com.touchtype.swiftkey";
 	public static String SWIFTKEY_BETA_PACKAGE_NAME = "com.touchtype.swiftkey.beta";
 
+	public static final int DISPLAY_EMOJI_VARIANT_FIX_VERSION = 8;
+
 	public enum ModuleDatabaseType
 	{
 		DICTIONARY(PreferenceConstants.pref_dictionary_last_update_key),
@@ -134,9 +136,10 @@ public class ExiModule
 		type.setUpdateItem(context);
 	}
 
-	public static boolean needsEmojiUpdate(int currentEmoji, int previousSDK)
+	public static boolean needsEmojiUpdate(int currentEmoji, int previousSDK, int previousExiVersionCode)
 	{
 
+		Log.i(LOGTAG, "Exi version: "+BuildConfig.VERSION_CODE+", previousVersion: "+previousExiVersionCode);
 		Log.i(LOGTAG, "Current emoji: "+currentEmoji+", for SDK: "+getEmojiVersionForSDK());
 		Log.i(LOGTAG, "Build version: "+Build.VERSION.SDK_INT+", previousSDK: "+previousSDK);
 
@@ -147,10 +150,18 @@ public class ExiModule
 		}
 
 		//Also on any sdk change after nougat, since more emoji have likely become renderable
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT != previousSDK)
+		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
 		{
-			return true;
+			if ( Build.VERSION.SDK_INT != previousSDK)
+				return true;
+
+			//In Exi v8 (Version code) the display-as-emoji variant selector was added to all emoji
+			//Update panels need to be refreshed.
+			if (previousExiVersionCode < DISPLAY_EMOJI_VARIANT_FIX_VERSION)
+				return true;
 		}
+
+
 
 		return false;
 	}
