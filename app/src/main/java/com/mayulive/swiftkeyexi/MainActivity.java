@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		}
 	}
 
-	private void handleFirstLaunch()
+	private boolean handleFirstLaunch()
 	{
 		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
@@ -123,8 +123,11 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 
 			editor.putBoolean(PreferenceConstants.status_first_launch_key, false);
 			editor.apply();
+
+			return true;
 		}
 
+		return false;
 	}
 
 	public void displayInputTest()
@@ -168,9 +171,9 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		FontLoader.initFontLoader(getFontPathArray());
 		NormalEmojiItem.loadAssets(simpleFont);
 
-		//Load defaults on first launch
-		handleFirstLaunch();
-		handleSdkUpdate();
+		//Load defaults on first launch, run any updates otherwise
+		if ( !handleFirstLaunch() )
+			handleSdkUpdate();
 
 		//Child fragments are re-instanced inside of super,
 		//so any data they depend on, such as the database,
