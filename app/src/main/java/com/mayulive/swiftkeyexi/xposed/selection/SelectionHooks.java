@@ -154,7 +154,15 @@ public class SelectionHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-					param.setResult(false);
+					//Call if pointer down on overlay, or <100ms since end of swipe selection event
+					if (SelectionState.mValidFirstDown || (System.currentTimeMillis() - SelectionState.mSwipeEndTime) < 100 )
+					{
+						param.setResult(false);
+					}
+					else
+					{
+						Log.i(LOGTAG, "Allowing!");
+					}
 				}
 			});
 		}

@@ -823,6 +823,7 @@ public class SelectionMethods
 			}
 
 			SelectionState.clearState(0);
+			SelectionState.mSwipeEndTime = System.currentTimeMillis();
 
 			SelectionState.mPointerInformation.remove(pointerID);
 

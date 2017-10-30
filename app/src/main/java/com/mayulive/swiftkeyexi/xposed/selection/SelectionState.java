@@ -60,6 +60,7 @@ public class SelectionState
 	protected static boolean mSpaceDown = false;
 	protected static boolean mShiftDown = false;
 	protected static boolean mDeleteDown = false;
+	protected static long mSwipeEndTime = 0;
 
 	protected static CharSequence mLastExtractedText = null;
 	protected static int mLastExtractedTextOffset = 0;
