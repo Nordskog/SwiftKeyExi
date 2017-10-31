@@ -26,6 +26,14 @@
 
             />
 
+        <com.mayulive.swiftkeyexi.util.view.ListPreferenceShowSummary
+            android:key="@string/pref_emoji_force_version_key"
+            android:title="@string/pref_emoji_force_version_title"
+            android:entries="@array/pref_emoji_force_version_display_entries"
+            android:entryValues="@array/pref_emoji_force_version_values"
+            android:defaultValue="AUTO"
+            />
+
 
     </PreferenceCategory>
 

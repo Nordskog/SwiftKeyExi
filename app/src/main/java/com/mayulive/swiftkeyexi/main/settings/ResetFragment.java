@@ -1,6 +1,8 @@
 package com.mayulive.swiftkeyexi.main.settings;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -13,8 +15,10 @@ import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreferenceFragment;
+import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 
 /**
@@ -98,7 +102,14 @@ public class ResetFragment extends PreferenceFragmentCompat
 					public void onClick(DialogInterface dialogInterface, int i)
 					{
 						ExiModule.clear(getContext(), mDbWrap, type);
-						ExiModule.loadDefaults(getContext(), mDbWrap, type);
+
+						SharedPreferences prefs = SettingsCommons.getSharedPreferences(ResetFragment.this.getContext());
+						FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref(
+								prefs.getString(PreferenceConstants.pref_emoji_force_version_key, "AUTO")
+						);
+
+
+						ExiModule.loadDefaults(getContext(), mDbWrap, type, newVersion.getSdkVersion());
 					}
 				})
 				.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener()

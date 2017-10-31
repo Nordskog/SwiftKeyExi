@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
+import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
@@ -58,23 +59,16 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		//Check what version of emojis we are using, currently have Marshmallow and Nougat.
 		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
-		int emojiVersion = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
 		int lastApiVersion = prefs.getInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
 		int lastExiVersion = prefs.getInt(PreferenceConstants.status_exi_version_code_last_launch_key, 0);
 
 
 
 
-		if (ExiModule.needsEmojiUpdate(emojiVersion, lastApiVersion, lastExiVersion))
+		if (ExiModule.needsEmojiUpdate(getContext(), lastApiVersion, lastExiVersion))
 		{
 			Log.i(LOGTAG, "Updating emoji");
-			//Update emoji
-			int newVersion = ExiModule.update(this,mDbWrap,emojiVersion);
-
-			//Update emoji version pref
-
-			editor.putInt(PreferenceConstants.status_api_version_emoji, newVersion);
-			editor.apply();
+			ExiModule.update(this,mDbWrap);
 		}
 
 		{
@@ -95,8 +89,10 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 
 		if (isFirstLaunch)
 		{
+			FancyEmojiPanelTemplates.EmojiPanelVersion emojiVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromSdkVersion(Build.VERSION.SDK_INT);
+
 			//Proper emoji will be populated anyway if first launch
-			editor.putInt(PreferenceConstants.status_api_version_emoji, ExiModule.getEmojiVersionForSDK());
+			editor.putInt(PreferenceConstants.status_api_version_emoji, emojiVersion.getSdkVersion());
 			editor.apply();
 
 			if (mDbWrap != null)
@@ -155,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
+
+
 
 
 		Theme.setTheme(this, Theme.getThemeResId(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY) );

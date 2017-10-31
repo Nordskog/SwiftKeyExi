@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
@@ -19,7 +20,6 @@ import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
-import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelTemplates;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +53,7 @@ public class ExiModule
 	public static String SWIFTKEY_BETA_PACKAGE_NAME = "com.touchtype.swiftkey.beta";
 
 	public static final int DISPLAY_EMOJI_VARIANT_FIX_VERSION = 8;
+
 
 	public enum ModuleDatabaseType
 	{
@@ -90,7 +91,7 @@ public class ExiModule
 	public static void initialize(Context context, WrappedDatabase db)
 	{
 		clear(context, db);
-		loadDefaults(context, db);
+		loadDefaults(context, db, Build.VERSION.SDK_INT);
 	}
 
 	public static void clear(Context context, WrappedDatabase db, ModuleDatabaseType type)
@@ -136,76 +137,91 @@ public class ExiModule
 		type.setUpdateItem(context);
 	}
 
-	public static boolean needsEmojiUpdate(int currentEmoji, int previousSDK, int previousExiVersionCode)
+	public static boolean needsEmojiUpdate(Context context, int previousSDK, int previousExiVersionCode)
 	{
+		SharedPreferences prefs = SettingsCommons.getSharedPreferences(context);
+
+		int currentEmoji = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
+
+		FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref(
+			prefs.getString(PreferenceConstants.pref_emoji_force_version_key, "AUTO")
+	);
+
 
 		Log.i(LOGTAG, "Exi version: "+BuildConfig.VERSION_CODE+", previousVersion: "+previousExiVersionCode);
-		Log.i(LOGTAG, "Current emoji: "+currentEmoji+", for SDK: "+getEmojiVersionForSDK());
+		Log.i(LOGTAG, "Current emoji: "+currentEmoji+", for SDK: "+newVersion.getSdkVersion());
 		Log.i(LOGTAG, "Build version: "+Build.VERSION.SDK_INT+", previousSDK: "+previousSDK);
 
-		//If emoji are below N, and we are currently above M, nuke things.
-		if (currentEmoji < getEmojiVersionForSDK())
-		{
+		//If current emoji version differs from new version
+		if (currentEmoji != newVersion.getSdkVersion())
 			return true;
-		}
 
-		//Also on any sdk change after nougat, since more emoji have likely become renderable
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+		//If different version of android
+		if ( Build.VERSION.SDK_INT != previousSDK)
+			return true;
+
+		//In Exi v8 (Version code) the display-as-emoji variant selector was added to all emoji
+		//Update panels need to be refreshed.
+		if (previousExiVersionCode < DISPLAY_EMOJI_VARIANT_FIX_VERSION)
+			return true;
+
+		//If we haven't added identifiers to the panels yet, better to unify this stuff.
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
 		{
-			if ( Build.VERSION.SDK_INT != previousSDK)
-				return true;
-
-			//In Exi v8 (Version code) the display-as-emoji variant selector was added to all emoji
-			//Update panels need to be refreshed.
-			if (previousExiVersionCode < DISPLAY_EMOJI_VARIANT_FIX_VERSION)
+			boolean hasIdentifiers = prefs.getBoolean(PreferenceConstants.status_emoji_panels_have_identifiers_key, false);
+			if (hasIdentifiers)
 				return true;
 		}
-
-
 
 		return false;
 	}
 
 	//Deletes and re-created the emoji panels, including new emoji and panels
 	//Returns the version of the new emoji
-	public static int update(Context context, WrappedDatabase db, int currentVersion)
+	public static int update(Context context, WrappedDatabase db)
 	{
-		//Old clunky version if we are replacing marshmallow
+		SharedPreferences prefs = SettingsCommons.getSharedPreferences(context);
+
+		int currentVersion = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
+
+		FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref(
+				prefs.getString(PreferenceConstants.pref_emoji_force_version_key, "AUTO")
+		);
+
+		//Older versions did not provide identifiers for panels
+		//Nougat panels were added afterwards, so they will always have identifiers.
+		boolean hasIdentifiers = true;
 		if (currentVersion <= Build.VERSION_CODES.M)
 		{
-			Log.i(LOGTAG, "Updating from Marshmallow emoji");
-			removeStockMarshmallowEmojiPanels(db,true);
-			loadDefaults(context, db, ModuleDatabaseType.EMOJI);
-
-		}
-		else	//New fancy insertions for nougat and beyond
-		{
-			Log.i(LOGTAG, "Updating from Nougat emoji");
-			refreshAllPanels(context, db);
+			hasIdentifiers = prefs.getBoolean(PreferenceConstants.status_emoji_panels_have_identifiers_key, false);
 		}
 
-		return getEmojiVersionForSDK();
-	}
-
-	public static int getEmojiVersionForSDK()
-	{
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
-			return Build.VERSION_CODES.M;
-		else
-			return Build.VERSION_CODES.N;
-	}
-
-	public static ArrayList<DB_EmojiPanelItem> getEmojiTemplatesForSDK(int sdk)
-	{
-
-		if (sdk >= Build.VERSION_CODES.N)
+		//If we are moving from pre_nougat to post_nougat or vice-versa, all existing panels must be removed and defaults restored
+		if (currentVersion != newVersion.getSdkVersion())
 		{
-			return FancyEmojiPanelTemplates.getEmojiPanelTemplates();
+			Log.i(LOGTAG, "Removing stock panels and replacing with "+newVersion.name());
+			removeAllStockPanels(context, db);
+			loadDefaults(context, db, ModuleDatabaseType.EMOJI, newVersion.getSdkVersion());
 		}
 		else
 		{
-			return EmojiPanelTemplates.getEmojiPanelTemplates();
+			//Otherwise we're good to just refresh the panels, unless they don't have identifiers yet
+
+			//Refresh with identifiers, otherwise guess existing panels and restore defaults.
+			if (hasIdentifiers)
+			{
+				Log.i(LOGTAG, "Updating from identifiable panels");
+				refreshAllPanels(context, db, newVersion);
+			}
+			else
+			{
+				Log.i(LOGTAG, "Updating from Marshmallow emoji");
+				removeStockMarshmallowEmojiPanels(db,true);
+				loadDefaults(context, db, ModuleDatabaseType.EMOJI, newVersion.getSdkVersion());
+			}
 		}
+
+		return newVersion.getSdkVersion();
 	}
 
 	public static void removeStockMarshmallowEmojiPanels(WrappedDatabase db, boolean removeKeyboardPanels)
@@ -282,6 +298,49 @@ public class ExiModule
 		}
 	}
 
+	private static void removeAllStockPanels(Context context, WrappedDatabase db)
+	{
+		SharedPreferences prefs = SettingsCommons.getSharedPreferences(context);
+		int emojiVersion = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
+		boolean hasIdentifiers = true;
+		if (emojiVersion <= Build.VERSION_CODES.M)
+		{
+			hasIdentifiers = prefs.getBoolean(PreferenceConstants.status_emoji_panels_have_identifiers_key, false);
+		}
+
+		if (hasIdentifiers)
+		{
+			TableList<DB_EmojiPanelItem> dictionaryPanels = new TableList<>(db, TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO);
+			TableList<DB_EmojiPanelItem> keyboardPanels = new TableList<>(db, TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO);
+
+			ListIterator<DB_EmojiPanelItem> templateIterator = dictionaryPanels.listIterator();
+			while(templateIterator.hasNext())
+			{
+				DB_EmojiPanelItem item = templateIterator.next();
+				if (item.get_panel_identifier() != -1)
+				{
+					templateIterator.remove();
+				}
+			}
+
+			ListIterator<DB_EmojiPanelItem> keyboardIterator = keyboardPanels.listIterator();
+			while(keyboardIterator.hasNext())
+			{
+				DB_EmojiPanelItem item = keyboardIterator.next();
+				if (item.get_panel_identifier() != -1 || item.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
+				{
+					keyboardIterator.remove();
+				}
+			}
+
+		}
+		else
+		{
+			removeStockMarshmallowEmojiPanels(db, true);
+		}
+
+	}
+
 	private static ArrayList<DB_EmojiPanelItem> getPanelsForIdentifier(List<DB_EmojiPanelItem> items, int identifier)
 	{
 		ArrayList<DB_EmojiPanelItem> returnItems = new ArrayList<>();
@@ -307,7 +366,7 @@ public class ExiModule
 	}
 
 	//Refresh emoji. Before marshmallow panels are just removed instead.
-	public static void refreshAllPanels(Context context, WrappedDatabase db)
+	public static void refreshAllPanels(Context context, WrappedDatabase db, FancyEmojiPanelTemplates.EmojiPanelVersion version)
 	{
 		//The template panels can't be modified, and even have a key set, so they'll be fine.
 		//The editable panels are a bit more of a headache, and we have to be careful.
@@ -315,7 +374,7 @@ public class ExiModule
 		TableList<DB_EmojiPanelItem> keyboardPanels = new TableList<>(db, TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO);
 
 		//New emoji
-		List<DB_EmojiPanelItem> replacementPanels = getEmojiTemplatesForSDK(Build.VERSION.SDK_INT);
+		List<DB_EmojiPanelItem> replacementPanels = FancyEmojiPanelTemplates.getForEmojiPanelVersion(version);
 
 		//Starting from Android N, we refresh panels instead of readding them completely.
 		//On creation, or when a user hits add-all for a new empty keyboard panel, we mark
@@ -358,13 +417,22 @@ public class ExiModule
 						//Push to database
 						item.get_items().replaceTableWithContents();
 					}
-				}
 
-				//Replace emoji in template
-				template.get_items().setDatabaseMode(TableList.DatabaseMode.MANUAL);
-				template.get_items().clear();
-				template.get_items().addAll( newTemplate.get_items() );
-				template.get_items().replaceTableWithContents();
+					//Replace emoji in template
+					template.get_items().setDatabaseMode(TableList.DatabaseMode.MANUAL);
+					template.get_items().clear();
+					template.get_items().addAll( newTemplate.get_items() );
+					template.get_items().replaceTableWithContents();
+				}
+				else
+				{
+					Log.d(LOGTAG, "Failed to locate template corresponding to "+template.get_panel_identifier());
+					Log.d(LOGTAG, "Candidates were: ");
+					for (DB_EmojiPanelItem item : replacementPanels)
+					{
+						Log.d(LOGTAG, item.get_icon()+", identifier: "+item.get_panel_identifier());
+					}
+				}
 			}
 		}
 
@@ -398,16 +466,16 @@ public class ExiModule
 		}
 	}
 
-	public static void loadDefaults(Context context, WrappedDatabase db)
+	public static void loadDefaults(Context context, WrappedDatabase db, int SDKVersion)
 	{
 		for (ModuleDatabaseType type : ModuleDatabaseType.values())
 		{
-			loadDefaults(context, db,type);
+			loadDefaults(context, db,type, SDKVersion);
 		}
 	}
 
 
-	public static void loadDefaults(final Context context, WrappedDatabase db, ModuleDatabaseType type )
+	public static void loadDefaults(final Context context, WrappedDatabase db, ModuleDatabaseType type, int SDKVersion )
 	{
 		switch(type)
 		{
@@ -420,8 +488,9 @@ public class ExiModule
 			case EMOJI:
 			{
 
+				FancyEmojiPanelTemplates.EmojiPanelVersion emojiVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromSdkVersion(SDKVersion);
 
-				ArrayList<DB_EmojiPanelItem> keyboardTemplates =  getEmojiTemplatesForSDK(getEmojiVersionForSDK());
+				ArrayList<DB_EmojiPanelItem> keyboardTemplates =  FancyEmojiPanelTemplates.getForEmojiPanelVersion(emojiVersion);
 				Collections.reverse(keyboardTemplates);
 
 				//////////////
@@ -451,7 +520,7 @@ public class ExiModule
 				/////////////
 
 				//Templates are modified when adding, so grab a fresh copy
-				keyboardTemplates =  getEmojiTemplatesForSDK(getEmojiVersionForSDK());
+				keyboardTemplates =  FancyEmojiPanelTemplates.getForEmojiPanelVersion(emojiVersion);
 				Collections.reverse(keyboardTemplates);
 
 				TableList<DB_EmojiPanelItem> keyboardPanels = new TableList<>(db, TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO);
@@ -461,7 +530,7 @@ public class ExiModule
 
 				//Additionally, the keyboard items should contain a special recents panel
 				//This panel will not be editable by the user. Should probably have some indicator.
-				keyboardPanels.add(0, EmojiPanelTemplates.getRecentsPanelItem());
+				keyboardPanels.add(0, FancyEmojiPanelTemplates.getRecentsPanelItem());
 
 
 				//Recents is added as the first item, but position is configurable. Update indices here.
@@ -475,6 +544,16 @@ public class ExiModule
 				}
 
 				DatabaseMethods.updateAllItems( db, keyboardPanels, EMOJI_KEYBOARD_PANEL_TABLE_INFO,true);
+
+				//Save a pref so we'll know that the current set of emoji panels all have identifers set
+				//this way we can just refresh them instead of guessing which are which and deleting.
+				SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(context);
+				editor.putBoolean(PreferenceConstants.status_emoji_panels_have_identifiers_key, true);
+				editor.apply();
+
+				//And set the current emoji version pref
+				editor.putInt(PreferenceConstants.status_api_version_emoji, emojiVersion.getSdkVersion());
+				editor.apply();
 
 				break;
 			}

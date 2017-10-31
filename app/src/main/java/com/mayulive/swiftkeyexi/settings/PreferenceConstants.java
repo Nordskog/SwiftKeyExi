@@ -52,6 +52,7 @@ public class PreferenceConstants
 	public static final String status_api_version_emoji = "pref_api_version_emoji";
 	public static final String status_exi_version_code_last_launch_key = "status_exi_version_code_last_launch";
 	public static final String pref_app_theme_key = "pref_app_theme";
+	public static final String status_emoji_panels_have_identifiers_key = "status_emoji_panels_have_identifiers";
 
 
 
@@ -65,6 +66,7 @@ public class PreferenceConstants
 
 	public static final String pref_hotkey_menu_text_size_key = "pref_hotkey_menu_text_size";
 
+	public static final String pref_emoji_force_version_key = "pref_emoji_force_version";
 
 
 }

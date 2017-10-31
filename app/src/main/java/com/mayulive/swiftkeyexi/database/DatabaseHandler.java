@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -110,7 +111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					String query = "CREATE TABLE " + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableName + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableDefinition;
 					db.execSQL(query);
 
-					ExiModule.loadDefaults(mContext, new WrappedDatabase(db), ExiModule.ModuleDatabaseType.HOTKEY_MENU_ITEM);
+					ExiModule.loadDefaults(mContext, new WrappedDatabase(db), ExiModule.ModuleDatabaseType.HOTKEY_MENU_ITEM, Build.VERSION.SDK_INT);
 					break;
 				}
 
