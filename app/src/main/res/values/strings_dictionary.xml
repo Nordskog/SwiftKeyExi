@@ -7,9 +7,9 @@
     <string name="dictionary_shortcut_description">Shortcut: </string>
     <string name="dictionary_text_description">Text: </string>
 
-    <string name="dictionary_make_secondary">Make suggestion secondary"</string>
+    <string name="dictionary_make_secondary">Make suggestion secondary</string>
 
-    <string name="dictionary_set_shortcut">Set Shortcut"</string>
+    <string name="dictionary_set_shortcut">Set Shortcut</string>
 
     <string name="dictionary_clear_dictionary">Clear"</string>
     <string name="dictionary_import_dictionary">Import"</string>
