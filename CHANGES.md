@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [1.2.1] - 02-11-2017
+
+### Fixed
+- Some emoji rendering as text instead of bitmap-emoji
+- Emoji losing diverse modifiers when using "add-all emoji to panel"
+- Cursor not jumping to end of word when tapping it on-screen
+
+### Added
+- Ability to choose between pre- and post-nougat stock emoji panels
+- Option to remove existing popup keys
+- Russian translation (Thanks to xda user alex_long)
+- Brazilian Portuguese translation (Thanks to xda user X_hunter)
+
 ## [1.2.0] - 28-10-2017
 
 ### Fixed
