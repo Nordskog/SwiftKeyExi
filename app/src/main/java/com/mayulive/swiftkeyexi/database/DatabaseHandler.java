@@ -12,6 +12,7 @@ import com.mayulive.swiftkeyexi.LoadPackageHook;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
+import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupParentKeyItem;
 import com.mayulive.swiftkeyexi.util.CursorUtils;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
 	private static String LOGTAG = ExiModule.getLogTag(DatabaseHandler.class);
 
-	public static final int DATABASE_VERSION = 3;
+	public static final int DATABASE_VERSION = 4;
 	public static final String DATABASE_NAME = "exi_main.db";
 
 	private SQLiteDatabase mDb = null;
@@ -160,6 +161,12 @@ public class DatabaseHandler extends SQLiteOpenHelper
 						query = "ALTER TABLE "+item+" ADD COLUMN "+ DB_EmojiItem.EmojiEntry.MODIFIERS_SUPPORTED_COLUMN+" INTEGER DEFAULT 0";
 						db.execSQL(query);
 					}
+				}
+
+				case 3:
+				{
+					String query = "ALTER TABLE "+TableInfoTemplates.POPUP_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_PopupParentKeyItem.PopupParentKeyEntry.DELETE_EXISTING_TABLE_COLUMN+" BOOLEAN DEFAULT 0";
+					db.execSQL(query);
 				}
 			}
 

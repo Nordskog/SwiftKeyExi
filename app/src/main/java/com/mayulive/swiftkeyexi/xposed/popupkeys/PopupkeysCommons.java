@@ -43,7 +43,7 @@ public class PopupkeysCommons
 	protected static String mLastOrderSymbol = "";
 
 	protected static Set<String> mMultipleKeyPopups = new HashSet<String>();
-	protected static ArrayList<DB_PopupKeyItem> mLastPopupKeyList = null;	//Our keys
+	protected static DB_PopupParentKeyItem mLastPopupParentKey = null;	//Our keys
 	protected static List<String> mLastInitialPopupkeyList = null;			//Swiftkey's keys
 
 

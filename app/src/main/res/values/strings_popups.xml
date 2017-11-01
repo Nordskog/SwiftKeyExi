@@ -7,4 +7,9 @@
     <string name="popups_parent_change_failed_title">Update Failed</string>
     <string name="popups_parent_change_failed_message">Entry with this key already exists.</string>
 
+    <string name="popups_parent_delete_existing_long">Delete existing popups</string>
+    <string name="popups_parent_keep_existing_long">Keep existing popups</string>
+    <string name="popups_parent_delete_existing_short">Delete existing</string>
+    <string name="popups_parent_keep_existing_short">Keep existing</string>
+
 </resources>

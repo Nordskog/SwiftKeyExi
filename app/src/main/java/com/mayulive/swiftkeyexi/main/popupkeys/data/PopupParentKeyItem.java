@@ -10,15 +10,18 @@ import java.util.ArrayList;
 
 public class PopupParentKeyItem
 {
-	private String _parentKey = "";
+	protected String _parentKey = "";
 
 	protected TableList<DB_PopupKeyItem> _items = new TableList<>();
+	protected boolean _delete_existing = false;
 
 	public PopupParentKeyItem(){};
 
-	public PopupParentKeyItem(String key)
+	public PopupParentKeyItem(String key, boolean deleteExisting)
 	{
 		set_parentKey(key);
+		set_delete_existing(deleteExisting);
+
 	}
 
 	public void add_item(DB_PopupKeyItem item)
@@ -50,4 +53,13 @@ public class PopupParentKeyItem
 		this._parentKey = _parentKey;
 	}
 
+	public boolean get_delete_existing()
+	{
+		return _delete_existing;
+	}
+
+	public void set_delete_existing(boolean _delete_existing)
+	{
+		this._delete_existing = _delete_existing;
+	}
 }

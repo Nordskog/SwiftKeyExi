@@ -89,8 +89,19 @@ public class PopupkeysHooks
 
 				List<String> listObject = (List<String>)param.getResult();
 
+
 				if (listObject!= null)
 				{
+
+					//If we need to remove existing popup keys, perform the whole shazzam a second time here.
+					if (PopupkeysCommons.mLastPopupParentKey != null && PopupkeysCommons.mLastPopupParentKey.get_delete_existing())
+					{
+						ArrayList<String> replacementStrings = new ArrayList<>();
+						PopupkeysMethods.handlePopupkeyInitialInsert(replacementStrings, sLastSymbolDefined, true);
+						listObject = replacementStrings;
+						param.setResult(listObject);
+					}
+
 					if (listObject.size() > 1)
 					{
 						if (DebugSettings.DEBUG_POPUPS)
@@ -135,7 +146,7 @@ public class PopupkeysHooks
 				private int mLastListFieldIndex = -1;
 
 				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
 					try
 					{
@@ -231,7 +242,7 @@ public class PopupkeysHooks
 					//Log.e("###", "Button order");
 					try
 					{
-						if (PopupkeysCommons.mLastPopupKeyList != null)
+						if (PopupkeysCommons.mLastPopupParentKey != null)
 						{
 							ArrayList<String> outputKeys = new ArrayList<String>();
 
@@ -271,7 +282,7 @@ public class PopupkeysHooks
 							String primaryPopup = outputKeys.get(leftCount);
 
 							boolean replacePrimary = false;
-							for (DB_PopupKeyItem item : PopupkeysCommons.mLastPopupKeyList)
+							for (DB_PopupKeyItem item : PopupkeysCommons.mLastPopupParentKey.get_items())
 							{
 								if (item.get_insertIndex() == 0)
 								{
@@ -312,10 +323,10 @@ public class PopupkeysHooks
 							//Insert all our keys, starting from the lowest
 							//They was order this way when loaded from database.
 
-							//Log.i(LOGTAG, "Adding items: "+PopupkeysCommons.mLastPopupKeyList.size());
+							//Log.i(LOGTAG, "Adding items: "+PopupkeysCommons.mLastPopupParentKey.size());
 
 
-							for (DB_PopupKeyItem item : PopupkeysCommons.mLastPopupKeyList)
+							for (DB_PopupKeyItem item : PopupkeysCommons.mLastPopupParentKey.get_items())
 							{
 								//Primary popup items will be inserted manually afterwards
 								//We make sure there is only a single index-0 item when loading from database

@@ -6,11 +6,25 @@
 
               style="@style/ContainerPadding"
     >
+    <FrameLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
 
-    <Button
-        style="@style/DisplayButton"
-        android:id="@+id/popupkey_parent_key"
-        />
+        <Button
+            style="@style/DisplayButton"
+            android:id="@+id/popupkey_parent_key"
+            android:layout_gravity="start"
+            />
+
+        <CheckBox
+            android:id="@+id/delete_existing_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:text="@string/popups_parent_delete_existing_long"/>
+
+    </FrameLayout>
+
+
 
     <FrameLayout style="@style/SectionSeparator" />
 

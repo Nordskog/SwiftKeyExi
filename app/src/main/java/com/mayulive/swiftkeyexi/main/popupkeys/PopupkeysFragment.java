@@ -172,14 +172,20 @@ public class PopupkeysFragment extends Fragment
 			@Override
 			public void onEntrySaved(DB_PopupKeyItem item)
 			{
-				if (item.get_id() < 0)
+				if (item != null)
 				{
-					parent.add_item(item);
+					if (item.get_id() < 0)
+					{
+						parent.add_item(item);
+					}
+					else
+					{
+						parent.get_items().update(item);
+					}
 				}
-				else
-				{
-					parent.get_items().update(item);
-				}
+
+				//Delete existing value may have changed
+				mItems.update(parent);
 
 				setLastUpdateTime();
 				mAdapter.notifyDataSetChanged();

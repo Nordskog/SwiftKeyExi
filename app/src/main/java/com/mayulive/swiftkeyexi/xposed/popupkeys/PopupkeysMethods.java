@@ -66,30 +66,26 @@ public class PopupkeysMethods
 
 			//Made some changes that broke stuff, quick fix.
 			{
-				DB_PopupParentKeyItem parentKey = PopupkeysCommons.mPopupKeys.get( KeyCommons.sLastSymbolDefined);
-				if (parentKey != null)
-					PopupkeysCommons.mLastPopupKeyList = parentKey.get_items();
-				else
-					PopupkeysCommons.mLastPopupKeyList = null;
+				PopupkeysCommons.mLastPopupParentKey = PopupkeysCommons.mPopupKeys.get( KeyCommons.sLastSymbolDefined);
 			}
 
 
 
-			if (PopupkeysCommons.mLastPopupKeyList != null)
+			if (PopupkeysCommons.mLastPopupParentKey != null)
 			{
 				if (listObject != null)
 				{
 					//If there are no existing popups, and we only add a single popup,
 					//the hookButtonOrder hook never gets called, so we should add
 					//the actual text of the shortcut instead of our dummy items
-					if (listObject.size() < 1 && PopupkeysCommons.mLastPopupKeyList.size() < 2)
+					if (listObject.size() < 1 && PopupkeysCommons.mLastPopupParentKey.get_items().size() < 2)
 					{
 						if (isLowerCase)
 						{
-							for (int i = 0; i < PopupkeysCommons.mLastPopupKeyList.size(); i++)
+							for (int i = 0; i < PopupkeysCommons.mLastPopupParentKey.get_items().size(); i++)
 							{
 								//Random string
-								listObject.add(PopupkeysCommons.mLastPopupKeyList.get(i).get_popupLower());
+								listObject.add(PopupkeysCommons.mLastPopupParentKey.get_items().get(i).get_popupLower());
 								//listObject.add(PopupkeysCommons.NULLCHAR+"2");
 							}
 						}
@@ -101,7 +97,7 @@ public class PopupkeysMethods
 						//TODO fix upper / lower case popups.
 						if (isLowerCase)
 						{
-							for (int i = 0; i < PopupkeysCommons.mLastPopupKeyList.size(); i++)
+							for (int i = 0; i < PopupkeysCommons.mLastPopupParentKey.get_items().size(); i++)
 							{
 								//Random string
 								listObject.add(PopupkeysCommons.NULLCHAR + i);
@@ -110,7 +106,7 @@ public class PopupkeysMethods
 						}
 										/*else
 										{
-											for (int i = 0 ; i < PopupkeysCommons.mLastPopupKeyList.size(); i++)
+											for (int i = 0 ; i < PopupkeysCommons.mLastPopupParentKey.size(); i++)
 											{
 												//Random string
 												listObject.add(PopupkeysCommons.NULLCHAR+(100+i));
