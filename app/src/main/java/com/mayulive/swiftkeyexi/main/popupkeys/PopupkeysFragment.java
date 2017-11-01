@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -63,6 +64,18 @@ public class PopupkeysFragment extends Fragment
 
 		mAdapter = new PopupkeysAdapter(mRootView.getContext(), mItems);
 		mListView.setAdapter(mAdapter);
+
+		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				DB_PopupParentKeyItem parentItem = mItems.get(position);
+				DB_PopupKeyItem item = parentItem.getFirstItem();
+
+				displayKeyDialog(parentItem, item, 0);
+			}
+		});
 
 		mAdapter.setOnKeyClickedListener(new PopupkeysPositionWidget.OnKeyClickedListener()
 		{
