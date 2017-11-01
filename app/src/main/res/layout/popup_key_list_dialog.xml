@@ -6,23 +6,33 @@
 
               style="@style/ContainerPadding"
     >
-    <FrameLayout android:layout_width="match_parent"
+    <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content">
 
         <Button
             style="@style/DisplayButton"
             android:id="@+id/popupkey_parent_key"
-            android:layout_gravity="start"
+            android:layout_weight="0"
             />
 
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+
         <CheckBox
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:id="@+id/delete_existing_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:text="@string/popups_parent_delete_existing_long"/>
 
-    </FrameLayout>
+        </FrameLayout>
+
+    </LinearLayout>
 
 
 
