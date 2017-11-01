@@ -17,6 +17,11 @@
   <string name="pref_emoji_text_size_title">Размер Эмодзи</string>
   <string name="pref_emoji_text_size_summary">Установить размер Эмодзи</string>
   <!-- Force emoji set -->
+  <string name="pref_emoji_force_version_title">Версия Эмодзи</string>
+  <string name="pref_emoji_force_version_summary">Использовать Эмодзи из других версий Андроида</string>
+  <string name="pref_emoji_force_version_auto">Автоматически</string>
+  <string name="pref_emoji_force_version_pre_nougat">До Nougat</string>
+  <string name="pref_emoji_force_version_post_nougat">После Nougat</string>
   <!-- Key Definitions. Keys are only used to identify menu items  -->
   <string name="pref_additional_shift_keys_title">Клавиши регистра (Shift)</string>
   <string name="pref_additional_shift_keys_summary">Назначить дополнительные клавиши регистра (Shift)</string>

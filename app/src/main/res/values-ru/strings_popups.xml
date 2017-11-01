@@ -5,4 +5,8 @@
   <string name="popups_set_popup_parent_key">Назначить основную клавишу</string>
   <string name="popups_parent_change_failed_title">Не удалось обновить</string>
   <string name="popups_parent_change_failed_message">Эта клавиша уже назначена</string>
+  <string name="popups_parent_delete_existing_long">Удалить существующие всплывающие символы</string>
+  <string name="popups_parent_keep_existing_long">Сохранить существующие всплывающие символы</string>
+  <string name="popups_parent_delete_existing_short">Удалить</string>
+  <string name="popups_parent_keep_existing_short">Сохранить</string>
 </resources>

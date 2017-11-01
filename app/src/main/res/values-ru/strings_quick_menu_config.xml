@@ -4,4 +4,5 @@
   <string name="action_choose_color">Выбрать цвет</string>
   <string name="quickmenu_highlight_color">Цвет</string>
   <string name="quickmenu_text_size">Размер</string>
+  <string name="quickmenu_display_Text">Отобразить</string>
 </resources>
