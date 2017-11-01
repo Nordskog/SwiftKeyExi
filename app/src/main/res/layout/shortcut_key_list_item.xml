@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:text="Select all"
             android:gravity="center_horizontal"
+            android:layout_gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             />
 
