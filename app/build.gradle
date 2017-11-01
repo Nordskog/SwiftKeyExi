@@ -12,15 +12,13 @@ android
                     {
                         applicationId 'com.mayulive.swiftkeyexi'
                         minSdkVersion 19
-                        targetSdkVersion 24
-                        versionCode 7
-                        versionName "1.2.0"
-
-
+                        targetSdkVersion 25
+                        versionCode 8
+                        versionName "1.2.1"
 
                         //About fields
-                        def SWIFTKEY_SUPORTED_VERSION = "6.6.9.32"
-                        def SWIFTKEY_BETA_SUPORTED_VERSION = "6.7.0.15"
+                        def SWIFTKEY_SUPORTED_VERSION = "6.7.0.18"
+                        def SWIFTKEY_BETA_SUPORTED_VERSION = "6.7.1.20"
                         def APP_AUTHOR_NAME = "Roughy"
 
 
@@ -86,7 +84,11 @@ android
                     {
                     }
 
-
+            lintOptions
+            {
+                //We don't really have the luxury
+                disable 'MissingTranslation'
+            }
 
         }
 repositories
