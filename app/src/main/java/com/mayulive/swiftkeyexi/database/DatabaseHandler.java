@@ -109,6 +109,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			{
 				case 1:
 				{
+					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
 					String query = "CREATE TABLE " + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableName + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableDefinition;
 					db.execSQL(query);
 
@@ -118,6 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
 				case 2:
 				{
+					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
 
 					//Add identifier column to template and keyboard panels
 					String query = "ALTER TABLE "+TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO.tableName+" ADD COLUMN "+ DB_EmojiPanelItem.EmojiPanelContract.IDENTIFIER_TABLE_COLUMN+" INTEGER DEFAULT -1";
@@ -161,12 +163,18 @@ public class DatabaseHandler extends SQLiteOpenHelper
 						query = "ALTER TABLE "+item+" ADD COLUMN "+ DB_EmojiItem.EmojiEntry.MODIFIERS_SUPPORTED_COLUMN+" INTEGER DEFAULT 0";
 						db.execSQL(query);
 					}
+
+					break;
 				}
 
 				case 3:
 				{
+					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
+
 					String query = "ALTER TABLE "+TableInfoTemplates.POPUP_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_PopupParentKeyItem.PopupParentKeyEntry.DELETE_EXISTING_TABLE_COLUMN+" BOOLEAN DEFAULT 0";
 					db.execSQL(query);
+
+					break;
 				}
 			}
 
