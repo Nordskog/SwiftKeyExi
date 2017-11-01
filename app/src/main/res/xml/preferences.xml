@@ -8,7 +8,7 @@
         android:title="@string/category_pref_emoji_panel">
 
 
-    <CheckBoxPreference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_emoji_panel_key"
         android:title="@string/pref_emoji_panel_title"
         android:summary="@string/pref_emoji_panel_summary"
@@ -26,37 +26,45 @@
 
             />
 
+        <com.mayulive.swiftkeyexi.util.view.ListPreferenceShowSummary
+            android:key="@string/pref_emoji_force_version_key"
+            android:title="@string/pref_emoji_force_version_title"
+            android:entries="@array/pref_emoji_force_version_display_entries"
+            android:entryValues="@array/pref_emoji_force_version_values"
+            android:defaultValue="AUTO"
+            />
+
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/category_pref_flow_suggestions">
 
-    <CheckBoxPreference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_more_suggestions_key"
         android:title="@string/pref_more_suggestions_title"
         android:summary="@string/pref_more_suggestions_summary"
         android:defaultValue="true" />
 
-    <CheckBoxPreference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_prediction_suggestions_key"
         android:title="@string/pref_prediction_suggestions_title"
         android:summary="@string/pref_prediction_suggestions_summary"
         android:defaultValue="true" />
 
-    <CheckBoxPreference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_flow_suggestions_key"
         android:title="@string/pref_flow_suggestions_title"
         android:summary="@string/pref_flow_suggestions_summary"
         android:defaultValue="false" />
 
-    <CheckBoxPreference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_disable_auto_correct_on_cursor_move_key"
         android:title="@string/pref_disable_auto_correct_on_cursor_move_title"
         android:summary="@string/pref_disable_auto_correct_on_cursor_move_summary"
         android:defaultValue="true" />
 
-    <CheckBoxPreference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_remove_suggestion_padding_key"
         android:title="@string/pref_remove_suggestion_padding_title"
         android:summary="@string/pref_remove_suggestion_padding_summary"
@@ -67,13 +75,13 @@
     <PreferenceCategory
         android:title="@string/category_pref_misc">
 
-    <CheckBoxPreference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_disable_punctuation_autospace_key"
         android:title="@string/pref_disable_punctuation_autospace_title"
         android:summary="@string/pref_disable_punctuation_autospace_summary"
         android:defaultValue="false" />
 
-    <CheckBoxPreference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_disable_period_click_key"
         android:title="@string/pref_disable_period_click_title"
         android:summary="@string/pref_disable_period_click_summary"
@@ -85,17 +93,17 @@
         android:title="@string/category_pref_keys">
 
 
-    <Preference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakPreference
         android:key="@string/pref_additional_shift_keys_key"
         android:title="@string/pref_additional_shift_keys_title"
         android:summary="@string/pref_additional_shift_keys_summary" />
 
-    <Preference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakPreference
         android:key="@string/pref_additional_delete_keys_key"
         android:title="@string/pref_additional_delete_keys_title"
         android:summary="@string/pref_additional_delete_keys_summary" />
 
-    <Preference
+    <com.mayulive.swiftkeyexi.util.view.LineBreakPreference
         android:key="@string/pref_additional_symbol_keys_key"
         android:title="@string/pref_additional_symbol_keys_title"
         android:summary="@string/pref_additional_symbol_keys_summary" />

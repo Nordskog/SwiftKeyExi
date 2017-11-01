@@ -11,10 +11,24 @@
 
     >
 
-    <Button
-        style="@style/DisplayButton"
-        android:id="@+id/popupkey_parent_key"
-        />
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+
+        <Button
+            style="@style/DisplayButton"
+            android:id="@+id/popupkey_parent_key"
+            />
+
+        <TextView
+            android:id="@+id/delete_existing_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:gravity="end|bottom"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/popups_parent_keep_existing_short"/>
+
+    </FrameLayout>
 
     <FrameLayout style="@style/SectionSeparator" />
 

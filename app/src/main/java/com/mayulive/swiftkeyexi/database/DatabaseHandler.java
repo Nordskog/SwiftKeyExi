@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -11,6 +12,7 @@ import com.mayulive.swiftkeyexi.LoadPackageHook;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
+import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupParentKeyItem;
 import com.mayulive.swiftkeyexi.util.CursorUtils;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
 	private static String LOGTAG = ExiModule.getLogTag(DatabaseHandler.class);
 
-	public static final int DATABASE_VERSION = 3;
+	public static final int DATABASE_VERSION = 4;
 	public static final String DATABASE_NAME = "exi_main.db";
 
 	private SQLiteDatabase mDb = null;
@@ -107,15 +109,17 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			{
 				case 1:
 				{
+					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
 					String query = "CREATE TABLE " + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableName + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableDefinition;
 					db.execSQL(query);
 
-					ExiModule.loadDefaults(mContext, new WrappedDatabase(db), ExiModule.ModuleDatabaseType.HOTKEY_MENU_ITEM);
+					ExiModule.loadDefaults(mContext, new WrappedDatabase(db), ExiModule.ModuleDatabaseType.HOTKEY_MENU_ITEM, Build.VERSION.SDK_INT);
 					break;
 				}
 
 				case 2:
 				{
+					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
 
 					//Add identifier column to template and keyboard panels
 					String query = "ALTER TABLE "+TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO.tableName+" ADD COLUMN "+ DB_EmojiPanelItem.EmojiPanelContract.IDENTIFIER_TABLE_COLUMN+" INTEGER DEFAULT -1";
@@ -159,6 +163,18 @@ public class DatabaseHandler extends SQLiteOpenHelper
 						query = "ALTER TABLE "+item+" ADD COLUMN "+ DB_EmojiItem.EmojiEntry.MODIFIERS_SUPPORTED_COLUMN+" INTEGER DEFAULT 0";
 						db.execSQL(query);
 					}
+
+					break;
+				}
+
+				case 3:
+				{
+					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
+
+					String query = "ALTER TABLE "+TableInfoTemplates.POPUP_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_PopupParentKeyItem.PopupParentKeyEntry.DELETE_EXISTING_TABLE_COLUMN+" BOOLEAN DEFAULT 0";
+					db.execSQL(query);
+
+					break;
 				}
 			}
 

@@ -50,9 +50,9 @@ public class KeyboardHooks
 
 	}
 
-	public static void hookViewCreatedFallback(PackageTree param)
+	public static XC_MethodHook.Unhook hookViewCreatedFallback(PackageTree param)
 	{
-		XposedBridge.hookMethod(KeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(KeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -314,8 +314,7 @@ public class KeyboardHooks
 
 				if (Hooks.baseHooks_viewCreated.isRequirementsMet())
 				{
-					//Hooks.baseHooks_viewCreated.add( hookViewCreated() );
-					hookViewCreatedFallback(lpparam);
+					Hooks.baseHooks_viewCreated.add(hookViewCreatedFallback(lpparam));
 				}
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())

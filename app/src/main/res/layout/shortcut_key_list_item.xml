@@ -17,23 +17,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            style="@style/ModButton"
-            />
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" + "
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            />
+            android:layout_height="wrap_content">
 
-        <Button
-            style="@style/ModButton"
-            android:id="@+id/shortcutkey_text"
-            android:alpha="1"
-            />
+            <Button
+                style="@style/ModButton"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" + "
+                android:layout_gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                />
+
+            <Button
+                style="@style/ModButton"
+                android:id="@+id/shortcutkey_text"
+                android:alpha="1"
+                />
+
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/shortcutkey_action"
@@ -41,6 +49,7 @@
             android:layout_height="wrap_content"
             android:text="Select all"
             android:gravity="center_horizontal"
+            android:layout_gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             />
 

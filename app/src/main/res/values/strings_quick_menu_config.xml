@@ -3,4 +3,5 @@
     <string name="action_choose_color">Choose color</string>
     <string name="quickmenu_highlight_color">Highlight</string>
     <string name="quickmenu_text_size">Size</string>
+    <string name="quickmenu_display_Text">Display</string>
 </resources>

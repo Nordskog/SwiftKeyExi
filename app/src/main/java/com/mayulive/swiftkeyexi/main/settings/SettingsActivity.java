@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
@@ -53,6 +54,11 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 		if (key.equals(PreferenceConstants.pref_app_theme_key))
 		{
 			this.recreate();
+		}
+
+		if (key.equals(PreferenceConstants.pref_emoji_force_version_key))
+		{
+			ExiModule.update(getContext(), mDbWrap);
 		}
 	}
 

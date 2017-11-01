@@ -244,13 +244,8 @@ public class FontLoader
 		while (parser.nextTag() != XmlPullParser.END_TAG)
 		{
 
-			Log.i(LOGTAG, "Familyset");
-
 			if (parser.getName().equals("family"))
 			{
-
-				Log.i(LOGTAG, "family");
-
 				while (parser.nextTag() != XmlPullParser.END_TAG)
 				{
 					if (parser.getName().equals("fileset"))

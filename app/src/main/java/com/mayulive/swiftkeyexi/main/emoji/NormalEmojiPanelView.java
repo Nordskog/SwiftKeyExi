@@ -301,7 +301,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 
 		for (int i = 0; i < inputItems.size(); i++)
 		{
-			DB_EmojiItem newItem = new DB_EmojiItem(inputItems.get(i).get_text());
+			DB_EmojiItem newItem = new DB_EmojiItem(inputItems.get(i));
 
 			localItems.add( newItem);
 			mAdapterItems.add(new EmojiAdapterItem(newItem,false));

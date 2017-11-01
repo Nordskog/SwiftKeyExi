@@ -14,6 +14,18 @@
         <item>DISABLED</item>
     </string-array>
 
+    <!-- Force emoji version  -->
+    <string-array name="pref_emoji_force_version_display_entries">
+        <item>@string/pref_emoji_force_version_auto</item>
+        <item>@string/pref_emoji_force_version_pre_nougat</item>
+        <item>@string/pref_emoji_force_version_post_nougat</item>
+    </string-array>
+
+    <string-array name="pref_emoji_force_version_values">
+        <item>AUTO</item>
+        <item>PRE_NOUGAT</item>
+        <item>POST_NOUGAT</item>
+    </string-array>
 
 
     <!-- App theme -->

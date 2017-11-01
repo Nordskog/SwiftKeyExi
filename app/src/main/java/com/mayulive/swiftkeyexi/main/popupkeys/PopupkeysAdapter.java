@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.PopupParentKeyItem;
@@ -64,7 +65,19 @@ public class PopupkeysAdapter extends BaseAdapter
 			}
 
 			Button headerTitle = (Button)convertView.findViewById(R.id.popupkey_parent_key);
+			TextView deleteExistingText = (TextView)convertView.findViewById(R.id.delete_existing_textview);
+
 			headerTitle.setText( entry.get_parentKey() );
+
+			if (entry.get_delete_existing())
+			{
+				deleteExistingText.setText(R.string.popups_parent_delete_existing_short);
+			}
+			else
+			{
+				deleteExistingText.setText(R.string.popups_parent_keep_existing_short);
+			}
+
 			headerTitle.setOnClickListener(new View.OnClickListener()
 			{
 				@Override

@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.main.popupkeys.data;
 
 import com.mayulive.swiftkeyexi.database.TableList;
+import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 
 import java.util.ArrayList;
 
@@ -10,15 +11,18 @@ import java.util.ArrayList;
 
 public class PopupParentKeyItem
 {
-	private String _parentKey = "";
+	protected String _parentKey = "";
 
 	protected TableList<DB_PopupKeyItem> _items = new TableList<>();
+	protected boolean _delete_existing = false;
 
 	public PopupParentKeyItem(){};
 
-	public PopupParentKeyItem(String key)
+	public PopupParentKeyItem(String key, boolean deleteExisting)
 	{
 		set_parentKey(key);
+		set_delete_existing(deleteExisting);
+
 	}
 
 	public void add_item(DB_PopupKeyItem item)
@@ -50,4 +54,30 @@ public class PopupParentKeyItem
 		this._parentKey = _parentKey;
 	}
 
+	public boolean get_delete_existing()
+	{
+		return _delete_existing;
+	}
+
+	public void set_delete_existing(boolean _delete_existing)
+	{
+		this._delete_existing = _delete_existing;
+	}
+
+	//Get the key with the lowest index
+	public DB_PopupKeyItem getFirstItem()
+	{
+		DB_PopupKeyItem lowestKey = null;
+		int lowestKeyIndex = Integer.MAX_VALUE;
+		for (DB_PopupKeyItem key : _items)
+		{
+			if (key.get_insertIndex() < lowestKeyIndex)
+			{
+				lowestKey = key;
+				lowestKeyIndex = key.get_insertIndex();
+			}
+		}
+
+		return lowestKey;
+	}
 }

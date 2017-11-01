@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -55,7 +56,7 @@ public abstract class popupkeysEntryDialog
 		this(context, parentItem, keyItemInput, -1);
 	}
 
-	popupkeysEntryDialog(Context context, DB_PopupParentKeyItem parentItem, @Nullable  DB_PopupKeyItem keyItemInput, int index)
+	popupkeysEntryDialog(Context context, final DB_PopupParentKeyItem parentItem, @Nullable  DB_PopupKeyItem keyItemInput, int index)
 	{
 
 		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,6 +68,7 @@ public abstract class popupkeysEntryDialog
 
 
 		final EditText lowerEditText = (EditText)  configView.findViewById(R.id.popupkey_lowercaseEditText);
+		final CheckBox deleteExistingCheckbox = (CheckBox)  configView.findViewById(R.id.delete_existing_checkbox);
 
 		TextView headerTitle = (TextView)configView.findViewById(R.id.popupkey_parent_key);
 		headerTitle.setText( parentItem.get_parentKey() );
@@ -82,6 +84,7 @@ public abstract class popupkeysEntryDialog
 		final DB_PopupKeyItem keyItem = keyItemInput;
 
 		widget.setFromKey(keyItem, parentItem);
+		deleteExistingCheckbox.setChecked(parentItem.get_delete_existing());
 
 		//updating the position widget for us
 		setButtonListeners(widget,lowerEditText);
@@ -100,10 +103,17 @@ public abstract class popupkeysEntryDialog
 						keyItem.set_popupLower( lowerEditText.getText().toString().trim() );
 						keyItem.set_insertIndex( widget.getSelectedPosition() );
 
-						//outputItem.set_insertIndex(widget.getSelected());
+						parentItem.set_delete_existing( deleteExistingCheckbox.isChecked() );
 
 						if (!keyItem.get_popupLower().isEmpty())
+						{
 							onEntrySaved(keyItem);
+						}
+						else
+						{
+							onEntrySaved(null);	//ignore item, but call save callback anyway
+						}
+
 					}
 				})
 				.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener()
