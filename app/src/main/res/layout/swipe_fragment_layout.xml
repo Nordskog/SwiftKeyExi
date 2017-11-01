@@ -50,19 +50,37 @@
                               android:layout_height="wrap_content"
                               android:text="@string/threshold_title"/>
 
-                    <android.support.v4.widget.Space
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"/>
 
-                    <com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView
-                        android:id="@+id/swipe_threshold_indicator"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="15dp"/>
+                        android:layout_height="match_parent">
 
-                    <com.mayulive.swiftkeyexi.main.swipe.UninterceptableSeekBar
-                        android:id="@+id/swipe_threshold_seekbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"/>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_height="wrap_content">
+
+                            <android.support.v4.widget.Space
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"/>
+
+                            <com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView
+                                android:id="@+id/swipe_threshold_indicator"
+                                android:layout_width="match_parent"
+                                android:layout_height="15dp"/>
+
+                            <com.mayulive.swiftkeyexi.main.swipe.UninterceptableSeekBar
+                                android:id="@+id/swipe_threshold_seekbar"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"/>
+
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+
                 </LinearLayout>
 
 
@@ -70,7 +88,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:gravity="center"
@@ -84,23 +102,39 @@
                               android:gravity="center"
                               android:text="@string/speed_title"/>
 
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_height="wrap_content">
+
+                            <com.mayulive.swiftkeyexi.main.swipe.UnitCharDisplayView
+                                android:id="@+id/swipe_speed_text_indicator"
+                                android:layout_width="match_parent"
+                                app:comparison_bar_length="30dp"
+                                android:layout_height="35dp"/>
+
+                            <com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView
+                                android:id="@+id/swipe_speed_indicator"
+                                android:layout_width="match_parent"
+                                android:layout_height="15dp"/>
+
+                            <com.mayulive.swiftkeyexi.main.swipe.UninterceptableSeekBar
+                                android:id="@+id/swipe_speed_seekbar"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"/>
+
+                        </LinearLayout>
+
+                    </FrameLayout>
 
 
-                    <com.mayulive.swiftkeyexi.main.swipe.UnitCharDisplayView
-                        android:id="@+id/swipe_speed_text_indicator"
-                        android:layout_width="match_parent"
-                        app:comparison_bar_length="30dp"
-                        android:layout_height="35dp"/>
 
-                    <com.mayulive.swiftkeyexi.main.swipe.UnitBarDisplayView
-                        android:id="@+id/swipe_speed_indicator"
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"/>
 
-                    <com.mayulive.swiftkeyexi.main.swipe.UninterceptableSeekBar
-                        android:id="@+id/swipe_speed_seekbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"/>
 
                 </LinearLayout>
 

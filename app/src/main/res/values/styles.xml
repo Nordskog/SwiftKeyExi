@@ -159,6 +159,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">@string/modifier_title</item>
         <item name="android:alpha">0.5</item>
+        <item name="android:minWidth">5dp</item>
         <item name="android:clickable">false</item>
         <item name="android:textAppearance">?android:attr/textAppearanceButton</item>
     </style>

@@ -64,10 +64,6 @@
 
             </android.support.v7.widget.AppCompatImageView>
 
-
-
-
-
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
