@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="preferences_key_sound_title">Key Sounds</string>
+    <string name="pref_key_sound_key">pref_key_sound</string>
+
+    <string name="pref_sound_use_custom_keypress_key">pref_sound_use_custom_keypress</string>
+    <string name="pref_sound_use_custom_keypress_title">Use Custom Keypress Sounds</string>
+    <string name="pref_sound_use_custom_keypress_summary">Use the configured sounds</string>
+
+
+    <string name="pref_sound_custom_keypress_path_key">pref_sound_custom_keypress_path</string>
+    <string name="pref_sound_custom_keypress_path_title">Custom Keypress Sound</string>
+
+    <string name="pref_sound_custom_spacebar_path_key">pref_sound_custom_spacebar_path</string>
+    <string name="pref_sound_custom_spacebar_path_title">Custom Spacebar Sound</string>
+
+    <string name="pref_sound_custom_backspace_path_key">pref_sound_custom_backspace_path</string>
+    <string name="pref_sound_custom_backspace_path_title">Custom Backspace Sound</string>
+
+</resources>

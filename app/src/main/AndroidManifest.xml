@@ -73,6 +73,13 @@
             android:exported="true"
             android:grantUriPermissions="true">
         </provider>
+        <provider
+            android:name=".providers.SoundProvider"
+            android:authorities="${applicationId}.sounds"
+            android:enabled="true"
+            android:exported="true"
+            android:grantUriPermissions="true">
+        </provider>
 
     </application>
 

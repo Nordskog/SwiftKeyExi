@@ -18,6 +18,7 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysHooks;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionHooks;
+import com.mayulive.swiftkeyexi.xposed.sound.SoundHooks;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import java.util.ArrayList;
@@ -63,7 +64,8 @@ public class Hooks
 	public static HookCategory baseHooks_layoutChange = new HookCategory("KeyboardHooks LayoutChange", overlayHooks_base);
 	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 
-
+	//Sound
+	public static HookCategory soundHooks_base = new HookCategory("SoundHooks base");
 
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
@@ -72,7 +74,8 @@ public class Hooks
 																						emojiHooks_base,
 																						predictionHooks_base,
 																						baseHooks_punctuationSpace,
-																						baseHooks_theme
+																						baseHooks_theme,
+																						soundHooks_base
 	);
 
 	public static class HookCategory extends ArrayList<XC_MethodHook.Unhook>
@@ -196,6 +199,8 @@ public class Hooks
 
 			//No a hook, just sets a listener
 			preventPeriodHook();
+
+			SoundHooks.hookAll(classTree);
 
 			//Emojis do not depend on anything else
 			EmojiHooks.HookAll(classTree);

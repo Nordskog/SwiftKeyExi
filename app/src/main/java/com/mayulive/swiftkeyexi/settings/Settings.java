@@ -38,6 +38,7 @@ public class Settings
 
 	public static boolean REMOVE_SUGGESTIONS_PADDING = false;
 
+	public static boolean USE_CUSTOM_KEYPRESS_SOUND = false;
 
 	//public static boolean SPACE_SWIPE_MODIFIER_ENABLED = true;
 
@@ -52,14 +53,11 @@ public class Settings
 	//Time last changed on config app
 	public static long LAST_DICTIONARY_UPDATE = 0;
 	public static long LAST_EMOJI_UPDATE = 0;
-
 	public static long LAST_ADDITIONAL_KEYS_UPDATE = 0;
-
 	public static long LAST_POPUP_UPDATE = 0;
-
 	public static long LAST_HOTKEYS_UPDATE = 0;
-
 	public static long LAST_QUICKMENU_UPDATE = 0;
+	public static long LAST_KEYPRESS_SOUND_UPDATE = 0;
 
 	public static int QUICK_MENU_HIGHLIGHT_COLOR = 0xFF2d5bc6;
 
@@ -93,6 +91,8 @@ public class Settings
 
 		EMOJI_PANEL_ENABLED = prefs.getBoolean(PreferenceConstants.pref_emoji_panel_key, true);
 
+		USE_CUSTOM_KEYPRESS_SOUND = prefs.getBoolean(PreferenceConstants.pref_sound_use_custom_keypress_key, false);
+
 		SWIPE_SELECTION_BEHAVIOR = SelectionBehavior.valueOf
 				(
 					prefs.getString(PreferenceConstants.pref_selection_behavior_key, SelectionBehavior.HYBRID.toString() )
@@ -120,6 +120,7 @@ public class Settings
 		LAST_ADDITIONAL_KEYS_UPDATE = prefs.getLong(PreferenceConstants.pref_additional_keys_last_update_key, 0);
 		LAST_HOTKEYS_UPDATE = prefs.getLong(PreferenceConstants.pref_hotkeys_last_update_key, 0);
 		LAST_QUICKMENU_UPDATE = prefs.getLong(PreferenceConstants.pref_quickmenu_last_update_key, 0);
+		LAST_KEYPRESS_SOUND_UPDATE = prefs.getLong(PreferenceConstants.pref_sound_keypress_last_update_key, 0);
 
 		//Require keyboard reload
 		{

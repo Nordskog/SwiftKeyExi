@@ -12,6 +12,7 @@
     <string name="category_pref_misc">Misc</string>
     <string name="category_pref_app">App</string>
     <string name="category_pref_keys">Keys</string>
+    <string name="category_pref_audio">Audio</string>
 
     <!-- App Theme -->
     <string name="pref_app_theme_key">pref_app_theme</string>

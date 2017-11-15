@@ -1,5 +1,8 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
@@ -37,8 +40,6 @@ public class KeyboardHooks
 	//Keyboard service created
 	public static Set<XC_MethodHook.Unhook> hookServiceCreated() throws NoSuchMethodException
 	{
-
-
 		return XposedBridge.hookAllConstructors(KeyboardClassManager.keyboardServiceClass, new XC_MethodHook()
 		{
 			@Override
@@ -278,6 +279,22 @@ public class KeyboardHooks
 		});
 	}
 
+	private static XC_MethodHook.Unhook hookPrefChanged()
+	{
+		return XposedBridge.hookMethod(KeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				for (SharedPreferences.OnSharedPreferenceChangeListener listener : KeyboardMethods.mSwiftkeyPrefChangedListeners)
+				{
+					listener.onSharedPreferenceChanged((SharedPreferences)param.args[0], (String)param.args[1]);
+				}
+			}
+		});
+
+	}
+
 	public static boolean HookAll(final PackageTree lpparam)
 	{
 		try
@@ -294,6 +311,9 @@ public class KeyboardHooks
 				Hooks.baseHooks_base.addAll( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
+
+
+				Hooks.baseHooks_base.add( hookPrefChanged() );
 
 
 				if (Hooks.baseHooks_theme.isRequirementsMet())

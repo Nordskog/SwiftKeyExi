@@ -95,6 +95,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			}
 		});
 
+		Preference soundPreference = findPreference(this.getContext().getResources().getString( R.string.pref_key_sound_key ));
+		soundPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displaySoundDialog();
+				return true;
+			}
+		});
+
 
 	}
 
@@ -135,6 +146,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 	private void displayResetDialog()
 	{
 		ResetFragment nextFrag= new ResetFragment();
+
+		this.getFragmentManager().beginTransaction()
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
+				.addToBackStack(null)
+				.commit();
+	}
+
+	private void displaySoundDialog()
+	{
+		SoundFragment nextFrag = new SoundFragment();
 
 		this.getFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)

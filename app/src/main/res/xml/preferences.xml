@@ -73,6 +73,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/category_pref_audio">
+
+    </PreferenceCategory>
+    <com.mayulive.swiftkeyexi.util.view.LineBreakPreference
+        android:key="@string/pref_key_sound_key"
+        android:title="@string/preferences_key_sound_title"/>
+    <PreferenceCategory
         android:title="@string/category_pref_misc">
 
     <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
@@ -86,6 +93,8 @@
         android:title="@string/pref_disable_period_click_title"
         android:summary="@string/pref_disable_period_click_summary"
         android:defaultValue="false" />
+
+
 
     </PreferenceCategory>
 

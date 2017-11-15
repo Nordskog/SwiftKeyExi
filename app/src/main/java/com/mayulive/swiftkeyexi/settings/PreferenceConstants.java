@@ -34,6 +34,7 @@ public class PreferenceConstants
 	public static final String pref_popup_last_update_key = "pref_popup_last_update";
 	public static final String pref_hotkeys_last_update_key = "pref_hotkeys_last_update";
 	public static final String pref_quickmenu_last_update_key = "pref_quickmenu_last_update";
+	public static final String pref_sound_keypress_last_update_key = "pref_sound_keypress_last_update";
 
 
 	//More!
@@ -67,6 +68,12 @@ public class PreferenceConstants
 	public static final String pref_hotkey_menu_text_size_key = "pref_hotkey_menu_text_size";
 
 	public static final String pref_emoji_force_version_key = "pref_emoji_force_version";
+
+	//Sound
+	public static final String pref_sound_use_custom_keypress_key = "pref_sound_use_custom_keypress";
+	public static final String pref_sound_custom_keypress_path_key = "pref_sound_custom_keypress_path";
+	public static final String pref_sound_custom_spacebar_path_key = "pref_sound_custom_spacebar_path";
+	public static final String pref_sound_custom_backspace_path_key = "pref_sound_custom_backspace_path";
 
 
 }

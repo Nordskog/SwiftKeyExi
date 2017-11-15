@@ -23,7 +23,7 @@
     <string name="parent_key_title">Parent Key</string>
     <string name="key_type_title">Key Type</string>
     <string name="modifier_title">Modifier</string>
-    <string name="action_warning_message">Are you sure?"</string>
+    <string name="action_warning_message">Are you sure?</string>
 
     <!-- Main tab layout  -->
     <string name="tab_name_dictionary">Shortcuts</string>

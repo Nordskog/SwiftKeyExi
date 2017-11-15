@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                   android:title="@string/preferences_key_sound_title"
+                   android:key="customPrefKey">
+
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_sound_use_custom_keypress_key"
+        android:title="@string/pref_sound_use_custom_keypress_title"
+        android:summary="@string/pref_sound_use_custom_keypress_summary"
+        android:defaultValue="false"
+        />
+
+    <com.mayulive.swiftkeyexi.util.view.PreferenceShowSummary
+        android:key="@string/pref_sound_custom_keypress_path_key"
+        android:title="@string/pref_sound_custom_keypress_path_title"
+        android:defaultValue="..."
+        />
+
+    <com.mayulive.swiftkeyexi.util.view.PreferenceShowSummary
+        android:key="@string/pref_sound_custom_spacebar_path_key"
+        android:title="@string/pref_sound_custom_spacebar_path_title"
+        android:defaultValue="..."
+        />
+
+    <com.mayulive.swiftkeyexi.util.view.PreferenceShowSummary
+        android:key="@string/pref_sound_custom_backspace_path_key"
+        android:title="@string/pref_sound_custom_backspace_path_title"
+        android:defaultValue="..."
+        />
+
+</PreferenceScreen>
