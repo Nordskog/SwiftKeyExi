@@ -41,4 +41,11 @@ public class AboutFragment extends PreferenceFragmentCompat
 					"android.support.v7.preference.PreferenceFragment.DIALOG");
 		} else super.onDisplayPreferenceDialog(preference);
 	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		getActivity().setTitle(R.string.pref_about_title);
+	}
 }
