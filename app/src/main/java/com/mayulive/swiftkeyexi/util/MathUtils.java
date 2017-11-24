@@ -236,7 +236,11 @@ public class MathUtils
 	{
 		return 2f * (float)Math.PI * radius;
 
+	}
 
+	public static boolean isEven(int number)
+	{
+		return (number%2 == 0);
 	}
 
 

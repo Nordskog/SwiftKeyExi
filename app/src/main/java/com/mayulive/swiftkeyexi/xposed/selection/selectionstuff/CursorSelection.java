@@ -15,7 +15,6 @@ public class CursorSelection
 	{
 	}
 
-	;
 
 	public CursorSelection(int start, int end)
 	{
@@ -23,5 +22,14 @@ public class CursorSelection
 		this.end = end;
 	}
 
-	;
+	public void swap()
+	{
+		int startTemp = start;
+		start = end;
+		end = startTemp;
+	}
+
+
+
+
 }

@@ -66,4 +66,15 @@ public class TextUtils
 	{
 		return string+"\uFE0F";
 	}
+
+	public static boolean contains(char[] array, char target)
+	{
+		for (int i = 0; i < array.length; i++)
+		{
+			if (array[i] == target)
+				return true;
+		}
+
+		return false;
+	}
 }

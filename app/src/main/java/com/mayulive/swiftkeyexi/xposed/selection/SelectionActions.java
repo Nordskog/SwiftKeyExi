@@ -85,4 +85,16 @@ public class SelectionActions
 			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, keyEvent, 0) );
 		}
 	}
+
+	protected static void sendModifiedKeyPress(int modifier, int keyEvent, int repeatCount)
+	{
+		InputConnection connection =  KeyboardClassManager.getInputConnection();
+		if (connection != null)
+		{
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, modifier, repeatCount) );
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, keyEvent, repeatCount) );
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, keyEvent, 0) );
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, modifier, 0) );
+		}
+	}
 }
