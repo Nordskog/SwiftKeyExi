@@ -91,7 +91,7 @@ public class SelectionActions
 		InputConnection connection =  KeyboardClassManager.getInputConnection();
 		if (connection != null)
 		{
-			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, modifier, repeatCount) );
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, modifier, 1) );
 			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, keyEvent, repeatCount) );
 			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, keyEvent, 0) );
 			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, modifier, 0) );
