@@ -97,6 +97,10 @@ public class SelectionMethods
 
 	public static void moveCursorToEnd()
 	{
+		//Just incase
+		if (SelectionState.mLastExtractedText == null)
+			SelectionState.mLastExtractedText = new String();
+
 		InputConnection connection = KeyboardClassManager.getInputConnection();
 		SelectionState.updateSelection();
 		SelectionMethods.setSelectionWithOffset( connection, SelectionState.mLastExtractedText.length(), SelectionState.mLastExtractedText.length());
@@ -119,21 +123,21 @@ public class SelectionMethods
 
 	private static final byte[] FILLER_EMBED_VALUES = new byte[20];
 
-	private static char[] fillRtlCheckArray(int pos)
+	private static char[] fillRtlCheckArray(CharSequence source, int pos)
 	{
 		int start = pos - 5;
 		int end = pos + 6;
 		if (start < 0)
 			start = 0;
-		if (end > mLastExtractedText.length())
-			end = mLastExtractedText.length();
+		if (end > source.length())
+			end = source.length();
 
 		char[] returnArray = new char[end-start];
 
 
 		for (int i = 0; i < returnArray.length; i++)
 		{
-			returnArray[i] = mLastExtractedText.charAt(start+i);
+			returnArray[i] = source.charAt(start+i);
 		}
 
 		return returnArray;
@@ -147,6 +151,10 @@ public class SelectionMethods
 
 		SelectionState.mIsRtl = false;
 		boolean isMixed = false;
+
+		//Just incase
+		if (SelectionState.mLastExtractedText == null)
+			SelectionState.mLastExtractedText = new String();
 
 		InputConnection connection = KeyboardClassManager.getInputConnection();
 		if (connection != null)
@@ -182,8 +190,8 @@ public class SelectionMethods
 			return false;
 		}
 
-		char[] primRange = fillRtlCheckArray(start);
-		char[] secRange  = fillRtlCheckArray(end);
+		char[] primRange = fillRtlCheckArray(mLastExtractedText, start);
+		char[] secRange  = fillRtlCheckArray(mLastExtractedText, end);
 
 		mIsRtl = Bidi.requiresBidi(primRange, 0, primRange.length);
 		//Check sec if false and text selected
