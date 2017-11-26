@@ -35,7 +35,8 @@ public class Hooks
 
 	//Predictions
 	public static HookCategory predictionHooks_more = new HookCategory("PredictionHooks More");
-	public static HookCategory predictionHooks_base = new HookCategory("PredictionHooks", predictionHooks_more);
+	public static HookCategory predictionHooks_priority = new HookCategory("PredictionHooks Priority");
+	public static HookCategory predictionHooks_base = new HookCategory("PredictionHooks", predictionHooks_more, predictionHooks_priority);
 	public static HookCategory predictionHooks_candidate = new HookCategory("PredictionHooks Candidate", predictionHooks_base);
 
 	//Selection

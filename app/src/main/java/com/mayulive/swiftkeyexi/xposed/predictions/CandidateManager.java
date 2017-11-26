@@ -8,13 +8,21 @@ import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryWordItem;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
+import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
+import com.mayulive.xposed.classhunter.packagetree.PackageTree;
+import com.mayulive.xposed.classhunter.profiles.ClassItem;
+import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -27,14 +35,16 @@ import java.util.Map;
 public class CandidateManager
 {
 
-	//This... "hook" is comprised entirely of known classes, and should be fairly stable.
 	private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 
 	protected static Class verbatimCandidate = null;
 	protected static Class candidateInterfaceClass = null;
-	protected static Class rawCandidateClass = null;
+
 	protected static Class fluencyCandidateClass = null;
+	protected static Class clipboardCandidateClass = null;
 	protected static Class subCandidateClass = null;
+
+	protected static Class tokenClass = null;
 
 	protected static Method candidate_getSubRequestMethod = null;
 	protected static Method candidate_setTrailingSeparatorMethod = null;
@@ -43,81 +53,47 @@ public class CandidateManager
 	//May be null
 	protected static Method candidate_getCorrectionSpanReplacementText = null;
 
-
-
 	protected static Method subCandidateClass_inputStringMethod = null;
 
+	//Takes text, shortcut, list of token(text), sburequest
+	protected static Constructor clipboardCandidate_Constructor = null;
 
-	protected static Constructor rawCandidate_Constructor= null;
+	protected static Method token_staticConstructor = null;
 
-	//We instead use System.identityHashCode()
-	private static Map<Integer, WrappedCandidate> mWrappedCandidateMap = new HashMap<>();
+	protected static Map<Integer, SelectedShortcut> mSelectedShortcutMap = new HashMap<>();
 
-
-
-	//Contains a candidate object. and a parent table and source shortcut key if applicable
-	public static class WrappedCandidate
+	public static class SelectedShortcut
 	{
-		public Object candidate;
 		public DB_DictionaryShortcutItem parent;
 		public DB_DictionaryWordItem word;
 
-		public WrappedCandidate(Object candidate, DB_DictionaryShortcutItem parent, DB_DictionaryWordItem word)
+		public SelectedShortcut(DB_DictionaryShortcutItem parent, DB_DictionaryWordItem word)
 		{
-			this.candidate = candidate;
 			this.parent = parent;
 			this.word = word;
 		}
 
-		public WrappedCandidate(Object candidate)
-		{
-			this(candidate, null, null);
-		}
-
-		//Fairly fast operation, don't think we need to thread it
 		public void updateTime()
 		{
 			if (parent != null && word != null)
 			{
 				word.set_priority( System.currentTimeMillis() );
-				//parent.get_items().update(word);
 				parent.moveToTop(word);
 			}
 		}
+	}
 
-		@Override
-		public String toString()
-		{
-			String string = "";
-
-			if (candidate != null)
-			{
-				string += "Candidate: "+candidate.toString()+", ";
-			}
-
-			if (parent != null)
-			{
-				string += "word: "+parent.get_key()+", ";
-			}
-
-			if (word != null)
-			{
-				string += "word: "+word.get_text()+", ";
-			}
-
-			return string;
-		}
-
+	public static SelectedShortcut getSelectedShortcut(Object candidate)
+	{
+		return mSelectedShortcutMap.get( getHash( candidate ));
 	}
 
 	public static String getCandidateText(Object candidate)
 	{
-
 		String returnString = "";
 
 		if (candidate == null)
 			return returnString;
-
 		try
 		{
 			//Candidate toString implementation removed, this added instead.
@@ -132,14 +108,10 @@ public class CandidateManager
 		return returnString;
 	}
 
-	public static WrappedCandidate getWrappedCandidate(Object key)
+	public static void doAllTheThings(PackageTree param) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException
 	{
-		return mWrappedCandidateMap.get(getHash(key));
-	}
+		ClassLoader classLoader = param.getClassLoader();
 
-
-	public static void doAllTheThings(ClassLoader classLoader) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException
-	{
 		candidateInterfaceClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.Candidate", classLoader);
 		if (candidateInterfaceClass != null)
 		{
@@ -149,14 +121,6 @@ public class CandidateManager
 			candidate_getCorrectionSpanReplacementText = ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "getCorrectionSpanReplacementText");
 		}
 
-
-		///////////////////////
-
-		rawCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.RawTextCandidate", classLoader);
-		rawCandidate_Constructor = rawCandidateClass.getDeclaredConstructors()[0];
-
-		///////////////////////
-
 		fluencyCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.FluencyCandidate", classLoader);
 
 		/////////////
@@ -164,58 +128,44 @@ public class CandidateManager
 		verbatimCandidate = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.VerbatimCandidate", classLoader);
 
 
+		///////////////
+
+		clipboardCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.ClipboardCandidate", classLoader);
+
+		/////////////
+
+
+		tokenClass = ProfileHelpers.loadProfiledClass(CandidateProfiles.get_PREDICTION_TOKEN_PROFILE(), param);
 
 		///////////
 
 		if (candidate_getSubRequestMethod != null)
 		{
-			subCandidateClass = candidate_getSubRequestMethod.getReturnType();  //XposedHelpers.findClassIfExists("com.touchtype.keyboard.candidates.h", classLoader);
+			subCandidateClass = candidate_getSubRequestMethod.getReturnType();
 			//Should be the input, methods rarely change order.
 
 			if (subCandidateClass != null)
 			{
 				subCandidateClass_inputStringMethod = ProfileHelpers.findAllMethodsWithReturnType(String.class, subCandidateClass.getDeclaredMethods()).get(1);
-				//subCandidateClass_inputStringMethod = ProfileCommons.firstMethodByName("f", subCandidateClass.getDeclaredMethods());
 			}
 		}
 
-	}
-
-	public static Integer getHash(Object object)
-	{
-		//return object.hashCode();
-		return System.identityHashCode(object);
-	}
-
-	public static Object getOnlyEntry()
-	{
-		if (getMapSize() == 1)
+		if (clipboardCandidateClass != null)
 		{
-			return mWrappedCandidateMap.values().iterator().next();
+			clipboardCandidate_Constructor = clipboardCandidateClass.getDeclaredConstructors()[0];	//Only has a single constructor
 		}
 
-		return null;
-	}
-
-
-	//Manually add a key-candidate pair to the fluency map
-	public static void addToMap(Object key, WrappedCandidate value)
-	{
-		mWrappedCandidateMap.put(getHash(key), value);
-	}
-
-	public static void printMap()
-	{
-		for (Integer key : mWrappedCandidateMap.keySet())
+		if (tokenClass != null)
 		{
-			Log.i(LOGTAG, "Map Key Entry: "+key);
+			token_staticConstructor = ProfileHelpers.findMostSimilar(new MethodProfile
+							(
+									Modifiers.PUBLIC | Modifiers.STATIC | Modifiers.EXACT ,
+									new ClassItem( Modifiers.THIS  ),
+
+									new ClassItem(java.lang.String.class)
+							),
+					tokenClass.getDeclaredMethods(), tokenClass);
 		}
-	}
-
-
-	public static int getMapSize()
-	{
-		return mWrappedCandidateMap.size();
 	}
 
 	//Get separator
@@ -243,51 +193,60 @@ public class CandidateManager
 		return trailingSep == null ? false : !trailingSep.isEmpty();
 	}
 
+	public static Object getToken(String text)
+	{
+		Object token = null;
+
+		try
+		{
+			token = token_staticConstructor.invoke(null, new Object[]{text});
+		}
+		catch ( IllegalAccessException | InvocationTargetException e)
+		{
+			e.printStackTrace();
+		}
+
+		return token;
+	}
+
 	//Returns a RawCandidate instance, borrowing the subrequest data from an existing candidate
-	public static Object getRawInstance(Object wrappedCandidate, String text, boolean addToMap, @Nullable DB_DictionaryShortcutItem parent, @Nullable DB_DictionaryWordItem word)
+	public static Object getClipboardCandidate(Object candidate, String shortcut, String text, @Nullable DB_DictionaryShortcutItem parent, @Nullable DB_DictionaryWordItem word)
 	{
 		try
 		{
-			Object subRequest = candidate_getSubRequestMethod.invoke(wrappedCandidate);
+			//Borrow a subrequest
+			Object subRequest = candidate_getSubRequestMethod.invoke(candidate);
 
-			Object newCandidate = null;
-			if (rawCandidate_Constructor.getParameterTypes().length == 2)
+			//Create a token
+			ArrayList<Object> tokens = new ArrayList<>();
+			tokens.add( getToken(text) );
+
+			Object clipboardShortcut = clipboardCandidate_Constructor.newInstance(text, shortcut, tokens, subRequest);
+
+			if (parent != null & word != null)
 			{
-				newCandidate = rawCandidate_Constructor.newInstance(new Object[]{text,subRequest});
-			}
-			else if ( rawCandidate_Constructor.getParameterTypes().length == 3)
-			{
-				//To fix a crash I was causing the added a prediction string field to raw candidates ;_;
-				newCandidate = rawCandidate_Constructor.newInstance(new Object[]{text,text,subRequest});
-			}
-			else
-			{
-				Log.e(LOGTAG, "RawTextCandidate/ Expected param count of 3 "+rawCandidate_Constructor.toString());
-				throw new InstantiationException("RawTextCandidate had unexpected number of parameters");
+				addToSelectedShortcutMap(clipboardShortcut, parent, word);
 			}
 
-			if (addToMap)
-				mWrappedCandidateMap.put(getHash(newCandidate), new WrappedCandidate( wrappedCandidate, parent, word)) ;
-
-			return newCandidate;
+			return clipboardShortcut;
 		}
 		catch( Exception ex)
 		{
 			Log.e(LOGTAG, "Failed to create RawTextCandidate");
 			ex.printStackTrace();
 
-			return wrappedCandidate;
+			return candidate;
 		}
 	}
 
-	public static Object getRawInstance(Object wrappedCandidate, String text, boolean addToMap)
+	public static Object getClipboardCandidate(Object candidate, String shortcut, String text)
 	{
-		return getRawInstance(wrappedCandidate, text, addToMap, null, null);
+		return getClipboardCandidate(candidate, shortcut, text, null, null);
 	}
+
 
 	public static String getSubrequestA(Object candidate)
 	{
-
 		try
 		{
 			Object subrequest = candidate_getSubRequestMethod.invoke(candidate);
@@ -301,10 +260,21 @@ public class CandidateManager
 
 	}
 
-
-	public static void clearFluencyMap()
+	public static Integer getHash(Object object)
 	{
-		mWrappedCandidateMap.clear();
+		//On android this returns the native pointer to the object,
+		//Or at least it did back in kitkat.
+		return System.identityHashCode(object);
+	}
+
+	public static void addToSelectedShortcutMap(Object clipboardShortcut, DB_DictionaryShortcutItem parent, DB_DictionaryWordItem word)
+	{
+		mSelectedShortcutMap.put( getHash(clipboardShortcut), new SelectedShortcut(parent,word) );
+	}
+
+	public static void clearSelectedShortcutMap()
+	{
+		mSelectedShortcutMap.clear();
 	}
 
 	public static boolean isFluency(Object candidate)
@@ -325,7 +295,6 @@ public class CandidateManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "verbatimCandidate", 	verbatimCandidate );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "candidateInterfaceClass", 	candidateInterfaceClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "rawCandidateClass", 	rawCandidateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "fluencyCandidateClass", 	fluencyCandidateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "subCandidateClass", 	subCandidateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "candidate_getSubRequestMethod", 	candidate_getSubRequestMethod );
@@ -333,7 +302,11 @@ public class CandidateManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "candidate_setTrailingSeparatorMethod", 	candidate_setTrailingSeparatorMethod );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "subCandidateClass_inputStringMethod", 	subCandidateClass_inputStringMethod );
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "rawCandidate_Constructor", 	rawCandidate_Constructor );
+
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "tokenClass", 	tokenClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidateClass", 	clipboardCandidateClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidate_Constructor", 	clipboardCandidate_Constructor );
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "token_staticConstructor", 	token_staticConstructor );
 	}
 
 }

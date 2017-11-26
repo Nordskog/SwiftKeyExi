@@ -8,6 +8,8 @@ import java.util.Set;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
+import com.mayulive.swiftkeyexi.util.SteppedHookLog;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
@@ -103,38 +105,6 @@ public class PredictionHooks
 		return returnHooks;
 	}
 
-
-
-	//All our inserted candidates are raw candidates. This is generally fine, and also sorta assures they won't be accidentally learned.
-	//Unfortunately, the visitor interface ... thing they use returns null when trying to get the prediction text.
-	//This is usually fine. It is either not used, or a null check is performed, as this is a common occurence for several types of candidates.
-	//Chinese input, however, is /always/ fluency predicted, and thus does not expect other candidate types. Suppose this partially explains why
-	//it doesn't support clipboard shortcuts. A null check is not performed down the line in SpellingHelper (chinese stuff).
-
-	//Luckily it calls a method in CandidateUtil to get the prediction string, and the candidate is passed as an argument there.
-	//There for null, check for match against our mapped inserted candidates, insert candidate string if hit.
-	public static XC_MethodHook.Unhook hookSpellingsHelperCrash(PackageTree param )
-	{
-		Class CandidateUtilClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.CandidateUtil", param.getClassLoader());
-		Method CandidateUtilClass_getSpellingHintsMethod = ProfileHelpers.findFirstMethodByName(CandidateUtilClass.getDeclaredMethods(), "getPredictionInput");
-
-		return XposedBridge.hookMethod(CandidateUtilClass_getSpellingHintsMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
-			{
-				if (param.getResult() == null)
-				{
-					//Acutally, a null is never good so let's always return the string of the candidate.
-					//This is literally only used for the case we're correcting, and one that only takes fluency candidates (And should not return null)
-					//Edit they fixed this. Method no longer exists, but keeping for backwards compatibility.
-					param.setResult( CandidateManager.getCandidateText(param.args[0]) );
-				}
-			}
-		});
-	}
-
-
 	public static XC_MethodHook.Unhook hookCandidatesDisplayView( ) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
 	{
 		/////////////////
@@ -179,7 +149,7 @@ public class PredictionHooks
 				{
 					try
 					{
-						PredictionHandlers.handleCandidateViewHook_replace((ViewGroup) param.args[ PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition ]);
+						PredictionHandlers.handleCandidateViewHook_replace((ViewGroup) param.args[PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition]);
 					}
 					catch (Throwable ex)
 					{
@@ -187,11 +157,7 @@ public class PredictionHooks
 					}
 				}
 			});
-
-
 		}
-
-
 	}
 
 
@@ -219,106 +185,34 @@ public class PredictionHooks
 
 	}
 
-
 	//Depends on ExiCandidate
 	public static Set<XC_MethodHook.Unhook> hookCandidateSelected( )
 	{
-
 		Set<XC_MethodHook.Unhook> returnHooks = new HashSet<>();
-
 		{
-			returnHooks.add( XposedBridge.hookMethod(PredictionClassManager.candidateSelectedMethod, new XC_MethodHook()
+			//Only needed to update shortcut priority, not critical.
+			if ( PredictionClassManager.candidateSelectedMethod != null )
 			{
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				returnHooks.add( XposedBridge.hookMethod(PredictionClassManager.candidateSelectedMethod, new XC_MethodHook()
 				{
-					try
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 					{
-						PredictionHandlers.handleCandidateSelectedHook(param);
-					}
-					catch (Throwable ex)
-					{
-						Hooks.predictionHooks_base.invalidate(ex, "Unexpected problem in Candidate Selected hook");
-					}
-
-				}
-			}));
-		}
-
-
-		int counter = 0;
-		for (final Method method : PredictionClassManager.commitTextMethods)
-		{
-
-			final int argPos = PredictionClassManager.CommitTextClass_commitTextMethod_CandidateArgPosition[counter];
-
-			returnHooks.add( XposedBridge.hookMethod(method, new XC_MethodHook()
-			{
-
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-				{
-					try
-					{
-						PredictionHandlers.handleTextCommitHook(param,argPos);
-					}
-					catch (Throwable ex)
-					{
-						Hooks.predictionHooks_base.invalidate(ex, "Unexpected problem in Commit Text hook");
-					}
-
-
-				}
-
-			}));
-
-			counter++;
-		}
-
-		return returnHooks;
-	}
-
-
-	//Depends on ExiCandidate
-	public static Set<XC_MethodHook.Unhook> hookCandidateRemove()
-	{
-
-		Set<XC_MethodHook.Unhook> returnHooks = new HashSet<>();
-
-		for (Method method : PredictionClassManager.dialogConstructorMethods)
-		{
-
-			returnHooks.add( XposedBridge.hookMethod(method, new XC_MethodHook()
-			{
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-				{
-					try
-					{
-						Object candidate = param.args[4];
-						CandidateManager.WrappedCandidate wrapped = CandidateManager.getWrappedCandidate(candidate);
-
-						if (wrapped != null)
+						try
 						{
-							param.args[4] = wrapped.candidate;
-
-							Method superMethod = (Method)param.method;
-							param.setResult(superMethod.invoke(param.thisObject, param.args));
+							PredictionHandlers.handleCandidateSelectedHook(param);
+						}
+						catch (Throwable ex)
+						{
+							Hooks.predictionHooks_base.invalidate(ex, "Unexpected problem in Candidate Selected hook");
 						}
 					}
-					catch (Throwable ex)
-					{
-						Hooks.predictionHooks_base.invalidate(ex, "Unexpected problem in Candidate Remove hook");
-					}
-
-
-				}
-			}));
+				}));
+			}
 		}
 
 		return returnHooks;
 	}
-
 
 	public static boolean HookAll(final PackageTree param)
 	{
@@ -327,38 +221,23 @@ public class PredictionHooks
          	//Loads all the classes we will ever need to load!
         	PredictionClassManager.doAllTheThings(param);
 
-			//hookDisableAutocomplete(param);
 			if (Hooks.predictionHooks_base.isRequirementsMet())
 			{
 				Hooks.predictionHooks_base.addAll( hookCandidatesUpdated(param) );
 				Hooks.predictionHooks_base.addAll( hookCandidateSelected() );
-				Hooks.predictionHooks_base.addAll( hookCandidateRemove() );
-
-				try
-				{
-					Hooks.predictionHooks_base.add( hookSpellingsHelperCrash(param) );
-				}
-				catch (Exception ex)
-				{
-					Log.i(LOGTAG, "Spell Checker method gone, expceted in newer versions.");
-
-					//It is impossible for this particular crash to occur without my modifications.
-					//Evidently the swiftkey team are still getting my crash reports and... fixing them.
-					//rawTextCandidate now takes an extra prediction string input for the constructor.
-					// ... I feel kind of bad now.
-				}
 			}
 
+			if (Hooks.predictionHooks_priority.isRequirementsMet())
+			{
+				Hooks.predictionHooks_priority.addAll( hookCandidateSelected() );
+			}
 
 			if (Hooks.predictionHooks_more.isRequirementsMet())
 			{
 				Hooks.predictionHooks_more.add( hookCandidatesDisplayView() );
-
-				hookCandidatesDisplayView_getViewWrapper();
-
+				Hooks.predictionHooks_more.add( hookCandidatesDisplayView_getViewWrapper() );
 				Hooks.predictionHooks_more.add( hookBu() );
 			}
-
 
 			//Run regardless
 			KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
