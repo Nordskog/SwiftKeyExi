@@ -26,7 +26,7 @@ public abstract class popupkeysEntryDialog
 
 	AlertDialog mDialog = null;
 
-	private void setButtonListeners(final PopupkeysPositionWidget widget, final EditText lowerEditText)
+	private void setButtonListeners(final PopupkeysPositionWidget widget, final EditText lowerEditText, final EditText upperEditText)
 	{
 		lowerEditText.addTextChangedListener(new TextWatcher()
 		{
@@ -40,6 +40,11 @@ public abstract class popupkeysEntryDialog
 			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
 				widget.setSelectedKeyText(s.toString().trim());
+
+				if (upperEditText.getText().length() <= 0)
+				{
+					upperEditText.setHint(s.toString().toUpperCase());
+				}
 			}
 
 			@Override
@@ -48,6 +53,8 @@ public abstract class popupkeysEntryDialog
 
 			}
 		});
+
+
 
 	}
 
@@ -68,6 +75,7 @@ public abstract class popupkeysEntryDialog
 
 
 		final EditText lowerEditText = (EditText)  configView.findViewById(R.id.popupkey_lowercaseEditText);
+		final EditText upperEditText = (EditText)  configView.findViewById(R.id.popupkey_uppercaseEditText);
 		final CheckBox deleteExistingCheckbox = (CheckBox)  configView.findViewById(R.id.delete_existing_checkbox);
 
 		TextView headerTitle = (TextView)configView.findViewById(R.id.popupkey_parent_key);
@@ -87,11 +95,12 @@ public abstract class popupkeysEntryDialog
 		deleteExistingCheckbox.setChecked(parentItem.get_delete_existing());
 
 		//updating the position widget for us
-		setButtonListeners(widget,lowerEditText);
+		setButtonListeners(widget,lowerEditText, upperEditText);
 
 		//Set existing values
 		//parentEditText.setText( outputItem.get_parentKey() );
 		lowerEditText.setText( keyItem.get_popupLower());
+		upperEditText.setText( keyItem.get_popupUpper());
 
 
 		builder.setMessage(R.string.popups_set_popup_key)
@@ -99,8 +108,8 @@ public abstract class popupkeysEntryDialog
 				{
 					public void onClick(DialogInterface dialog, int id)
 					{
-						//outputItem.set_parentKey( parentEditText.getText().toString() );
 						keyItem.set_popupLower( lowerEditText.getText().toString().trim() );
+						keyItem.set_popupUpper( upperEditText.getText().toString().trim() );
 						keyItem.set_insertIndex( widget.getSelectedPosition() );
 
 						parentItem.set_delete_existing( deleteExistingCheckbox.isChecked() );

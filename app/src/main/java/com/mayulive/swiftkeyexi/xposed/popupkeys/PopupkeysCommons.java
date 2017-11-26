@@ -30,6 +30,9 @@ public class PopupkeysCommons
 	protected static long mLastUpdateTime = -1;
 
 	public static final String NULLCHAR = "\0";
+	public static final String LOWER_CASE_KEY = "EXI_LOWER_CASE";
+	public static final String UPPER_CASE_KEY = "EXI_UPPER_CASE";
+	public static final String EITHER_CASE_KEY = "EXI_KEY_";
 	//public static final String NULLCHAR = "IAMADOG!&=";
 
 	//Things we need to keep track of when the popup keys adding thingy is being called
@@ -79,6 +82,22 @@ public class PopupkeysCommons
 		}
 	}
 
+	public static String validatePopupString(String primary, String fallback)
+	{
+		//Swiftkey crashes if you pass it an empty string,
+		//I'd rather that not happen.
+		if (primary.isEmpty())
+		{
+			if (!fallback.isEmpty())
+			{
+				return fallback;
+			}
+			else
+				return "x";
+		}
+		return primary;
+	}
+
 	///////////////////////////////
 	//Long-press popup key stuff
 	///////////////////////////////
@@ -123,6 +142,7 @@ public class PopupkeysCommons
 	{
 		mDelayNextPopup = true;
 	}
+
 
 
 }

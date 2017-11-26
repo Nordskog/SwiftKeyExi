@@ -44,12 +44,28 @@
         android:orientation="vertical"
         >
 
-        <EditText
-            style="@style/EditBoxInputSmall"
-            android:id="@+id/popupkey_lowercaseEditText"
-            android:hint="@string/content_title"
-            >
-        </EditText>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                style="@style/EditBoxInputSmall"
+                android:id="@+id/popupkey_lowercaseEditText"
+                android:hint="@string/popups_lower_case_hint"
+                >
+            </EditText>
+
+            <EditText
+                style="@style/EditBoxInputSmall"
+                android:id="@+id/popupkey_uppercaseEditText"
+                android:hint="@string/popups_upper_case_hint"
+                >
+            </EditText>
+
+
+        </LinearLayout>
+
+
 
         <com.mayulive.swiftkeyexi.main.popupkeys.PopupkeysPositionWidget
             android:id="@+id/popupkey_position_widget"
