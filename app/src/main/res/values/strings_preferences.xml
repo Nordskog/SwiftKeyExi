@@ -111,6 +111,11 @@
         <string name="pref_emoji_panel_title">Use Exi Emoji panel</string>
         <string name="pref_emoji_panel_summary">Enable Emoji panel customization</string>
 
+    <!-- Disable cursor jumping -->
+    <string name="pref_disable_jumping_cursor_key">pref_disable_jumping_cursor</string>
+    <string name="pref_disable_jumping_cursor_title">Disable jumping cursor</string>
+    <string name="pref_disable_jumping_cursor_summary">Stop cursor from jumping to end of word</string>
+
     <!-- Swipe selection -->
 
 

@@ -40,6 +40,8 @@ public class Settings
 
 	public static boolean USE_CUSTOM_KEYPRESS_SOUND = false;
 
+	public static boolean DISABLE_CURSOR_JUMPING = false;
+
 	//public static boolean SPACE_SWIPE_MODIFIER_ENABLED = true;
 
 	public static SpaceModifierBehavior SPACE_MODIFIER_BEHAVIOR = SpaceModifierBehavior.MENU;
@@ -88,6 +90,8 @@ public class Settings
 		DISABLE_PUNCTUATION_AUTO_SPACE = prefs.getBoolean(PreferenceConstants.pref_disable_punctuation_autospace_key, false);
 
 		DISABLE_SWIPE_AUTO_CORRECT = prefs.getBoolean(PreferenceConstants.pref_disable_auto_correct_on_cursor_move_key, true);
+
+		DISABLE_CURSOR_JUMPING = prefs.getBoolean(PreferenceConstants.pref_disable_jumping_cursor_key, false);
 
 		EMOJI_PANEL_ENABLED = prefs.getBoolean(PreferenceConstants.pref_emoji_panel_key, true);
 

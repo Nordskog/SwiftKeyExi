@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -155,7 +156,8 @@ public class SelectionHooks
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
 					//Call if pointer down on overlay, or <100ms since end of swipe selection event
-					if (SelectionState.mValidFirstDown || (System.currentTimeMillis() - SelectionState.mSwipeEndTime) < 100 )
+					if ( Settings.DISABLE_CURSOR_JUMPING ||
+							(SelectionState.mValidFirstDown || (System.currentTimeMillis() - SelectionState.mSwipeEndTime) < 100 ) )
 					{
 						param.setResult(false);
 					}
