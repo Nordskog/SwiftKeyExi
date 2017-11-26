@@ -109,6 +109,7 @@ public class PredictionClassManager
 	protected static Object buInstance = null;
 	protected static Object resultTypeEnum_flow;
 	protected static Object resultTypeEnum_flow_success;
+	protected static Object resultTypeEnum_flow_liftoff;
 
 	/////////////
 	//Misc
@@ -172,6 +173,7 @@ public class PredictionClassManager
 		{
 			resultTypeEnum_flow = CodeUtils.findEnumByName( (Enum[]) resultTypeEnum.getEnumConstants(), "FLOW");
 			resultTypeEnum_flow_success = CodeUtils.findEnumByName( (Enum[]) resultTypeEnum.getEnumConstants(), "FLOW_SUCCEEDED");
+			resultTypeEnum_flow_liftoff = CodeUtils.findEnumByName( (Enum[]) resultTypeEnum.getEnumConstants(), "FLOW_LIFT_OFF");
 		}
 	}
 

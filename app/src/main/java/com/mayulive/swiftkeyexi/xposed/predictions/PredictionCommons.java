@@ -461,7 +461,8 @@ public class PredictionCommons
 					}
 
 					boolean predictionAllowedIfFlow = (PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow
-														&& PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow_success )
+														&& PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow_success
+														&&	PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow_liftoff)
 														|| Settings.FLOW_SUGGESTIONS_ENABLED;
 
 
