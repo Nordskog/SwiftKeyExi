@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
-
     <PreferenceCategory
         android:title="@string/category_pref_emoji_panel">
 
@@ -23,7 +20,6 @@
             app:appDefaultValue="12"
             app:min="8"
             app:max="17"
-
             />
 
         <com.mayulive.swiftkeyexi.util.view.ListPreferenceShowSummary
@@ -33,9 +29,25 @@
             android:entryValues="@array/pref_emoji_force_version_values"
             android:defaultValue="AUTO"
             />
-
-
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_pref_gifs">
+
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_gifs_enable_nsfw_key"
+            android:title="@string/pref_gifs_enable_nsfw_title"
+            android:summary="@string/pref_gifs_enable_nsfw_summary"
+            android:defaultValue="false" />
+
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_gifs_more_sources_key"
+            android:title="@string/pref_gifs_more_sources_title"
+            android:summary="@string/pref_gifs_more_sources_summary"
+            android:defaultValue="false" />
+
+
+        </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/category_pref_flow_suggestions">

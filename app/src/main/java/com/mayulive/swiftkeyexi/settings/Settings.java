@@ -42,6 +42,9 @@ public class Settings
 
 	public static boolean DISABLE_CURSOR_JUMPING = false;
 
+	public static boolean DISPLAY_NSFW_GIFS = false;
+	public static boolean DISPLAY_GIFS_FROM_MORE_SOURCES = false;
+
 	//public static boolean SPACE_SWIPE_MODIFIER_ENABLED = true;
 
 	public static SpaceModifierBehavior SPACE_MODIFIER_BEHAVIOR = SpaceModifierBehavior.MENU;
@@ -97,6 +100,9 @@ public class Settings
 
 		USE_CUSTOM_KEYPRESS_SOUND = prefs.getBoolean(PreferenceConstants.pref_sound_use_custom_keypress_key, false);
 
+		DISPLAY_NSFW_GIFS = prefs.getBoolean(PreferenceConstants.pref_gifs_enable_nsfw_key, false);
+		DISPLAY_GIFS_FROM_MORE_SOURCES = prefs.getBoolean(PreferenceConstants.pref_gifs_more_sources_key, false);
+
 		SWIPE_SELECTION_BEHAVIOR = SelectionBehavior.valueOf
 				(
 					prefs.getString(PreferenceConstants.pref_selection_behavior_key, SelectionBehavior.HYBRID.toString() )
@@ -106,8 +112,6 @@ public class Settings
 				(
 						prefs.getString(PreferenceConstants.pref_cursor_behavior_key, CursorBehavior.SWIPE.toString() )
 				);
-
-
 
 		SWIPE_CURSOR_UNITS = prefs.getFloat(PreferenceConstants.pref_cursor_speed_key, 50);
 		SWIPE_THRESHOLD = prefs.getFloat(PreferenceConstants.pref_swipe_threshold_key, 50);

@@ -69,6 +69,10 @@ public class PreferenceConstants
 
 	public static final String pref_emoji_force_version_key = "pref_emoji_force_version";
 
+	//Gifs
+	public static final String pref_gifs_enable_nsfw_key = "pref_gifs_enable_nsfw";
+	public static final String pref_gifs_more_sources_key = "pref_gifs_more_sources";
+
 	//Sound
 	public static final String pref_sound_use_custom_keypress_key = "pref_sound_use_custom_keypress";
 	public static final String pref_sound_custom_keypress_path_key = "pref_sound_custom_keypress_path";

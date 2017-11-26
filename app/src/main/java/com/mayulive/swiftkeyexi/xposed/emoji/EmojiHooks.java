@@ -46,6 +46,7 @@ import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -443,6 +444,42 @@ public class EmojiHooks
 		return returnSet;
 	}
 
+	public static XC_MethodHook.Unhook hookGifSafesearch( PackageTree param) throws NoSuchMethodException
+	{
+
+		return XposedBridge.hookMethod( EmojiClassManager.gifUrlQueryClass_createQueryMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param)
+			{
+
+				Object result = null;
+				Method superMethod = (Method)param.method;
+				try
+				{
+
+				Object[] args = param.args;
+
+				if (Settings.DISPLAY_NSFW_GIFS)
+					args[3] ="Off";
+
+				if (Settings.DISPLAY_GIFS_FROM_MORE_SOURCES)
+					args[4] = "All";
+
+					result = superMethod.invoke(param.thisObject, args);
+				}
+				catch ( Throwable ex)
+				{
+					Hooks.gifHooksNSFW.invalidate(ex, "Something went wrong changing gif safesearch value");
+				}
+
+				if (result != null)
+					param.setResult(result);
+			}
+		});
+
+	}
+
 
 	public static boolean HookAll(final PackageTree param)
 	{
@@ -503,17 +540,27 @@ public class EmojiHooks
 						EmojiCommons.refreshEmojiTheme();
 					}
 				});
+			}
 
+			try
+			{
+				if (Hooks.gifHooksNSFW.isRequirementsMet())
+				{
+					Hooks.gifHooksNSFW.add(hookGifSafesearch(param));
+				}
+			}
+			catch(Throwable ex)
+			{
+				Hooks.gifHooksNSFW.invalidate(ex, "Failed to hook");
 			}
         }
         catch(Exception ex)
         {
 			Hooks.emojiHooks_base.invalidate(ex, "Failed to hook");
-        	
         	return false;
         }
-        
-        return true;
+
+		return true;
 	}
 	
 	
