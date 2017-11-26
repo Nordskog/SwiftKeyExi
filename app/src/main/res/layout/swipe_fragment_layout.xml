@@ -167,6 +167,19 @@
 
                 </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
 
+            <com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout
+                style="@style/WidthLimitedContainer">
+
+                <include layout="@layout/swipe_mode_item"
+                         android:id="@+id/swipe_mode_number_row"/>/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    />
+
+            </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
+
 
             <TextView
                 style="@style/SectionTitle"

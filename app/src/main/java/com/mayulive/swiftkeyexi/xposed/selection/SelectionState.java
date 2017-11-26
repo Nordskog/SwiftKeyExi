@@ -64,6 +64,7 @@ public class SelectionState
 	protected static boolean mSpaceDown = false;
 	protected static boolean mShiftDown = false;
 	protected static boolean mDeleteDown = false;
+	protected static boolean mNumberDown = false;
 	protected static long mSwipeEndTime = 0;
 
 	protected static CharSequence mLastExtractedText = null;
@@ -459,6 +460,18 @@ public class SelectionState
 
 					break;
 				}
+				case NUMBER_ROW_SWIPE:
+				{
+					if (mNumberDown)
+						return true;
+					else if ( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() )
+					{
+						if (mShiftDown || mDeleteDown)
+							return true;
+					}
+
+					break;
+				}
 
 				default:
 					return false;
@@ -515,6 +528,7 @@ public class SelectionState
 		mSpaceModifierTriggered = false;
 		clearKeyboardHorizontalOffset();
 		mFallbackSelctionRestoreRequired = false;
+		mNumberDown = false;
 
 		KeyCommons.setCancelAllKeys(false);
 	}

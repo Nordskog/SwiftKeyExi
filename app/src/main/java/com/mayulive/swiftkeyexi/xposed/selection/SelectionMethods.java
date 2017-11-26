@@ -592,12 +592,22 @@ public class SelectionMethods
 
 
 			//Otherwise swipe as usual if behavior permits
-			if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SWIPE || Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE)
+			if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SWIPE ||
+					Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE ||
+					Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.NUMBER_ROW_SWIPE)
 			{
 				if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE)
 				{
 					//Space swipe requires that first key down is space
 					if ( SelectionState.mFirstDown.is(KeyType.SPACE) )
+					{
+						currentPointerInfo.state = SWIPE;
+					}
+				}
+				else if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE)
+				{
+					//Space swipe requires that first key down is number
+					if ( SelectionState.mFirstDown.is(KeyType.NUMBER) )
 					{
 						currentPointerInfo.state = SWIPE;
 					}
@@ -788,8 +798,9 @@ public class SelectionMethods
 					if (!SelectionState.mSwiping
 							 && (
 							 		(
-							 				Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.SPACE_SWIPE || currentPointerInfo.key.is(KeyType.SPACE)
-										|| Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() && ( isShift(currentPointerInfo.key) || isDelete(currentPointerInfo.key) )
+							 				Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.SPACE_SWIPE || currentPointerInfo.key.is(KeyType.SPACE) ||
+													( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() && ( isShift(currentPointerInfo.key) || isDelete(currentPointerInfo.key) ) ) ||
+													Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.NUMBER_ROW_SWIPE || currentPointerInfo.key.is(KeyType.NUMBER)
 									)
 
 					))
@@ -1164,6 +1175,10 @@ public class SelectionMethods
 			if (SelectionState.mFirstDown.is(KeyType.SPACE))
 			{
 				SelectionState.mSpaceDown = true;
+			}
+			if (SelectionState.mFirstDown.is(KeyType.NUMBER))
+			{
+				SelectionState.mNumberDown = true;
 			}
 
 

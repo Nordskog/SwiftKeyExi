@@ -5,6 +5,9 @@ import android.content.Context;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Roughy on 8/1/2017.
  */
@@ -26,13 +29,32 @@ public enum KeyType
 	ENTER,                //IMEGoKey
 	PERIOD,            //PuncKey
 	CLEAR_BUFFER_KEY,    //ClearBufferKey. 清空 key
-	TAB;                //Tab
+	TAB,                //Tab
+	NUMBER;				//There is no number key type, but set it manually for 0-9
+
+	private static final Set<String> NUMBER_CHARACTERS = new HashSet<>();
+
+	static
+	{
+		//Adds 0 to 9
+		for (int i = 0; i < 10; i++)
+		{
+			NUMBER_CHARACTERS.add(String.valueOf(i));
+		}
+	}
+
+	public static boolean contentIsNumber(String content)
+	{
+		return ( NUMBER_CHARACTERS.contains(content) );
+	}
 
 	public static KeyType getType(String tag)
 	{
 		if (tag.contains("SpaceKey"))
 			return SPACE;
-		if (tag.equals("SymbolKey") || tag.contains("LetterKey") || tag.contains("LayoutMappedLetterKey"))
+		if (tag.equals("SymbolKey") )
+			return SYMBOL;
+		if ( tag.contains("LetterKey") || tag.contains("LayoutMappedLetterKey"))
 			return SYMBOL;
 		if (tag.contains("DeleteKey"))
 			return DELETE;

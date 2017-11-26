@@ -13,10 +13,7 @@ import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.MainActivity;
-import com.mayulive.swiftkeyexi.main.settings.AboutFragment;
-import com.mayulive.swiftkeyexi.main.settings.SettingsActivity;
 import com.mayulive.swiftkeyexi.main.swipe.quickmenu.QuickMenuActivity;
-import com.mayulive.swiftkeyexi.main.swipe.quickmenu.QuickMenuConfigFragment;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.util.MathUtils;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
@@ -68,6 +65,7 @@ public class SwipeFragment extends Fragment
 			CursorBehavior.HOLD_ANY_SWIPE,
 			CursorBehavior.SPACE_SWIPE,
 			CursorBehavior.HOLD_SHIFT_SWIPE,
+			CursorBehavior.NUMBER_ROW_SWIPE,
 	};
 
 	int[] mViewIds = new int[]
@@ -76,7 +74,7 @@ public class SwipeFragment extends Fragment
 			R.id.swipe_mode_hold_any,
 			R.id.swipe_mode_space,
 			R.id.swipe_mode_hold_shift,
-			//R.id.swipe_mode_disable
+			R.id.swipe_mode_number_row
 	};
 
 	int[] mDrawableIds = new int[]
@@ -85,7 +83,7 @@ public class SwipeFragment extends Fragment
 			R.drawable.ic_swipe_mode_hold_any,
 			R.drawable.ic_swipe_mode_space,
 			R.drawable.ic_swipe_mode_hold_shift,
-			//R.drawable.ic_swipe_mode_disabled,
+			R.drawable.ic_swipe_mode_number_row,
 	};
 
 	int[] mTextIds = new int[]
@@ -94,7 +92,7 @@ public class SwipeFragment extends Fragment
 					R.string.swipe_mode_hold_any,
 					R.string.swipe_mode_space,
 					R.string.swipe_mode_hold_shift,
-					//R.string.swipe_mode_disabled
+					R.string.swipe_mode_number_row
 			};
 
 
