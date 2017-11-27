@@ -45,6 +45,8 @@ public class Settings
 	public static boolean DISPLAY_NSFW_GIFS = false;
 	public static boolean DISPLAY_GIFS_FROM_MORE_SOURCES = false;
 
+	public static boolean DISABLE_FULLSCREEN_KEYBOARD = false;
+
 	//public static boolean SPACE_SWIPE_MODIFIER_ENABLED = true;
 
 	public static SpaceModifierBehavior SPACE_MODIFIER_BEHAVIOR = SpaceModifierBehavior.MENU;
@@ -102,6 +104,8 @@ public class Settings
 
 		DISPLAY_NSFW_GIFS = prefs.getBoolean(PreferenceConstants.pref_gifs_enable_nsfw_key, false);
 		DISPLAY_GIFS_FROM_MORE_SOURCES = prefs.getBoolean(PreferenceConstants.pref_gifs_more_sources_key, false);
+
+		DISABLE_FULLSCREEN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_disable_fullscreen_key, false);
 
 		SWIPE_SELECTION_BEHAVIOR = SelectionBehavior.valueOf
 				(

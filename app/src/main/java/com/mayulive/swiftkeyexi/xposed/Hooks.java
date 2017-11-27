@@ -60,6 +60,7 @@ public class Hooks
 	public static HookCategory overlayHooks_base = new HookCategory("overlayHooks base");
 
 	//Keyboard
+	public static HookCategory baseHooks_fullscreenMode = new HookCategory("KeyboardHooks fullscreenMode");
 	public static HookCategory baseHooks_theme= new HookCategory("KeyboardHooks Theme");
 	public static HookCategory baseHooks_viewCreated= new HookCategory("KeyboardHooks ViewCreated", overlayHooks_base);
 	public static HookCategory baseHooks_invalidateLayout = new HookCategory("KeyboardHooks InvalidateLayout", popupHooks_modify);
@@ -77,7 +78,8 @@ public class Hooks
 																						predictionHooks_base,
 																						baseHooks_punctuationSpace,
 																						baseHooks_theme,
-																						soundHooks_base
+																						soundHooks_base,
+																						baseHooks_fullscreenMode
 	);
 
 	public static class HookCategory extends ArrayList<XC_MethodHook.Unhook>

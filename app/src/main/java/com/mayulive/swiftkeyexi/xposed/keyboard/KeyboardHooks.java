@@ -20,9 +20,11 @@ import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -279,6 +281,19 @@ public class KeyboardHooks
 		});
 	}
 
+	private static XC_MethodHook.Unhook hookFullscreen(PackageTree param)
+	{
+		return XposedBridge.hookMethod(KeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				if (Settings.DISABLE_FULLSCREEN_KEYBOARD)
+					param.setResult(false);
+			}
+		});
+	}
+
 	private static XC_MethodHook.Unhook hookPrefChanged()
 	{
 		return XposedBridge.hookMethod(KeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod, new XC_MethodHook()
@@ -303,18 +318,18 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
-
-
-
-
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.addAll( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
 
-
 				Hooks.baseHooks_base.add( hookPrefChanged() );
 
+
+				if (Hooks.baseHooks_fullscreenMode.isRequirementsMet())
+				{
+					hookFullscreen(lpparam);
+				}
 
 				if (Hooks.baseHooks_theme.isRequirementsMet())
 				{

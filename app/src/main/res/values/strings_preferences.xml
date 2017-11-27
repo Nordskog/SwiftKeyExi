@@ -28,6 +28,11 @@
     <string name="pref_emoji_text_size_title">Emoji Size</string>
     <string name="pref_emoji_text_size_summary">How large Emoji will appear</string>
 
+    <!-- fullscreen keyboard -->
+    <string name="pref_disable_fullscreen_key">pref_disable_fullscreen</string>
+    <string name="pref_disable_fullscreen_title">Disable Fullscreen</string>
+    <string name="pref_disable_fullscreen_summary">Prevent keyboard from entering full-screen mode</string>
+
     <!-- Gifs -->
     <string name="pref_gifs_enable_nsfw_key">pref_gifs_enable_nsfw</string>
     <string name="pref_gifs_enable_nsfw_title">NSFW gifs</string>

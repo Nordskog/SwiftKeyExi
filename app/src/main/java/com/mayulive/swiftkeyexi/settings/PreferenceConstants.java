@@ -62,6 +62,7 @@ public class PreferenceConstants
 	public static final String pref_disable_period_click_key = "pref_disable_period_click";
 	public static final String pref_disable_punctuation_autospace_key = "pref_disable_punctuation_autospace";
 
+	public static final String pref_disable_fullscreen_key = "pref_disable_fullscreen";
 
 	public static final String pref_disable_auto_correct_on_cursor_move_key = "pref_disable_auto_correct_on_cursor_move";
 

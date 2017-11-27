@@ -112,6 +112,12 @@
         android:summary="@string/pref_disable_jumping_cursor_summary"
         android:defaultValue="false" />
 
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_disable_fullscreen_key"
+        android:title="@string/pref_disable_fullscreen_title"
+        android:summary="@string/pref_disable_fullscreen_summary"
+        android:defaultValue="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
