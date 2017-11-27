@@ -76,11 +76,6 @@ public class KeyboardMethods
 		}
 	}
 
-	public static void loadSettings(Context context)
-	{
-		Settings.loadSettings( SharedPreferencesProvider.getSharedPreferences(context) );
-	}
-
 	public static String getCurrentLayoutName()
 	{
 		return mCurrentLayoutName;

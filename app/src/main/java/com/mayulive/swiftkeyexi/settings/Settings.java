@@ -1,14 +1,23 @@
 package com.mayulive.swiftkeyexi.settings;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.swiftkeyexi.xposed.emoji.EmojiCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
+import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SelectionBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
+
+import java.util.ArrayList;
 
 
 /**
@@ -20,6 +29,10 @@ public class Settings
 {
 
 	private static String LOGTAG = ExiModule.getLogTag(Settings.class);
+
+	private static ArrayList<OnSettingsUpdatedListener> mSettingsUpdatedListeners = new ArrayList<>();
+
+	private static boolean mFirstUpdateRun = false;
 
 	//These should be considered read-only for any external class
 	public static boolean DICTIONARY_ENABLED = true;
@@ -176,12 +189,69 @@ public class Settings
 		}
 	}
 
-	/*
-	public static void saveSetting()
+	public interface OnSettingsUpdatedListener
 	{
+		void OnSettingsUpdated();
+	}
+
+	public static void addOnSettingsUpdatedListener(OnSettingsUpdatedListener listener)
+	{
+		mSettingsUpdatedListeners.add(listener);
+	}
+
+	public static void removeOnSettingsUpdatedListener(OnSettingsUpdatedListener listener)
+	{
+		mSettingsUpdatedListeners.remove(listener);
+	}
+
+	private static void callSettingsUpdatedListeners()
+	{
+		for (OnSettingsUpdatedListener listener : mSettingsUpdatedListeners)
+		{
+			listener.OnSettingsUpdated();
+		}
+
+		//At this point any changes that require data to be read from exi's database should have completed.
+		//If they require the keyboard to be reloaded, do so.
+		if (Settings.request_KEYBOARD_RELOAD)
+		{
+			Settings.request_KEYBOARD_RELOAD = false;
+			KeyboardMethods.requestKeyboardReload();
+		}
+	}
+
+	//Loading from provider is slow
+	public static void updateSettingsFromProvider(final Context context)
+	{
+		AsyncTask.execute(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					SharedPreferences sharedPrefs = SharedPreferencesProvider.getSharedPreferences(context);
+					loadSettings(sharedPrefs);
+					Handler handler = new Handler(Looper.getMainLooper());
+					handler.post(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							callSettingsUpdatedListeners();
+						}
+					});
+
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		});
 
 	}
-	*/
+
 
 
 

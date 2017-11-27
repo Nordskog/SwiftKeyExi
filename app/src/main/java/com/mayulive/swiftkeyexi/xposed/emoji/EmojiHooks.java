@@ -498,13 +498,22 @@ public class EmojiHooks
 				//Swiftkey hooks
 				Hooks.emojiHooks_base.add( hookEmojiPanel(param) );
 
+				Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
+				{
+					@Override
+					public void OnSettingsUpdated()
+					{
+						EmojiCommons.loadEmoji();
+					}
+				});
+
 				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
 				{
 
 					@Override
 					public void beforeKeyboardOpened()
 					{
-						EmojiCommons.loadEmoji();
+
 					}
 
 					@Override

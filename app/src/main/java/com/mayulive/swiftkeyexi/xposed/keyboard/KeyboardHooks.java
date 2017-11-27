@@ -95,11 +95,11 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
+					Settings.updateSettingsFromProvider(ContextUtils.getHookContext());
+
 					//Something may trigger the keyboard to close without the user interacting with it,
 					//which would leave our popups visible when it is opened next.
 					OverlayCommons.clearPopups();
-
-					KeyboardMethods.loadSettings(ContextUtils.getHookContext());
 
 					if (!NormalEmojiItem.isAssetsLoaded())
 					{
@@ -111,13 +111,6 @@ public class KeyboardHooks
 						listener.beforeKeyboardOpened();
 					}
 
-					//At this point any changes that require data to be read from exi's database should have completed.
-					//If they require the keyboard to be reloaded, do so.
-					if (Settings.request_KEYBOARD_RELOAD)
-					{
-						Settings.request_KEYBOARD_RELOAD = false;
-						KeyboardMethods.requestKeyboardReload();
-					}
 				}
 
 				@Override
@@ -358,24 +351,15 @@ public class KeyboardHooks
 					Hooks.baseHooks_layoutChange.add( hookLayoutInvalidated(lpparam) );
 				}
 
-				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+				Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 				{
 					@Override
-					public void beforeKeyboardOpened()
+					public void OnSettingsUpdated()
 					{
 						KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
-								KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
+										KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
 								false );
-
-
 					}
-
-					@Override
-					public void beforeKeyboardClosed() {}
-					@Override
-					public void keyboardInvalidated() {}
-					@Override
-					public void afterKeyboardConfigurationChanged() {}
 				});
 
 			}

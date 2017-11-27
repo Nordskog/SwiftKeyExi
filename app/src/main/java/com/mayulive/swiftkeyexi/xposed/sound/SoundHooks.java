@@ -6,6 +6,7 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
+import com.mayulive.swiftkeyexi.xposed.selection.SelectionSetup;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -48,14 +49,10 @@ public class SoundHooks
 
 				Hooks.soundHooks_base.add( hookPlaySound(param) );
 
-				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+				Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 				{
-					@Override public void afterKeyboardConfigurationChanged() {}
-					@Override public void beforeKeyboardClosed() { }
-					@Override public void keyboardInvalidated() {}
-
 					@Override
-					public void beforeKeyboardOpened()
+					public void OnSettingsUpdated()
 					{
 						SoundMethods.updateCustomSound();
 					}

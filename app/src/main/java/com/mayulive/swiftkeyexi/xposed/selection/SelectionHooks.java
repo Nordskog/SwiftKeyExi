@@ -11,6 +11,8 @@ import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
+import com.mayulive.swiftkeyexi.xposed.predictions.PredictionSetup;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -167,11 +169,6 @@ public class SelectionHooks
 	}
 
 
-
-
-
-
-
 	public static void hookAll(final PackageTree param)
 	{
 		try
@@ -206,28 +203,16 @@ public class SelectionHooks
 						}
 					});
 
-					KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+					Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 					{
-						@Override public void beforeKeyboardClosed() {}
-
 						@Override
-						public void keyboardInvalidated()
-						{
-
-						}
-
-						@Override public void afterKeyboardConfigurationChanged() {}
-
-						@Override
-						public void beforeKeyboardOpened()
+						public void OnSettingsUpdated()
 						{
 							SelectionSetup.populateActions();
 							SelectionSetup.populateKeys();
 							SelectionSetup.populateQuickMenu();
 						}
-
 					});
-
 
 					KeyCommons.addOnKeyDownListener(new KeyCommons.OnKeyDownListener()
 					{

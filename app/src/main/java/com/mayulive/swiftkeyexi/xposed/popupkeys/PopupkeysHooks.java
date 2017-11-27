@@ -444,21 +444,10 @@ public class PopupkeysHooks
 						Hooks.popupHooks_modify.add( hookSymbolsA() );
 						Hooks.popupHooks_modify.add( hookButtonOrder() );
 
-						KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+						Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 						{
-
-							@Override public void beforeKeyboardClosed() {}
-
 							@Override
-							public void keyboardInvalidated()
-							{
-
-							}
-
-							@Override public void afterKeyboardConfigurationChanged() {}
-
-							@Override
-							public void beforeKeyboardOpened()
+							public void OnSettingsUpdated()
 							{
 								if (PopupkeysCommons.mLastUpdateTime < Settings.LAST_POPUP_UPDATE)
 								{
@@ -466,7 +455,6 @@ public class PopupkeysHooks
 									PopupkeysCommons.mLastUpdateTime = Settings.LAST_POPUP_UPDATE;
 								}
 							}
-
 						});
 					}
 				}

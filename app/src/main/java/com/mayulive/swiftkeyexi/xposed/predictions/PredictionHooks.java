@@ -12,6 +12,8 @@ import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.SteppedHookLog;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysSetup;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -239,22 +241,10 @@ public class PredictionHooks
 				Hooks.predictionHooks_more.add( hookBu() );
 			}
 
-			//Run regardless
-			KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+			Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 			{
-
-				@Override public void afterKeyboardConfigurationChanged() {}
-				@Override public void beforeKeyboardClosed() { }
-
 				@Override
-				public void keyboardInvalidated()
-				{
-
-				}
-
-
-				@Override
-				public void beforeKeyboardOpened()
+				public void OnSettingsUpdated()
 				{
 					if (PredictionCommons.mLastUpdateTime < Settings.LAST_DICTIONARY_UPDATE)
 					{
@@ -268,8 +258,6 @@ public class PredictionHooks
 					}
 				}
 			});
-
-
 
         }
         catch(Exception ex)
