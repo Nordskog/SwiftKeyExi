@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Vibrator;
 import android.view.KeyEvent;
@@ -64,6 +65,7 @@ public class SelectionActions
 		}
 	}
 
+	@SuppressLint("MissingPermission")
 	protected static void handleTextAction(KeyboardInteraction.TextAction action)
 	{
 		if (action != null)
