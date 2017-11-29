@@ -49,7 +49,7 @@ public class SelectionActions
 		{
 			key = key.toLowerCase();
 			KeyboardInteraction.TextAction action = mModifierKeyActions.get(key);
-			handleTextAction(action);
+			handleTextAction(action, true);
 		}
 	}
 
@@ -61,18 +61,22 @@ public class SelectionActions
 		// Pointer-up is handled here rather than in the hotkeypanel though, so no listeners.
 		if (panel != null)
 		{
-			handleTextAction(panel.getLastSelectedAction());
+			handleTextAction(panel.getLastSelectedAction(), true);
 		}
 	}
 
 	@SuppressLint("MissingPermission")
-	protected static void handleTextAction(KeyboardInteraction.TextAction action)
+	protected static void handleTextAction(KeyboardInteraction.TextAction action, boolean vibrate)
 	{
 		if (action != null)
 		{
 			//Vibrate?
-			Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
-			v.vibrate(25);
+			if(vibrate)
+			{
+				Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
+				v.vibrate(25);
+			}
+
 
 			KeyCommons.PerformTextAction( KeyboardClassManager.getInputConnection(), action);
 		}
@@ -88,15 +92,18 @@ public class SelectionActions
 		}
 	}
 
-	protected static void sendModifiedKeyPress(int modifier, int keyEvent, int repeatCount)
+	protected static void sendShiftedKeyPress(int keyEvent, int repeatCount)
 	{
 		InputConnection connection =  KeyboardClassManager.getInputConnection();
 		if (connection != null)
 		{
-			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, modifier, 1) );
-			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, keyEvent, repeatCount) );
-			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, keyEvent, 0) );
-			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, modifier, 0) );
+
+			//Some apps react to the shift key-down event (everything), others only to the meta state (chrome).
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT, 1 ));
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, keyEvent, repeatCount, KeyEvent.META_SHIFT_ON ));
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, keyEvent, 0, KeyEvent.META_SHIFT_ON ));
+			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0 ));
+
 		}
 	}
 }

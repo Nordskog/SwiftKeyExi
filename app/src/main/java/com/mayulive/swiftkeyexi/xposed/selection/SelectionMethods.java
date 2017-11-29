@@ -10,6 +10,7 @@ import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
@@ -54,6 +55,8 @@ public class SelectionMethods
 {
 
 	private static String LOGTAG = ExiModule.getLogTag(PopupkeysMethods.class);
+
+	private static final int BIDI_CHECK_RANGE = 20;
 
 	protected static void inputBatchMode(boolean enable)
 	{
@@ -120,12 +123,12 @@ public class SelectionMethods
 	}
 
 
-	private static final byte[] FILLER_EMBED_VALUES = new byte[20];
+	private static final byte[] FILLER_EMBED_VALUES = new byte[BIDI_CHECK_RANGE*3];
 
 	private static char[] fillRtlCheckArray(CharSequence source, int pos)
 	{
-		int start = pos - 5;
-		int end = pos + 6;
+		int start = pos - BIDI_CHECK_RANGE;
+		int end = pos + BIDI_CHECK_RANGE;
 		if (start < 0)
 			start = 0;
 		if (end > source.length())
@@ -321,25 +324,21 @@ public class SelectionMethods
 	//Remember to update position if switching from fallback to normal
 	public static void setSelectionChangeFallback(int change, final PointerState state, boolean moveCursorWithSelection)
 	{
-		//Update selection to get new end position
-		//The other end of hte input connection does not immediately update its position,
-		//so you we can't update the result of the previous position change until we get here.
-		if (!SelectionState.mLastSelectionChangeWasFallback)
-		{
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-			{
-				InputConnection connection = KeyboardClassManager.getInputConnection();
-				if (connection != null)
-					connection.requestCursorUpdates(InputConnection.CURSOR_UPDATE_MONITOR);
-			}
-		}
+		//Update selection to get new end position.
+		//Firefox doesn't seem to provide updates during selection, so you'll be stuck in fallback mode in that case.
 		SelectionState.updateSelection();
 
 		//Just incase
 		if (SelectionState.mLastExtractedText == null)
 			SelectionState.mLastExtractedText = new String();
 
-		//Fallback uses keypresses to move cursor visually, no need to flip direction
+		if (SelectionState.mLastExtractedText.length() <= 0)
+		{
+			//Nothing to do
+			return;
+		}
+
+		//Fallback uses keypresses to move cursor visually, no need to flip dhirection
 		boolean direction = change >= 0;	//true forward, false backwards
 
 		int absoluteChange = Math.abs(change);
@@ -367,9 +366,9 @@ public class SelectionMethods
 		if (PointerState.isSelect(state) || moveCursorWithSelection)
 		{
 			if (direction)
-				SelectionActions.sendModifiedKeyPress(KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT, absoluteChange);
+				SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, absoluteChange);
 			else
-				SelectionActions.sendModifiedKeyPress(KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_DPAD_LEFT, absoluteChange);
+				SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, absoluteChange);
 		}
 		else
 		{
@@ -383,11 +382,33 @@ public class SelectionMethods
 		//If we are selecting we just... select.
 		if (!PointerState.isSelect(state) && moveCursorWithSelection)
 		{
+
+			//We want to one keypress in the same direction as teh selection to make it a
+			//single-position (not selecting) cursor. If we are at the visual end or beginning
+			//of the text, this will move us to the neighboring element (buttons etc).
+			//To avoid this, we move one char in the opposite direction, and then back again.
+			//Believe it or not, this is not only the best solution, but the only one.
+			//Even firefox and chrome are happy with this, unlike everything else I've tried.
+
+			if (!direction)
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, 1);
+			else
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, 1);
+
+			if (direction)
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, 1);
+			else
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, 1);
+
+
+			/*
 			//If moving with select, add an extra keypress to deselect but keep the cursor in the same spot.
 			if (direction)
-				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, absoluteChange);
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, 1);
 			else
-				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, absoluteChange);
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, 1);
+				*/
+
 		}
 
 		SelectionState.mLastSelectionChangeWasFallback = true;
@@ -947,7 +968,7 @@ public class SelectionMethods
 								{
 									yCursorChange = 1;
 									if (PointerState.isSelect(currentPointerInfo.state))
-										SelectionActions.sendModifiedKeyPress(KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
+										SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
 									else
 										SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
 								}
@@ -958,7 +979,7 @@ public class SelectionMethods
 								{
 									yCursorChange = 1;
 									if (PointerState.isSelect(currentPointerInfo.state))
-										SelectionActions.sendModifiedKeyPress(KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
+										SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
 									else
 										SelectionActions.sendKeyPress( KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
 								}
