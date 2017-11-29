@@ -38,7 +38,6 @@ import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.ensureCur
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.getInternalSelection;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.isDelete;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.isShift;
-import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mFallbackSelctionRestoreRequired;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mFirstDown;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mIsRtl;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastExtractedText;
@@ -319,25 +318,6 @@ public class SelectionMethods
 
 	}
 
-	public static void restoreFallbackSelectionCursorPosition()
-	{
-		if (mFallbackSelctionRestoreRequired)
-		{
-			SelectionState.updateSelection();
-			CursorSelection selection = SelectionState.getInternalSelection(null);
-			if (selection.start != selection.end)
-			{
-				selection.start = selection.end;
-				SelectionState.setInternalSelectionValue(selection.start,selection.end, null);
-
-				InputConnection connection = KeyboardClassManager.getInputConnection();
-				setSelectionWithOffset(connection,selection.start,selection.end);
-
-				mFallbackSelctionRestoreRequired = false;
-			}
-		}
-	}
-
 	//Remember to update position if switching from fallback to normal
 	public static void setSelectionChangeFallback(int change, final PointerState state, boolean moveCursorWithSelection)
 	{
@@ -402,7 +382,13 @@ public class SelectionMethods
 		//If we are using this mode to swipe we set this bool to correct it to a single position later.
 		//If we are selecting we just... select.
 		if (!PointerState.isSelect(state) && moveCursorWithSelection)
-				SelectionState.mFallbackSelctionRestoreRequired = true;
+		{
+			//If moving with select, add an extra keypress to deselect but keep the cursor in the same spot.
+			if (direction)
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, absoluteChange);
+			else
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, absoluteChange);
+		}
 
 		SelectionState.mLastSelectionChangeWasFallback = true;
 	}
@@ -1020,7 +1006,6 @@ public class SelectionMethods
 							currentPointerInfo.yCursorBank = 0;
 						}
 
-						restoreFallbackSelectionCursorPosition();
 					}
 				}
 
@@ -1055,11 +1040,6 @@ public class SelectionMethods
 			if (SelectionState.mActionTriggered)
 			{
 				KeyCommons.requestCancelNextKey();
-			}
-
-			if (SelectionState.mSwiping)
-			{
-				restoreFallbackSelectionCursorPosition();
 			}
 
 			SelectionState.clearState(0);
@@ -1102,11 +1082,6 @@ public class SelectionMethods
 			if (SelectionState.mActionTriggered)
 			{
 				KeyCommons.requestCancelNextKey();
-			}
-
-			if (SelectionState.mSwiping)
-			{
-				restoreFallbackSelectionCursorPosition();
 			}
 
 		}

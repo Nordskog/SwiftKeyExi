@@ -83,7 +83,6 @@ public class SelectionState
 
 	protected static boolean mIsRtl = false;
 	protected static boolean mLastSelectionChangeWasFallback = false;
-	protected static boolean mFallbackSelctionRestoreRequired = false;
 	protected static PointerState mLastFallbackSelectionPointerState = null;
 
 	//If true, update cursor position from extracted text before moving horizontally
@@ -527,7 +526,6 @@ public class SelectionState
 		mActionTriggered = false;
 		mSpaceModifierTriggered = false;
 		clearKeyboardHorizontalOffset();
-		mFallbackSelctionRestoreRequired = false;
 		mNumberDown = false;
 
 		KeyCommons.setCancelAllKeys(false);
