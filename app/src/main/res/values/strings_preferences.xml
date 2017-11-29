@@ -18,7 +18,7 @@
     <!-- App Theme -->
     <string name="pref_app_theme_key">pref_app_theme</string>
     <string name="pref_app_theme_title">App Theme</string>
-    <string name="pref_app_theme_summary">App apperance</string>
+    <string name="pref_app_theme_summary">App appearance</string>
 
     <string name="pref_app_theme_value_display_string_LIGHT">Light</string>
     <string name="pref_app_theme_value_display_string_DARK">Dark</string>
