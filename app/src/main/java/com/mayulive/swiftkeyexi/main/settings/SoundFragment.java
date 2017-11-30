@@ -9,6 +9,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.R;
@@ -17,11 +18,14 @@ import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreferenceFragment;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+import com.mayulive.swiftkeyexi.util.ArrayUtils;
+import com.mayulive.swiftkeyexi.util.view.FilePickerPreference;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -37,18 +41,25 @@ public class SoundFragment extends PreferenceFragmentCompat
 	private static final int SPACEBAR_SOUND_REQUEST_CODE = 52;
 	private static final int BACKSPACE_SOUND_REQUEST_CODE = 53;
 
-	private static final HashSet<Integer> REQUEST_CODES = new HashSet();
+	private static final int[] REQUEST_CODES = new int[3];
+	private static final String[] PREFERENCE_RESOURCES = new String[3];
+	private static final FilePickerPreference[] mPreferences = new FilePickerPreference[3];
 
 	static
 	{
-		REQUEST_CODES.add(KEYPRESS_SOUND_REQUEST_CODE);
-		REQUEST_CODES.add(SPACEBAR_SOUND_REQUEST_CODE);
-		REQUEST_CODES.add(BACKSPACE_SOUND_REQUEST_CODE);
+		REQUEST_CODES[0] = KEYPRESS_SOUND_REQUEST_CODE;
+		REQUEST_CODES[1] = SPACEBAR_SOUND_REQUEST_CODE;
+		REQUEST_CODES[2] = BACKSPACE_SOUND_REQUEST_CODE;
+
+		PREFERENCE_RESOURCES[0] = PreferenceConstants.pref_sound_custom_keypress_path_key;
+		PREFERENCE_RESOURCES[1] = PreferenceConstants.pref_sound_custom_spacebar_path_key;
+		PREFERENCE_RESOURCES[2] = PreferenceConstants.pref_sound_custom_backspace_path_key;
+
 	}
 
-	Preference mKeypressPathPref = null;
-	Preference mSpacebarPathPref = null;
-	Preference mBackspacePathPref = null;
+	//Preference mKeypressPathPref = null;
+	//Preference mSpacebarPathPref = null;
+	//Preference mBackspacePathPref = null;
 
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
@@ -58,39 +69,19 @@ public class SoundFragment extends PreferenceFragmentCompat
 
 		addPreferencesFromResource(R.xml.preferences_sound);
 
-		mKeypressPathPref = this.findPreference(PreferenceConstants.pref_sound_custom_keypress_path_key);
-		mKeypressPathPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		for (int i = 0; i < PREFERENCE_RESOURCES.length; i++)
 		{
-			@Override
-			public boolean onPreferenceClick(Preference preference)
-			{
-				showSelectSoundFileDialog(KEYPRESS_SOUND_REQUEST_CODE);
-				return true;
-			}
-		});
+			final int index = i;
 
-		mSpacebarPathPref = this.findPreference(PreferenceConstants.pref_sound_custom_spacebar_path_key);
-		mSpacebarPathPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-		{
-			@Override
-			public boolean onPreferenceClick(Preference preference)
+			mPreferences[i] = (FilePickerPreference) this.findPreference(PREFERENCE_RESOURCES[i]);
+			mPreferences[i] .setOnPreferenceClickListener(preference ->
 			{
-				showSelectSoundFileDialog(SPACEBAR_SOUND_REQUEST_CODE);
+				showSelectSoundFileDialog(REQUEST_CODES[index]);
 				return true;
-			}
-		});
+			});
 
-		mBackspacePathPref = this.findPreference(PreferenceConstants.pref_sound_custom_backspace_path_key);
-		mBackspacePathPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-		{
-			@Override
-			public boolean onPreferenceClick(Preference preference)
-			{
-				showSelectSoundFileDialog(BACKSPACE_SOUND_REQUEST_CODE);
-				return true;
-			}
-		});
-
+			mPreferences[i].addOnPreferenceWidgetClickedListener(pref -> clearPref(REQUEST_CODES[index]));
+		}
 	}
 
 	//Needed for custom prefs to work... ? I don't even
@@ -122,9 +113,8 @@ public class SoundFragment extends PreferenceFragmentCompat
 		editor.apply();
 	}
 
-	private void updatePref(int requestCode, Intent data)
+	private void clearPref(int requestCode)
 	{
-
 		Preference prefWidget = null;
 		String prefKey = null;
 		String fileName = null;
@@ -133,27 +123,72 @@ public class SoundFragment extends PreferenceFragmentCompat
 		{
 			case KEYPRESS_SOUND_REQUEST_CODE  :
 			{
-				prefWidget = mKeypressPathPref;
+				prefWidget = mPreferences[0];
 				prefKey = PreferenceConstants.pref_sound_custom_keypress_path_key;
 				fileName = SoundProvider.KEYPRESS_SOUND_FILENAME;
 				break;
 			}
 			case SPACEBAR_SOUND_REQUEST_CODE  :
 			{
-				prefWidget = mSpacebarPathPref;
+				prefWidget = mPreferences[1];
 				prefKey = PreferenceConstants.pref_sound_custom_spacebar_path_key;
 				fileName = SoundProvider.SPACEBAR_SOUND_FILENAME;
 				break;
 			}
 			case BACKSPACE_SOUND_REQUEST_CODE :
 			{
-				prefWidget = mBackspacePathPref;
+				prefWidget = mPreferences[2];
 				prefKey = PreferenceConstants.pref_sound_custom_backspace_path_key;
 				fileName = SoundProvider.BACKSPACE_SOUND_FILENAME;
 				break;
 			}
 		}
 
+		deleteAudioFile(fileName);
+
+		{
+			String displayValue = "...";
+
+			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this.getContext());
+			editor.putString(prefKey, displayValue);
+			editor.commit();
+
+			prefWidget.setSummary(displayValue);
+
+			setLastUpdateTime();
+		}
+	}
+
+	private void updatePref(int requestCode, Intent data)
+	{
+		Preference prefWidget = null;
+		String prefKey = null;
+		String fileName = null;
+
+		switch(requestCode)
+		{
+			case KEYPRESS_SOUND_REQUEST_CODE  :
+			{
+				prefWidget = mPreferences[0];
+				prefKey = PreferenceConstants.pref_sound_custom_keypress_path_key;
+				fileName = SoundProvider.KEYPRESS_SOUND_FILENAME;
+				break;
+			}
+			case SPACEBAR_SOUND_REQUEST_CODE  :
+			{
+				prefWidget = mPreferences[1];
+				prefKey = PreferenceConstants.pref_sound_custom_spacebar_path_key;
+				fileName = SoundProvider.SPACEBAR_SOUND_FILENAME;
+				break;
+			}
+			case BACKSPACE_SOUND_REQUEST_CODE :
+			{
+				prefWidget = mPreferences[2];
+				prefKey = PreferenceConstants.pref_sound_custom_backspace_path_key;
+				fileName = SoundProvider.BACKSPACE_SOUND_FILENAME;
+				break;
+			}
+		}
 
 		Uri uri = data.getData();
 
@@ -185,7 +220,7 @@ public class SoundFragment extends PreferenceFragmentCompat
 	{
 
 		//Resultcode is always -1 ...
-		if (REQUEST_CODES.contains(requestCode) ) // && resultCode == Activity.RESULT_OK)
+		if ( ArrayUtils.containsInt( REQUEST_CODES, requestCode ) ) // && resultCode == Activity.RESULT_OK)
 		{
 			if (data != null)
 			{
@@ -200,6 +235,16 @@ public class SoundFragment extends PreferenceFragmentCompat
 		{
 			super.onActivityResult(requestCode, resultCode, data);
 		}
+	}
+
+	private void deleteAudioFile(String fileName)
+	{
+		File soundsDir = new File(getContext().getFilesDir(), SoundProvider.SOUND_PATH );
+		soundsDir.mkdirs();
+		File soundFile = new File(soundsDir, fileName);
+
+		//Delete file if it exists
+		soundFile.delete();
 	}
 
 	private boolean copyAudioFile(Uri uri, String toFilename)

@@ -11,19 +11,19 @@
         android:defaultValue="false"
         />
 
-    <com.mayulive.swiftkeyexi.util.view.PreferenceShowSummary
+    <com.mayulive.swiftkeyexi.util.view.FilePickerPreference
         android:key="@string/pref_sound_custom_keypress_path_key"
         android:title="@string/pref_sound_custom_keypress_path_title"
         android:defaultValue="..."
         />
 
-    <com.mayulive.swiftkeyexi.util.view.PreferenceShowSummary
+    <com.mayulive.swiftkeyexi.util.view.FilePickerPreference
         android:key="@string/pref_sound_custom_spacebar_path_key"
         android:title="@string/pref_sound_custom_spacebar_path_title"
         android:defaultValue="..."
         />
 
-    <com.mayulive.swiftkeyexi.util.view.PreferenceShowSummary
+    <com.mayulive.swiftkeyexi.util.view.FilePickerPreference
         android:key="@string/pref_sound_custom_backspace_path_key"
         android:title="@string/pref_sound_custom_backspace_path_title"
         android:defaultValue="..."

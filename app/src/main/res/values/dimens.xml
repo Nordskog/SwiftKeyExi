@@ -48,6 +48,7 @@
 
     <!-- Global -->
     <dimen name="display_button_width">50dp</dimen>
+    <dimen name="preference_widget_width">31dp</dimen>
 
     <dimen name="column_width_config_height">200dp</dimen>
 
