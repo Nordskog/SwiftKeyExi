@@ -1,13 +1,15 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
+import android.os.Build;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
-import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -35,6 +37,8 @@ import java.util.Map;
 public class SelectionState
 {
 
+	private static String LOGTAG = ExiModule.getLogTag(SelectionState.class);
+
 
 	//////////////////////////////
 	//Constants
@@ -60,6 +64,7 @@ public class SelectionState
 	protected static boolean mSpaceDown = false;
 	protected static boolean mShiftDown = false;
 	protected static boolean mDeleteDown = false;
+	protected static boolean mNumberDown = false;
 	protected static long mSwipeEndTime = 0;
 
 	protected static CharSequence mLastExtractedText = null;
@@ -75,6 +80,10 @@ public class SelectionState
 	///////////////
 	//Cursor position. Only modify with setSelectionChange()
 	///////////////
+
+	protected static boolean mIsRtl = false;
+	protected static boolean mLastSelectionChangeWasFallback = false;
+	protected static PointerState mLastFallbackSelectionPointerState = null;
 
 	//If true, update cursor position from extracted text before moving horizontally
 	protected static boolean mCursorMovedVertical = false;
@@ -95,7 +104,6 @@ public class SelectionState
 	protected static int mLastPointerDownAction = 0;
 	protected static int mLastPointerCount = 0;
 	protected static int mPrimaryPointerID = -1;
-	protected static int mLastIndex = -1;
 
 	protected static HashSet<String> mShiftKeys = new HashSet<String>();
 	protected static HashSet<String> mDeleteKeys = new HashSet<String>();
@@ -180,63 +188,133 @@ public class SelectionState
 		 return 0;
 	 }
 
-	static void setInternalSelectionValue(int startValue, int endValue, PointerState state)
+	static void setInternalSelectionValue(int startValue, int endValue, @Nullable PointerState state)
 	{
+		if (state == null)
+		{
+			SelectionState.mLeftSelectPosition = startValue;
+			SelectionState.mRightSelectPosition = endValue;
+			return;
+		}
+
 		mLastState = state;
 
-		switch(state)
+		if (mIsRtl)
 		{
-			case LEFT_SWIPE:
+			switch(state)
 			{
-				SelectionState.mRightSelectPosition = startValue;
-				mLeftSelectPosition = endValue;
-				break;
-			}
-			case RIGHT_SWIPE:
-			{
-				mLeftSelectPosition = startValue;
-				SelectionState.mRightSelectPosition = endValue;
-				break;
-			}
-			case SWIPE:
-			{
-				mCursorPosition = endValue;
-				mLeftSelectPosition = endValue;
-				SelectionState.mRightSelectPosition = endValue;
-			}
+				case LEFT_SWIPE:
+				{
+					mLeftSelectPosition = startValue;
+					SelectionState.mRightSelectPosition = endValue;
+					break;
+				}
+				case RIGHT_SWIPE:
+				{
+					SelectionState.mRightSelectPosition = startValue;
+					mLeftSelectPosition = endValue;
+					break;
+				}
+				case SWIPE:
+				{
+					mCursorPosition = endValue;
+					mLeftSelectPosition = endValue;
+					SelectionState.mRightSelectPosition = endValue;
+				}
 
-			default:
-			{
+				default:
+				{
 
+				}
+			}
+		}
+		else
+		{
+			switch(state)
+			{
+				case LEFT_SWIPE:
+				{
+					SelectionState.mRightSelectPosition = startValue;
+					mLeftSelectPosition = endValue;
+					break;
+				}
+				case RIGHT_SWIPE:
+				{
+					mLeftSelectPosition = startValue;
+					SelectionState.mRightSelectPosition = endValue;
+					break;
+				}
+				case SWIPE:
+				{
+					mCursorPosition = endValue;
+					mLeftSelectPosition = endValue;
+					SelectionState.mRightSelectPosition = endValue;
+				}
+
+				default:
+				{
+
+				}
 			}
 		}
 	}
 
-
-
 	//Start-end
-	static CursorSelection getInternalSelection(PointerState state)
+	static CursorSelection getInternalSelection(@Nullable PointerState state)
 	{
-		switch(state)
+		if (state == null)
 		{
-			case LEFT_SWIPE:
-			{
-				return new CursorSelection(SelectionState.mRightSelectPosition, mLeftSelectPosition);
-			}
-			case RIGHT_SWIPE:
-			{
-				return new CursorSelection(mLeftSelectPosition, SelectionState.mRightSelectPosition);
-			}
-			case SWIPE:
-			{
-				return new CursorSelection(mCursorPosition, mCursorPosition);
-			}
+			return new CursorSelection(SelectionState.mLeftSelectPosition,SelectionState.mRightSelectPosition);
+		}
 
-			default:
+		if (mIsRtl)
+		{
+			switch(state)
 			{
-				return new CursorSelection(0,0);
+				case LEFT_SWIPE:
+				{
+					return new CursorSelection(mLeftSelectPosition, SelectionState.mRightSelectPosition);
+				}
+				case RIGHT_SWIPE:
+				{
+					return new CursorSelection(SelectionState.mRightSelectPosition, mLeftSelectPosition);
+				}
+				case SWIPE:
+				{
+					return new CursorSelection(mCursorPosition, mCursorPosition);
+				}
+
+				default:
+				{
+					return new CursorSelection(SelectionState.mLeftSelectPosition,SelectionState.mRightSelectPosition);
+				}
 			}
 		}
+		else
+		{
+			switch(state)
+			{
+				case LEFT_SWIPE:
+				{
+					return new CursorSelection(SelectionState.mRightSelectPosition, mLeftSelectPosition);
+				}
+				case RIGHT_SWIPE:
+				{
+					return new CursorSelection(mLeftSelectPosition, SelectionState.mRightSelectPosition);
+				}
+				case SWIPE:
+				{
+					return new CursorSelection(mCursorPosition, mCursorPosition);
+				}
+
+				default:
+				{
+					return new CursorSelection(SelectionState.mLeftSelectPosition,SelectionState.mRightSelectPosition);
+				}
+			}
+		}
+
+
 	}
 
 	protected static pointerInformation getOtherPointer(pointerInformation currentPointer)
@@ -287,27 +365,28 @@ public class SelectionState
 
 	protected static void updateSelection()
 	{
+		InputConnection connection = KeyboardClassManager.getInputConnection();
 
-			InputConnection connection = KeyboardClassManager.getInputConnection();
+		if (connection != null)
+		{
+			ExtractedText extractedText = connection.getExtractedText(new ExtractedTextRequest(), 0);
 
-			if (connection != null)
+			if (extractedText != null)
 			{
-				ExtractedText extractedText = connection.getExtractedText(new ExtractedTextRequest(), 0);
+				mLastExtractedText = extractedText.text;
+				mLastExtractedTextOffset = extractedText.startOffset;
 
-				if (extractedText != null)
-				{
-					mLastExtractedText = extractedText.text;
-					mLastExtractedTextOffset = extractedText.startOffset;
+				mLeftSelectPosition = extractedText.selectionStart;
+				SelectionState.mRightSelectPosition = extractedText.selectionEnd;
+				mCursorPosition = mRightSelectPosition;
 
-					mLeftSelectPosition = extractedText.selectionStart;
-					SelectionState.mRightSelectPosition = extractedText.selectionEnd;
-					mCursorPosition = mRightSelectPosition;
-
-					mLeftSelectPosition_Original = mLeftSelectPosition;
-					mRightSelectPosition_Original = mRightSelectPosition;
-				}
+				mLeftSelectPosition_Original = mLeftSelectPosition;
+				mRightSelectPosition_Original = mRightSelectPosition;
 			}
+		}
 	}
+
+
 
 	public static boolean isSwipeAllowed()
 	{
@@ -380,6 +459,18 @@ public class SelectionState
 
 					break;
 				}
+				case NUMBER_ROW_SWIPE:
+				{
+					if (mNumberDown)
+						return true;
+					else if ( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() )
+					{
+						if (mShiftDown || mDeleteDown)
+							return true;
+					}
+
+					break;
+				}
 
 				default:
 					return false;
@@ -435,6 +526,7 @@ public class SelectionState
 		mActionTriggered = false;
 		mSpaceModifierTriggered = false;
 		clearKeyboardHorizontalOffset();
+		mNumberDown = false;
 
 		KeyCommons.setCancelAllKeys(false);
 	}

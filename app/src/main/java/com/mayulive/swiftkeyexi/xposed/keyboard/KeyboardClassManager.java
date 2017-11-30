@@ -63,6 +63,9 @@ public class KeyboardClassManager
 
 	protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
 
+
+	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
+
 	////////////////////
 	//Fields
 	////////////////////
@@ -102,6 +105,8 @@ public class KeyboardClassManager
 		if (keyboardServiceClass != null)
 		{
 			getCurrentInputConnectionMethod = KeyboardClassManager.keyboardServiceClass.getMethod("getCurrentInputConnection", (Class[])null);
+
+			keyboardService_onEvaluateFullscreenModeMethod = ProfileHelpers.firstMethodByName( KeyboardClassManager.keyboardServiceClass.getDeclaredMethods(), "onEvaluateFullscreenMode");
 		}
 
 		if (keyboardSizerClass != null)
@@ -226,7 +231,8 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoaderClass", 	keyboardLoaderClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoader_clearCacheMethod", 	keyboardLoader_clearCacheMethod );
 
-
+		//Fullscreen mode
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_fullscreenMode,	 "keyboardService_onEvaluateFullscreenModeMethod", 	keyboardService_onEvaluateFullscreenModeMethod );
 
 		//Punctuation space
 		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_AddRulesMethod", punctuatorImplClass_AddRulesMethod);

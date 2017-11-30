@@ -12,11 +12,13 @@
     <string name="category_pref_misc">Misc</string>
     <string name="category_pref_app">App</string>
     <string name="category_pref_keys">Keys</string>
+    <string name="category_pref_audio">Audio</string>
+    <string name="category_pref_gifs">Gifs</string>
 
     <!-- App Theme -->
     <string name="pref_app_theme_key">pref_app_theme</string>
     <string name="pref_app_theme_title">App Theme</string>
-    <string name="pref_app_theme_summary">App apperance</string>
+    <string name="pref_app_theme_summary">App appearance</string>
 
     <string name="pref_app_theme_value_display_string_LIGHT">Light</string>
     <string name="pref_app_theme_value_display_string_DARK">Dark</string>
@@ -25,6 +27,20 @@
     <string name="pref_emoji_text_size_key">pref_emoji_text_size</string>
     <string name="pref_emoji_text_size_title">Emoji Size</string>
     <string name="pref_emoji_text_size_summary">How large Emoji will appear</string>
+
+    <!-- fullscreen keyboard -->
+    <string name="pref_disable_fullscreen_key">pref_disable_fullscreen</string>
+    <string name="pref_disable_fullscreen_title">Disable Fullscreen</string>
+    <string name="pref_disable_fullscreen_summary">Prevent keyboard from entering full-screen mode</string>
+
+    <!-- Gifs -->
+    <string name="pref_gifs_enable_nsfw_key">pref_gifs_enable_nsfw</string>
+    <string name="pref_gifs_enable_nsfw_title">NSFW GIFs</string>
+    <string name="pref_gifs_enable_nsfw_summary">Display NSFW GIFs</string>
+
+    <string name="pref_gifs_more_sources_key">pref_gifs_more_sources</string>
+    <string name="pref_gifs_more_sources_title">More sources</string>
+    <string name="pref_gifs_more_sources_summary">Display GIFs from more sites</string>
 
     <!-- Force emoji set -->
     <string name="pref_emoji_force_version_key">pref_emoji_force_version</string>
@@ -109,6 +125,11 @@
     <string name="pref_emoji_panel_key">pref_emoji_panel</string>
         <string name="pref_emoji_panel_title">Use Exi Emoji panel</string>
         <string name="pref_emoji_panel_summary">Enable Emoji panel customization</string>
+
+    <!-- Disable cursor jumping -->
+    <string name="pref_disable_jumping_cursor_key">pref_disable_jumping_cursor</string>
+    <string name="pref_disable_jumping_cursor_title">Disable jumping cursor</string>
+    <string name="pref_disable_jumping_cursor_summary">Stop cursor from jumping to end of word</string>
 
     <!-- Swipe selection -->
 

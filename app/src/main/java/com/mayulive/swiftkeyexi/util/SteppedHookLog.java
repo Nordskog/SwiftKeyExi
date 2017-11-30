@@ -2,6 +2,8 @@ package com.mayulive.swiftkeyexi.util;
 
 import android.util.Log;
 
+import com.mayulive.swiftkeyexi.ExiModule;
+
 import java.lang.reflect.Method;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -16,9 +18,9 @@ public class SteppedHookLog
 	//Hooks all declared methods of a class, printing a stepped
 	//view of how they are called
 
-	private static String LOGTAG = SteppedHookLog.class.getSimpleName();
+	private static String LOGTAG = ExiModule.getLogTag(SteppedHookLog.class);
 
-	private Class mClass;
+	private Class[] mClass;
 
 	private static void logMethod(Method method, Object[] args, String indent)
 	{
@@ -26,7 +28,7 @@ public class SteppedHookLog
 		CodeUtils.printArguments(indent,args);
 	}
 
-	public SteppedHookLog(Class clazz)
+	public SteppedHookLog(Class... clazz)
 	{
 		mClass = clazz;
 	}
@@ -49,49 +51,63 @@ public class SteppedHookLog
 
 	}
 
-	public void hookAll()
+	public void hookOne(Class clazz)
 	{
-
-		Method[] methods = mClass.getDeclaredMethods();
+		Method[] methods = clazz.getDeclaredMethods();
 
 		for (Method method : methods)
 		{
+			try
+			{
+				XposedBridge.hookMethod(method, new XC_MethodHook()
+				{
 
-			XposedBridge.hookMethod(method, new XC_MethodHook()
+					private boolean wasFirst = false;
+
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+					{
+						if (mDepth == 0)
+						{
+							wasFirst = true;
+							Log.i(LOGTAG, "############# ENTERED #############");
+						}
+
+						logMethod((Method)param.method, param.args, getIndent(mDepth));
+
+						mDepth++;
+					}
+
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable
+					{
+
+						mDepth--;
+
+						if (mDepth == 0 || wasFirst)
+						{
+							wasFirst = false;
+							mDepth = 0;
+							Log.i(LOGTAG, "############# EXITED #############");
+						}
+					}
+				});
+			}
+			catch (Exception ex)
 			{
 
-				private boolean wasFirst = false;
+			}
 
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-				{
-					if (mDepth == 0)
-					{
-						wasFirst = true;
-						Log.i(LOGTAG, "############# ENTERED #############");
-					}
 
-					logMethod((Method)param.method, param.args, getIndent(mDepth));
-
-					mDepth++;
-				}
-
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
-				{
-
-					mDepth--;
-
-					if (mDepth == 0 || wasFirst)
-					{
-						wasFirst = false;
-						mDepth = 0;
-						Log.i(LOGTAG, "############# EXITED #############");
-					}
-				}
-			});
 		}
+	}
 
+	public void hookAll()
+	{
+		for (Class clazz : mClass)
+		{
+			hookOne(clazz);
+		}
 
 	}
 

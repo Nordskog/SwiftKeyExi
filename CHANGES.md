@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [1.3.0] - 30-11-2017
+
+### Fixed
+- Cursor sometimes being to wrong position when inserting shortcut
+- Popups not respecting case (Upper can also be set manually)
+- Shortcuts being inserted into flow even when disabled
+
+### Added
+- Option to set custom keypress sounds
+- Number-row swipe-selection mode
+- RTL language support for swipe selection
+- Option to disable cursor jumping to end of word
+- Option to display NSFW Gifs
+- Option to disable full-screen keyboard mode
+- Polish translation (Thanks to xda user )
+- French translation (Thanks to xda user )
+
 ## [1.2.1] - 02-11-2017
 
 ### Fixed

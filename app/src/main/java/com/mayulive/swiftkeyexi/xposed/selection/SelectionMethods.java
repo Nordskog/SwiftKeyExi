@@ -1,50 +1,62 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
-import java.util.Map.Entry;
-
-import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
-import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
-import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
-import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysMethods;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.pointerInformation;
-import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
-import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
-import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
-import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorCommons;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorSelection;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SelectionBehavior;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeSpeedModifier;
-
-import android.text.Selection;
+import android.os.Build;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.ExtractedText;
+import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.R;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
+import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
+import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
+import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysMethods;
+import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorCommons;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorSelection;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SelectionBehavior;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeSpeedModifier;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.pointerInformation;
+
+import java.text.Bidi;
+import java.util.Map.Entry;
+
 import static com.mayulive.swiftkeyexi.util.ContextUtils.getModuleContext;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.ensureCursorOrder;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.getInternalSelection;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.isDelete;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.isShift;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mFirstDown;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mIsRtl;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastExtractedText;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastFallbackSelectionPointerState;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastSelectionChangeWasFallback;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mModifierKeyActions;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.updateSelection;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.LEFT_SWIPE;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.RIGHT_SWIPE;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.SWIPE;
-import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mFirstDown;
-import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mModifierKeyActions;
 
 
 public class SelectionMethods
 {
 
 	private static String LOGTAG = ExiModule.getLogTag(PopupkeysMethods.class);
+
+	private static final int BIDI_CHECK_RANGE = 20;
 
 	protected static void inputBatchMode(boolean enable)
 	{
@@ -87,6 +99,10 @@ public class SelectionMethods
 
 	public static void moveCursorToEnd()
 	{
+		//Just incase
+		if (SelectionState.mLastExtractedText == null)
+			SelectionState.mLastExtractedText = new String();
+
 		InputConnection connection = KeyboardClassManager.getInputConnection();
 		SelectionState.updateSelection();
 		SelectionMethods.setSelectionWithOffset( connection, SelectionState.mLastExtractedText.length(), SelectionState.mLastExtractedText.length());
@@ -107,11 +123,118 @@ public class SelectionMethods
 	}
 
 
-	public static void setSelectionChange(int change, final PointerState state)
+	private static final byte[] FILLER_EMBED_VALUES = new byte[BIDI_CHECK_RANGE*3];
+
+	private static char[] fillRtlCheckArray(CharSequence source, int pos)
 	{
+		int start = pos - BIDI_CHECK_RANGE;
+		int end = pos + BIDI_CHECK_RANGE;
+		if (start < 0)
+			start = 0;
+		if (end > source.length())
+			end = source.length();
+
+		char[] returnArray = new char[end-start];
+
+
+		for (int i = 0; i < returnArray.length; i++)
+		{
+			returnArray[i] = source.charAt(start+i);
+		}
+
+		return returnArray;
+	}
+
+	public static boolean updateRtlAndCheckForMixed()
+	{
+
+		int start = 0;
+		int end = 0;
+
+		SelectionState.mIsRtl = false;
+		boolean isMixed = false;
+
 		//Just incase
 		if (SelectionState.mLastExtractedText == null)
 			SelectionState.mLastExtractedText = new String();
+
+		InputConnection connection = KeyboardClassManager.getInputConnection();
+		if (connection != null)
+		{
+
+			//Mixed needs selection update, slow.
+			if (mLastSelectionChangeWasFallback)
+			{
+				ExtractedTextRequest request = new ExtractedTextRequest();
+				request.hintMaxChars = 0;	//Only want selection, though we still get a lot of text.
+				//Probably always get /at least/ the selected range?
+				ExtractedText extractedText = connection.getExtractedText(request, 0);
+
+				if (extractedText == null)
+				{
+					return false;
+				}
+
+				//Consider change in offset value
+				int offsetDiff = SelectionState.mLastExtractedTextOffset - extractedText.startOffset;
+				start = extractedText.selectionStart + offsetDiff;
+				end = extractedText.selectionEnd + offsetDiff;
+			}
+			else	//Internal selection, fast
+			{
+				CursorSelection selection = getInternalSelection(null);
+				start = selection.start;
+				end = selection.end;
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+		char[] primRange = fillRtlCheckArray(mLastExtractedText, start);
+		char[] secRange  = fillRtlCheckArray(mLastExtractedText, end);
+
+		mIsRtl = Bidi.requiresBidi(primRange, 0, primRange.length);
+		//Check sec if false and text selected
+		if (start != end)
+		{
+			//Sometimes the cursor will be very far apart.
+			//If first is LTR and second is RTL, set to mixed.
+			isMixed = mIsRtl != Bidi.requiresBidi(secRange, 0, secRange.length);
+		}
+
+		//Only check for mixed if rtl present
+		if (mIsRtl && !isMixed)
+		{
+			//If there are multiple runs, then we have both LTR and RTL text in the same chunk of text
+			if (new Bidi(primRange, 0, FILLER_EMBED_VALUES, 0, primRange.length, 0).getRunCount() > 1
+					|| new Bidi(secRange, 0, FILLER_EMBED_VALUES, 0, secRange.length, 0).getRunCount() > 1 )
+			{
+				isMixed = true;
+			}
+		}
+
+
+		return isMixed;
+	}
+
+	public static void setSelectionChange(int change, final PointerState state)
+	{
+		if (SelectionState.mLastSelectionChangeWasFallback)
+		{
+			updateSelection();
+			ensureCursorOrder();
+		}
+
+		//Just incase
+		if (SelectionState.mLastExtractedText == null)
+			SelectionState.mLastExtractedText = new String();
+
+		//Reverse direction if state is rtl
+		int origChange = change;
+		if (SelectionState.mIsRtl)
+			change *= -1;
 
 		boolean direction = change >= 0;	//true forward, false backwards
 
@@ -121,6 +244,7 @@ public class SelectionMethods
 		//we will be changing.
 
 		//Set new position
+		int originalPosition = selection.end;
 		selection.end += change;
 
 		//Make sure we're within the string
@@ -152,9 +276,142 @@ public class SelectionMethods
 			//TODO Combining marks, but any IME worth a damn will input 99% of them as distinct characters, so probably won't be a problem.
 		}
 
+		{
+			//If base directioanlity differs from the diretionality of the final section of text,
+			//we will hit 0 and get stuck. If we use normal cursor control to move the cursor to position 0,
+			//it is visually moved to the beginning of the run, so we have to switch to fallback mode
+			// /before/ this happens.
+			if (selection.end >= mLastExtractedText.length()-1)
+			{
+				setSelectionChangeFallback(origChange, state, true);
+				return;
+			}
+
+			//Do make sure line breaks are handled properly when RTL and LTR lines are mixed,
+			//we need to handle any line breaks using key inputs.
+			//Change range covered by change, move to fallback if \n present
+			CursorSelection moveRange = new CursorSelection(originalPosition, selection.end);
+			if (moveRange.end < moveRange.start)
+				moveRange.swap();
+			moveRange.end += 2;
+			//moveRange.start -= 2;
+			if (moveRange.start < 0)
+				moveRange.start = 0;
+			if (moveRange.end >= mLastExtractedText.length())
+				moveRange.end = mLastExtractedText.length()-1;
+			moveRange = CursorCommons.moveCursorOutsideSurrogate(direction, moveRange.start, moveRange.end, SelectionState.mLastExtractedText, state);
+			moveRange = CursorCommons.moveCursorOutsideCWJandVariant(moveRange.start, moveRange.end, SelectionState.mLastExtractedText, direction, state);
+
+			for (int i = moveRange.start; i < moveRange.end; i++)
+			{
+				if (mLastExtractedText.charAt(i) == '\n')
+				{
+					setSelectionChangeFallback(origChange, state, false);
+					return;
+				}
+			}
+
+		}
+
 		SelectionState.setInternalSelectionValue(selection.start,selection.end, state);
 		setSelectionWithOffset(connection,selection.start,selection.end);
 
+		SelectionState.mLastSelectionChangeWasFallback = false;
+		SelectionState.mLastFallbackSelectionPointerState = null;
+
+	}
+
+	//Remember to update position if switching from fallback to normal
+	public static void setSelectionChangeFallback(int change, final PointerState state, boolean moveCursorWithSelection)
+	{
+		//Update selection to get new end position.
+		//Firefox doesn't seem to provide updates during selection, so you'll be stuck in fallback mode in that case.
+		SelectionState.updateSelection();
+
+		//Just incase
+		if (SelectionState.mLastExtractedText == null)
+			SelectionState.mLastExtractedText = new String();
+
+		if (SelectionState.mLastExtractedText.length() <= 0)
+		{
+			//Nothing to do
+			return;
+		}
+
+		//Fallback uses keypresses to move cursor visually, no need to flip dhirection
+		boolean direction = change >= 0;	//true forward, false backwards
+
+		int absoluteChange = Math.abs(change);
+
+		InputConnection connection = KeyboardClassManager.getInputConnection();
+
+		if (state != PointerState.SWIPE && SelectionState.mLastFallbackSelectionPointerState != null)
+		{
+			if (PointerState.isSelect(mLastFallbackSelectionPointerState) && state != SelectionState.mLastFallbackSelectionPointerState)
+			{
+				CursorSelection selection = SelectionState.getInternalSelection(null);
+				{
+					//This completely ignores the cursor order stuff. Start is start, end moves.
+					//If we switch directions we swap them. Things get weird if the base direction
+					//changes.
+					selection.swap();
+					SelectionState.setInternalSelectionValue(selection.start,selection.end, null);
+					setSelectionWithOffset(connection,selection.start,selection.end);
+				}
+			}
+		}
+
+		SelectionState.mLastFallbackSelectionPointerState = state;
+
+		if (PointerState.isSelect(state) || moveCursorWithSelection)
+		{
+			if (direction)
+				SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, absoluteChange);
+			else
+				SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, absoluteChange);
+		}
+		else
+		{
+			if (direction)
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, absoluteChange);
+			else
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, absoluteChange);
+		}
+
+		//If we are using this mode to swipe we set this bool to correct it to a single position later.
+		//If we are selecting we just... select.
+		if (!PointerState.isSelect(state) && moveCursorWithSelection)
+		{
+
+			//We want to one keypress in the same direction as teh selection to make it a
+			//single-position (not selecting) cursor. If we are at the visual end or beginning
+			//of the text, this will move us to the neighboring element (buttons etc).
+			//To avoid this, we move one char in the opposite direction, and then back again.
+			//Believe it or not, this is not only the best solution, but the only one.
+			//Even firefox and chrome are happy with this, unlike everything else I've tried.
+
+			if (!direction)
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, 1);
+			else
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, 1);
+
+			if (direction)
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, 1);
+			else
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, 1);
+
+
+			/*
+			//If moving with select, add an extra keypress to deselect but keep the cursor in the same spot.
+			if (direction)
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_RIGHT, 1);
+			else
+				SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_LEFT, 1);
+				*/
+
+		}
+
+		SelectionState.mLastSelectionChangeWasFallback = true;
 	}
 
 	protected static void setSwipePointerState(pointerInformation firstPointerInfo, pointerInformation currentPointerInfo, boolean isPrimary)
@@ -245,12 +502,12 @@ public class SelectionMethods
 						return;
 					}
 				}
-				
+
 				//Nothing then I guess
 				currentPointerInfo.state = PointerState.DEFAULT;
 				//return;
 			}
-			
+
 			//If we have not returned yet, the CursorBehavior is in a mode that allows
 			//for multi-pointer selection of some sort.
 			if (Settings.SWIPE_SELECTION_BEHAVIOR == SelectionBehavior.HOLD_AND_DRAG_SWIPE || Settings.SWIPE_SELECTION_BEHAVIOR == SelectionBehavior.HYBRID)
@@ -267,19 +524,14 @@ public class SelectionMethods
 					firstPointerInfo.state = LEFT_SWIPE;
 				}
 
-
-				//Log.e("###", "New cursor state: "+currentPointerInfo.state);
-				
-				//ensureCursorOrder();
-
 				//In this scenario the primary pointer likely won't be moving.
 				//To avoid it jumping at the beginning of the operation, 
 				//null its position bank.
 				firstPointerInfo.xCursorBank = 0;
-				
+
 				return;
-			}	
-			
+			}
+
 			//Nothing then I guess
 			currentPointerInfo.state = PointerState.DEFAULT;
 		}
@@ -292,13 +544,12 @@ public class SelectionMethods
 				if ( SelectionState.isShift(SelectionState.mFirstDown)) //  mFirstDown.equals("Shift") || mFirstDown.equals("-"))
 				{
 					currentPointerInfo.state = RIGHT_SWIPE;
-				
 					return;
 				}
 				else if (SelectionState.isDelete(SelectionState.mFirstDown) )
 				{
 					currentPointerInfo.state = LEFT_SWIPE;
-				
+
 					return;
 				}
 			}
@@ -348,12 +599,22 @@ public class SelectionMethods
 
 
 			//Otherwise swipe as usual if behavior permits
-			if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SWIPE || Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE)
+			if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SWIPE ||
+					Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE ||
+					Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.NUMBER_ROW_SWIPE)
 			{
 				if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE)
 				{
 					//Space swipe requires that first key down is space
 					if ( SelectionState.mFirstDown.is(KeyType.SPACE) )
+					{
+						currentPointerInfo.state = SWIPE;
+					}
+				}
+				else if (Settings.SWIPE_CURSOR_BEHAVIOR  == CursorBehavior.SPACE_SWIPE)
+				{
+					//Space swipe requires that first key down is number
+					if ( SelectionState.mFirstDown.is(KeyType.NUMBER) )
 					{
 						currentPointerInfo.state = SWIPE;
 					}
@@ -366,13 +627,13 @@ public class SelectionMethods
 				return;
 			}
 
-			
+
 			//Otherwise nothing
 			currentPointerInfo.state = PointerState.DEFAULT;
 			return;
 		}
 	}
-	
+
 
 	protected static void setDownPointerState(int action, float downPos, pointerInformation firstPointerInfo, pointerInformation currentPointerInfo)
 	{
@@ -380,10 +641,10 @@ public class SelectionMethods
 
 		SelectionState.mLastPointerDownInfo = currentPointerInfo;
 		SelectionState.mFirstPointerDownInfo = firstPointerInfo;
-		
+
 		if (action == MotionEvent.ACTION_DOWN)
 		{
-			
+
 
 			if ( SelectionState.isShift(SelectionState.mFirstDown) )
 			{
@@ -410,7 +671,7 @@ public class SelectionMethods
 			if (SelectionState.mSwiping && firstPointerInfo != null)
 			{
 				//setSwipePointerState(firstPointerInfo, currentPointerInfo, false);
-					
+
 			}
 
 		}
@@ -454,34 +715,19 @@ public class SelectionMethods
 	protected static boolean handleSingleMotionEvent(View view, MotionEvent event, int index)
 	{
 
-		//Log.e("###", "Pointer count: "+event.getPointerCount());
-
-		SelectionState.mLastIndex = index;
-		
 		float newX = event.getX(index);
 		float newY = event.getY(index);
-		
+
 		int actionIndex = event.getActionIndex();
-		
+
 		int pointerID = event.getPointerId(index);
 		int action = event.getActionMasked();
 		int pointerCount = event.getPointerCount();
-		
+
 		boolean actionIsCurrent = actionIndex == index;
 		boolean isPrimary = pointerID == SelectionState.mPrimaryPointerID;
 
-
-
 		pointerInformation currentPointerInfo = SelectionState.mPointerInformation.get(pointerID);
-
-		/*
-		if (currentPointerInfo == null)
-		{
-			currentPointerInfo = new pointerInformation();
-			mPointerInformation.put(pointerID, currentPointerInfo);
-		}
-		*/
-		
 		pointerInformation firstPointerInfo = SelectionState.mPointerInformation.get( SelectionState.mPrimaryPointerID);
 
 		//////////////////////////
@@ -489,7 +735,7 @@ public class SelectionMethods
 		//////////////////////////
 		if (actionIsCurrent && (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) )
 		{
-			
+
 			if (action == MotionEvent.ACTION_DOWN)
 			{
 
@@ -500,15 +746,10 @@ public class SelectionMethods
 				//updateSelection();
 			}
 
-			//downX = event.getX();
 			currentPointerInfo.downX = newX;
 			currentPointerInfo.downY = newY;
 
-			//calculateDistance(currentPointerInfo, newX,newY);
-
 			setDownPointerState(action, newX, firstPointerInfo, currentPointerInfo);
-			
-			//Log.e("###", "Down: "+currentPointerInfo.state.toString());
 
 			return false;
 		}
@@ -524,8 +765,6 @@ public class SelectionMethods
 			///////////////////////////////////////////////////////////////
 			//Nothing going on yet. Check if we should enter swipe mode
 			///////////////////////////////////////////////////////////////
-
-			//calculateDistance(currentPointerInfo, newX, newY);
 
 			//First off, the current pointer must have come down on the space bar
 			if ( currentPointerInfo.key.is(KeyType.SPACE) )
@@ -566,8 +805,9 @@ public class SelectionMethods
 					if (!SelectionState.mSwiping
 							 && (
 							 		(
-							 				Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.SPACE_SWIPE || currentPointerInfo.key.is(KeyType.SPACE)
-										|| Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() && ( isShift(currentPointerInfo.key) || isDelete(currentPointerInfo.key) )
+							 				Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.SPACE_SWIPE || currentPointerInfo.key.is(KeyType.SPACE) ||
+													( Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() && ( isShift(currentPointerInfo.key) || isDelete(currentPointerInfo.key) ) ) ||
+													Settings.SWIPE_CURSOR_BEHAVIOR != CursorBehavior.NUMBER_ROW_SWIPE || currentPointerInfo.key.is(KeyType.NUMBER)
 									)
 
 					))
@@ -584,10 +824,11 @@ public class SelectionMethods
 
 									InputConnection connection = KeyboardClassManager.getInputConnection();
 
-									//Finish any composing going on.
-									//Doing this directly probably angers swiftkey a bit, but nothing breaks.
+
 									if (connection != null)
 									{
+										//Finish any composing going on.
+										//Doing this directly probably angers swiftkey a bit, but nothing breaks.
 										connection.finishComposingText();
 									}
 
@@ -632,7 +873,6 @@ public class SelectionMethods
 			//Perform appropriate action if we are swiping
 			///////////////////////////////////////////////////////////////
 
-
 			if (SelectionState.mSwiping || SelectionState.mSpaceModifierTriggered)
 			{
 
@@ -650,11 +890,7 @@ public class SelectionMethods
 
 						if (!OverlayCommons.isHotkeyMenuDisplayed())
 						{
-							//Log.e("###", "Spacebar height value is: "+KeyCommons.getSpacebarHeight());
-
 							float spaceDistanceFromBottom = ( 1.0f - mFirstDown.hitbox.top )*view.getMeasuredHeight();
-
-
 
 							OverlayCommons.displayHotkeyMenu( spaceDistanceFromBottom, view.getMeasuredHeight(), currentPointerInfo.downX + xOffset, SelectionState.mHotkeyMenuItems );
 						}
@@ -668,26 +904,19 @@ public class SelectionMethods
 
 						if (key != null)
 						{
-							//Log.e("###", "Key not null");
-
 							if (!OverlayCommons.isDisplayed(key.getContent()))
 							{
-								//Log.e("###", "Not displayed");
-
 								OverlayCommons.clearPopups();
 
 								KeyboardInteraction.TextAction textAction = mModifierKeyActions.get(key.getContent().toLowerCase());
 
 								if (textAction == null)
 								{
-									//Log.e("###", "No action");
-
 									OverlayCommons.setPopupKeyManually( key.getContent() );
-								} else
+								}
+								else
+
 								{
-
-									//Log.e("###", "Action");
-
 									float keyY = (key.hitbox.bottom - key.hitbox.top) * view.getMeasuredHeight();
 									float keyX = (key.hitbox.bottom - key.hitbox.top) * view.getMeasuredHeight();
 
@@ -708,9 +937,6 @@ public class SelectionMethods
 									OverlayCommons.setPopupDimensions(textSize, paddingX, paddingY);
 									OverlayCommons.displayKeyAbove(key.getContent(), KeyboardInteraction.TextAction.getTextRepresentation(getModuleContext(), textAction), yPos, center);
 								}
-							} else
-							{
-								//Log.e("###", "Already displayed");
 							}
 						}
 
@@ -726,12 +952,11 @@ public class SelectionMethods
 						int xCursorChange = (int) currentPointerInfo.xCursorDistanceChange;
 						int yCursorChange = (int) currentPointerInfo.yCursorDistanceChange;
 
-						//Prioritize vertical change
-						if (yCursorChange != 0 && !SelectionState.isSelecting())
+						//Prioritize horizontal change
+						if ( Math.abs(yCursorChange) > (Math.abs(xCursorChange) * 2f) )
 						{
 							//Update selection so we can check if we can actually move anywhere
 							SelectionState.updateSelection();
-
 
 							//Negative should move up, positive down
 							//Note that regardless of how much we want to move it, we limit it to 1.
@@ -742,7 +967,10 @@ public class SelectionMethods
 								if (!SelectionState.cursorAtEnd() )
 								{
 									yCursorChange = 1;
-									SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
+									if (PointerState.isSelect(currentPointerInfo.state))
+										SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
+									else
+										SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
 								}
 							}
 							else
@@ -750,7 +978,10 @@ public class SelectionMethods
 								if (!SelectionState.cursorAtBeginning())
 								{
 									yCursorChange = 1;
-									SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
+									if (PointerState.isSelect(currentPointerInfo.state))
+										SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
+									else
+										SelectionActions.sendKeyPress( KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
 								}
 							}
 
@@ -766,21 +997,36 @@ public class SelectionMethods
 						{
 							//We have no idea where the cursor ends up when we move vertically,
 							//so selection must be updated before we can move horizontally again.
-							//TODO cursor order?
 							if (SelectionState.mCursorMovedVertical)
 							{
 								SelectionState.mCursorMovedVertical = false;
 								SelectionState.updateSelection();
+								SelectionState.ensureCursorOrder();
 							}
 
 							if (Settings.DISABLE_SWIPE_AUTO_CORRECT)
 								PredictionCommons.requestLiteralPrimarySuggestion(true);
 
-							setSelectionChange(xCursorChange, currentPointerInfo.state);
+							//RTL is difficult. So difficult in fact that we can't really do it properly.
+							//If we are just moving the cursor (not select), use the fallback method
+							//that relies on keypresses instead of actually setting the cursor position
+							//if (mIsMixed)
+							if(updateRtlAndCheckForMixed())
+							{
+								//Only works for cursor movement, not selection
+								setSelectionChangeFallback(xCursorChange, currentPointerInfo.state, true);
+							}
+							else
+							{
+								//It is pretty much impossible to handle selection with RTL text properly,
+								//so we simply assume everything is RTL if there is any RTL text
+								setSelectionChange(xCursorChange, currentPointerInfo.state);
+							}
 
 							//Clear bank of other axis to make it less finicky
 							currentPointerInfo.yCursorBank = 0;
 						}
+
 					}
 				}
 
@@ -801,11 +1047,8 @@ public class SelectionMethods
 
 			if (SelectionState.mSpaceModifierTriggered)
 			{
-				//Log.e("###", "Space modifier event triggered");
-
 				if (SelectionState.getSpaceModifierBehavior() == SpaceModifierBehavior.KEY)
 				{
-					//OverlayCommons.removeKeyOver();
 					SelectionActions.handleSpaceModifierKey(event.getX() / view.getMeasuredWidth(), event.getY() / view.getMeasuredHeight());
 				}
 				else
@@ -815,10 +1058,8 @@ public class SelectionMethods
 				OverlayCommons.clearPopups();
 			}
 
-			//if ( ( currentPointerInfo.state == PointerState.MODIFIER || currentPointerInfo.state == PointerState.ACTION ) && mActionTriggered)
 			if (SelectionState.mActionTriggered)
 			{
-				//Log.e("###", "Main up, cancel next");
 				KeyCommons.requestCancelNextKey();
 			}
 
@@ -854,7 +1095,6 @@ public class SelectionMethods
 
 			if (SelectionState.mActionModifierDown && currentPointerInfo.state == PointerState.MODIFIER)
 			{
-				//Log.e("###", "Key was modifier, disabling modifier, cancel all.");
 				SelectionState.mActionModifierDown = false;    // ???
 				KeyCommons.setCancelAllKeys(false);
 			}
@@ -862,7 +1102,6 @@ public class SelectionMethods
 			//if ((currentPointerInfo.state == SelectionCommons.PointerState.MODIFIER || currentPointerInfo.state == SelectionCommons.PointerState.ACTION) && SelectionCommons.mActionTriggered)
 			if (SelectionState.mActionTriggered)
 			{
-				//Log.e("###", "Action triggered, requesting cancel");
 				KeyCommons.requestCancelNextKey();
 			}
 
@@ -876,12 +1115,8 @@ public class SelectionMethods
 
 	}
 
-	
 	public static boolean handleMotionEvent(View view, MotionEvent event)
 	{
-		
-		//Log.e("###", "##########Event: "+event.getActionMasked());
-		//printPointerStates();
 
 		boolean returnValue = false;
 
@@ -936,6 +1171,10 @@ public class SelectionMethods
 			if (SelectionState.mFirstDown.is(KeyType.SPACE))
 			{
 				SelectionState.mSpaceDown = true;
+			}
+			if (SelectionState.mFirstDown.is(KeyType.NUMBER))
+			{
+				SelectionState.mNumberDown = true;
 			}
 
 
@@ -1022,5 +1261,5 @@ public class SelectionMethods
 
 		return false;
 	}
-	
+
 }

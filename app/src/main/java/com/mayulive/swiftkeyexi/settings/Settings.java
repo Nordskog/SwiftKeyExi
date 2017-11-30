@@ -1,14 +1,23 @@
 package com.mayulive.swiftkeyexi.settings;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.swiftkeyexi.xposed.emoji.EmojiCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
+import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SelectionBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
+
+import java.util.ArrayList;
 
 
 /**
@@ -20,6 +29,10 @@ public class Settings
 {
 
 	private static String LOGTAG = ExiModule.getLogTag(Settings.class);
+
+	private static ArrayList<OnSettingsUpdatedListener> mSettingsUpdatedListeners = new ArrayList<>();
+
+	private static boolean mFirstUpdateRun = false;
 
 	//These should be considered read-only for any external class
 	public static boolean DICTIONARY_ENABLED = true;
@@ -38,6 +51,14 @@ public class Settings
 
 	public static boolean REMOVE_SUGGESTIONS_PADDING = false;
 
+	public static boolean USE_CUSTOM_KEYPRESS_SOUND = false;
+
+	public static boolean DISABLE_CURSOR_JUMPING = false;
+
+	public static boolean DISPLAY_NSFW_GIFS = false;
+	public static boolean DISPLAY_GIFS_FROM_MORE_SOURCES = false;
+
+	public static boolean DISABLE_FULLSCREEN_KEYBOARD = false;
 
 	//public static boolean SPACE_SWIPE_MODIFIER_ENABLED = true;
 
@@ -52,14 +73,11 @@ public class Settings
 	//Time last changed on config app
 	public static long LAST_DICTIONARY_UPDATE = 0;
 	public static long LAST_EMOJI_UPDATE = 0;
-
 	public static long LAST_ADDITIONAL_KEYS_UPDATE = 0;
-
 	public static long LAST_POPUP_UPDATE = 0;
-
 	public static long LAST_HOTKEYS_UPDATE = 0;
-
 	public static long LAST_QUICKMENU_UPDATE = 0;
+	public static long LAST_KEYPRESS_SOUND_UPDATE = 0;
 
 	public static int QUICK_MENU_HIGHLIGHT_COLOR = 0xFF2d5bc6;
 
@@ -91,7 +109,16 @@ public class Settings
 
 		DISABLE_SWIPE_AUTO_CORRECT = prefs.getBoolean(PreferenceConstants.pref_disable_auto_correct_on_cursor_move_key, true);
 
+		DISABLE_CURSOR_JUMPING = prefs.getBoolean(PreferenceConstants.pref_disable_jumping_cursor_key, false);
+
 		EMOJI_PANEL_ENABLED = prefs.getBoolean(PreferenceConstants.pref_emoji_panel_key, true);
+
+		USE_CUSTOM_KEYPRESS_SOUND = prefs.getBoolean(PreferenceConstants.pref_sound_use_custom_keypress_key, false);
+
+		DISPLAY_NSFW_GIFS = prefs.getBoolean(PreferenceConstants.pref_gifs_enable_nsfw_key, false);
+		DISPLAY_GIFS_FROM_MORE_SOURCES = prefs.getBoolean(PreferenceConstants.pref_gifs_more_sources_key, false);
+
+		DISABLE_FULLSCREEN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_disable_fullscreen_key, false);
 
 		SWIPE_SELECTION_BEHAVIOR = SelectionBehavior.valueOf
 				(
@@ -102,8 +129,6 @@ public class Settings
 				(
 						prefs.getString(PreferenceConstants.pref_cursor_behavior_key, CursorBehavior.SWIPE.toString() )
 				);
-
-
 
 		SWIPE_CURSOR_UNITS = prefs.getFloat(PreferenceConstants.pref_cursor_speed_key, 50);
 		SWIPE_THRESHOLD = prefs.getFloat(PreferenceConstants.pref_swipe_threshold_key, 50);
@@ -120,6 +145,7 @@ public class Settings
 		LAST_ADDITIONAL_KEYS_UPDATE = prefs.getLong(PreferenceConstants.pref_additional_keys_last_update_key, 0);
 		LAST_HOTKEYS_UPDATE = prefs.getLong(PreferenceConstants.pref_hotkeys_last_update_key, 0);
 		LAST_QUICKMENU_UPDATE = prefs.getLong(PreferenceConstants.pref_quickmenu_last_update_key, 0);
+		LAST_KEYPRESS_SOUND_UPDATE = prefs.getLong(PreferenceConstants.pref_sound_keypress_last_update_key, 0);
 
 		//Require keyboard reload
 		{
@@ -163,12 +189,69 @@ public class Settings
 		}
 	}
 
-	/*
-	public static void saveSetting()
+	public interface OnSettingsUpdatedListener
 	{
+		void OnSettingsUpdated();
+	}
+
+	public static void addOnSettingsUpdatedListener(OnSettingsUpdatedListener listener)
+	{
+		mSettingsUpdatedListeners.add(listener);
+	}
+
+	public static void removeOnSettingsUpdatedListener(OnSettingsUpdatedListener listener)
+	{
+		mSettingsUpdatedListeners.remove(listener);
+	}
+
+	private static void callSettingsUpdatedListeners()
+	{
+		for (OnSettingsUpdatedListener listener : mSettingsUpdatedListeners)
+		{
+			listener.OnSettingsUpdated();
+		}
+
+		//At this point any changes that require data to be read from exi's database should have completed.
+		//If they require the keyboard to be reloaded, do so.
+		if (Settings.request_KEYBOARD_RELOAD)
+		{
+			Settings.request_KEYBOARD_RELOAD = false;
+			KeyboardMethods.requestKeyboardReload();
+		}
+	}
+
+	//Loading from provider is slow
+	public static void updateSettingsFromProvider(final Context context)
+	{
+		AsyncTask.execute(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					SharedPreferences sharedPrefs = SharedPreferencesProvider.getSharedPreferences(context);
+					loadSettings(sharedPrefs);
+					Handler handler = new Handler(Looper.getMainLooper());
+					handler.post(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							callSettingsUpdatedListeners();
+						}
+					});
+
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		});
 
 	}
-	*/
+
 
 
 

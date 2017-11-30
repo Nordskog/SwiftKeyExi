@@ -8,6 +8,8 @@
   <string name="category_pref_misc">Outros</string>
   <string name="category_pref_app">App</string>
   <string name="category_pref_keys">Teclas</string>
+  <string name="category_pref_audio">Áudio</string>
+  <string name="category_pref_gifs">GIFs</string>
   <!-- App Theme -->
   <string name="pref_app_theme_title">Tema do App</string>
   <string name="pref_app_theme_summary">Aparência do App</string>
@@ -16,6 +18,14 @@
   <!-- Emoji text size -->
   <string name="pref_emoji_text_size_title">Tamanho do Emoji</string>
   <string name="pref_emoji_text_size_summary">Tamanho que o Emoji irá aparecer</string>
+  <!-- fullscreen keyboard -->
+  <string name="pref_disable_fullscreen_title">Desabilitar Tela Cheia</string>
+  <string name="pref_disable_fullscreen_summary">Prevenir que o teclado entre em modo de tela cheia</string>
+  <!-- Gifs -->
+  <string name="pref_gifs_enable_nsfw_title">GIFs impróprios</string>
+  <string name="pref_gifs_enable_nsfw_summary">Exibir GIFs impróprios</string>
+  <string name="pref_gifs_more_sources_title">Mais fontes</string>
+  <string name="pref_gifs_more_sources_summary">Exibir GIFs de mais sites</string>
   <!-- Force emoji set -->
   <string name="pref_emoji_force_version_title">Versão de Emoji</string>
   <string name="pref_emoji_force_version_summary">Usar Emoji de versão diferente do Android</string>
@@ -61,6 +71,9 @@
   <!--- Emoji kill switch -->
   <string name="pref_emoji_panel_title">Usar o painel de Emoji do Exi</string>
   <string name="pref_emoji_panel_summary">Habilitar personalização do painel de Emoji</string>
+  <!-- Disable cursor jumping -->
+  <string name="pref_disable_jumping_cursor_title">Desativar salto do cursor</string>
+  <string name="pref_disable_jumping_cursor_summary">Impedir o cursor de pular para o fim da palavra</string>
   <!-- Swipe selection -->
   <string name="pref_cursor_speed_title">Velocidade do Cursor</string>
   <string name="pref_cursor_speed_summary">Rapidez com que o cursor se move</string>

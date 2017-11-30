@@ -1,11 +1,14 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -35,6 +38,7 @@ public class KeyboardMethods
 
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
 	protected static ArrayList<ThemeChangedListener> mThemeChangedListeners = new ArrayList<>();
+	protected static ArrayList<SharedPreferences.OnSharedPreferenceChangeListener> mSwiftkeyPrefChangedListeners = new ArrayList<>();
 
 	protected static int mTheme = -1;
 
@@ -70,11 +74,6 @@ public class KeyboardMethods
 		{
 			mExtendedPredictionsLayouts.add( layout );
 		}
-	}
-
-	public static void loadSettings(Context context)
-	{
-		Settings.loadSettings( SharedPreferencesProvider.getSharedPreferences(context) );
 	}
 
 	public static String getCurrentLayoutName()
@@ -211,5 +210,19 @@ public class KeyboardMethods
 		return true;
 	}
 
+	public static void addOnSwiftkeySharedPrefChangedListener(SharedPreferences.OnSharedPreferenceChangeListener listener)
+	{
+		mSwiftkeyPrefChangedListeners.add(listener);
+	}
 
+	public static void removeOnSwiftkeySharedPrefChangedListener(SharedPreferences.OnSharedPreferenceChangeListener listener)
+	{
+		mSwiftkeyPrefChangedListeners.remove(listener);
+	}
+
+	public static SharedPreferences getSwiftkeySharedPrefs()
+	{
+		Context context = ContextUtils.getHookContext();
+		return context.getSharedPreferences(ExiXposed.HOOK_PACKAGE_NAME+"_preferences", Context.MODE_PRIVATE);
+	}
 }

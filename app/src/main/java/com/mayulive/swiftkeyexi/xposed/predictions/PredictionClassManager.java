@@ -52,9 +52,6 @@ public class PredictionClassManager
 
 	protected static Class resultTypeEnum;
 
-	//protected static Class candidatesDisplayViewClass = null; 	// = XposedHelpers.findClassIfExists("com.touchtype.keyboard.candidates.view.k", packParam.classLoader);
-
-	protected static Class candidateRemoveDialogFactoryClass;
 
 	protected static Class handleCandidateClass;
 
@@ -64,8 +61,6 @@ public class PredictionClassManager
 	protected static Class keyboardFrameClass;
 
 	protected static Class candidateClickCLass;
-
-	protected static Class commitTextClass;
 
 	protected static Class candidateViewClass;
 
@@ -98,16 +93,12 @@ public class PredictionClassManager
 
 	protected static Method candidateSelectedMethod;
 
-	protected static List<Method> commitTextMethods;
-
 
 	protected static Constructor candidateViewClass_Constructor;
 
 	protected static Method candidateViewClass_setCandidateMethod;
 
 	protected static Method candidatesViewFactory_getViewMethod;
-
-	protected static List<Method> dialogConstructorMethods = null;
 
 	protected static Method candidatesViewFactory_ReturnWrapperClass_GetViewMethod = null;
 
@@ -118,13 +109,13 @@ public class PredictionClassManager
 	protected static Object buInstance = null;
 	protected static Object resultTypeEnum_flow;
 	protected static Object resultTypeEnum_flow_success;
+	protected static Object resultTypeEnum_flow_liftoff;
 
 	/////////////
 	//Misc
 	///////////
 
 	protected static int handleCandidateClass_CandidateSelectedMethod_CandidateArgPosition = 2;
-	protected static int[] CommitTextClass_commitTextMethod_CandidateArgPosition;
 
 	protected static int updateCandidateDisplayClass_constructor_listArgPosition = 1;
 	protected static int updateCandidateDisplayClass_constructor_lastCandidateResultTypeArgPosition = 2;
@@ -139,7 +130,7 @@ public class PredictionClassManager
 
 	public static void loadKnownClasses(PackageTree param) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException
 	{
-		CandidateManager.doAllTheThings(param.getClassLoader());
+		CandidateManager.doAllTheThings(param);
 		CandidateManager.updateDependencyState();
 
 		keyboardFrameClass = ClassHunter.loadClass("com.touchtype.keyboard.view.frames.KeyboardFrame", param.getClassLoader());
@@ -152,15 +143,13 @@ public class PredictionClassManager
 
 		updateCandidateDisplayClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_UPDATE_CANDIDATE_DISPLAY_CLASS_PROFILE(), param );	//candidates.k
 
-		candidateRemoveDialogFactoryClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_REMOVE_DIALOG_FACTORY_CLASS_PROFILE(), param );
 		handleCandidateClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_HANDLE_CANDIDATE_CLASS_PROFILE(), param );
 		resultTypeEnum = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_RESULT_TYPE_ENUM_PROFILE(), param );
 
 		buClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_BU_CLASS_PROFILE(), param );
 		candidateClickCLass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_CLICK_CLASS_PROFILE(), param );
-		commitTextClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_COMMIT_TEXT_CLASS_PROFILE(), param );
-		candidateViewClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_VIEW_CLASS_PROFILE(), param );
 
+		candidateViewClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_VIEW_CLASS_PROFILE(), param );
 
 		//Targets >= 6.6.7.24
 		candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE(), param );
@@ -184,6 +173,7 @@ public class PredictionClassManager
 		{
 			resultTypeEnum_flow = CodeUtils.findEnumByName( (Enum[]) resultTypeEnum.getEnumConstants(), "FLOW");
 			resultTypeEnum_flow_success = CodeUtils.findEnumByName( (Enum[]) resultTypeEnum.getEnumConstants(), "FLOW_SUCCEEDED");
+			resultTypeEnum_flow_liftoff = CodeUtils.findEnumByName( (Enum[]) resultTypeEnum.getEnumConstants(), "FLOW_LIFT_OFF");
 		}
 	}
 
@@ -278,45 +268,6 @@ public class PredictionClassManager
 			}
 		}
 
-		if (commitTextClass != null)
-		{
-
-			//Two methods. As of writing (4/14/17) stable has two identical methods,
-			//while in beta one has changed slightly. Profile is for beta, catches
-			//the two relevant methods in stable too.
-			commitTextMethods = ProfileHelpers.findMostSimilar(new MethodProfile
-					(
-							PUBLIC | EXACT ,
-							new ClassItem(boolean.class),
-
-							new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | FINAL | ENUM | EXACT ),
-							new ClassItem(int.class),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-					),
-					commitTextClass.getDeclaredMethods(), commitTextClass, 2 );
-
-			CommitTextClass_commitTextMethod_CandidateArgPosition = new int[commitTextMethods.size()];
-
-			if (!commitTextMethods.isEmpty())
-			{
-				int counter = 0;
-				for (Method method : commitTextMethods)
-				{
-					CommitTextClass_commitTextMethod_CandidateArgPosition[counter] = ProfileHelpers.findFirstClassIndex
-							(
-									new ClassItem(null, "com.touchtype_fluency.service.candidates.Candidate"),
-									method.getParameterTypes(),
-									null
-							);
-					counter++;
-				}
-			}
-		}
-
-
-
 		if (candidateViewClass != null)
 		{
 			candidateViewClass_Constructor = candidateViewClass.getDeclaredConstructors()[0];
@@ -371,9 +322,7 @@ public class PredictionClassManager
 									new ClassItem(android.content.Context.class),
 									new ClassItem(android.widget.LinearLayout.class),
 									new ClassItem(android.view.View.class),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT )
+									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 							),
 					candidatesViewFactory.getDeclaredMethods(), candidatesViewFactory);
 
@@ -384,9 +333,6 @@ public class PredictionClassManager
 				candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition = ProfileHelpers.findFirstClassIndex( LinearLayout.class, candidatesViewFactory_ReturnWrapperClass_GetViewMethod.getParameterTypes() );
 			}
 		}
-
-		if (candidateRemoveDialogFactoryClass != null)
-			dialogConstructorMethods = ProfileHelpers.findAllMethodsWithReturnType(Dialog.class, candidateRemoveDialogFactoryClass.getDeclaredMethods());
 
 		if (candidatesViewFactory_getViewMethod != null && candidateViewClass_Constructor != null)
 		{
@@ -438,24 +384,14 @@ public class PredictionClassManager
 
 		//Suggestions
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_base,	 "resultTypeEnum", 	resultTypeEnum );
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_base,	 "commitTextClass", 	commitTextClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_base,	 "handleCandidateClass", 	handleCandidateClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_base,	 "candidateRemoveDialogFactoryClass", 	candidateRemoveDialogFactoryClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_base,	 "resultTypeEnum_flow", 	resultTypeEnum_flow );
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_base,	 "candidateSelectedMethod", 	candidateSelectedMethod );
-		Hooks.logSetRequirement( Hooks.predictionHooks_base,	 "dialogConstructorMethods", 	(dialogConstructorMethods != null && !dialogConstructorMethods.isEmpty())) ;
-		Hooks.logSetRequirement( Hooks.predictionHooks_base,	 "commitTextMethods", 	commitTextMethods != null && !commitTextMethods.isEmpty() ) ;
-
 		Hooks.logSetRequirement( Hooks.predictionHooks_base,	 "handleCandidateClass_CandidateSelectedMethod_CandidateArgPosition", 	handleCandidateClass_CandidateSelectedMethod_CandidateArgPosition != -1 ) ;
-
-		for (int argPos : CommitTextClass_commitTextMethod_CandidateArgPosition)
-		{
-			Hooks.logSetRequirement( Hooks.predictionHooks_base,	 "CommitTextClass_commitTextMethod_CandidateArgPosition", 	argPos != -1 ) ;
-		}
-
 		Hooks.logSetRequirement( Hooks.predictionHooks_base,	 "updateCandidateDisplayClass_constructor_listArgPosition", 	updateCandidateDisplayClass_constructor_listArgPosition != -1 ) ;
 		Hooks.logSetRequirement( Hooks.predictionHooks_base,	 "updateCandidateDisplayClass_constructor_lastCandidateResultTypeArgPosition ", 	updateCandidateDisplayClass_constructor_lastCandidateResultTypeArgPosition  != -1 ) ;
 
+		//Priority update
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_priority,	 "candidateSelectedMethod", 	candidateSelectedMethod );
 
 		//More suggestions
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "keyboardFrameClass", 	keyboardFrameClass );

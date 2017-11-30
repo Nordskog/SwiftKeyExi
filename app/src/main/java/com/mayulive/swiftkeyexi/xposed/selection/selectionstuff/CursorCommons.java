@@ -1,6 +1,12 @@
 package com.mayulive.swiftkeyexi.xposed.selection.selectionstuff;
 
+import android.util.Log;
+
+import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.util.TextUtils;
+
+import java.text.Bidi;
 
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.SWIPE;
 
@@ -10,6 +16,14 @@ import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerSt
 
 public class CursorCommons
 {
+
+	private static String LOGTAG = ExiModule.getLogTag(CursorCommons.class);
+
+	public enum Direction
+	{
+		UNDEFINED, LEFT, RIGHT
+	}
+
 	//Return true if surrogate found and corrected
 	public static CursorSelection moveCursorOutsideSurrogate(boolean direction, int startSelect, int endSelect, CharSequence sequence, PointerState state)
 	{
@@ -250,4 +264,173 @@ public class CursorCommons
 
 		return selection;
 	}
+
+	public static boolean isRTL(char cha)
+	{
+		byte direction = Character.getDirectionality(cha);
+		if (direction == 1 || direction == 2)
+			return true;
+		return false;
+	}
+
+	public static boolean isLTR(char cha)
+	{
+		byte direction = Character.getDirectionality(cha);
+		if (direction == Character.DIRECTIONALITY_LEFT_TO_RIGHT || direction == Character.DIRECTIONALITY_LEFT_TO_RIGHT_EMBEDDING)
+			return true;
+		return false;
+	}
+
+	public static void printBidiDebug(CharSequence string, Bidi bidi)
+	{
+		Log.i(LOGTAG,"Bidi run count: "+bidi.getRunCount());
+		for (int i = 0; i < bidi.getRunCount(); i++)
+		{
+			int start = bidi.getRunStart(i);
+			int end = bidi.getRunLimit(i);
+			CharSequence thisRun = string.subSequence( start,end );
+			int level = bidi.getRunLevel(i);
+			Log.i(LOGTAG, "Run: "+i+", level: "+level+" range: "+start+", "+end+", text: "+thisRun);
+		}
+	}
+
+	// General bidi notice. Docs say getRunLimit() returns index relative to start.
+	// This is incorrect, the index returned is absolute.
+
+	public static int flipPositionInBidiChunk(CharSequence sequence, int position)
+	{
+
+		Bidi bidi = new Bidi(sequence.toString(), 0);
+
+		int run = bidi.getRunCount()-1;
+		for (int i = 0; i < bidi.getRunCount(); i++)
+		{
+			int runEnd = bidi.getRunLimit(i);
+			if (runEnd >= position)
+			{
+				run = i;
+				break;
+			}
+		}
+
+		printBidiDebug(sequence,bidi);
+
+		int start = bidi.getRunStart(run);
+		int end = bidi.getRunLimit(run);
+
+
+		int distance = position - start;
+
+		return end - distance;
+	}
+
+	public static int flipPositionToLeftOppositeBidiChunk(CharSequence sequence, int position)
+	{
+
+		Bidi bidi = new Bidi(sequence.toString(), 0);
+
+		int run = bidi.getRunCount()-1;
+		for (int i = 0; i < bidi.getRunCount(); i++)
+		{
+			int runEnd = bidi.getRunLimit(i);
+			if (runEnd >= position)
+			{
+				run = i;
+				break;
+			}
+		}
+
+		printBidiDebug(sequence,bidi);
+
+		int start = bidi.getRunStart(run);
+		int end = bidi.getRunLimit(run);
+
+		int oppositeRun = run-2;
+		if (oppositeRun < 0)
+			oppositeRun = 0;
+
+		int oppositeChunkEnd = bidi.getRunLimit(oppositeRun);
+
+		int distance = position - start;
+
+		return oppositeChunkEnd - distance;
+	}
+
+	public static int flipPositionToRightOppositeBidiChunk(CharSequence sequence, int position)
+	{
+
+		Bidi bidi = new Bidi(sequence.toString(), 0);
+
+		int run = bidi.getRunCount()-1;
+		for (int i = 0; i < bidi.getRunCount(); i++)
+		{
+			int runEnd = bidi.getRunLimit(i);
+			if (runEnd >= position)
+			{
+				run = i;
+				break;
+			}
+		}
+
+		printBidiDebug(sequence,bidi);
+
+		int start = bidi.getRunStart(run);
+		int end = bidi.getRunLimit(run);
+
+
+		int oppositeRun = run+2;
+		if (oppositeRun >= bidi.getRunCount())
+			oppositeRun = bidi.getRunCount()-1;
+
+		int oppositeChunkStart = bidi.getRunStart(oppositeRun);
+
+		int distance = end - position;
+
+		return oppositeChunkStart + distance;
+	}
+
+	public static CursorCommons.Direction getBaseDirectionAtOffset(CharSequence text, int pos)
+	{
+		//Bidi will return you the base direction of any given any string,
+		//but on android, text after line breaks is reset, and will adopt the direction of the char on the new line.
+		//There are some exceptions to this, primarily in apps that have their own text-rendering backends (chrome, firefox).
+		//where all ... TODO
+
+		if (pos >= text.length() )
+			pos = text.length() - 1;
+		if (text.length() <= 0)
+			return Direction.LEFT;
+
+		//Find first linebreak from pos, or beginning of string
+		int stringStart = 0;
+		int counter = pos;
+		while (counter > 0)
+		{
+			if (text.charAt(counter) == 0x0A)
+			{
+				stringStart = counter + 1;
+				break;
+			}
+
+			counter--;
+		}
+
+		CharSequence testSeq = text.subSequence(stringStart,text.length());
+		Bidi bidi = new Bidi(testSeq.toString(), 0 );
+
+		//Bidi's isLeftToRight() always returns true.
+		// getBaseLevel() always returns 0.
+		// getLevelAt() returns the correct value, 0 is LTR, 1 if RTL
+
+		if (bidi.getLevelAt(0) == 0)
+		{
+			return Direction.LEFT;
+		}
+		else
+		{
+			return Direction.RIGHT;
+		}
+	}
+
+
 }

@@ -3,9 +3,12 @@ package com.mayulive.swiftkeyexi.xposed.popupkeys;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupKeyItem;
+import com.mayulive.swiftkeyexi.main.popupkeys.data.PopupKeyItem;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -19,13 +22,11 @@ import java.util.Set;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 
-import static com.mayulive.swiftkeyexi.xposed.key.KeyClassManager.keyRawDefinitionClass;
+
 import static com.mayulive.swiftkeyexi.xposed.key.KeyCommons.sLastSymbolDefined;
 import static com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysClassManager.btSubClass_aField;
 import static com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysClassManager.btSubClass_bField;
 import static com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysClassManager.btSubClass_getProperOrderMethod;
-import static com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysClassManager.keyRawDefinitionInputClass;
-import static com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysClassManager.keyRawDefinitionInputClass_listFields;
 
 
 /**
@@ -65,10 +66,10 @@ public class PopupkeysHooks
 		});
 	}
 
-	public static void hookSymbolsA( ) throws NoSuchFieldException
+	public static XC_MethodHook.Unhook hookSymbolsA( ) throws NoSuchFieldException
 	{
 
-		XposedBridge.hookMethod(PopupkeysClassManager.addLongPressCharacters_A_Method, new XC_MethodHook()
+		return XposedBridge.hookMethod(PopupkeysClassManager.addLongPressCharacters_A_Method, new XC_MethodHook()
 		{
 			/*
 			@Override
@@ -81,28 +82,101 @@ public class PopupkeysHooks
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
-				if (DebugSettings.DEBUG_POPUPS)
-				{
-					Log.i(LOGTAG, "A output: "+param.getResult().toString());
-				}
+
 
 
 				List<String> listObject = (List<String>)param.getResult();
 
+				////////////////////////////////////////////////////////////
+				// Skip if same list twice. Happens with period and such
+				///////////////////////////////////////////////////////////
+
+				if (PopupkeysCommons.mLastInitialPopupkeyList == listObject)
+				{
+					//When a key starts off with no popups, or
+					//with the same popups for upper and lower case,
+					//they share the same list. I currently cannot change this.
+					//We do want to avoid adding the same popups twice though.
+					if (DebugSettings.DEBUG_POPUPS)
+					{
+						Log.i(LOGTAG, "Duplicate list, skipping");
+					}
+					return;
+				}
 
 				if (listObject!= null)
 				{
+
+
+
+					PopupkeysCommons.mLastPopupParentKey = PopupkeysCommons.mPopupKeys.get( KeyCommons.sLastSymbolDefined);
+					boolean isLowerCase = !sLastSymbolDefined.equalsIgnoreCase(PopupkeysCommons.mLastASymbol);
+					PopupkeysCommons.mLastASymbol = KeyCommons.sLastSymbolDefined;
+
+					//Some keys have multiple popup keys, but they're added later.
+					//This should only applay to the period key
+					boolean assumeMulti = false;
+
+					if (DebugSettings.DEBUG_POPUPS)
+					{
+						Log.i(LOGTAG, "Initial popups: "+listObject.toString()+", assuming multi?: "+assumeMulti);
+					}
+
+
+					//////////////////////////////////
+					// Remove from multiple popups
+					//////////////////////////////////
+
+					if (KeyCommons.sLastSymbolDefined != null)
+					{
+						//Remove any entry from list of keys with multiple popups.
+						//If there are any it will be re-added later
+						PopupkeysCommons.mMultipleKeyPopups.remove( KeyCommons.sLastSymbolDefined );
+
+						if (DebugSettings.DEBUG_POPUPS)
+						{
+							Log.i(LOGTAG, "Removing Multi-popup symbol: "+KeyCommons.sLastSymbolDefined +", hash: "+Integer.toHexString( KeyCommons.sLastSymbolDefined.hashCode() ));
+						}
+					}
+
+					////////////////////
+					//Insert shortcuts
+					////////////////////
 
 					//If we need to remove existing popup keys, perform the whole shazzam a second time here.
 					if (PopupkeysCommons.mLastPopupParentKey != null && PopupkeysCommons.mLastPopupParentKey.get_delete_existing())
 					{
 						ArrayList<String> replacementStrings = new ArrayList<>();
-						PopupkeysMethods.handlePopupkeyInitialInsert(replacementStrings, sLastSymbolDefined, true);
+						PopupkeysMethods.handlePopupkeyInitialInsert(replacementStrings, isLowerCase, assumeMulti);
 						listObject = replacementStrings;
 						param.setResult(listObject);
 					}
+					else if (PopupkeysCommons.mLastPopupParentKey != null)
+					{
+						ArrayList<String> replacementStrings = new ArrayList<>();
+						replacementStrings.addAll(listObject);
+						PopupkeysMethods.handlePopupkeyInitialInsert(replacementStrings, isLowerCase, assumeMulti);
+						listObject = replacementStrings;
+						param.setResult(listObject);
+					}
+					else
+					{
+						if (DebugSettings.DEBUG_POPUPS)
+						{
+							Log.i(LOGTAG, "Skipping insert because last popup parent key null");
+						}
+					}
 
-					if (listObject.size() > 1)
+					if (DebugSettings.DEBUG_POPUPS)
+					{
+						Log.i(LOGTAG, "Initial insert: "+listObject.toString());
+					}
+
+					/////////////////////////
+					//Add to multi-popups
+					/////////////////////////
+
+					if (listObject.size() > 1 || assumeMulti)
 					{
 						if (DebugSettings.DEBUG_POPUPS)
 						{
@@ -110,7 +184,6 @@ public class PopupkeysHooks
 
 							Log.i(LOGTAG, "Hash is: "+Integer.toHexString(sLastSymbolDefined.hashCode()) ) ;
 						}
-
 
 						//Log.i(LOGTAG, "Adding to multi-popup: "+sLastSymbolDefined);
 						PopupkeysCommons.mMultipleKeyPopups.add(sLastSymbolDefined);
@@ -127,6 +200,7 @@ public class PopupkeysHooks
 						Log.i(LOGTAG, "List null");
 				}
 
+				PopupkeysCommons.mLastInitialPopupkeyList = listObject;
 
 
 
@@ -134,101 +208,6 @@ public class PopupkeysHooks
 			}
 		});
 	}
-
-
-	public static Set<XC_MethodHook.Unhook> hookPopupsInsertion( ) throws NoSuchFieldException
-	{
-
-		{
-			return XposedBridge.hookAllConstructors(keyRawDefinitionClass, new XC_MethodHook()
-			{
-
-				private int mLastListFieldIndex = -1;
-
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
-				{
-					try
-					{
-						//While this is normally called on keyboard creation, it is also called every time a Pinyin
-						//keyboard key is hit. This is because it creates a side menu where you can select from additional keys.
-						//B and later methods are not called though, and adding anything here doesn't have any effect, good or bad.
-
-						if (param.args.length > 0 && keyRawDefinitionInputClass.isAssignableFrom( param.args[0].getClass() ))
-						{
-							Object thiz = param.args[0];
-
-							List<String> listObject = null;
-
-							int currentListFieldIndex = -1;
-							//if (mLastListFieldIndex == -1)	//Changes betwene lanagues
-							{
-
-								int index = 0;
-								for (Field field : keyRawDefinitionInputClass_listFields)
-								{
-									//There should only be a single field that is not null or empty
-									List value = (List)field.get(thiz);
-									if (value != null)
-									{
-										if (value.size() > 0)
-										{
-											currentListFieldIndex = index;
-											break;
-										}
-									}
-									index++;
-								}
-							}
-
-							if (currentListFieldIndex == -1)
-								currentListFieldIndex = mLastListFieldIndex;
-							mLastListFieldIndex = currentListFieldIndex;
-
-
-							if (currentListFieldIndex != -1)
-							{
-
-								listObject = (List)keyRawDefinitionInputClass_listFields.get( currentListFieldIndex ).get(thiz);
-								if (DebugSettings.DEBUG_POPUPS)
-								{
-									if (listObject != null)
-									{
-										Log.e(LOGTAG, "Popup values: "+listObject.toString());
-									}
-
-								}
-
-								//I don't see why this would be needed
-								//keyRawDefinitionInputClass_listFields.get(mLastListFieldIndex).set(thiz, listObject);
-								if (listObject != null && sLastSymbolDefined != null)
-								{
-									PopupkeysMethods.handlePopupkeyInitialInsert(listObject, sLastSymbolDefined, true);
-								}
-
-
-							}
-							else if (DebugSettings.DEBUG_POPUPS)
-							{
-								Log.e(LOGTAG, "Could not find list field");
-							}
-						}
-						else
-						{
-							if (DebugSettings.DEBUG_POPUPS)
-							Log.i(LOGTAG, "Wrong constructor: "+param.method.toString());
-						}
-					}
-					catch (Throwable ex)
-					{
-						Hooks.popupHooks_read.invalidate(ex, "Unexpected problem in Alternate Symbols A hook");
-					}
-				}
-			});
-
-		}
-	}
-
 
 	public static XC_MethodHook.Unhook hookButtonOrder() throws NoSuchFieldException
 	{
@@ -275,24 +254,19 @@ public class PopupkeysHooks
 							//is the primary key at its original location.
 
 
-							boolean isLowerCase = !sLastSymbolDefined.equalsIgnoreCase(PopupkeysCommons.mLastOrderSymbol);
+							boolean isUpperCase = !sLastSymbolDefined.equalsIgnoreCase(PopupkeysCommons.mLastOrderSymbol);
 							PopupkeysCommons.mLastOrderSymbol = sLastSymbolDefined;
 
 							//Grab a copy of the primary popup, if we need it.
 							String primaryPopup = outputKeys.get(leftCount);
+							DB_PopupKeyItem primaryPopupItem = null;
 
 							boolean replacePrimary = false;
 							for (DB_PopupKeyItem item : PopupkeysCommons.mLastPopupParentKey.get_items())
 							{
 								if (item.get_insertIndex() == 0)
 								{
-									//We're replacing it! In this case we will not remove it from the array below.
-									//Regardless of the outcome, all we have to do afterwards is add primaryPopup back in at
-									//position leftCount;
-									//primaryPopup = isLowerCase ? item.get_popupLower() : item.get_popupUpper();
-									//primaryPopup = isLowerCase ? item.get_popupLower() : item.get_popupLower().toUpperCase();
-									primaryPopup =  item.get_popupLower();
-
+									primaryPopupItem =  item;
 									replacePrimary = true;
 
 									break;
@@ -303,29 +277,70 @@ public class PopupkeysHooks
 
 
 							//Remove all our dummy keys
+							int removedCount = 0;
 							for (int i = 0; i < outputKeys.size(); i++)
 							{
 								//Log.i(LOGTAG, "Checking dummy: "+outputKeys.get(i));
 
-								if (outputKeys.get(i).startsWith(PopupkeysCommons.NULLCHAR))
+								if (outputKeys.get(i).toUpperCase().startsWith(PopupkeysCommons.LOWER_CASE_KEY))
 								{
-									//Log.i(LOGTAG, "Removing");
+									isUpperCase = false;
 									outputKeys.remove(i);
 									i--;
+									removedCount++;
 								}
+								else if (outputKeys.get(i).toUpperCase().startsWith(PopupkeysCommons.UPPER_CASE_KEY))
+								{
+									isUpperCase = true;
+									outputKeys.remove(i);
+									i--;
+									removedCount++;
+								}
+							}
+
+							if (removedCount == 0)
+							{
+								//Must have been a key that had popups added later
+								//Will cause problems if the user adds a duplicate of an existing key
+
+								//Should only happen with period key, doesn't have case
+								isUpperCase = false;
+
+								for (int i = 0; i < outputKeys.size(); i++)
+								{
+									String outputKey = outputKeys.get(i).toLowerCase();
+
+									for (PopupKeyItem item : PopupkeysCommons.mLastPopupParentKey.get_items())
+									{
+										if ( item.get_popupLower().toLowerCase().equals(outputKey) )
+										{
+											outputKeys.remove(i);
+											i--;
+										}
+									}
+								}
+
+							}
+
+							if (DebugSettings.DEBUG_POPUPS)
+							{
+								Log.i(LOGTAG, "Dummy removed: "+outputKeys);
+							}
+
+
+							if (replacePrimary && primaryPopupItem != null)
+							{
+								primaryPopup = isUpperCase ? PopupkeysCommons.validatePopupString(primaryPopupItem.get_popupUpper(), primaryPopupItem.get_popupLower().toUpperCase())
+															:PopupkeysCommons.validatePopupString(primaryPopupItem.get_popupLower(), "x");
 							}
 
 							//If there is no existing primary, and we are not adding one,
 							//we should not re-add it below
-							boolean primaryNotPresent = primaryPopup.startsWith(PopupkeysCommons.NULLCHAR);
+							boolean primaryNotPresent = primaryPopup.toUpperCase().startsWith(PopupkeysCommons.EITHER_CASE_KEY);
 
 
 							//Insert all our keys, starting from the lowest
 							//They was order this way when loaded from database.
-
-							//Log.i(LOGTAG, "Adding items: "+PopupkeysCommons.mLastPopupParentKey.size());
-
-
 							for (DB_PopupKeyItem item : PopupkeysCommons.mLastPopupParentKey.get_items())
 							{
 								//Primary popup items will be inserted manually afterwards
@@ -339,15 +354,8 @@ public class PopupkeysHooks
 								insertLocation--;
 
 								String insertString;
-								//if ( isLowerCase)
-								insertString = item.get_popupLower();
-								//else
-								//	insertString = item.get_popupUpper();
-
-								//TODO lowercase check fails work words but works with single chars?
-								//Might be preferrable for them to be inserted as-is anyway.
-								//if (isLowerCase)
-								//	insertString = insertString.toUpperCase();
+								insertString = isUpperCase ? PopupkeysCommons.validatePopupString(item.get_popupUpper(), item.get_popupLower().toUpperCase())
+										: PopupkeysCommons.validatePopupString(item.get_popupLower(), "x");
 
 								if (insertLocation > outputKeys.size() )
 								{
@@ -416,9 +424,6 @@ public class PopupkeysHooks
 			{
 				PopupkeysClassManager.doAllTheThings(param);
 
-				hookSymbolsA();
-
-
 				if ( Hooks.popupHooks_delay.isRequirementsMet() )
 				{
 					Hooks.popupHooks_delay.add( hookPopupScheduler() );
@@ -431,27 +436,18 @@ public class PopupkeysHooks
 
 				if ( Hooks.popupHooks_read.isRequirementsMet() )
 				{
-					Hooks.popupHooks_read.addAll( hookPopupsInsertion() );
+					//Hooks.popupHooks_read.addAll( hookPopupsInsertion() );
+
 
 					if ( Hooks.popupHooks_modify.isRequirementsMet() )
 					{
+						Hooks.popupHooks_modify.add( hookSymbolsA() );
 						Hooks.popupHooks_modify.add( hookButtonOrder() );
 
-						KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+						Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 						{
-
-							@Override public void beforeKeyboardClosed() {}
-
 							@Override
-							public void keyboardInvalidated()
-							{
-
-							}
-
-							@Override public void afterKeyboardConfigurationChanged() {}
-
-							@Override
-							public void beforeKeyboardOpened()
+							public void OnSettingsUpdated()
 							{
 								if (PopupkeysCommons.mLastUpdateTime < Settings.LAST_POPUP_UPDATE)
 								{
@@ -459,7 +455,6 @@ public class PopupkeysHooks
 									PopupkeysCommons.mLastUpdateTime = Settings.LAST_POPUP_UPDATE;
 								}
 							}
-
 						});
 					}
 				}

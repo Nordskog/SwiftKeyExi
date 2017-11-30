@@ -110,6 +110,12 @@ public class KeyHandlers
 		}
 
 		{
+			//Number keys are tagged as symbols. Check for number content and change to number if true
+			if (KeyType.contentIsNumber(KeyCommons.sLastSymbolDefined))
+			{
+				type = KeyType.NUMBER;
+			}
+
 			KeyDefinition newKey = new KeyDefinition(KeyCommons.sLastSymbolDefined, type, hitbox);
 			KeyCommons.addKeyDefinition(returnKey, newKey);
 			KeyCommons.mLastKeyDefined = newKey;

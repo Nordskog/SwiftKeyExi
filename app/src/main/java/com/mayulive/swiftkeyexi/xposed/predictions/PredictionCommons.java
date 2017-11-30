@@ -93,7 +93,7 @@ public class PredictionCommons
 				mPrevCandidateList = candidatesList;
 
 				//PredictionCommons.mLastCandidateResultType = param.args[1];
-				CandidateManager.clearFluencyMap();
+				CandidateManager.clearSelectedShortcutMap();
 
 				if (candidatesList != null && !candidatesList.isEmpty())
 				{
@@ -300,8 +300,7 @@ public class PredictionCommons
 					//Only normal shortcuts, this will be a raw candidate through-and-through.
 					//No mapping shenanigans going on down the line
 
-					Object newCandidate = CandidateManager.getRawInstance(primCan, lastInput,false);
-
+					Object newCandidate = CandidateManager.getClipboardCandidate(primCan, lastInput, lastInput);
 
 					try
 					{
@@ -405,12 +404,12 @@ public class PredictionCommons
 
 				DB_DictionaryWordItem word = shortcut.get_items().get(0);
 
-				//String wordString = matchCase(candidate.toString(), word.get_text()) + trailingSep;
-				String wordString = matchCase(  CandidateManager.getCandidateText(candidate), word.get_text());
+				String candidateText = CandidateManager.getCandidateText(candidate);
+				String wordString = matchCase(  candidateText, word.get_text());
 				if (addSpace)
 					wordString += trailingSep;
 
-				newCandidate = CandidateManager.getRawInstance(candidate, wordString,false);
+				newCandidate = CandidateManager.getClipboardCandidate(candidate, candidateText, wordString);
 
 				CandidateManager.candidate_setTrailingSeparatorMethod.invoke(newCandidate, trailingSep);
 
@@ -429,7 +428,7 @@ public class PredictionCommons
 
 		boolean isSuggestion = false;
 
-		CandidateManager.clearFluencyMap();
+		CandidateManager.clearSelectedShortcutMap();
 
 		if ( candidates != null && !candidates.isEmpty() && PredictionCommons.shortcutsExist() )
 		{
@@ -462,7 +461,8 @@ public class PredictionCommons
 					}
 
 					boolean predictionAllowedIfFlow = (PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow
-														&& PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow_success )
+														&& PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow_success
+														&&	PredictionCommons.mLastCandidateResultType != PredictionClassManager.resultTypeEnum_flow_liftoff)
 														|| Settings.FLOW_SUGGESTIONS_ENABLED;
 
 
@@ -532,7 +532,7 @@ public class PredictionCommons
 
 							String wordString = matchCase(lastInput, word.get_text());
 
-							Object exiCandidate = CandidateManager.getRawInstance(primaryCandidate, wordString,true, shortcut, word);
+							Object exiCandidate = CandidateManager.getClipboardCandidate(primaryCandidate, lastInput, wordString, shortcut, word);
 							CandidateManager.candidate_setTrailingSeparatorMethod.invoke(exiCandidate,trailingSeparator);
 
 							candidates.add(i+offset, exiCandidate);
@@ -568,7 +568,7 @@ public class PredictionCommons
 
 							String wordString = matchCase(lastInput, word.get_text());
 
-							Object exiCandidate = CandidateManager.getRawInstance(primaryCandidate, wordString,true, shortcut, word);
+							Object exiCandidate = CandidateManager.getClipboardCandidate(primaryCandidate, lastInput, wordString, shortcut, word);
 							CandidateManager.candidate_setTrailingSeparatorMethod.invoke(exiCandidate,trailingSeparator);
 
 							candidates.add(i, exiCandidate);
@@ -580,8 +580,6 @@ public class PredictionCommons
 							candidates.add(1, verbatim);
 						}
 					}
-
-
 				}
 			}
 			catch(Exception ex)

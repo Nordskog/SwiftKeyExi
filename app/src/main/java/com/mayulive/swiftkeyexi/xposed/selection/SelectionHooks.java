@@ -5,11 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
+import com.mayulive.swiftkeyexi.xposed.predictions.PredictionSetup;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -155,7 +158,8 @@ public class SelectionHooks
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
 					//Call if pointer down on overlay, or <100ms since end of swipe selection event
-					if (SelectionState.mValidFirstDown || (System.currentTimeMillis() - SelectionState.mSwipeEndTime) < 100 )
+					if ( Settings.DISABLE_CURSOR_JUMPING ||
+							(SelectionState.mValidFirstDown || (System.currentTimeMillis() - SelectionState.mSwipeEndTime) < 100 ) )
 					{
 						param.setResult(false);
 					}
@@ -163,11 +167,6 @@ public class SelectionHooks
 			});
 		}
 	}
-
-
-
-
-
 
 
 	public static void hookAll(final PackageTree param)
@@ -204,28 +203,16 @@ public class SelectionHooks
 						}
 					});
 
-					KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+					Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 					{
-						@Override public void beforeKeyboardClosed() {}
-
 						@Override
-						public void keyboardInvalidated()
-						{
-
-						}
-
-						@Override public void afterKeyboardConfigurationChanged() {}
-
-						@Override
-						public void beforeKeyboardOpened()
+						public void OnSettingsUpdated()
 						{
 							SelectionSetup.populateActions();
 							SelectionSetup.populateKeys();
 							SelectionSetup.populateQuickMenu();
 						}
-
 					});
-
 
 					KeyCommons.addOnKeyDownListener(new KeyCommons.OnKeyDownListener()
 					{

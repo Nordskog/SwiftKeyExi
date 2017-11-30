@@ -4,10 +4,13 @@
     <color name="global_background_color">#232323</color>
     <color name="standard_text_color">#777777</color>
 
+    <!-- Constant shared colors -->
+    <color name="delete_color_red">#c94e4e</color>
 
     <!-- Duplicate of material colors because kitkat is kitkat. Are these still needed? -->
     <color name="colorAccent">#FFC94E4E</color>
     <color name="accent_material_light_1">#003df5</color>
+
 
 
     <color name="transparent">#00FFFFFF</color>

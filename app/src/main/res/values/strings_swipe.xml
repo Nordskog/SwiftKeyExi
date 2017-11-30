@@ -15,6 +15,7 @@
     <string name="swipe_mode_hold_any">Hold any and swipe</string>
     <string name="swipe_mode_hold_shift">Hold shift and swipe</string>
     <string name="swipe_mode_disabled">Disabled</string>
+    <string name="swipe_mode_number_row">Swipe on number row</string>
 
     <string name="selection_mode_shift_delete">From Shift / Delete</string>
     <string name="selection_mode_two_finger">Two-finger gesture</string>

@@ -18,6 +18,7 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysHooks;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionHooks;
+import com.mayulive.swiftkeyexi.xposed.sound.SoundHooks;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ public class Hooks
 
 	//Predictions
 	public static HookCategory predictionHooks_more = new HookCategory("PredictionHooks More");
-	public static HookCategory predictionHooks_base = new HookCategory("PredictionHooks", predictionHooks_more);
+	public static HookCategory predictionHooks_priority = new HookCategory("PredictionHooks Priority");
+	public static HookCategory predictionHooks_base = new HookCategory("PredictionHooks", predictionHooks_more, predictionHooks_priority);
 	public static HookCategory predictionHooks_candidate = new HookCategory("PredictionHooks Candidate", predictionHooks_base);
 
 	//Selection
@@ -47,6 +49,7 @@ public class Hooks
 	public static HookCategory popupHooks_read = new HookCategory("PopupHooks Read", popupHooks_modify);
 
 	//Emoji
+	public static HookCategory gifHooksNSFW = new HookCategory("GifHooks NSFW");
 	public static HookCategory emojiHooks_base = new HookCategory("EmojiHooks Base");
 
 	//Key
@@ -57,13 +60,15 @@ public class Hooks
 	public static HookCategory overlayHooks_base = new HookCategory("overlayHooks base");
 
 	//Keyboard
+	public static HookCategory baseHooks_fullscreenMode = new HookCategory("KeyboardHooks fullscreenMode");
 	public static HookCategory baseHooks_theme= new HookCategory("KeyboardHooks Theme");
 	public static HookCategory baseHooks_viewCreated= new HookCategory("KeyboardHooks ViewCreated", overlayHooks_base);
 	public static HookCategory baseHooks_invalidateLayout = new HookCategory("KeyboardHooks InvalidateLayout", popupHooks_modify);
 	public static HookCategory baseHooks_layoutChange = new HookCategory("KeyboardHooks LayoutChange", overlayHooks_base);
 	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 
-
+	//Sound
+	public static HookCategory soundHooks_base = new HookCategory("SoundHooks base");
 
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
@@ -72,7 +77,9 @@ public class Hooks
 																						emojiHooks_base,
 																						predictionHooks_base,
 																						baseHooks_punctuationSpace,
-																						baseHooks_theme
+																						baseHooks_theme,
+																						soundHooks_base,
+																						baseHooks_fullscreenMode
 	);
 
 	public static class HookCategory extends ArrayList<XC_MethodHook.Unhook>
@@ -196,6 +203,8 @@ public class Hooks
 
 			//No a hook, just sets a listener
 			preventPeriodHook();
+
+			SoundHooks.hookAll(classTree);
 
 			//Emojis do not depend on anything else
 			EmojiHooks.HookAll(classTree);

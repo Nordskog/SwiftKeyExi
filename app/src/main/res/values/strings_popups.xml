@@ -12,4 +12,7 @@
     <string name="popups_parent_delete_existing_short">Delete existing</string>
     <string name="popups_parent_keep_existing_short">Keep existing</string>
 
+    <string name="popups_lower_case_hint">Lower Case</string>
+    <string name="popups_upper_case_hint">Upper Case</string>
+
 </resources>

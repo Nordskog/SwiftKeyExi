@@ -1,5 +1,8 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
@@ -17,9 +20,11 @@ import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -37,8 +42,6 @@ public class KeyboardHooks
 	//Keyboard service created
 	public static Set<XC_MethodHook.Unhook> hookServiceCreated() throws NoSuchMethodException
 	{
-
-
 		return XposedBridge.hookAllConstructors(KeyboardClassManager.keyboardServiceClass, new XC_MethodHook()
 		{
 			@Override
@@ -92,11 +95,11 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
+					Settings.updateSettingsFromProvider(ContextUtils.getHookContext());
+
 					//Something may trigger the keyboard to close without the user interacting with it,
 					//which would leave our popups visible when it is opened next.
 					OverlayCommons.clearPopups();
-
-					KeyboardMethods.loadSettings(ContextUtils.getHookContext());
 
 					if (!NormalEmojiItem.isAssetsLoaded())
 					{
@@ -108,13 +111,6 @@ public class KeyboardHooks
 						listener.beforeKeyboardOpened();
 					}
 
-					//At this point any changes that require data to be read from exi's database should have completed.
-					//If they require the keyboard to be reloaded, do so.
-					if (Settings.request_KEYBOARD_RELOAD)
-					{
-						Settings.request_KEYBOARD_RELOAD = false;
-						KeyboardMethods.requestKeyboardReload();
-					}
 				}
 
 				@Override
@@ -278,6 +274,35 @@ public class KeyboardHooks
 		});
 	}
 
+	private static XC_MethodHook.Unhook hookFullscreen(PackageTree param)
+	{
+		return XposedBridge.hookMethod(KeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				if (Settings.DISABLE_FULLSCREEN_KEYBOARD)
+					param.setResult(false);
+			}
+		});
+	}
+
+	private static XC_MethodHook.Unhook hookPrefChanged()
+	{
+		return XposedBridge.hookMethod(KeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				for (SharedPreferences.OnSharedPreferenceChangeListener listener : KeyboardMethods.mSwiftkeyPrefChangedListeners)
+				{
+					listener.onSharedPreferenceChanged((SharedPreferences)param.args[0], (String)param.args[1]);
+				}
+			}
+		});
+
+	}
+
 	public static boolean HookAll(final PackageTree lpparam)
 	{
 		try
@@ -286,15 +311,18 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
-
-
-
-
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.addAll( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
 
+				Hooks.baseHooks_base.add( hookPrefChanged() );
+
+
+				if (Hooks.baseHooks_fullscreenMode.isRequirementsMet())
+				{
+					hookFullscreen(lpparam);
+				}
 
 				if (Hooks.baseHooks_theme.isRequirementsMet())
 				{
@@ -323,24 +351,15 @@ public class KeyboardHooks
 					Hooks.baseHooks_layoutChange.add( hookLayoutInvalidated(lpparam) );
 				}
 
-				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+				Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 				{
 					@Override
-					public void beforeKeyboardOpened()
+					public void OnSettingsUpdated()
 					{
 						KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
-								KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
+										KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
 								false );
-
-
 					}
-
-					@Override
-					public void beforeKeyboardClosed() {}
-					@Override
-					public void keyboardInvalidated() {}
-					@Override
-					public void afterKeyboardConfigurationChanged() {}
 				});
 
 			}

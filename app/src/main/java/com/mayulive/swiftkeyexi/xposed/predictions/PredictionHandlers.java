@@ -22,6 +22,7 @@ import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -41,156 +42,14 @@ public class PredictionHandlers
 
 	public static void handleCandidateSelectedHook(XC_MethodHook.MethodHookParam param)
 	{
-		if (DebugSettings.DEBUG_PREDICTIONS)
-		{
-			Log.i(LOGTAG, "Entered handle candidate selected");
-		}
-
-
-		if (DebugSettings.DEBUG_PREDICTIONS)
-		{
-			Log.i(LOGTAG ,"Candidate selected. Wrapped count: "+ CandidateManager.getMapSize());
-		}
-
-
 		Object candidate = param.args[PredictionClassManager.handleCandidateClass_CandidateSelectedMethod_CandidateArgPosition];
-		CandidateManager.WrappedCandidate wrapped = CandidateManager.getWrappedCandidate(candidate);
 
-
-		if (DebugSettings.DEBUG_PREDICTIONS)
+		//Check if inserted shortcut
+		CandidateManager.SelectedShortcut selectedShortcut = CandidateManager.getSelectedShortcut(candidate);
+		if (selectedShortcut != null)
 		{
-			Log.i(LOGTAG, "Selected: "+CandidateManager.getCandidateText(candidate)+" : "+System.identityHashCode(candidate));
-		}
-
-
-
-		//We used to clear the fluency map here. It is already cleared when we insert shortcuts,
-		//so it isn't necessary. Normally leaving it was just fine, but at some point swiftkey started
-		//calling this hook /twice/, and things would break on the second run because we just cleared the map.
-		//CandidateManager.clearFluencyMap();
-
-		if (wrapped != null)
-		{
-			if (DebugSettings.DEBUG_PREDICTIONS)
-			{
-				Log.i(LOGTAG, "Got wrapped candidate: "+wrapped.toString());
-			}
-
-			//If enabled, update priority as time
-			//TODO add pref, maybe?
-			wrapped.updateTime();
-
-			//We only want to map raw candidates, ie our inserted ones.
-			//The mappings will also contain a mapping of primary candidate -> first inserted candidate
-			//for when the user is flowing and this method is never called.
-			if (CandidateManager.rawCandidateClass.isAssignableFrom( candidate.getClass() ))
-			{
-
-				if (DebugSettings.DEBUG_PREDICTIONS)
-				{
-					Log.e(LOGTAG, "Wrapped candidate was raw, adding reverse mapping");
-					Log.e(LOGTAG, "Key hash: "+CandidateManager.getHash(wrapped));
-					Log.e(LOGTAG, "Value hash: "+CandidateManager.getHash(candidate));
-				}
-
-
-				//Reverse the mapping so we can identify our inserted candidate
-				//using the wrapped, original candidate
-				CandidateManager.clearFluencyMap();
-				CandidateManager.addToMap(wrapped.candidate, new CandidateManager.WrappedCandidate(candidate) );
-
-				//Pass the original candidate
-				param.args[PredictionClassManager.handleCandidateClass_CandidateSelectedMethod_CandidateArgPosition] = wrapped.candidate;
-
-				Method superMethod = (Method)param.method;
-
-				try
-				{
-					Object superResult = superMethod.invoke(param.thisObject, param.args);
-					param.setResult(superResult);
-				}
-				catch (Throwable ex)
-				{
-					Hooks.predictionHooks_base.invalidate(ex, "Failed to call Candidate Selected super method");
-				}
-			}
-			else
-			{
-				//Log.e("###", "Clicked candidate was not raw candidate, skipping.");
-			}
-		}
-	}
-
-	public static void handleTextCommitHook(XC_MethodHook.MethodHookParam param, int candidateArgPo)
-	{
-
-
-
-		//Log.e("###", "Arg 3 type: "+param.args[3].getClass().getCanonicalName());
-		//Object arg3 = param.args[3];
-		//CodeUtils.printFieldValues(arg3.getClass(),arg3);
-
-		if (DebugSettings.DEBUG_PREDICTIONS)
-		{
-			Log.i(LOGTAG, "Entered commit text");
-		}
-
-		Object candidate = param.args[candidateArgPo];
-		Object wrapped = null;
-
-		if (DebugSettings.DEBUG_PREDICTIONS)
-		{
-			if (candidate != null)
-			{
-				Log.i(LOGTAG,"Candidate is: "+CandidateManager.getCandidateText( candidate));
-			}
-			else
-			{
-				Log.i(LOGTAG, "Candidate was empty!");
-			}
-		}
-
-		{
-
-			CandidateManager.WrappedCandidate wrapper = CandidateManager.getWrappedCandidate(candidate);
-			if (wrapper != null)
-				wrapped = CandidateManager.getWrappedCandidate(candidate).candidate;
-
-			if (DebugSettings.DEBUG_PREDICTIONS)
-			{
-				Log.i(LOGTAG,"Checking for normal candidate before commiting text");
-				Log.i(LOGTAG, "Key: "+CandidateManager.getHash(candidate));
-				Log.i(LOGTAG, "Values: ");
-				CandidateManager.printMap();
-
-				Log.i(LOGTAG, "Got object: "+CandidateManager.getHash(wrapped));
-			}
-		}
-
-
-
-		if (wrapped != null)
-		{
-			if (DebugSettings.DEBUG_PREDICTIONS)
-			{
-				Log.i(LOGTAG, "Got wrapped candidate, replacing.");
-			}
-
-			param.args[candidateArgPo] = wrapped;
-
-			Method superMethod = (Method)param.method;
-
-			try
-			{
-				param.setResult(superMethod.invoke(param.thisObject, param.args));
-			}
-			catch (Exception ex)
-			{
-
-				Log.e(LOGTAG, "Failed to call super in TextCommit. Shortkey will not be inserted");
-
-			}
-
+			//Update priority
+			selectedShortcut.updateTime();
 		}
 	}
 
@@ -568,7 +427,7 @@ public class PredictionHandlers
 					Log.i(LOGTAG, "Returning top with flow shortcut insert");
 				}
 
-				CandidateManager.clearFluencyMap();
+				CandidateManager.clearSelectedShortcutMap();
 
 				Object candidate = candidatesList.get(0);
 				Object insertedCandidate = null;

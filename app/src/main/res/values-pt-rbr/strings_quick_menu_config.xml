@@ -4,4 +4,5 @@
   <string name="action_choose_color">Escolher cor</string>
   <string name="quickmenu_highlight_color">Destacar</string>
   <string name="quickmenu_text_size">Tamanho</string>
+  <string name="quickmenu_display_Text">Exibir</string>
 </resources>

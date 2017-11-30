@@ -21,7 +21,15 @@ public class SwipeOverlay extends FrameLayout
 			@Override
 			public boolean onTouch(View v, MotionEvent event)
 			{
-				return SelectionMethods.handleMotionEvent(SwipeOverlay.this, event);
+				try
+				{
+					return SelectionMethods.handleMotionEvent(SwipeOverlay.this, event);
+				}
+				catch (Throwable ex)
+				{
+						Hooks.selectionHooks_base.invalidate(ex, "Something went wrong while intercepting touch event");
+						return false;
+				}
 			}
 		});
 	}
