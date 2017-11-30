@@ -953,7 +953,7 @@ public class SelectionMethods
 						int yCursorChange = (int) currentPointerInfo.yCursorDistanceChange;
 
 						//Prioritize horizontal change
-						if ( Math.abs(yCursorChange) > Math.abs(xCursorChange))
+						if ( Math.abs(yCursorChange) > (Math.abs(xCursorChange) * 2f) )
 						{
 							//Update selection so we can check if we can actually move anywhere
 							SelectionState.updateSelection();
