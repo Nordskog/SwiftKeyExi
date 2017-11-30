@@ -10,12 +10,13 @@
   <string name="category_pref_keys">Клавиши</string>
   <!-- App Theme -->
   <string name="pref_app_theme_title">Тема приложения</string>
-  <string name="pref_app_theme_summary">Внешний вид приложения</string>
   <string name="pref_app_theme_value_display_string_LIGHT">Светлая</string>
   <string name="pref_app_theme_value_display_string_DARK">Темная</string>
   <!-- Emoji text size -->
   <string name="pref_emoji_text_size_title">Размер Эмодзи</string>
   <string name="pref_emoji_text_size_summary">Установить размер Эмодзи</string>
+  <!-- fullscreen keyboard -->
+  <!-- Gifs -->
   <!-- Force emoji set -->
   <string name="pref_emoji_force_version_title">Версия Эмодзи</string>
   <string name="pref_emoji_force_version_summary">Использовать Эмодзи из других версий Андроида</string>
@@ -61,6 +62,7 @@
   <!--- Emoji kill switch -->
   <string name="pref_emoji_panel_title">Заменить панель Эмодзи</string>
   <string name="pref_emoji_panel_summary">Использовать панель Exi Эмодзи вместо установленной в SwiftKey по умолчанию</string>
+  <!-- Disable cursor jumping -->
   <!-- Swipe selection -->
   <string name="pref_cursor_speed_title">Скорость курсора</string>
   <string name="pref_cursor_speed_summary">Скорость движения курсора</string>

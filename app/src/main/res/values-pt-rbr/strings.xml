@@ -19,7 +19,7 @@
   <string name="parent_key_title">Tecla Principal</string>
   <string name="key_type_title">Tipo de Tecla</string>
   <string name="modifier_title">Modificador</string>
-  <string name="action_warning_message">Tem certeza?\"</string>
+  <string name="action_warning_message">Tem certeza?</string>
   <!-- Main tab layout  -->
   <string name="tab_name_dictionary">Atalhos</string>
   <string name="tab_name_emoji">Emoji</string>

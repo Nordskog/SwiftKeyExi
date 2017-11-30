@@ -35,12 +35,12 @@
 
     <!-- Gifs -->
     <string name="pref_gifs_enable_nsfw_key">pref_gifs_enable_nsfw</string>
-    <string name="pref_gifs_enable_nsfw_title">NSFW gifs</string>
-    <string name="pref_gifs_enable_nsfw_summary">Display NSFW gifs</string>
+    <string name="pref_gifs_enable_nsfw_title">NSFW GIFs</string>
+    <string name="pref_gifs_enable_nsfw_summary">Display NSFW GIFs</string>
 
     <string name="pref_gifs_more_sources_key">pref_gifs_more_sources</string>
     <string name="pref_gifs_more_sources_title">More sources</string>
-    <string name="pref_gifs_more_sources_summary">Display gifs from more sites</string>
+    <string name="pref_gifs_more_sources_summary">Display GIFs from more sites</string>
 
     <!-- Force emoji set -->
     <string name="pref_emoji_force_version_key">pref_emoji_force_version</string>
