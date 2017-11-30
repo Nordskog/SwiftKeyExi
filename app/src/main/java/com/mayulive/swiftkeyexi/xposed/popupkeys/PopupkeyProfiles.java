@@ -18,7 +18,7 @@ public class PopupkeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.f.h.m$1");
+		newProfile.setFullPath("com.touchtype.keyboard.h.h.m$1");
 		newProfile.setKnownPath("com.touchtype.keyboard");
 
 		newProfile.setMinDepth(3);
@@ -362,7 +362,7 @@ public class PopupkeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.f.h");
+		newProfile.setFullPath("com.touchtype.keyboard.h.j");
 		newProfile.setKnownPath("com.touchtype.keyboard");
 
 		newProfile.setMinDepth(1);
@@ -442,10 +442,14 @@ public class PopupkeyProfiles
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT ),
 
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -455,9 +459,8 @@ public class PopupkeyProfiles
 										PRIVATE | EXACT ,
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(java.lang.Float.class),
-										new ClassItem(java.lang.Float.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -469,8 +472,7 @@ public class PopupkeyProfiles
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem(java.lang.Float.class),
-										new ClassItem(java.lang.Float.class),
-										new ClassItem(boolean.class)
+										new ClassItem(java.lang.Float.class)
 
 								),
 
@@ -481,11 +483,24 @@ public class PopupkeyProfiles
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(java.lang.Float.class),
+										new ClassItem(java.lang.Float.class),
 										new ClassItem(boolean.class)
 
 								),
 
 						//Method #5: a
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #6: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -498,7 +513,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #6: a
+						//Method #7: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -511,7 +526,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #7: a
+						//Method #8: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -524,7 +539,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #8: a
+						//Method #9: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -534,7 +549,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #9: a
+						//Method #10: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -544,7 +559,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #10: a
+						//Method #11: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -556,7 +571,22 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #11: b
+						//Method #12: b
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #13: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -567,7 +597,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #12: e
+						//Method #14: e
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -575,7 +605,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #13: A
+						//Method #15: A
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -586,7 +616,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #14: B
+						//Method #16: B
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -597,7 +627,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #15: C
+						//Method #17: C
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -608,7 +638,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #16: D
+						//Method #18: D
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -619,7 +649,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #17: E
+						//Method #19: E
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -630,7 +660,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #18: F
+						//Method #20: F
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -641,7 +671,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #19: G
+						//Method #21: G
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -652,18 +682,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #20: H
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #21: a
+						//Method #22: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -671,7 +690,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #22: a
+						//Method #23: a
 						new MethodProfile
 								(
 										EXACT ,
@@ -682,17 +701,6 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #23: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
 						//Method #24: a
 						new MethodProfile
 								(
@@ -700,8 +708,7 @@ public class PopupkeyProfiles
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(android.graphics.Typeface.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -713,7 +720,7 @@ public class PopupkeyProfiles
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.common" , PUBLIC | FINAL | EXACT )
+										new ClassItem(android.graphics.Typeface.class)
 
 								),
 
@@ -725,7 +732,7 @@ public class PopupkeyProfiles
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("com.touchtype.common" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -737,11 +744,23 @@ public class PopupkeyProfiles
 
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
 						//Method #28: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #29: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -753,7 +772,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #29: a
+						//Method #30: a
 						new MethodProfile
 								(
 										EXACT ,
@@ -764,7 +783,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #30: a
+						//Method #31: a
 						new MethodProfile
 								(
 										EXACT ,
@@ -777,7 +796,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #31: a
+						//Method #32: a
 						new MethodProfile
 								(
 										EXACT ,
@@ -790,7 +809,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #32: a
+						//Method #33: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -799,17 +818,6 @@ public class PopupkeyProfiles
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem(java.util.List.class),
 										new ClassItem(android.graphics.RectF.class)
-
-								),
-
-						//Method #33: b
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -819,7 +827,6 @@ public class PopupkeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
@@ -829,11 +836,23 @@ public class PopupkeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem(java.util.Set.class)
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #36: b
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(java.util.Set.class)
+
+								),
+
+						//Method #37: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -845,22 +864,11 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #37: c
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
 						//Method #38: c
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -870,13 +878,24 @@ public class PopupkeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #40: c
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
+
+								),
+
+						//Method #41: c
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -888,21 +907,10 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #41: d
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
-
-								),
-
 						//Method #42: d
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
@@ -913,13 +921,24 @@ public class PopupkeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
+
+								),
+
+						//Method #44: d
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #44: e
+						//Method #45: e
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -930,7 +949,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #45: f
+						//Method #46: f
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -941,7 +960,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #46: g
+						//Method #47: g
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -952,7 +971,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #47: h
+						//Method #48: h
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -963,7 +982,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #48: i
+						//Method #49: i
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -974,7 +993,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #49: j
+						//Method #50: j
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -985,7 +1004,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #50: k
+						//Method #51: k
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -996,7 +1015,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #51: l
+						//Method #52: l
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1007,7 +1026,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #52: m
+						//Method #53: m
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1018,7 +1037,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #53: n
+						//Method #54: n
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1029,7 +1048,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #54: o
+						//Method #55: o
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1040,7 +1059,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #55: p
+						//Method #56: p
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1051,7 +1070,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #56: q
+						//Method #57: q
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1062,7 +1081,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #57: r
+						//Method #58: r
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1073,7 +1092,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #58: s
+						//Method #59: s
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1084,7 +1103,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #59: t
+						//Method #60: t
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1095,7 +1114,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #60: u
+						//Method #61: u
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1106,7 +1125,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #61: v
+						//Method #62: v
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1117,7 +1136,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #62: w
+						//Method #63: w
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1128,7 +1147,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #63: x
+						//Method #64: x
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1139,7 +1158,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #64: y
+						//Method #65: y
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1150,7 +1169,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #65: z
+						//Method #66: z
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,

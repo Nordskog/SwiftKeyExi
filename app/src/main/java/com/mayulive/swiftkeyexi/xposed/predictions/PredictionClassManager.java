@@ -322,9 +322,7 @@ public class PredictionClassManager
 									new ClassItem(android.content.Context.class),
 									new ClassItem(android.widget.LinearLayout.class),
 									new ClassItem(android.view.View.class),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT )
+									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 							),
 					candidatesViewFactory.getDeclaredMethods(), candidatesViewFactory);
 
