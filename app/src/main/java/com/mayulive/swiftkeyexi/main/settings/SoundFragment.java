@@ -101,7 +101,11 @@ public class SoundFragment extends PreferenceFragmentCompat
 		Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
-		intent.setType("audio/mpeg");
+
+		//audio/* does not include ogg/oga.
+		intent.setType("*/*");
+		String[] mimetypes = {"audio/*", "application/ogg", "application/oga"};
+		intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
 
 		startActivityForResult(intent, requestCode);
 	}
