@@ -28,6 +28,10 @@ public abstract class popupkeysEntryDialog
 
 	private void setButtonListeners(final PopupkeysPositionWidget widget, final EditText lowerEditText, final EditText upperEditText)
 	{
+
+		//Get a copy of the original hint for upper
+		final CharSequence originalUpper = upperEditText.getHint();
+
 		lowerEditText.addTextChangedListener(new TextWatcher()
 		{
 			@Override
@@ -41,10 +45,17 @@ public abstract class popupkeysEntryDialog
 			{
 				widget.setSelectedKeyText(s.toString().trim());
 
-				if (upperEditText.getText().length() <= 0)
+				if (s.length() > 0)
 				{
+					//Set upper case of lower
 					upperEditText.setHint(s.toString().toUpperCase());
 				}
+				else
+				{
+					//Restore origina lhint
+					upperEditText.setHint(originalUpper);
+				}
+
 			}
 
 			@Override

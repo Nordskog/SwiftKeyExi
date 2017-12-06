@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.3.1] - 06-11-2017
+
+### Changed
+- Device will now vibrate when you input an emoji
+- Shortcuts will no longer be ellipsized
+- Translations updated, Russian/Polish now complete
+- More file types allowed when selecting custom sounds
 
 ## [1.3.0] - 30-11-2017
 
