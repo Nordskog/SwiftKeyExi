@@ -23,7 +23,7 @@
   <!-- Main tab layout  -->
   <string name="tab_name_dictionary">Raccourcis</string>
   <string name="tab_name_emoji">Emoji</string>
-  <string name="tab_name_hotkeys">Raccourcis</string>
+  <string name="tab_name_hotkeys">Racc. clavier</string>
   <string name="tab_name_popups">Popups</string>
   <string name="tab_name_swipe">Glisser</string>
   <string name="title_activity_compat_settings">Paramètres</string>

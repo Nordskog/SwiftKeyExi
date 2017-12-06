@@ -9,4 +9,6 @@
   <string name="popups_parent_keep_existing_long">Сохранить существующие всплывающие символы</string>
   <string name="popups_parent_delete_existing_short">Удалить</string>
   <string name="popups_parent_keep_existing_short">Сохранить</string>
+  <string name="popups_lower_case_hint">Нижний регистр</string>
+  <string name="popups_upper_case_hint">Верхний регистр</string>
 </resources>

@@ -9,15 +9,23 @@
   <string name="category_pref_app">Aplikacja</string>
   <string name="category_pref_keys">Klawisze</string>
   <string name="category_pref_audio">Dźwięk</string>
+  <string name="category_pref_gifs">Animacje</string>
   <!-- App Theme -->
   <string name="pref_app_theme_title">Motyw aplikacji</string>
+  <string name="pref_app_theme_summary">Wygląd aplikacji</string>
   <string name="pref_app_theme_value_display_string_LIGHT">Jasny</string>
   <string name="pref_app_theme_value_display_string_DARK">Ciemny</string>
   <!-- Emoji text size -->
   <string name="pref_emoji_text_size_title">Rozmiar Emotikon</string>
   <string name="pref_emoji_text_size_summary">Jak duża Emotikona pojawi się</string>
   <!-- fullscreen keyboard -->
+  <string name="pref_disable_fullscreen_title">Wyłącz pełny ekran</string>
+  <string name="pref_disable_fullscreen_summary">Zapobiega przechodzeniu klawiatury w tryb pełnego ekranu</string>
   <!-- Gifs -->
+  <string name="pref_gifs_enable_nsfw_title">Animacje NSFW</string>
+  <string name="pref_gifs_enable_nsfw_summary">Wyświetlaj animacje NSFW</string>
+  <string name="pref_gifs_more_sources_title">Więcej źródeł</string>
+  <string name="pref_gifs_more_sources_summary">Wyświetlaj animacje z innych stron</string>
   <!-- Force emoji set -->
   <string name="pref_emoji_force_version_title">Wersja Emotikon</string>
   <string name="pref_emoji_force_version_summary">Użyj Emotikon z różnych wersji Androida</string>
@@ -32,14 +40,18 @@
   <string name="pref_additional_symbol_keys_title">Klawisze Modyfikacji</string>
   <string name="pref_additional_symbol_keys_summary">Dodaj Klawisze Modyfikacji</string>
   <!-- Hotkeys -->
+  <string name="pref_space_swipe_modifier_mode_title">Tryb skrótu przesunięcia po spacji</string>
   <string name="pref_space_swipe_modifier_mode_summary">Zachowanie podczas przesuwania palcem ze Spacji</string>
   <string name="pref_space_swipe_modifier_mode_display_string_MENU">Szybkie Menu</string>
+  <string name="pref_space_swipe_modifier_mode_display_string_KEY">Gest na skrócie</string>
   <string name="pref_space_swipe_modifier_mode_display_string_DISABLED">Wyłączone</string>
   <string name="pref_shortcut_keys_toggle_title">Skróty klawiszowe</string>
   <string name="pref_shortcut_keys_toggle_summary">Przełącz skróty klawiszowe</string>
   <!-- Suggestions -->
   <string name="pref_more_suggestions_title">Więcej podpowiedzi</string>
   <string name="pref_more_suggestions_summary">Wyświetl więcej podpowiedzi</string>
+  <string name="pref_flow_suggestions_title">Skróty gestami</string>
+  <string name="pref_flow_suggestions_summary">Dodaj skróty dla gestów</string>
   <string name="pref_prediction_suggestions_title">Skróty podpowiedzi</string>
   <string name="pref_prediction_suggestions_summary">Skróty również przywołują podpowiedzi</string>
   <string name="pref_disable_auto_correct_on_cursor_move_title">Brak automatycznej korekty po przesunięciu</string>
@@ -49,18 +61,26 @@
   <string name="pref_disable_punctuation_autospace_title">Brak auto-spacji po znaku interpunkcyjnym</string>
   <string name="pref_disable_punctuation_autospace_summary">Spacja nie zostanie dodana po znaku interpunkcyjnym</string>
   <string name="pref_dictionary_toggle_title">Słownik</string>
+  <string name="pref_dictionary_toggle_summary">Przełączanie skrótów niestandardowych słowników</string>
   <!-- Swipe behavior -->
+  <string name="pref_old_flow_behavior_title">Użyj starego zachowania gestów</string>
   <string name="pref_old_flow_behavior_summary">Przewiduj następne zamiast poprawnego ostatniego</string>
   <!-- Period button -->
+  <string name="pref_disable_period_click_title">Wyłącz okres dotknięcia</string>
+  <string name="pref_disable_period_click_summary">Zamiast tego należy kliknąć</string>
   <!--- Emoji kill switch -->
   <string name="pref_emoji_panel_title">Użyj panelu Emotikon Exi</string>
   <string name="pref_emoji_panel_summary">Włącz dostosowywanie panelu Emotikon</string>
   <!-- Disable cursor jumping -->
+  <string name="pref_disable_jumping_cursor_title">Wyłącz przeskakiwanie kursora</string>
+  <string name="pref_disable_jumping_cursor_summary">Zatrzymaj przeskakiwanie kursora na koniec wyrazu</string>
   <!-- Swipe selection -->
   <string name="pref_cursor_speed_title">Szybkość kursora</string>
   <string name="pref_cursor_speed_summary">Jak szybko porusza się kursor</string>
   <string name="pref_swipe_threshold_title">Próg gestu</string>
+  <string name="pref_swipe_threshold_summary">Ruch wymagany, aby wejść w tryb gestów</string>
   <string name="pref_cursor_behavior_title">Zachowanie kursora</string>
+  <string name="pref_cursor_behavior_summary">Jak kursor reaguje na gesty</string>
   <string name="pref_cursor_behavior_dialog_title">Zachowanie kursora</string>
   <string name="pref_selection_behavior_title">Zachowanie zaznaczenia</string>
   <string name="pref_selection_behavior_summary">Jak zaznaczasz tekst</string>

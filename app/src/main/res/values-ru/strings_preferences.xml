@@ -8,15 +8,24 @@
   <string name="category_pref_misc">Разное</string>
   <string name="category_pref_app">Приложение</string>
   <string name="category_pref_keys">Клавиши</string>
+  <string name="category_pref_audio">Аудио</string>
+  <string name="category_pref_gifs">GIF-файлы</string>
   <!-- App Theme -->
   <string name="pref_app_theme_title">Тема приложения</string>
+  <string name="pref_app_theme_summary">Внешний вид приложения</string>
   <string name="pref_app_theme_value_display_string_LIGHT">Светлая</string>
   <string name="pref_app_theme_value_display_string_DARK">Темная</string>
   <!-- Emoji text size -->
   <string name="pref_emoji_text_size_title">Размер Эмодзи</string>
   <string name="pref_emoji_text_size_summary">Установить размер Эмодзи</string>
   <!-- fullscreen keyboard -->
+  <string name="pref_disable_fullscreen_title">Отключить полноэкранный режим</string>
+  <string name="pref_disable_fullscreen_summary">Запретить переход в полноэкранный режим редактирования текста. В альбомной ориентации блокируется полноэкранное поле ввода текста, и отображается текущий интерфейс приложения</string>
   <!-- Gifs -->
+  <string name="pref_gifs_enable_nsfw_title">NSFW GIF-файлы / контент 18+</string>
+  <string name="pref_gifs_enable_nsfw_summary">Отображать NSFW GIF-файлы</string>
+  <string name="pref_gifs_more_sources_title">Дополнительные источники</string>
+  <string name="pref_gifs_more_sources_summary">Отображать GIF-файлы из дополнительных источников</string>
   <!-- Force emoji set -->
   <string name="pref_emoji_force_version_title">Версия Эмодзи</string>
   <string name="pref_emoji_force_version_summary">Использовать Эмодзи из других версий Андроида</string>
@@ -63,6 +72,8 @@
   <string name="pref_emoji_panel_title">Заменить панель Эмодзи</string>
   <string name="pref_emoji_panel_summary">Использовать панель Exi Эмодзи вместо установленной в SwiftKey по умолчанию</string>
   <!-- Disable cursor jumping -->
+  <string name="pref_disable_jumping_cursor_title">Отключить перемещение курсора</string>
+  <string name="pref_disable_jumping_cursor_summary">Запретить перемещение курсора к концу слова. После прикосновения к экрану курсор не смещается в конец слова как по умолчанию в Swifkey</string>
   <!-- Swipe selection -->
   <string name="pref_cursor_speed_title">Скорость курсора</string>
   <string name="pref_cursor_speed_summary">Скорость движения курсора</string>
