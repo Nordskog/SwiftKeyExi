@@ -1,7 +1,9 @@
 package com.mayulive.swiftkeyexi.xposed.emoji;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
@@ -13,6 +15,7 @@ import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
+import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
@@ -90,9 +93,13 @@ public class EmojiCommons
 	}
 
 	//Will usually use panel style rather than item style
+	@SuppressLint("MissingPermission")
 	public static void handleEmojiClick(DB_EmojiItem item, int style, boolean sourceIsRecentView)
 	{
 		inputText(item.get_text());
+
+		Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
+		v.vibrate(25);
 
 		if (!sourceIsRecentView)
 		{
