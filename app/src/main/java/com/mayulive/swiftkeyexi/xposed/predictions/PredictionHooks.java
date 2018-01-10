@@ -21,6 +21,7 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import android.util.Log;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -146,6 +147,19 @@ public class PredictionHooks
 			return XposedBridge.hookMethod(PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod, new XC_MethodHook()
 					//XposedBridge.hookAllConstructors(keyboardEventClass, new XC_MethodHook()
 			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					//Swiftkey expects the view we are moving into a container to not have a parent, so
+					//make sure we remove it from our container. This is set again below in after.
+					if (PredictionCommons.mKview != null && PredictionCommons.mKview.isAttachedToWindow())
+					{
+						ViewGroup parent = (ViewGroup)PredictionCommons.mKview.getParent();
+						parent.removeView(PredictionCommons.mKview);
+						PredictionCommons.mKview = null;
+					}
+				}
+
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{

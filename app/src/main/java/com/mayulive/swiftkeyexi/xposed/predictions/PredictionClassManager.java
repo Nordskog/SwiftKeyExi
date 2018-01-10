@@ -122,6 +122,7 @@ public class PredictionClassManager
 
 	protected static int[] getViewMethod_CandidateViewClassConstructorArgPositions;
 	protected static int getViewMethod_EnumArgPosition;
+	protected static int getViewMethod_BooleanArgPosition = 5;
 
 	protected static int UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition = 1;
 	protected static int UpdateCandidateTaskClass_getTopCandidateMethod_intPosition = 4;
@@ -338,6 +339,7 @@ public class PredictionClassManager
 		{
 			getViewMethod_CandidateViewClassConstructorArgPositions = ProfileHelpers.findParameterPositions(candidateViewClass_Constructor.getParameterTypes(), candidatesViewFactory_getViewMethod.getParameterTypes());
 			getViewMethod_EnumArgPosition = ProfileHelpers.findFirstClassIndex(new ClassItem(Modifiers.ENUM), candidateViewClass_Constructor.getParameterTypes(), null);
+			getViewMethod_BooleanArgPosition = ProfileHelpers.findFirstClassIndex(new ClassItem(boolean.class), candidateViewClass_Constructor.getParameterTypes(), null);
 		}
 
 
