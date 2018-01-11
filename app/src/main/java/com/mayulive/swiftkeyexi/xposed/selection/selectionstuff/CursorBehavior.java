@@ -10,5 +10,10 @@ public enum CursorBehavior
 	HOLD_SHIFT_SWIPE,
 	HOLD_ANY_SWIPE,
 	SPACE_SWIPE,
-	NUMBER_ROW_SWIPE
+	NUMBER_ROW_SWIPE;
+
+	public boolean isMultiKey()
+	{
+		return this == HOLD_SHIFT_SWIPE ||  this == HOLD_ANY_SWIPE;
+	}
 }

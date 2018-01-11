@@ -93,7 +93,6 @@ public class KeyHooks
 					{
 						if (KeyCommons.mCancelNextKey || KeyCommons.mCancelAllKeys)
 						{
-
 							//Log.e("###", "maybe cancel normal button tap");
 							//We set this bool to true on ACTION_UP of the primary pointer.
 							//In theory we only set it when we know it's going to trigger a button tap,
@@ -102,12 +101,23 @@ public class KeyHooks
 
 							if ( (currentTime - KeyCommons.mCancelNextKey_RequestTime) < 100 || KeyCommons.mCancelAllKeys)
 							{
-								//Log.e("###", "Cancelling normal button tap");
 								param.setResult(false);
 								KeyCommons.mCancelNextKey = false;
 							}
-							else if (!KeyCommons.mCancelAllKeys)
-								KeyCommons.mCancelNextKey = false;
+							else
+							{
+								if (!KeyCommons.mCancelAllKeys)
+									KeyCommons.mCancelNextKey = false;
+
+								if (KeyCommons.callInputEventListeners())
+								{
+									param.setResult(false);
+								}
+							}
+						}
+						else if( KeyCommons.callInputEventListeners())
+						{
+							param.setResult(false);
 						}
 					}
 					catch (Throwable ex)

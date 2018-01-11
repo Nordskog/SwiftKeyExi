@@ -1072,6 +1072,8 @@ public class SelectionMethods
 		}
 		else if (actionIsCurrent && action == MotionEvent.ACTION_POINTER_UP)
 		{
+			SelectionState.mLastPointerUpTime = System.currentTimeMillis();
+
 			SelectionState.mPointerInformation.remove(pointerID);
 
 			if (pointerID == SelectionState.mPrimaryPointerID)
