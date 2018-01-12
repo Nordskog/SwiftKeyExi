@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewParent;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
@@ -49,8 +51,6 @@ public class PredictionCommons
 
 	protected static long mTimeOfLastInsertException = -1;
 	protected static int mInsertExceptionCount = 0;
-
-	protected static View mKview = null;	//The actual candidate view.
 
 	public static void setSuggestionsPaddingVisibility(boolean visible)
 	{

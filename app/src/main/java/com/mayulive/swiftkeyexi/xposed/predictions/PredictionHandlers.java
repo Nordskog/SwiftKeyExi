@@ -105,57 +105,18 @@ public class PredictionHandlers
 			//Full and compact both and 3 children now. Two-thumb only has two.  Skip if two.
 			if (childFrame.getChildCount() <= 2)
 			{
-				//Log.i(LOGTAG, "Insufficient children, doing nothing");
+				//Log.i(LOGTAG, "Insufficient candidate children, doing nothing");
 				return;
 			}
 
+			//Oddly enough this is still called multiple times after you open another keyboard.
+				//Think it's called for every layout you have accessed in the current session,
+				// so we will return above a lot, even when on a compatible layout.
+
 
 			ViewGroup centerLinear = childFrame;
-			//ViewGroup parentFrame = (ViewGroup)childFrame.getParent();
-
-			//This method now returns a linear layout containing 2... thingies,
-			//with a framelayout containing the candidates view inbetween.
-
 			{
-
-
 				childFrame = (ViewGroup)centerLinear.getChildAt(1);
-
-				//Some changes have been made that cause some of these views to persist.
-				//Childframe should only have a single child, but our old ones may also be present.
-				//Remove any linear layouts or slowrecyclerviews
-				//Realistically we could just leave them where they are in this case but... ehhh...
-				{
-					ArrayList<View> killList = new ArrayList<>();
-					for (int i = 0; i < childFrame.getChildCount(); i++)
-					{
-						Class clazz = childFrame.getChildAt(i).getClass();
-						if (clazz == LinearLayout.class || SlowRecyclerView.class.isAssignableFrom( clazz ))
-						{
-							killList.add(childFrame.getChildAt(i));
-						}
-					}
-
-					for (View view : killList)
-					{
-						if (view.getClass() == LinearLayout.class)
-						{
-							//We kinda left the existing view inside this
-							ViewGroup group = (ViewGroup)view;
-							if (group.getChildCount() > 0)
-							{
-								View kview = group.getChildAt(0);
-								group.removeView(kview);
-								childFrame.addView(kview);
-							}
-						}
-
-						childFrame.removeView(view);
-					}
-
-
-
-				}
 
 				//Try hiding spacers?
 				//Works! Maybe only hide one side like in asian layouts? Hmmm
@@ -174,7 +135,6 @@ public class PredictionHandlers
 
 
 				final View kView = childFrame;
-				PredictionCommons.mKview = kView;
 				centerLinear.removeView(kView);
 
 				ViewGroup.LayoutParams kViewParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
