@@ -28,6 +28,10 @@
         <attr name="bottom_summary" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="ListSummaryPreference">
+        <attr name="summary_list" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="UnitCharDisplayView">
         <attr name="comparison_bar_length" format="dimension" />
     </declare-styleable>

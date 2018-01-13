@@ -17,13 +17,16 @@
         app:bottom_summary="@string/SWIFTKEY_BETA_SUPPORTED_VERSION"
         />
 
+    <com.mayulive.swiftkeyexi.util.view.ListSummaryPreference
+        android:title="@string/pref_about_translators_title"
+        app:summary_list="@array/prefs_about_translators"
+        />
 
     <Preference android:title="@string/pref_about_source_code_title" >
         <intent android:action="android.intent.action.VIEW"
                 android:data="@string/APP_SOURCE_CODE_URL" />
     </Preference>
 
-    <!-- TODO replace with xda thread link -->
     <Preference android:title="@string/pref_about_support_title" >
         <intent android:action="android.intent.action.VIEW"
                 android:data="@string/APP_SUPPORT_URL" />

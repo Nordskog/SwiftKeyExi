@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="prefs_about_translators">
+        <item>alexlong (4pda.ru)</item>
+        <item>X_hunter (xda)</item>
+        <item>Godspley (xda)</item>
+        <item>Primokorn (xda)</item>
+    </string-array>
+
+</resources>
