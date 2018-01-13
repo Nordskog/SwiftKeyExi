@@ -50,6 +50,11 @@
     <string name="pref_emoji_force_version_pre_nougat">Pre Nougat</string>
     <string name="pref_emoji_force_version_post_nougat">Post Nougat</string>
 
+    <!-- Emoji click vibrate -->
+    <string name="pref_emoji_tap_vibrate_key">pref_emoji_tap_vibrate</string>
+    <string name="pref_emoji_tap_vibrate_title">Vibrate on Emoji Tap</string>
+    <string name="pref_emoji_tap_vibrate_summary">Vibrate when tapping an emoji</string>
+
 
     <!-- Key Definitions. Keys are only used to identify menu items  -->
     <string name="pref_additional_shift_keys_key">pref_additional_shift_keys</string>

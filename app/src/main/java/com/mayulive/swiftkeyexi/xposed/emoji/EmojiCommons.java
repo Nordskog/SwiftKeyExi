@@ -98,8 +98,12 @@ public class EmojiCommons
 	{
 		inputText(item.get_text());
 
-		Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
-		v.vibrate(25);
+		if (Settings.EMOJI_TAP_VIBRATE)
+		{
+			Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
+			v.vibrate(25);
+		}
+
 
 		if (!sourceIsRecentView)
 		{

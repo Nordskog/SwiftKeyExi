@@ -5,14 +5,11 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.swiftkeyexi.xposed.emoji.EmojiCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
-import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SelectionBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
@@ -84,6 +81,7 @@ public class Settings
 	public static int QUICK_MENU_HIGHLIGHT_COLOR = 0xFF2d5bc6;
 
 	public static int EMOJI_TEXT_SIZE = 12;
+	public static boolean EMOJI_TAP_VIBRATE = false;
 
 	public static float QUICKMENU_TEXT_SIZE_RATIO = 0.15f;
 
@@ -164,10 +162,12 @@ public class Settings
 		REMOVE_SUGGESTIONS_PADDING = prefs.getBoolean(PreferenceConstants.pref_remove_suggestion_padding_key, false);
 		changed_REMOVE_SUGGESTIONS_PADDING = changed_REMOVE_SUGGESTIONS_PADDING != REMOVE_SUGGESTIONS_PADDING;
 
-		float tempEmojiTextSize = EMOJI_TEXT_SIZE;
-		EMOJI_TEXT_SIZE = prefs.getInt(PreferenceConstants.pref_emoji_text_size_key, 12);
-		changed_EMOJI_TEXT_SIZE = tempEmojiTextSize != EMOJI_TEXT_SIZE;
-
+		{
+			float tempEmojiTextSize = EMOJI_TEXT_SIZE;
+			EMOJI_TEXT_SIZE = prefs.getInt(PreferenceConstants.pref_emoji_text_size_key, 12);
+			changed_EMOJI_TEXT_SIZE = tempEmojiTextSize != EMOJI_TEXT_SIZE;
+		}
+		EMOJI_TAP_VIBRATE = prefs.getBoolean(PreferenceConstants.pref_emoji_tap_vibrate_key, true);
 
 		OLD_FLOW_BEHAVIOR = prefs.getBoolean(PreferenceConstants.pref_old_flow_behavior_key, false);
 		DISABLE_PERIOD_CLICK = prefs.getBoolean(PreferenceConstants.pref_disable_period_click_key, false);
