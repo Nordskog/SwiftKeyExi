@@ -381,9 +381,15 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				}
 
 				//and no clearing stock panels
-				if (keyboardView == null || !keyboardView.getPanelItem().get_source().isEditable())
+				if ( keyboardView == null || !keyboardView.getPanelItem().get_source().isKeyboardClearable() )
 				{
 					keyboardMenuView.getMenu().removeItem(R.id.clear_menu_item);
+				}
+
+				//Recent has dynamic row width
+				if ( keyboardView == null || keyboardView.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
+				{
+					keyboardMenuView.getMenu().removeItem(R.id.column_size_menu_item);
 				}
 
 

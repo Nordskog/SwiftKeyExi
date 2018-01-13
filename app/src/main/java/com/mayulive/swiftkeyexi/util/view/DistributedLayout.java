@@ -94,7 +94,7 @@ public class DistributedLayout extends FrameLayout
 	{
 		while(mChildInfo.size() > getChildCount())
 		{
-			mChildInfo.remove( getChildCount()-1 );
+			mChildInfo.remove( mChildInfo.size()-1 );
 		}
 
 		while(mChildInfo.size() < getChildCount())
