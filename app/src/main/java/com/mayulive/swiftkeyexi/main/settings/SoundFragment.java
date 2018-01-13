@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.main.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -84,17 +85,6 @@ public class SoundFragment extends PreferenceFragmentCompat
 		}
 	}
 
-	//Needed for custom prefs to work... ? I don't even
-	@Override
-	public void onDisplayPreferenceDialog(Preference preference) {
-		DialogFragment fragment;
-		if (preference instanceof NumberPickerPreference) {
-			fragment = NumberPickerPreferenceFragment.newInstance(preference);
-			fragment.setTargetFragment(this, 0);
-			fragment.show(getFragmentManager(),
-					"android.support.v7.preference.PreferenceFragment.DIALOG");
-		} else super.onDisplayPreferenceDialog(preference);
-	}
 
 	void showSelectSoundFileDialog(int requestCode)
 	{
