@@ -81,4 +81,6 @@ public class PreferenceConstants
 	public static final String pref_sound_custom_backspace_path_key = "pref_sound_custom_backspace_path";
 
 	public static final String pref_disable_jumping_cursor_key = "pref_disable_jumping_cursor";
+
+	public static final String pref_keyboard_size_multiplier_key = "pref_keyboard_size_multiplier";
 }

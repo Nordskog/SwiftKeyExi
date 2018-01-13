@@ -60,6 +60,8 @@ public class Settings
 
 	public static boolean DISABLE_FULLSCREEN_KEYBOARD = false;
 
+	public static float KEYBOARD_SIZE_MULTIPLIER = 1;
+
 	//public static boolean SPACE_SWIPE_MODIFIER_ENABLED = true;
 
 	public static SpaceModifierBehavior SPACE_MODIFIER_BEHAVIOR = SpaceModifierBehavior.MENU;
@@ -173,6 +175,16 @@ public class Settings
 		QUICK_MENU_HIGHLIGHT_COLOR = prefs.getInt(PreferenceConstants.pref_quick_menu_color_key, 0xFF2d5bc6);
 		QUICKMENU_TEXT_SIZE_RATIO = prefs.getFloat(PreferenceConstants.pref_hotkey_menu_text_size_key, 0.15f);
 
+
+		{
+			float existingValue = KEYBOARD_SIZE_MULTIPLIER;
+			KEYBOARD_SIZE_MULTIPLIER =  prefs.getFloat(PreferenceConstants.pref_keyboard_size_multiplier_key, 1f);
+			if (existingValue != KEYBOARD_SIZE_MULTIPLIER)
+			{
+				KeyboardMethods.forceKeyboardResize();
+			}
+
+		}
 
 		checkSettingRequirements();
 	}

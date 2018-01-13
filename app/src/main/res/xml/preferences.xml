@@ -94,6 +94,16 @@
     <PreferenceCategory
         android:title="@string/category_pref_misc">
 
+    <com.mayulive.swiftkeyexi.settings.FloatNumberPickerPreference
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:key="@string/pref_keyboard_size_multiplier_key"
+        android:title="@string/pref_keyboard_size_multiplier_title"
+        android:summary="@string/pref_keyboard_size_multiplier_summary"
+        app:appDefaultValueFloat="1"
+        app:minFloat="0.3"
+        app:maxFloat="3"
+        />
+
     <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_disable_punctuation_autospace_key"
         android:title="@string/pref_disable_punctuation_autospace_title"

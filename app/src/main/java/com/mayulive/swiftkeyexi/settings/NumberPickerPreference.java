@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 
 import com.mayulive.swiftkeyexi.R;
 
-public class NumberPickerPreference extends DialogPreference
+public class NumberPickerPreference extends DialogPreference implements NumberPickerPreferenceFragment.NumberPreference
 {
 	protected int mMin, mMax, mCurrentValue;
 
@@ -50,4 +50,33 @@ public class NumberPickerPreference extends DialogPreference
 	}
 
 
+	@Override
+	public int getMin()
+	{
+		return mMin;
+	}
+
+	@Override
+	public int getMax()
+	{
+		return mMax;
+	}
+
+	@Override
+	public int getValue()
+	{
+		return getPersisted();
+	}
+
+	@Override
+	public void persistValue(int val)
+	{
+		persistIntValue(val);
+	}
+
+	@Override
+	public String format(int val)
+	{
+		return String.valueOf(val);
+	}
 }

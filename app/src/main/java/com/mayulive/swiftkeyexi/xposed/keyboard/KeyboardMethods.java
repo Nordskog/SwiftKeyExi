@@ -7,6 +7,7 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 
@@ -141,6 +142,37 @@ public class KeyboardMethods
 		return mIsSymbols;
 	}
 
+	public static void forceKeyboardResize()
+	{
+		try
+		{
+			SharedPreferences prefs = SettingsCommons.getSharedPreferences(ContextUtils.getHookContext(), ExiXposed.getPrefsPath());
+
+			//This is the keyboard size pref, numbers 1-6? 0-5? Int in that range
+			//To force an update we set it to something else, then return it to what it was.
+			//Crude but effective.
+			int existingVal = prefs.getInt("docked_full_portrait", 0);
+			int tempVal = 1;
+			if (existingVal == 1)
+				tempVal = 2;
+
+			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor( ContextUtils.getHookContext(), ExiXposed.getPrefsPath() );
+			//Usage of commit is important, as otherwise the prefchanged callback
+			//only gets called once for the latter change.
+			editor.putInt("docked_full_portrait", tempVal);
+			editor.commit();
+
+			editor.putInt("docked_full_portrait", existingVal);
+			editor.commit();
+
+			//This honestly probably completely redraws the entire keyboard, and could replace requestKeyboardReload below.
+			//The opposite is not true.
+		}
+		catch ( Exception ex)
+		{
+			Log.e(LOGTAG, "Failed to force keyboard resize, user can still change the size manually");
+		}
+	}
 
 	public static void requestKeyboardReload()
 	{

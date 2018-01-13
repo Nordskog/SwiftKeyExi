@@ -11,6 +11,121 @@ import static com.mayulive.xposed.classhunter.Modifiers.*;
 
 public class KeyboardProfiles
 {
+
+	public static ClassProfile get_KEY_HEIGHT_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("com.touchtype.keyboard.m.c");
+		newProfile.setKnownPath("com.touchtype.keyboard");
+
+		newProfile.setMinDepth(1);
+		newProfile.setMaxDepth(1);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//b
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.res.Resources.class)),	//c
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(float.class)
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(int.class)
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(int.class),
+										new ClassItem(boolean.class),
+										new ClassItem(int.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #4: b
+						new MethodProfile
+								(
+										EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.content.res.Resources.class),
+										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
+
 	public static ClassProfile get_BREADCRUMB_CLASS_PROFILE()
 	{
 		ClassProfile newProfile = new ClassProfile();

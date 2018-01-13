@@ -131,9 +131,13 @@
     <string name="pref_disable_jumping_cursor_title">Disable jumping cursor</string>
     <string name="pref_disable_jumping_cursor_summary">Stop cursor from jumping to end of word</string>
 
+
+    <!-- keyboard size -->
+    <string name="pref_keyboard_size_multiplier_key">pref_keyboard_size_multiplier</string>
+    <string name="pref_keyboard_size_multiplier_title">Keyboard Size Multiplier</string>
+    <string name="pref_keyboard_size_multiplier_summary">Tweak the size of the keyboard</string>
+
     <!-- Swipe selection -->
-
-
     <string name="pref_cursor_speed_key">pref_cursor_speed</string>
     <string name="pref_cursor_speed_title">Cursor Speed</string>
     <string name="pref_cursor_speed_summary">How fast the cursor moves</string>

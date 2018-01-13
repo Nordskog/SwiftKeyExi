@@ -48,6 +48,8 @@ public class KeyboardClassManager
 	public static Class ThemeLoaderClass = null;
 	public static Class keyboardSizerClass = null;
 
+	public static Class KeyHeightClass = null;
+
 	/////////////////////////
 	//Methods
 	/////////////////////////
@@ -65,6 +67,8 @@ public class KeyboardClassManager
 
 
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
+
+	protected static Method keyHeightClass_getKeyHeightMethod = null;
 
 	////////////////////
 	//Fields
@@ -97,6 +101,8 @@ public class KeyboardClassManager
 		ThemeLoaderClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_THEME_LOADER_CLASS_PROFILE(), param );
 
 		keyboardSizerClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEYBOARD_SIZER_CLASS_PROFILE(), param );
+
+		KeyHeightClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEY_HEIGHT_CLASS_PROFILE(), param );
 	}
 
 
@@ -188,6 +194,24 @@ public class KeyboardClassManager
 				ThemeLoaderClass_getThemeMethod = methods.get(0);
 		}
 
+		if (KeyHeightClass != null)
+		{
+			keyHeightClass_getKeyHeightMethod = ProfileHelpers.findMostSimilar(
+
+					new MethodProfile
+							(
+									PRIVATE,
+									new ClassItem(int.class),
+
+									new ClassItem(int.class),
+									new ClassItem(boolean.class),
+									new ClassItem(int.class),
+									new ClassItem(boolean.class)
+							),
+
+					KeyHeightClass.getDeclaredMethods(), KeyHeightClass);
+		}
+
 	}
 
 	public static void loadFields()
@@ -253,5 +277,9 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "layoutClass", 	layoutClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "keyboardLoader_loadMethod", 	keyboardLoader_loadMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "keyboardLoaderClass_layoutField", 	keyboardLoaderClass_layoutField );
+
+		//Keyboard size
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_keyHeight,	 "keyHeightClass_getKeyHeightMethod", 	layoutClass );
+
 	}
 }
