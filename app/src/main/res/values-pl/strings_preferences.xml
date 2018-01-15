@@ -32,6 +32,9 @@
   <string name="pref_emoji_force_version_auto">Automatycznie</string>
   <string name="pref_emoji_force_version_pre_nougat">Przed Nougatem</string>
   <string name="pref_emoji_force_version_post_nougat">Po Nougatcie</string>
+  <!-- Emoji click vibrate -->
+  <string name="pref_emoji_tap_vibrate_title">Wibracja po naciśnięciu emotikony</string>
+  <string name="pref_emoji_tap_vibrate_summary">Wibracja po naciśnięciu emotikony</string>
   <!-- Key Definitions. Keys are only used to identify menu items  -->
   <string name="pref_additional_shift_keys_title">Klawisze Shift</string>
   <string name="pref_additional_shift_keys_summary">Dodaj Klawisze Shift</string>
@@ -74,6 +77,9 @@
   <!-- Disable cursor jumping -->
   <string name="pref_disable_jumping_cursor_title">Wyłącz przeskakiwanie kursora</string>
   <string name="pref_disable_jumping_cursor_summary">Zatrzymaj przeskakiwanie kursora na koniec wyrazu</string>
+  <!-- keyboard size -->
+  <string name="pref_keyboard_size_multiplier_title">Mnożnik rozmiaru klawiatury</string>
+  <string name="pref_keyboard_size_multiplier_summary">Dostosuj rozmiar klawiatury</string>
   <!-- Swipe selection -->
   <string name="pref_cursor_speed_title">Szybkość kursora</string>
   <string name="pref_cursor_speed_summary">Jak szybko porusza się kursor</string>

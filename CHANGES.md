@@ -1,7 +1,21 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
-## [1.3.1] - 06-11-2017
+## [1.3.2] - 15-01-2018
+
+### Fixed
+ - More suggestions and removal of black bars surrounding candidates targeting >6.7.4.31
+ - Fixed keys being input before swipe in hold-and-swipe modes
+ - Fixed new emoji back button being too small ( >6.7.5.28)
+ 
+### Added
+ - Toggle to enable/disable vibration when inputting emoji (Exi panel only)
+ - Keyboard size multiplier (Range 0.3 to 3.0)
+
+### Changed
+ - Recent Emoji panel can now be cleared like the other user-created panels
+
+## [1.3.1] - 06-12-2017
 
 ### Changed
 - Device will now vibrate when you input an emoji

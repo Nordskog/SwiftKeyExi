@@ -26,7 +26,7 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 		if ( !(lpparam.packageName.equals( ExiModule.SWIFTKEY_BETA_PACKAGE_NAME ) || lpparam.packageName.equals( ExiModule.SWIFTKEY_PACKAGE_NAME )) )
 			return;
 
-		ExiXposed.HOOK_PACKAGE_NAME = lpparam.packageName;
+		ExiXposed.setPackage( lpparam.packageName );
 
 		//Some assets as shared between the app and xposed, requirement some management
 		SharedStyles.setStyleContext(SharedStyles.StyleContext.HOOK);	//Defaults to app

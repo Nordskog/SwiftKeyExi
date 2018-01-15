@@ -32,6 +32,9 @@
   <string name="pref_emoji_force_version_auto">Auto</string>
   <string name="pref_emoji_force_version_pre_nougat">Avant Nougat</string>
   <string name="pref_emoji_force_version_post_nougat">Après Nougat</string>
+  <!-- Emoji click vibrate -->
+  <string name="pref_emoji_tap_vibrate_title">Vibrer si appui Emoji</string>
+  <string name="pref_emoji_tap_vibrate_summary">Vibrer lorsque l\'on appui sur un emoji</string>
   <!-- Key Definitions. Keys are only used to identify menu items  -->
   <string name="pref_additional_shift_keys_title">Touches Majuscule</string>
   <string name="pref_additional_shift_keys_summary">Ajouter des touches Majuscule</string>
@@ -74,6 +77,9 @@
   <!-- Disable cursor jumping -->
   <string name="pref_disable_jumping_cursor_title">Désactiver le saut de curseur</string>
   <string name="pref_disable_jumping_cursor_summary">Empêcher le curseur d\'aller à la fin du mot</string>
+  <!-- keyboard size -->
+  <string name="pref_keyboard_size_multiplier_title">Agrandissement de la taille du clavier</string>
+  <string name="pref_keyboard_size_multiplier_summary">Ajuster la taille du clavier</string>
   <!-- Swipe selection -->
   <string name="pref_cursor_speed_title">Vitesse du curseur</string>
   <string name="pref_cursor_speed_summary">À quelle vitesse le curseur se déplace</string>

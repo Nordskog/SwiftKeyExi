@@ -9,6 +9,7 @@ import android.support.v7.preference.PreferenceManager;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.settings.FloatNumberPickerPreference;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreferenceFragment;
@@ -169,12 +170,14 @@ public class SettingsFragment extends PreferenceFragmentCompat
 	@Override
 	public void onDisplayPreferenceDialog(Preference preference) {
 		DialogFragment fragment;
-		if (preference instanceof NumberPickerPreference) {
+		if (preference instanceof NumberPickerPreference || preference instanceof FloatNumberPickerPreference) {
 			fragment = NumberPickerPreferenceFragment.newInstance(preference);
 			fragment.setTargetFragment(this, 0);
 			fragment.show(getFragmentManager(),
 					"android.support.v7.preference.PreferenceFragment.DIALOG");
-		} else super.onDisplayPreferenceDialog(preference);
+
+		}
+		else super.onDisplayPreferenceDialog(preference);
 	}
 
 	@Override

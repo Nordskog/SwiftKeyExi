@@ -50,6 +50,11 @@
     <string name="pref_emoji_force_version_pre_nougat">Pre Nougat</string>
     <string name="pref_emoji_force_version_post_nougat">Post Nougat</string>
 
+    <!-- Emoji click vibrate -->
+    <string name="pref_emoji_tap_vibrate_key">pref_emoji_tap_vibrate</string>
+    <string name="pref_emoji_tap_vibrate_title">Vibrate on Emoji Tap</string>
+    <string name="pref_emoji_tap_vibrate_summary">Vibrate when tapping an emoji</string>
+
 
     <!-- Key Definitions. Keys are only used to identify menu items  -->
     <string name="pref_additional_shift_keys_key">pref_additional_shift_keys</string>
@@ -131,9 +136,13 @@
     <string name="pref_disable_jumping_cursor_title">Disable jumping cursor</string>
     <string name="pref_disable_jumping_cursor_summary">Stop cursor from jumping to end of word</string>
 
+
+    <!-- keyboard size -->
+    <string name="pref_keyboard_size_multiplier_key">pref_keyboard_size_multiplier</string>
+    <string name="pref_keyboard_size_multiplier_title">Keyboard Size Multiplier</string>
+    <string name="pref_keyboard_size_multiplier_summary">Tweak the size of the keyboard</string>
+
     <!-- Swipe selection -->
-
-
     <string name="pref_cursor_speed_key">pref_cursor_speed</string>
     <string name="pref_cursor_speed_title">Cursor Speed</string>
     <string name="pref_cursor_speed_summary">How fast the cursor moves</string>

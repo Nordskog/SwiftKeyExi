@@ -30,18 +30,6 @@ public class AboutFragment extends PreferenceFragmentCompat
 		addPreferencesFromResource(R.xml.preferences_about);
 	}
 
-	//Needed for custom prefs to work... ? I don't even
-	@Override
-	public void onDisplayPreferenceDialog(Preference preference) {
-		DialogFragment fragment;
-		if (preference instanceof NumberPickerPreference) {
-			fragment = NumberPickerPreferenceFragment.newInstance(preference);
-			fragment.setTargetFragment(this, 0);
-			fragment.show(getFragmentManager(),
-					"android.support.v7.preference.PreferenceFragment.DIALOG");
-		} else super.onDisplayPreferenceDialog(preference);
-	}
-
 	@Override
 	public void onResume()
 	{

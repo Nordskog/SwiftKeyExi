@@ -13,6 +13,7 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionSetup;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -220,6 +221,37 @@ public class SelectionHooks
 						public void onKeyDown(KeyDefinition key)
 						{
 							SelectionMethods.handleFirstKeyDown(key);
+						}
+					});
+
+					KeyCommons.addOnInputEventListener(new KeyCommons.OnInputEventListener()
+					{
+						@Override
+						public boolean onInputEvent()
+						{
+
+							//If you have two fingers on the kyeboard and swipe wit hthe second,
+							//swiftkey will insert all the keys it swipes across.
+							//This interfers with either of our hold-and-swipe modes.
+							//Solution: No input events without corresponding up events
+							if (Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey())
+							{
+								//Only apply if shift is down in this mode
+								if (Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.HOLD_SHIFT_SWIPE && !SelectionState.mShiftDown)
+								{
+									return false;
+								}
+
+								//Otherwise check last pointer up event if pointer count is above 2 and the last up event was
+								//more than 20ms ago, disallow input
+								if (SelectionState.mLastPointerCount > 1
+										&& (System.currentTimeMillis() - SelectionState.mLastPointerUpTime) > 20 )
+								{
+									return true;
+								}
+							}
+
+							return false;
 						}
 					});
 				}

@@ -32,6 +32,9 @@
   <string name="pref_emoji_force_version_auto">Automático</string>
   <string name="pref_emoji_force_version_pre_nougat">Pré-Nougat</string>
   <string name="pref_emoji_force_version_post_nougat">Pós-Nougat</string>
+  <!-- Emoji click vibrate -->
+  <string name="pref_emoji_tap_vibrate_title">Vibrar ao Teclar Emoji</string>
+  <string name="pref_emoji_tap_vibrate_summary">Vibrar quando teclar num Emoji</string>
   <!-- Key Definitions. Keys are only used to identify menu items  -->
   <string name="pref_additional_shift_keys_title">Teclas Shift</string>
   <string name="pref_additional_shift_keys_summary">Adicionar Teclas Shift</string>
@@ -74,6 +77,9 @@
   <!-- Disable cursor jumping -->
   <string name="pref_disable_jumping_cursor_title">Desativar salto do cursor</string>
   <string name="pref_disable_jumping_cursor_summary">Impedir o cursor de pular para o fim da palavra</string>
+  <!-- keyboard size -->
+  <string name="pref_keyboard_size_multiplier_title">Multiplicador do Tamanho do Teclado</string>
+  <string name="pref_keyboard_size_multiplier_summary">Ajustar o tamanho do teclado</string>
   <!-- Swipe selection -->
   <string name="pref_cursor_speed_title">Velocidade do Cursor</string>
   <string name="pref_cursor_speed_summary">Rapidez com que o cursor se move</string>

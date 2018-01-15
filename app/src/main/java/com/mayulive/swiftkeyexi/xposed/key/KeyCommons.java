@@ -134,7 +134,6 @@ public class KeyCommons
 		mKeyDownListeners.remove(listener);
 	}
 
-
 	//////////////////
 	//Cancel tap stuff
 	//////////////////
@@ -153,6 +152,39 @@ public class KeyCommons
 	public static void setCancelAllKeys(boolean cancel)
 	{
 		mCancelAllKeys = cancel;
+	}
+
+
+	private static ArrayList<OnInputEventListener> mInputEventListeners = new ArrayList<OnInputEventListener>();
+
+
+	public interface OnInputEventListener
+	{
+		/**
+		 * Return true to cancel input
+		 */
+		boolean onInputEvent();
+	}
+
+	public static void addOnInputEventListener(OnInputEventListener listener)
+	{
+		mInputEventListeners.add(listener);
+	}
+
+	public static void removeOnInputEventListener(OnInputEventListener listener)
+	{
+		mInputEventListeners.remove(listener);
+	}
+
+	protected static boolean callInputEventListeners()
+	{
+		boolean requestCancel = false;
+		for (OnInputEventListener listener : mInputEventListeners)
+		{
+			requestCancel = listener.onInputEvent() || requestCancel;
+		}
+
+		return requestCancel;
 	}
 
 

@@ -20,12 +20,14 @@ import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -60,6 +62,7 @@ public class PredictionHandlers
 		//To create a single candidate view we need 5 args.
 		//4 of these are passed to the method we are hooking, while the last
 		//is an enum. The enum we're after is "CANDIDATE".
+		//As of 6.7.4.31 there is also a bool that switches the min-width between two resources
 		candidateViewArgs = new Object[PredictionClassManager.candidateViewClass_Constructor.getParameterTypes().length];
 
 		{
@@ -73,6 +76,8 @@ public class PredictionHandlers
 
 			Object someEnum =  CodeUtils.findEnumByName( (Enum[])  PredictionClassManager.candidateViewClass_Constructor.getParameterTypes()[PredictionClassManager.getViewMethod_EnumArgPosition].getEnumConstants(), "CANDIDATE");
 			candidateViewArgs[PredictionClassManager.getViewMethod_EnumArgPosition] = someEnum;
+			if ( PredictionClassManager.getViewMethod_BooleanArgPosition != -1)
+				candidateViewArgs[ PredictionClassManager.getViewMethod_BooleanArgPosition] = false;	//z ? R.dimen.floating_sequential_candidate_min_width : R.dimen.sequential_candidate_min_width);
 		}
 	}
 
@@ -84,19 +89,13 @@ public class PredictionHandlers
 			return;
 		}
 
-
 		//I did consider not adding it for disabled, but then the user would
 		//require a reboot/app-restart to re-enable it.
 		//If disabled we don't do any of the work required later anyway,
 		//so we should be good to just keep this here regardless.
 
-		//Log.i(LOGTAG, "Hello world!");
-		//Log.i(LOGTAG, "I am: "+ frameLayout.toString());
-		//View top = CodeUtils.getTopParent(frameLayout);
-		//CodeUtils.traverseLayout(top,0);
-
-		//if (true)
-		{
+			//if (true)
+			{
 			//Due to changes, now actually a linear layout wrapping the framelayout and a few other views
 			//ViewGroup frameLayout = (ViewGroup)param.getResult();
 
@@ -106,57 +105,18 @@ public class PredictionHandlers
 			//Full and compact both and 3 children now. Two-thumb only has two.  Skip if two.
 			if (childFrame.getChildCount() <= 2)
 			{
-				//Log.i(LOGTAG, "Insufficient children, doing nothing");
+				//Log.i(LOGTAG, "Insufficient candidate children, doing nothing");
 				return;
 			}
 
+			//Oddly enough this is still called multiple times after you open another keyboard.
+				//Think it's called for every layout you have accessed in the current session,
+				// so we will return above a lot, even when on a compatible layout.
+
 
 			ViewGroup centerLinear = childFrame;
-			//ViewGroup parentFrame = (ViewGroup)childFrame.getParent();
-
-			//This method now returns a linear layout containing 2... thingies,
-			//with a framelayout containing the candidates view inbetween.
-
 			{
-
-
 				childFrame = (ViewGroup)centerLinear.getChildAt(1);
-
-				//Some changes have been made that cause some of these views to persist.
-				//Childframe should only have a single child, but our old ones may also be present.
-				//Remove any linear layouts or slowrecyclerviews
-				//Realistically we could just leave them where they are in this case but... ehhh...
-				{
-					ArrayList<View> killList = new ArrayList<>();
-					for (int i = 0; i < childFrame.getChildCount(); i++)
-					{
-						Class clazz = childFrame.getChildAt(i).getClass();
-						if (clazz == LinearLayout.class || SlowRecyclerView.class.isAssignableFrom( clazz ))
-						{
-							killList.add(childFrame.getChildAt(i));
-						}
-					}
-
-					for (View view : killList)
-					{
-						if (view.getClass() == LinearLayout.class)
-						{
-							//We kinda left the existing view inside this
-							ViewGroup group = (ViewGroup)view;
-							if (group.getChildCount() > 0)
-							{
-								View kview = group.getChildAt(0);
-								group.removeView(kview);
-								childFrame.addView(kview);
-							}
-						}
-
-						childFrame.removeView(view);
-					}
-
-
-
-				}
 
 				//Try hiding spacers?
 				//Works! Maybe only hide one side like in asian layouts? Hmmm
@@ -172,14 +132,17 @@ public class PredictionHandlers
 
 			//if(false)
 			{
-				final View kView = childFrame.getChildAt(0);
-				childFrame.removeView(kView);
+
+
+				final View kView = childFrame;
+				centerLinear.removeView(kView);
 
 				ViewGroup.LayoutParams kViewParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
 				final LinearLayout headerScroller = new LinearLayout(kView.getContext());
 				headerScroller.setLayoutParams(kViewParams);
 
+				//kView is removed from this parent in the beforeHookedMethod hook, as swiftkey expects it to be orphaned.
 				headerScroller.addView(kView);
 
 
@@ -215,19 +178,21 @@ public class PredictionHandlers
 					{
 						try
 						{
+
 							View returnView = (View) PredictionClassManager.candidateViewClass_Constructor.newInstance(candidateViewArgs);
 
 							RecyclerView.LayoutParams candidateParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.MATCH_PARENT);
 							returnView.setLayoutParams(candidateParams);
 
 							return returnView;
-						}
 
+						}
 						catch( Exception ex)
 						{
-							//Log.e("###", "Shit hit the fan");
+							Log.e( LOGTAG, "Failed to construct candidate view item");
 							ex.printStackTrace();
-							return null;
+							//Returning a null will crash. Not happy about LinearLayouts, but it just spams logcat.
+							return new LinearLayout(headerScroller.getContext());
 						}
 					}
 
@@ -240,7 +205,6 @@ public class PredictionHandlers
 						}
 						catch (Exception ex)
 						{
-							//Log.e("###", "Failed to set candidate");
 							ex.printStackTrace();
 						}
 
@@ -262,11 +226,9 @@ public class PredictionHandlers
 							{
 								final Object candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(PredictionClassManager.buInstance,null,null,null);
 								PredictionClassManager.candidateOnCLickMethod.invoke(candidateClickListener, holder.view, holder.source, 0);
-								//Log.e("###", "Click success!");
 							}
 							catch (IllegalAccessException | InvocationTargetException | InstantiationException e)
 							{
-								//Log.e("###", "Click failed!");
 								e.printStackTrace();
 							}
 						}
@@ -274,10 +236,6 @@ public class PredictionHandlers
 						{
 							Log.i(LOGTAG, "Source was null. Weird.");
 						}
-
-
-
-
 					}
 				});
 
@@ -322,10 +280,16 @@ public class PredictionHandlers
 				});
 
 
-				childFrame.addView(headerScroller);
-				childFrame.addView(PredictionCommons.mCandidatesRecycler);
+				//Candidate view doesn't have a container anymore, need to create our own.
+				LinearLayout.LayoutParams candidateContainerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+				candidateContainerParams.weight = 0.75f;
+				final FrameLayout candidateContainer = new FrameLayout(kView.getContext());
+				candidateContainer.setLayoutParams(candidateContainerParams);
 
+				candidateContainer.addView(headerScroller);
+				candidateContainer.addView(PredictionCommons.mCandidatesRecycler);
 
+				centerLinear.addView(candidateContainer, 1);
 			}
 		}
 	}

@@ -7,4 +7,5 @@
   <string name="pref_about_source_code_title">Código-fonte</string>
   <string name="pref_about_support_title">Ajuda</string>
   <string name="pref_about_supported_title">Última versão suportada</string>
+  <string name="pref_about_translators_title">Tradutores</string>
 </resources>

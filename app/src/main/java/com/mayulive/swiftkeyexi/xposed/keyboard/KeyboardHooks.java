@@ -1,8 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.SharedPreferences;
-import android.preference.Preference;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
@@ -20,11 +18,9 @@ import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
-import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
-import java.lang.reflect.Method;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -303,6 +299,32 @@ public class KeyboardHooks
 
 	}
 
+	private static  XC_MethodHook.Unhook hookKeyHeight()
+	{
+		return XposedBridge.hookMethod(KeyboardClassManager.keyHeightClass_getKeyHeightMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				try
+				{
+					if ( Settings.KEYBOARD_SIZE_MULTIPLIER != 1f )
+					{
+						int value = (int) param.getResult();
+						param.setResult((int) (value * Settings.KEYBOARD_SIZE_MULTIPLIER));
+					}
+				}
+				catch (Throwable ex)
+				{
+
+					Hooks.baseHooks_keyHeight.invalidate(ex, "Unexpected problem in Key Height hook");
+
+				}
+			}
+		});
+
+	}
+
 	public static boolean HookAll(final PackageTree lpparam)
 	{
 		try
@@ -318,6 +340,10 @@ public class KeyboardHooks
 
 				Hooks.baseHooks_base.add( hookPrefChanged() );
 
+				if (Hooks.baseHooks_keyHeight.isRequirementsMet())
+				{
+					Hooks.baseHooks_keyHeight.add(  hookKeyHeight() );
+				}
 
 				if (Hooks.baseHooks_fullscreenMode.isRequirementsMet())
 				{

@@ -36,6 +36,7 @@ public class PreferenceConstants
 	public static final String pref_quickmenu_last_update_key = "pref_quickmenu_last_update";
 	public static final String pref_sound_keypress_last_update_key = "pref_sound_keypress_last_update";
 
+	public static final String pref_emoji_tap_vibrate_key = "pref_emoji_tap_vibrate";
 
 	//More!
 	public static final String pref_more_suggestions_key = "pref_more_suggestions";
@@ -81,4 +82,6 @@ public class PreferenceConstants
 	public static final String pref_sound_custom_backspace_path_key = "pref_sound_custom_backspace_path";
 
 	public static final String pref_disable_jumping_cursor_key = "pref_disable_jumping_cursor";
+
+	public static final String pref_keyboard_size_multiplier_key = "pref_keyboard_size_multiplier";
 }

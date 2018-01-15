@@ -67,6 +67,8 @@ public class SelectionState
 	protected static boolean mNumberDown = false;
 	protected static long mSwipeEndTime = 0;
 
+	protected static long mLastPointerUpTime = 0;	//Last time of a pointer up event
+
 	protected static CharSequence mLastExtractedText = null;
 	protected static int mLastExtractedTextOffset = 0;
 

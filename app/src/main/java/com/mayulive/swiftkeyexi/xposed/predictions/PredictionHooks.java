@@ -20,7 +20,11 @@ import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -144,8 +148,35 @@ public class PredictionHooks
 		////////////////
 		{
 			return XposedBridge.hookMethod(PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod, new XC_MethodHook()
-					//XposedBridge.hookAllConstructors(keyboardEventClass, new XC_MethodHook()
 			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+
+					try
+					{
+						//Due a view hierarchy change, we must make sure to remove the candidate kview from
+						//our container before we enter this method, as it will attempt to attach it to a new parent
+						LinearLayout centerLinear = (LinearLayout)param.args[PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition];
+						if (centerLinear.getChildCount() >= 3)
+						{
+							View centerView = centerLinear.getChildAt(1);
+							if (centerView instanceof FrameLayout)
+							{
+								ViewGroup centerFrame = (FrameLayout)centerView;
+								ViewGroup scrollHeader = (ViewGroup)centerFrame.getChildAt(0);
+								scrollHeader.removeAllViews();
+								centerFrame.removeAllViews();
+								centerFrame.removeAllViews();
+							}
+						}
+					}
+					catch (Throwable ex)
+					{
+						Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
+					}
+				}
+
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{

@@ -68,6 +68,8 @@ public class EmojiPanelItem
 		{
 			return this != RECENTS;
 		}
+
+		public boolean isKeyboardClearable() { return this.isEditable() || this == PANEL_SOURCE.RECENTS; }
 	}
 
 	protected int _index = -1;

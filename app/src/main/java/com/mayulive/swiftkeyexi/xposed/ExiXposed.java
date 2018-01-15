@@ -23,6 +23,26 @@ public class ExiXposed
 	//Hook globals
 	public static String HOOK_PACKAGE_NAME;
 
+	public static boolean isBeta = false;
+
+	public static String getPrefsPath()
+	{
+		if (isBeta)
+		{
+			return "com.touchtype.swiftkey.beta_preferences";
+		}
+		else
+		{
+			return "com.touchtype.swiftkey_preferences";
+		}
+	}
+
+	public static void setPackage(String packageName)
+	{
+		isBeta = packageName.equals( ExiModule.SWIFTKEY_BETA_PACKAGE_NAME);
+		HOOK_PACKAGE_NAME = packageName;
+	}
+
 	public static int loadCRC(String path)
 	{
 		File crcFile = new File(path);

@@ -83,8 +83,11 @@ public class EmojiHooks
 							//These are the two views we want to replace.
 							int pagerID = thiz.getResources().getIdentifier("emoji_pager", "id", ExiXposed.HOOK_PACKAGE_NAME);
 							int titlesID = thiz.getResources().getIdentifier("emoji_tabs", "id", ExiXposed.HOOK_PACKAGE_NAME);
+							int emojiBackId = thiz.getResources().getIdentifier("emoji_back", "id", ExiXposed.HOOK_PACKAGE_NAME);
+
 							View pagerView = thiz.findViewById(pagerID);
 							View titlesView = thiz.findViewById(titlesID);
+							View emojiBackView = thiz.findViewById(emojiBackId);
 
 							//The emoji panel is now a relative layout, with the first child being the tablayout,
 							//and the second the pager.
@@ -255,6 +258,16 @@ public class EmojiHooks
 
 							thiz.addView(EmojiCommons.mEmojiPanelPager,0);
 							thiz.addView(EmojiCommons.mOuterTabsWrapper,0);
+
+							//Tbe back button added in 6.7.28 doesn't fill its parent vertically properly
+							//after we've messed around with it. It is contained in the main relativelayout
+							if (emojiBackView != null)
+							{
+								RelativeLayout.LayoutParams backParams = (RelativeLayout.LayoutParams)emojiBackView.getLayoutParams();
+								backParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+								backParams.addRule(RelativeLayout.ALIGN_BOTTOM, EmojiCommons.mOuterTabsWrapper.getId());
+								emojiBackView.setLayoutParams(backParams);
+							}
 						}
 					}
 					catch (Throwable ex)
