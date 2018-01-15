@@ -20,7 +20,7 @@
   <string name="pref_emoji_text_size_summary">Установить размер Эмодзи</string>
   <!-- fullscreen keyboard -->
   <string name="pref_disable_fullscreen_title">Отключить полноэкранный режим</string>
-  <string name="pref_disable_fullscreen_summary">Запретить переход в полноэкранный режим редактирования текста. В альбомной ориентации блокируется полноэкранное поле ввода текста, и отображается текущий интерфейс приложения</string>
+  <string name="pref_disable_fullscreen_summary">Запретить переход в полноэкранный режим. В альбомной ориентации блокируется полноэкранное поле ввода текста, и отображается текущий интерфейс приложения</string>
   <!-- Gifs -->
   <string name="pref_gifs_enable_nsfw_title">NSFW GIF-файлы / контент 18+</string>
   <string name="pref_gifs_enable_nsfw_summary">Отображать NSFW GIF-файлы</string>
@@ -32,6 +32,9 @@
   <string name="pref_emoji_force_version_auto">Автоматически</string>
   <string name="pref_emoji_force_version_pre_nougat">До Nougat</string>
   <string name="pref_emoji_force_version_post_nougat">После Nougat</string>
+  <!-- Emoji click vibrate -->
+  <string name="pref_emoji_tap_vibrate_title">Вибрация при использовании Эмодзи</string>
+  <string name="pref_emoji_tap_vibrate_summary">Вибрировать при нажатии на иконки Эмодзи</string>
   <!-- Key Definitions. Keys are only used to identify menu items  -->
   <string name="pref_additional_shift_keys_title">Клавиши регистра (Shift)</string>
   <string name="pref_additional_shift_keys_summary">Назначить дополнительные клавиши регистра (Shift)</string>
@@ -74,6 +77,9 @@
   <!-- Disable cursor jumping -->
   <string name="pref_disable_jumping_cursor_title">Отключить перемещение курсора</string>
   <string name="pref_disable_jumping_cursor_summary">Запретить перемещение курсора к концу слова. После прикосновения к экрану курсор не смещается в конец слова как по умолчанию в Swifkey</string>
+  <!-- keyboard size -->
+  <string name="pref_keyboard_size_multiplier_title">Размер клавиатуры</string>
+  <string name="pref_keyboard_size_multiplier_summary">Изменить размер клавиатуры</string>
   <!-- Swipe selection -->
   <string name="pref_cursor_speed_title">Скорость курсора</string>
   <string name="pref_cursor_speed_summary">Скорость движения курсора</string>

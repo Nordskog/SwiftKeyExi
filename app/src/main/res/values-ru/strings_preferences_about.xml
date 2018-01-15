@@ -7,4 +7,5 @@
   <string name="pref_about_source_code_title">Исходный код</string>
   <string name="pref_about_support_title">Поддержка</string>
   <string name="pref_about_supported_title">Последняя поддерживаемая версия</string>
+  <string name="pref_about_translators_title">Переводчики</string>
 </resources>
