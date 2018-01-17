@@ -234,10 +234,11 @@ public class SelectionHooks
 							//swiftkey will insert all the keys it swipes across.
 							//This interfers with either of our hold-and-swipe modes.
 							//Solution: No input events without corresponding up events
-							if (Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey())
+							if (Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey() || Settings.SWIPE_SELECTION_BEHAVIOR.isGesture() )
 							{
-								//Only apply if shift is down in this mode
-								if (Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.HOLD_SHIFT_SWIPE && !SelectionState.mShiftDown)
+								//Only apply if shift is down in this mode, or selection behavior is gesture
+								if ( (Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.HOLD_SHIFT_SWIPE && !SelectionState.mShiftDown)
+										&& !Settings.SWIPE_SELECTION_BEHAVIOR.isGesture() )
 								{
 									return false;
 								}
