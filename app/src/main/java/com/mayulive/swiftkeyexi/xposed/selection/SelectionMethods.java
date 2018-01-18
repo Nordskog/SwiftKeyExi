@@ -361,8 +361,6 @@ public class SelectionMethods
 			}
 		}
 
-		SelectionState.mLastFallbackSelectionPointerState = state;
-
 		if (PointerState.isSelect(state) || moveCursorWithSelection)
 		{
 			if (direction)
@@ -957,7 +955,6 @@ public class SelectionMethods
 						{
 							//Update selection so we can check if we can actually move anywhere
 							SelectionState.updateSelection();
-
 							//Negative should move up, positive down
 							//Note that regardless of how much we want to move it, we limit it to 1.
 							//This is because dpad cursor keys will move the focus to the next field
@@ -1022,6 +1019,10 @@ public class SelectionMethods
 								//so we simply assume everything is RTL if there is any RTL text
 								setSelectionChange(xCursorChange, currentPointerInfo.state);
 							}
+
+							//Prev state was set inside fallback selection before, but needs to be here so it
+							//updates even when the other cursor is using normal selection
+							SelectionState.mLastFallbackSelectionPointerState = currentPointerInfo.state;
 
 							//Clear bank of other axis to make it less finicky
 							currentPointerInfo.yCursorBank = 0;

@@ -53,6 +53,7 @@ public class ExiModule
 	public static String SWIFTKEY_BETA_PACKAGE_NAME = "com.touchtype.swiftkey.beta";
 
 	public static final int DISPLAY_EMOJI_VARIANT_FIX_VERSION = 8;
+	public static final int OREO_EMOJI_FIX_VERSION = 12;
 
 
 	public enum ModuleDatabaseType
@@ -162,7 +163,10 @@ public class ExiModule
 
 		//In Exi v8 (Version code) the display-as-emoji variant selector was added to all emoji
 		//Update panels need to be refreshed.
-		if (previousExiVersionCode < DISPLAY_EMOJI_VARIANT_FIX_VERSION)
+		//Android oreo made some changes to fonts.xml that murdered our parser, must be reloaded there.
+		if (previousExiVersionCode < DISPLAY_EMOJI_VARIANT_FIX_VERSION
+				|| (previousExiVersionCode < OREO_EMOJI_FIX_VERSION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+			)
 			return true;
 
 		//If we haven't added identifiers to the panels yet, better to unify this stuff.

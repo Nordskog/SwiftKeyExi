@@ -15,4 +15,9 @@ public enum SelectionBehavior
 		return this == HYBRID || this == SHIFT_DELETE_DRAG_SWIPE;
 	}
 
+	public boolean isGesture()
+	{
+		return (this == SelectionBehavior.HOLD_AND_DRAG_SWIPE || this == SelectionBehavior.HYBRID);
+	}
+
 }
