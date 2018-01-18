@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.3.3] - 18-01-2018
+
+### Fixed
+ - Keys being input when attempting to trigger 2-finger gesture swipe selection
+ - Emoji failing to load in Android Oreo (8.0) and above
+ - Both fingers controlling the same cursor when starting selection from the end of a text block.
+ 
 ## [1.3.2] - 15-01-2018
 
 ### Fixed
