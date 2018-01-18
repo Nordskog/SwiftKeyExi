@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FontLoader
 {
@@ -159,7 +161,7 @@ public class FontLoader
 		return paths.toArray(returnArray);
 	}
 
-	private static ArrayList<String> readFontPathsKitkat(File file, String suffix) throws IOException, XmlPullParserException
+	private static Set<String> readFontPathsKitkat(File file, String suffix) throws IOException, XmlPullParserException
 	{
 		XmlPullParser parser = Xml.newPullParser();
 
@@ -180,10 +182,10 @@ public class FontLoader
 			//in.close();
 		}
 
-		return new ArrayList<String>();
+		return new HashSet<String>();
 	}
 
-	private static ArrayList<String> readFontPathsLollipop(File file, String suffix) throws IOException, XmlPullParserException
+	private static Set<String> readFontPathsLollipop(File file, String suffix) throws IOException, XmlPullParserException
 	{
 		XmlPullParser parser = Xml.newPullParser();
 
@@ -204,12 +206,12 @@ public class FontLoader
 			//in.close();
 		}
 
-		return new ArrayList<String>();
+		return new HashSet<String>();
 	}
 
-	private static ArrayList<String> parseLollipopFonts(XmlPullParser parser, String suffix) throws IOException, XmlPullParserException
+	private static Set<String> parseLollipopFonts(XmlPullParser parser, String suffix) throws IOException, XmlPullParserException
 	{
-		ArrayList<String> paths = new ArrayList<>();
+		Set<String> paths = new HashSet<>();
 
 		parser.require(XmlPullParser.START_TAG, xmlNamespace, "familyset");
 		while (parser.nextTag() != XmlPullParser.END_TAG)
@@ -222,7 +224,9 @@ public class FontLoader
 					if (parser.getName().equals("font") && !firstAdded)
 					{
 						firstAdded = true;
-						paths.add( suffix+parser.nextText());
+						parser.next();
+						paths.add( suffix+parser.getText());
+						XmlUtils.goToEnd(parser);
 					}
 					else
 						XmlUtils.skip(parser);
@@ -236,9 +240,9 @@ public class FontLoader
 		return paths;
 	}
 
-	private static ArrayList<String> parseKitkatFonts(XmlPullParser parser, String suffix) throws IOException, XmlPullParserException
+	private static Set<String> parseKitkatFonts(XmlPullParser parser, String suffix) throws IOException, XmlPullParserException
 	{
-		ArrayList<String> paths = new ArrayList<>();
+		Set<String> paths = new HashSet<>();
 
 		parser.require(XmlPullParser.START_TAG, xmlNamespace, "familyset");
 		while (parser.nextTag() != XmlPullParser.END_TAG)

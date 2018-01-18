@@ -33,6 +33,23 @@ public class XmlUtils
 		}
 	}
 
+	public static void goToEnd(XmlPullParser parser) throws XmlPullParserException, IOException
+	{
+		int depth = 1;
+		while (depth != 0)
+		{
+			switch (parser.next())
+			{
+				case XmlPullParser.END_TAG:
+					depth--;
+					break;
+				case XmlPullParser.START_TAG:
+					depth++;
+					break;
+			}
+		}
+	}
+
 	//Move to the end tag of the hole we are currently in. This will take you to the parent end tag.
 	public static void exit(XmlPullParser parser) throws XmlPullParserException, IOException
 	{
