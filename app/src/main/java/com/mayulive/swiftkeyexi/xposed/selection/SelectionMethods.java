@@ -219,6 +219,61 @@ public class SelectionMethods
 		return isMixed;
 	}
 
+	private static void updateSelectionDirectionForKeyCursorMovement(PointerState state)
+	{
+		if (state != PointerState.SWIPE && SelectionState.mLastFallbackSelectionPointerState != null)
+		{
+			InputConnection connection = KeyboardClassManager.getInputConnection();
+
+			if (PointerState.isSelect(mLastFallbackSelectionPointerState) && state != SelectionState.mLastFallbackSelectionPointerState)
+			{
+				CursorSelection selection = SelectionState.getInternalSelection(null);
+				{
+					//This completely ignores the cursor order stuff. Start is start, end moves.
+					//If we switch directions we swap them. Things get weird if the base direction
+					//changes.
+					selection.swap();
+					SelectionState.setInternalSelectionValue(selection.start,selection.end, null);
+					setSelectionWithOffset(connection,selection.start,selection.end);
+				}
+			}
+		}
+	}
+
+	public static void setVerticalSelection(int yCursorChange, final PointerState state)
+	{
+		//Update selection so we can check if we can actually move anywhere
+		SelectionState.updateSelection();
+		updateSelectionDirectionForKeyCursorMovement(state);
+
+		//Negative should move up, positive down
+		//Note that regardless of how much we want to move it, we limit it to 1.
+		//This is because dpad cursor keys will move the focus to the next field
+		//or item if we are at the beginning /end of the text.
+		if (yCursorChange > 0)
+		{
+			if (!SelectionState.cursorAtEnd() )
+			{
+				yCursorChange = 1;
+				if (PointerState.isSelect(state))
+					SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
+				else
+					SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
+			}
+		}
+		else
+		{
+			if (!SelectionState.cursorAtBeginning())
+			{
+				yCursorChange = 1;
+				if (PointerState.isSelect(state))
+					SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
+				else
+					SelectionActions.sendKeyPress( KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
+			}
+		}
+	}
+
 	public static void setSelectionChange(int change, final PointerState state)
 	{
 		if (SelectionState.mLastSelectionChangeWasFallback)
@@ -343,23 +398,7 @@ public class SelectionMethods
 
 		int absoluteChange = Math.abs(change);
 
-		InputConnection connection = KeyboardClassManager.getInputConnection();
-
-		if (state != PointerState.SWIPE && SelectionState.mLastFallbackSelectionPointerState != null)
-		{
-			if (PointerState.isSelect(mLastFallbackSelectionPointerState) && state != SelectionState.mLastFallbackSelectionPointerState)
-			{
-				CursorSelection selection = SelectionState.getInternalSelection(null);
-				{
-					//This completely ignores the cursor order stuff. Start is start, end moves.
-					//If we switch directions we swap them. Things get weird if the base direction
-					//changes.
-					selection.swap();
-					SelectionState.setInternalSelectionValue(selection.start,selection.end, null);
-					setSelectionWithOffset(connection,selection.start,selection.end);
-				}
-			}
-		}
+		updateSelectionDirectionForKeyCursorMovement(state);
 
 		if (PointerState.isSelect(state) || moveCursorWithSelection)
 		{
@@ -851,7 +890,7 @@ public class SelectionMethods
 					}
 					else
 					{
-						if ( Math.abs(currentPointerInfo.xDistance) > Settings.SWIPE_THRESHOLD)
+						if ( Math.abs(currentPointerInfo.xDistance) > Settings.SWIPE_THRESHOLD ||  Math.abs(currentPointerInfo.yDistance) > Settings.SWIPE_THRESHOLD)
 						{
 							setSwipePointerState(firstPointerInfo, currentPointerInfo, false);
 						}
@@ -860,7 +899,7 @@ public class SelectionMethods
 			}
 			else if ( !PointerState.isSwipe(currentPointerInfo.state) )
 			{
-				if ( Math.abs(currentPointerInfo.xDistance) > Settings.SWIPE_THRESHOLD)
+				if ( Math.abs(currentPointerInfo.xDistance) > Settings.SWIPE_THRESHOLD || Math.abs(currentPointerInfo.yDistance) > Settings.SWIPE_THRESHOLD)
 				{
 					setSwipePointerState(firstPointerInfo, currentPointerInfo, false);
 				}
@@ -953,39 +992,13 @@ public class SelectionMethods
 						//Prioritize horizontal change
 						if ( Math.abs(yCursorChange) > (Math.abs(xCursorChange) * 2f) )
 						{
-							//Update selection so we can check if we can actually move anywhere
-							SelectionState.updateSelection();
-							//Negative should move up, positive down
-							//Note that regardless of how much we want to move it, we limit it to 1.
-							//This is because dpad cursor keys will move the focus to the next field
-							//or item if we are at the beginning /end of the text.
-							if (yCursorChange > 0)
-							{
-								if (!SelectionState.cursorAtEnd() )
-								{
-									yCursorChange = 1;
-									if (PointerState.isSelect(currentPointerInfo.state))
-										SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
-									else
-										SelectionActions.sendKeyPress(KeyEvent.KEYCODE_DPAD_DOWN, yCursorChange);
-								}
-							}
-							else
-							{
-								if (!SelectionState.cursorAtBeginning())
-								{
-									yCursorChange = 1;
-									if (PointerState.isSelect(currentPointerInfo.state))
-										SelectionActions.sendShiftedKeyPress(KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
-									else
-										SelectionActions.sendKeyPress( KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
-								}
-							}
+							setVerticalSelection(yCursorChange, currentPointerInfo.state);
 
 							if (Settings.DISABLE_SWIPE_AUTO_CORRECT)
 								PredictionCommons.requestLiteralPrimarySuggestion(true);
 
 							SelectionState.mCursorMovedVertical = true;
+							SelectionState.mLastFallbackSelectionPointerState = currentPointerInfo.state;
 
 							//Clear bank of other axis to make it less finicky
 							currentPointerInfo.xCursorBank = 0;
