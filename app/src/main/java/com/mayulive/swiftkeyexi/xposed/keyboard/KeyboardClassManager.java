@@ -203,7 +203,7 @@ public class KeyboardClassManager
 
 					new MethodProfile
 							(
-									PRIVATE,
+									PUBLIC | EXACT ,
 									new ClassItem(int.class),
 
 									new ClassItem(int.class),
