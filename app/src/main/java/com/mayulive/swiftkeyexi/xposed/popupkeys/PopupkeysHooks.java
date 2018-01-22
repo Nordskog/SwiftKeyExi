@@ -462,7 +462,7 @@ public class PopupkeysHooks
 
 
 		}
-		catch ( Exception ex)
+		catch ( Throwable ex)
 		{
 			Hooks.popupHooks_read.invalidate(ex, "Failed to hook");
 			Hooks.popupHooks_delay.invalidate(ex, "Failed to hook");

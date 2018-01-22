@@ -320,7 +320,7 @@ public class PredictionHooks
 			});
 
         }
-        catch(Exception ex)
+        catch(Throwable ex)
         {
 			Hooks.predictionHooks_base.invalidate(ex, "Failed to hook");
         	return false;
