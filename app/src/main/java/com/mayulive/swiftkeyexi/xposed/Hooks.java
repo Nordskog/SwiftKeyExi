@@ -24,6 +24,7 @@ import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import java.util.ArrayList;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 
 /**
  * Created by Roughy on 6/22/2017.
@@ -144,8 +145,13 @@ public class Hooks
 					reason = "NULL";
 
 				Log.e(LOGTAG, "Removed Hooks: "+mName+", "+reason);
+				XposedBridge.log("Removed hooks: "+mName+", "+reason);
 				if (ex != null)
+				{
 					ex.printStackTrace();
+					XposedBridge.log(ex);
+				}
+
 			}
 		}
 
