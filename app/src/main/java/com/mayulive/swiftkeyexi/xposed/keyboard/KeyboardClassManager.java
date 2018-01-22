@@ -279,7 +279,7 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "keyboardLoaderClass_layoutField", 	keyboardLoaderClass_layoutField );
 
 		//Keyboard size
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_keyHeight,	 "keyHeightClass_getKeyHeightMethod", 	layoutClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_keyHeight,	 "keyHeightClass_getKeyHeightMethod", 	keyHeightClass_getKeyHeightMethod );
 
 	}
 }
