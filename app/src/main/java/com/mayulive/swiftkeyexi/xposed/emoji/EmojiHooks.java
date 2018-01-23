@@ -576,7 +576,7 @@ public class EmojiHooks
 				Hooks.gifHooksNSFW.invalidate(ex, "Failed to hook");
 			}
         }
-        catch(Exception ex)
+        catch(Throwable ex)
         {
 			Hooks.emojiHooks_base.invalidate(ex, "Failed to hook");
         	return false;

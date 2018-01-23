@@ -173,7 +173,7 @@ public class ExiModule
 		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
 		{
 			boolean hasIdentifiers = prefs.getBoolean(PreferenceConstants.status_emoji_panels_have_identifiers_key, false);
-			if (hasIdentifiers)
+			if (!hasIdentifiers)
 				return true;
 		}
 

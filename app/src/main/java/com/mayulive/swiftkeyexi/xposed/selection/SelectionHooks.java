@@ -258,7 +258,7 @@ public class SelectionHooks
 				}
 			}
 		} 
-		catch ( Exception ex )// | InstantiationException | IllegalAccessException | InvocationTargetException e)
+		catch ( Throwable ex )// | InstantiationException | IllegalAccessException | InvocationTargetException e)
 		{
 			Hooks.selectionHooks_base.invalidate(ex, "Failed to hook");
 		}

@@ -4,6 +4,7 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
  * Created by Roughy on 2/15/2017.
  */
 
+import android.content.res.Configuration;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -67,6 +68,7 @@ public class KeyboardClassManager
 
 
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
+	protected static Method keyboardService_onConfigurationChangedMethod = null;
 
 	protected static Method keyHeightClass_getKeyHeightMethod = null;
 
@@ -112,7 +114,8 @@ public class KeyboardClassManager
 		{
 			getCurrentInputConnectionMethod = KeyboardClassManager.keyboardServiceClass.getMethod("getCurrentInputConnection", (Class[])null);
 
-			keyboardService_onEvaluateFullscreenModeMethod = ProfileHelpers.firstMethodByName( KeyboardClassManager.keyboardServiceClass.getDeclaredMethods(), "onEvaluateFullscreenMode");
+			keyboardService_onEvaluateFullscreenModeMethod = KeyboardClassManager.keyboardServiceClass.getMethod("onEvaluateFullscreenMode", (Class[])null);
+			keyboardService_onConfigurationChangedMethod = KeyboardClassManager.keyboardServiceClass.getMethod("onConfigurationChanged", ( new Class[]{ Configuration.class }) );
 		}
 
 		if (keyboardSizerClass != null)
@@ -200,7 +203,7 @@ public class KeyboardClassManager
 
 					new MethodProfile
 							(
-									PRIVATE,
+									PUBLIC | EXACT ,
 									new ClassItem(int.class),
 
 									new ClassItem(int.class),
@@ -254,6 +257,9 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "getCurrentInputConnectionMethod", 	getCurrentInputConnectionMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoaderClass", 	keyboardLoaderClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoader_clearCacheMethod", 	keyboardLoader_clearCacheMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardService_onConfigurationChangedMethod", 	keyboardService_onConfigurationChangedMethod );
+
+
 
 		//Fullscreen mode
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_fullscreenMode,	 "keyboardService_onEvaluateFullscreenModeMethod", 	keyboardService_onEvaluateFullscreenModeMethod );
@@ -279,7 +285,7 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "keyboardLoaderClass_layoutField", 	keyboardLoaderClass_layoutField );
 
 		//Keyboard size
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_keyHeight,	 "keyHeightClass_getKeyHeightMethod", 	layoutClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_keyHeight,	 "keyHeightClass_getKeyHeightMethod", 	keyHeightClass_getKeyHeightMethod );
 
 	}
 }

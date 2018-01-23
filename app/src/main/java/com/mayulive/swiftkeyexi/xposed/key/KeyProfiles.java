@@ -1010,7 +1010,7 @@ public class KeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.r");
+		newProfile.setFullPath("com.touchtype.keyboard.s");
 		newProfile.setKnownPath("com.touchtype.keyboard");
 
 		newProfile.setMinDepth(0);
@@ -1042,11 +1042,12 @@ public class KeyProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT )),	//A
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.ProfanitiesModel" , PUBLIC | EXACT )),	//B
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//C
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//D
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//E
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.installer" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//A
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT )),	//B
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.ProfanitiesModel" , PUBLIC | EXACT )),	//C
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//D
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//E
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//F
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//a
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//c
@@ -1062,17 +1063,17 @@ public class KeyProfiles
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//m
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int[].class)),	//n
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//o
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.google.common" , PUBLIC | ABSTRACT | EXACT )),	//p
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//q
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | ABSTRACT | ARRAY | EXACT )),	//r
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.util.Map.class)),	//s
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | ENUM | EXACT )),	//t
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//u
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//p
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.google.common" , PUBLIC | ABSTRACT | EXACT )),	//q
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//r
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | ABSTRACT | ARRAY | EXACT )),	//s
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.util.Map.class)),	//t
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | ENUM | EXACT )),	//u
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//v
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//w
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//x
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//y
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.installer" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//z
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//w
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//x
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//y
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//z
 
 				});
 /////////////////////////
@@ -1102,7 +1103,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #2: c
+						//Method #2: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -1110,7 +1111,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #3: d
+						//Method #3: c
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -1273,7 +1274,9 @@ public class KeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem(void.class)
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1283,17 +1286,15 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
-						//Method #20: b
+						//Method #20: k
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
+										new ClassItem(void.class)
 
 								),
 

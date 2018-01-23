@@ -120,10 +120,9 @@ public class KeyboardHooks
 		}
 	}
 
-	public static Set<XC_MethodHook.Unhook> hookKeyboardConfigurationChanged()
+	public static XC_MethodHook.Unhook hookKeyboardConfigurationChanged()
 	{
-
-			return XposedBridge.hookAllMethods(KeyboardClassManager.keyboardServiceClass, "onConfigurationChanged", new XC_MethodHook()
+			return XposedBridge.hookMethod( KeyboardClassManager.keyboardService_onConfigurationChangedMethod,  new XC_MethodHook()
 			{
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -334,7 +333,7 @@ public class KeyboardHooks
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
-				Hooks.baseHooks_base.addAll( hookKeyboardConfigurationChanged() );
+				Hooks.baseHooks_base.add( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
 
@@ -390,7 +389,7 @@ public class KeyboardHooks
 
 			}
 		}
-		catch(Exception ex)
+		catch(Throwable ex)
 		{
 			Hooks.baseHooks_base.invalidate(ex, "Failed to Hook");
 			return false;

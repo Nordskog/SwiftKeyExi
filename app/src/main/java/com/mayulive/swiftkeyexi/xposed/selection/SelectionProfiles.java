@@ -454,7 +454,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.view.r");
+		newProfile.setFullPath("com.touchtype.keyboard.view.t");
 		newProfile.setKnownPath("com.touchtype.keyboard.view");
 
 		newProfile.setMinDepth(0);
@@ -483,16 +483,16 @@ public class SelectionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.storage" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//A
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//B
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//C
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT )),	//D
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(boolean.class)),	//E
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//F
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//G
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT )),	//H
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//I
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT )),	//J
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//A
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.consent" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//B
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.storage" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//C
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//D
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//E
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT )),	//F
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//G
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.clipboard" , PUBLIC | FINAL | EXACT )),	//H
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT )),	//I
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//J
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//K
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//L
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT )),	//M
@@ -511,45 +511,46 @@ public class SelectionProfiles
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT )),	//Z
 						new FieldItem( FINAL | EXACT , 	new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.consent" , PUBLIC | FINAL | EXACT )),	//aa
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy" , PUBLIC | FINAL | EXACT )),	//ab
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//ac
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT )),	//ad
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//ab
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT )),	//ac
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//ad
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//ae
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//af
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent" , PUBLIC | FINAL | EXACT )),	//ag
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs.searchbox" , PUBLIC | FINAL | EXACT )),	//ah
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.superribbontextbox" , PUBLIC | FINAL | EXACT )),	//ah
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs" , PUBLIC | FINAL | EXACT )),	//ai
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//aj
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//ak
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//al
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs" , PUBLIC | FINAL | EXACT )),	//am
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.collection" , PUBLIC | FINAL | EXACT )),	//an
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//ao
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//ap
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )),	//aq
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT )),	//an
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )),	//ao
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )),	//ap
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.preferences" , PUBLIC | FINAL | EXACT )),	//aq
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//ar
 						new FieldItem( FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.service" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//c
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//d
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.SharedPreferences.class)),	//e
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("android.content.SharedPreferences" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//f
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//g
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT )),	//h
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//i
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//j
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//k
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )),	//k
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//l
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT )),	//m
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//n
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//o
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//p
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.installer" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//q
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//r
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//o
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )),	//p
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )),	//q
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//r
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//s
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//t
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//u
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.stickers" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//v
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//w
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//x
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//t
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//u
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//v
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.stickers" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//w
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.fancy" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//x
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//y
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//z
 
@@ -598,9 +599,10 @@ public class SelectionProfiles
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
-										new ClassItem(void.class),
+										new ClassItem("com.touchtype.keyboard.toolbar.ToolbarFrame" , PUBLIC | EXACT ),
 
-										new ClassItem(android.view.View.class)
+										new ClassItem(android.view.View.class),
+										new ClassItem(int.class)
 
 								),
 
@@ -610,8 +612,7 @@ public class SelectionProfiles
 										PRIVATE | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class)
+										new ClassItem(android.view.View.class)
 
 								),
 
@@ -648,7 +649,8 @@ public class SelectionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem(android.view.View.class),
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
+										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.toolbar.ToolbarFrame" , PUBLIC | EXACT )
 
 								),
 
@@ -692,7 +694,7 @@ public class SelectionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard.view.ModelTrackingFrame" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | EXACT )
 
 								),
 
@@ -702,11 +704,21 @@ public class SelectionProfiles
 										PRIVATE | EXACT ,
 										new ClassItem(android.view.View.class),
 
-										new ClassItem(boolean.class)
+										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
 						//Method #13: b
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #14: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -716,7 +728,18 @@ public class SelectionProfiles
 
 								),
 
-						//Method #14: b
+						//Method #15: b
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.view.View.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #16: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -727,7 +750,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #15: c
+						//Method #17: c
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -737,7 +760,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #16: d
+						//Method #18: d
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -747,7 +770,17 @@ public class SelectionProfiles
 
 								),
 
-						//Method #17: a
+						//Method #19: e
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #20: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -757,7 +790,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #18: a
+						//Method #21: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -767,7 +800,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #19: apply
+						//Method #22: apply
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -791,9 +824,8 @@ public class SelectionProfiles
 										new ClassItem(android.content.Context.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.installer" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.stickers" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
@@ -801,30 +833,31 @@ public class SelectionProfiles
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.content.SharedPreferences.class),
+										new ClassItem("android.content.SharedPreferences" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.preferences" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.preferences" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.consent" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.storage" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(boolean.class),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.clipboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT ),
@@ -837,21 +870,21 @@ public class SelectionProfiles
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.consent" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard.view.fancy" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs.searchbox" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view.fancy.superribbontextbox" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.collection" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard.service" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.preferences" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),

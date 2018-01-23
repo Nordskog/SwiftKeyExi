@@ -287,7 +287,7 @@ public class KeyHooks
 			});
 
 		}
-		catch(Exception ex)
+		catch(Throwable ex)
 		{
 			Hooks.keyHooks_keyDefinition.invalidate(ex, "Failed to hook");
 			return false;
