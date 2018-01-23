@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.3.4] - 23-01-2018
+
+### Fixed
+ - Vertical selection not triggering on vertical swipe
+ - Both fingers moving the same cursor when moving vertically
+ - Module failing to load on Kitkat (and anything below nougat?)
+ - Keyboard size modifier not working on some systems
+ 
+ ### Changed
+ - Added more log output to Xposed in addition to logcat
+
 ## [1.3.3] - 18-01-2018
 
 ### Fixed
