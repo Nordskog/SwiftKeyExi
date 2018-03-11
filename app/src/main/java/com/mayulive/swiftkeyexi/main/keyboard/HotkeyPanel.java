@@ -285,6 +285,8 @@ public class HotkeyPanel extends View
 		//left is positive, right is negative.
 		public boolean containsAngle(float angle)
 		{
+			//Removed so user can select nothing by going below midline
+			/*
 			if (isFirst)
 			{
 				if (angle < endAngle)
@@ -293,6 +295,7 @@ public class HotkeyPanel extends View
 			if (isLast)
 				if (angle > startAngle)
 					return true;
+			*/
 			if (angle > startAngle && angle < endAngle)
 				return true;
 
@@ -405,14 +408,20 @@ public class HotkeyPanel extends View
 
 	private void checkSelection(float angle)
 	{
+		boolean found = false;
 		for (HotkeyMenuItem item : mItems)
 		{
 			if (item.containsAngle(angle))
 			{
 				select(item);
+				found = true;
 				break;
 			}
 		}
+
+		//Deselect if outside area
+		if ( !found )
+			deselect();
 	}
 
 	public void select(HotkeyMenuItem item)
@@ -438,6 +447,8 @@ public class HotkeyPanel extends View
 		if (mSelectedItem != null)
 			mSelectedItem.selected = false;
 		mSelectedItem = null;
+
+		mLastSelectedItem = null;
 
 		//I don't know how, but an item now
 		//somehow managed to stay marked as selected
