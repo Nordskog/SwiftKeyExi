@@ -3,12 +3,15 @@ package com.mayulive.swiftkeyexi.EmojiCache;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.util.Log;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -19,6 +22,8 @@ import java.util.Map;
 public class EmojiCache
 {
 
+	private static String LOGTAG = ExiModule.getLogTag(EmojiCache.class);
+
 	//Color emoji and bw emoji.
 	public static final int EMOJI_TYPE_COUNT = 2;
 
@@ -28,6 +33,14 @@ public class EmojiCache
 
 	//For each panel, ignores styling
 	private static Map<Object, EmojiCacheMap> mEmojiPanelCaches = new HashMap<>();
+
+	//Items added in order they are added to the cache so we can ditch older items
+	//as we run low on memory. This is a global list for all panels and shared emoji.
+	private static LinkedList<EmojiCacheItem> mGlobalCacheList = new LinkedList<>();
+
+	//Keep track of cache memory usage
+	private static long mMemoryLimit = ( (Runtime.getRuntime().maxMemory() ) ) / 8;	// 1/8th of available memory
+	private static long mMemoryUsage = 0;			//Updated when item is added, estimate.
 
 	//Created on first call
 	private static Handler mMainHandler = null;
@@ -44,7 +57,6 @@ public class EmojiCache
 		{
 			mCancelRequested = true;
 		}
-
 	}
 
 	static
@@ -75,6 +87,9 @@ public class EmojiCache
 		{
 			map.clear();
 		}
+
+		mGlobalCacheList.clear();
+		mMemoryUsage = 0;
 	}
 
 	//Only clear caches that are mapped with a key.
@@ -145,9 +160,6 @@ public class EmojiCache
 	{
 		if (!renderInProgress())
 			AsyncTask.execute(renderTask);
-
-
-
 	}
 
 	public static void singleQueue(Context context, String string, float textSize, Object panelKey, int styleIndex, int itemWidth, boolean singleLine)
@@ -239,6 +251,10 @@ public class EmojiCache
 					}
 					renderObject.run();
 					onRenderComplete(renderObject);
+
+					//Maybe move outside of inner loop?
+					//Then we might end up processing a ton of items before checking size though.
+					updateAndPruneGlobalCacheList(renderObject.item);
 				}
 
 				updateQueueFromInput();
@@ -289,6 +305,42 @@ public class EmojiCache
 	{
 		renderObject.run();
 		onRenderComplete(renderObject);
+	}
+
+	//Add to global linked list and note added memory usage.
+	//Prune old items if memory usage exceeds limit
+	private static void updateAndPruneGlobalCacheList(EmojiCacheItem item)
+	{
+		mMemoryUsage += item.memorySize;
+		mGlobalCacheList.addLast(item);
+
+		freeMemory();
+
+	}
+
+	//Prune old items until below memory limit
+	private static void freeMemory()
+	{
+		while(mMemoryUsage > mMemoryLimit )
+		{
+			EmojiCacheItem oldest = mGlobalCacheList.pop();
+
+			if (oldest == null)
+			{
+				Log.e(LOGTAG, "Emptied cache list but still above limit. Usage: "+mMemoryUsage+", limit: "+mMemoryLimit);
+
+				//Somehow didn't reset the memory usage var? Strange, investigate.
+				mMemoryUsage = 0;
+				break;
+			}
+
+			mMemoryUsage -= oldest.memorySize;
+
+			//Mark item as undefined and null its bitmap.
+			//When next requested it will be re-rendered.
+			oldest.bitmap = null;
+			oldest.setStatus(EmojiCacheItem.CacheItemStatus.UNDEFINED);
+		}
 	}
 
 	public static void requestRender(EmojiRenderInterface renderObject)
@@ -359,7 +411,7 @@ public class EmojiCache
 
 	protected static class EmojiCacheMap extends HashMap<String, EmojiCacheItem>
 	{
-		//For convenience
+
 	}
 
 	//Implementing a body in the interface definition is supported in java 1.8,

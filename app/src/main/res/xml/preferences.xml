@@ -25,7 +25,7 @@
             android:summary="@string/pref_emoji_text_size_summary"
             app:appDefaultValue="12"
             app:min="8"
-            app:max="17"
+            app:max="50"
             />
 
         <com.mayulive.swiftkeyexi.util.view.ListPreferenceShowSummary

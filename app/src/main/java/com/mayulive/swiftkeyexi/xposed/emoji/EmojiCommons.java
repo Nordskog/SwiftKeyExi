@@ -203,7 +203,9 @@ public class EmojiCommons
 
 			//Only clear if changed.
 			EmojiCache.clearCache();
-			com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels( getHookContext(), mPanelItems );
+
+			//Let's not do this anymore
+			//com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels( getHookContext(), mPanelItems );
 
 			if (mEmojiPanelAdapter != null)
 				mEmojiPanelAdapter.notifyDataSetChanged();

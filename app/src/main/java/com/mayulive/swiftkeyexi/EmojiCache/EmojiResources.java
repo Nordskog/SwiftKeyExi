@@ -2,12 +2,10 @@ package com.mayulive.swiftkeyexi.EmojiCache;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.TypedValue;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.MainActivity;
-import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 
 /**
  * Created by Roughy on 12/13/2016.
@@ -34,7 +32,8 @@ public class EmojiResources
 
 	public static class EmojiPixelDimensions
 	{
-		public float singleEmojiWidth = 26;
+		public float default_singleEmojiWidth = 26;
+		public float configured_singleEmojiWidth = 26;
 		public float default_emojiTextSize = 50;
 		public float configured_emojiTextSize = 50;
 		public float emojiHorizontalPadding = 25;
@@ -58,6 +57,9 @@ public class EmojiResources
 		boolean changed = newValue != dimens.configured_emojiTextSize;
 
 		dimens.configured_emojiTextSize = newValue;
+		dimens.configured_singleEmojiWidth =  dimens.configured_emojiTextSize * 2; //(int)calculatePixelFromDp(context, SINGLE_EMOJI_ITEM_WIDTH_DP);
+
+		ImageEmojiItem.updateDiverseIndicator(context);
 
 		return changed;
 	}
@@ -81,8 +83,10 @@ public class EmojiResources
 	{
 		mDimensions = new EmojiPixelDimensions();
 
-		mDimensions.singleEmojiWidth = (int)calculatePixelFromDp(context, SINGLE_EMOJI_ITEM_WIDTH_DP);
+
 		mDimensions.configured_emojiTextSize = (int)calculatePixelFromDp(context, EMOJI_TEXT_SIZE_DP) *2f;
+		mDimensions.default_singleEmojiWidth = (int)calculatePixelFromDp(context, SINGLE_EMOJI_ITEM_WIDTH_DP);
+		mDimensions.configured_singleEmojiWidth =  mDimensions.configured_emojiTextSize * 2;
 		mDimensions.default_emojiTextSize = mDimensions.configured_emojiTextSize;
 		mDimensions.emojiHorizontalPadding = (int)calculatePixelFromDp(context, EMOJI_HORIZONTAL_PADDING_DP);
 		mDimensions.emojiVerticalPadding = (int)calculatePixelFromDp(context, EMOJI_VERTICAL_PADDING_DP);
@@ -94,7 +98,7 @@ public class EmojiResources
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
 
 		//Get actual pixel width of a single item
-		itemWidth *= dimens.singleEmojiWidth;
+		itemWidth *= dimens.configured_singleEmojiWidth;
 
 		if (itemWidth <= 0)
 			return 1;

@@ -4,15 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiContainer;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.shared.SharedStyles;
-import com.mayulive.swiftkeyexi.util.ThemeUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedTabLayout;
-import com.mayulive.swiftkeyexi.R;
-import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 
 /**
  * Created by Roughy on 5/19/2017.
@@ -72,9 +68,9 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 
 		//In the swiftkey hook, there is no default padding, in the config app there is.
 		//Basing the padding on the emoji width seems reasonable.
-		view.setPadding( (int) (dimens.singleEmojiWidth * 0.1f),
+		view.setPadding( (int) (dimens.default_singleEmojiWidth * 0.1f),
 				view.getPaddingTop(),
-				(int) (dimens.singleEmojiWidth * 0.1f),
+				(int) (dimens.default_singleEmojiWidth * 0.1f),
 				view.getPaddingBottom());
 
 		//So it can resize itself to whatever

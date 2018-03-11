@@ -123,6 +123,8 @@ public class ImageEmojiItem extends ImageView implements EmojiContainer
 
 		this.setPadding(hPadding,vPadding,hPadding,vPadding);
 
+		this.setMinimumHeight( (int)dimens.configured_singleEmojiWidth );
+
 		//Fun fact: If an imageview has passed the layout phase and you set the a net bitmap,
 		//it will grow bigger to accommodate it, but not smaller.
 	}
@@ -352,6 +354,7 @@ public class ImageEmojiItem extends ImageView implements EmojiContainer
 	}
 
 	private static Bitmap mDiverseIndicator = Bitmap.createBitmap(10, 27, Bitmap.Config.RGB_565);
+	private static int mDiverseIndicatorPadding = 15;
 
 	//For drawing diverse emoji indictaor
 	public static void setThemeType(Context context, int themeType)
@@ -364,12 +367,12 @@ public class ImageEmojiItem extends ImageView implements EmojiContainer
 		updateDiverseIndicator(context);
 	}
 
-	private static void updateDiverseIndicator(Context context)
+	protected static void updateDiverseIndicator(Context context)
 	{
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
 
-		int indicatorSize = (int)(dimens.singleEmojiWidth*0.15f);
-		mDiverseIndicator = Bitmap.createBitmap(indicatorSize, indicatorSize, Bitmap.Config.ARGB_4444);
+		int indicatorSize = (int)(dimens.configured_singleEmojiWidth*0.15f);
+		mDiverseIndicator = Bitmap.createBitmap(indicatorSize, indicatorSize, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(mDiverseIndicator);
 
 
@@ -391,6 +394,10 @@ public class ImageEmojiItem extends ImageView implements EmojiContainer
 		path.close();
 
 		canvas.drawPath(path,mPaint);
+
+		//Padding based on original size because otherwise things look weird.
+		mDiverseIndicatorPadding = (int)((dimens.default_singleEmojiWidth*0.15f) * 2);
+
 	}
 
 	@Override
@@ -399,12 +406,13 @@ public class ImageEmojiItem extends ImageView implements EmojiContainer
 		super.onDraw(canvas);
 		if (mModifiable)
 		{
+
 			//Basically just eyeballing this
 			canvas.drawBitmap(
 					mDiverseIndicator,
 					//(this.getMeasuredWidth() / 2) - mDiverseIndicator.getHeight(),
-					(this.getMeasuredWidth() / 2) - (mDiverseIndicator.getHeight() *2) + (this.getMeasuredHeight() / 2),
-					this.getMeasuredHeight() - (mDiverseIndicator.getHeight() * 2),
+					(this.getMeasuredWidth() / 2) - (mDiverseIndicatorPadding ) + (this.getMeasuredHeight() / 2),
+					this.getMeasuredHeight() - (mDiverseIndicatorPadding),
 					null
 			);
 		}

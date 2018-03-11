@@ -71,7 +71,7 @@ public class EmojiCacheRenderer
 
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
 
-		int width = (int) (dimens.singleEmojiWidth * (float)itemWidth);
+		int width = (int) (dimens.configured_singleEmojiWidth * (float)itemWidth);
 
 		int paddingLeft = textView.getPaddingLeft();
 		int paddingRight = textView.getPaddingRight();
@@ -122,9 +122,9 @@ public class EmojiCacheRenderer
 
 		//Number of emoji item width units required, multiplied for each line.
 		//Note that getLineCount() on the textView will return 0 until it has been drawn (getDrawingCache()).
-		int widthUnitWidth = (int) ( Math.ceil ( (float)textView.getMeasuredWidth() / (float)dimens.singleEmojiWidth) ) ;
+		int widthUnitWidth = (int) ( Math.ceil ( (float)textView.getMeasuredWidth() / (float)dimens.configured_singleEmojiWidth) ) ;
 		widthUnitWidth *= textView.getLineCount();
-		boolean singleWidth = textView.getLineCount() <= 1 && textView.getMeasuredWidth() <= dimens.singleEmojiWidth;
+		boolean singleWidth = textView.getLineCount() <= 1 && textView.getMeasuredWidth() <= dimens.configured_singleEmojiWidth;
 
 
 		//Sometimes the drawCache will be null, presumably when there are no characters to render?
