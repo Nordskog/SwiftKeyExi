@@ -286,7 +286,7 @@ public class HotkeyPanel extends View
 		public boolean containsAngle(float angle)
 		{
 			//Removed so user can select nothing by going below midline
-			/*
+
 			if (isFirst)
 			{
 				if (angle < endAngle)
@@ -295,7 +295,7 @@ public class HotkeyPanel extends View
 			if (isLast)
 				if (angle > startAngle)
 					return true;
-			*/
+
 			if (angle > startAngle && angle < endAngle)
 				return true;
 
@@ -406,22 +406,18 @@ public class HotkeyPanel extends View
 	}
 
 
-	private void checkSelection(float angle)
+	private boolean checkSelection(float angle)
 	{
-		boolean found = false;
 		for (HotkeyMenuItem item : mItems)
 		{
 			if (item.containsAngle(angle))
 			{
 				select(item);
-				found = true;
-				break;
+				return true;
 			}
 		}
 
-		//Deselect if outside area
-		if ( !found )
-			deselect();
+		return false;
 	}
 
 	public void select(HotkeyMenuItem item)
@@ -638,17 +634,29 @@ public class HotkeyPanel extends View
 			return;
 		}
 
-		MathUtils.Vector2D vector = MathUtils.Vector2D.subtract(new MathUtils.Vector2D(x,y), mCenter);
+		//If pointer is inside spacebar vertically, and within spacbar height of the center
+		//horizontally, we should deselect everything.
+		if (y > mCenter.y && Math.abs(x - mCenter.x) < mBottomMargin  )
+		{
+			deselect();
+			return;
+		}
+		else
+		{
+			//Check selection
 
-		float angle = (float) Math.atan2(vector.x, vector.y);
+			MathUtils.Vector2D vector = MathUtils.Vector2D.subtract(new MathUtils.Vector2D(x,y), mCenter);
 
-		//This angle value gives us 0 at center, negative going right, positive going left.
-		//And I apparently got it backwards
-		angle *= -1f;
+			float angle = (float) Math.atan2(vector.x, vector.y);
 
-		checkSelection(angle);
+			//This angle value gives us 0 at center, negative going right, positive going left.
+			//And I apparently got it backwards
+			angle *= -1f;
 
-		//Log.e("###", "Angle is: "+angle);
+			checkSelection(angle);
+		}
+
+
 	}
 
 	private HotkeyMenuItem calculateItem(HotkeyMenuItem newItem, float angle, float angleBetween)
