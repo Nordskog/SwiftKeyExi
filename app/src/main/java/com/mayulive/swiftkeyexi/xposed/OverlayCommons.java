@@ -10,9 +10,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.main.keyboard.KeyboardOverlay;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
+import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 
@@ -20,17 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-/**
- * Created by Roughy on 2/22/2017.
- */
-
 public class OverlayCommons
 {
 	private static String LOGTAG = ExiModule.getLogTag(OverlayCommons.class);
 
 	public static RelativeLayout mKeyboardOverlay = null;
-
-
 
 	public static String mLastKeyDisplayed = null;
 
@@ -118,11 +115,25 @@ public class OverlayCommons
 	}
 
 
-	//Full-screen coordinates
-	public static void displayKeyAbove(String key, String text, float fromBottom, float xCenter)
+	//Positions relative to input view
+	public static void displayKeyAbovePosition(KeyDefinition key, String text, View inView)
 	{
 
-		mLastKeyDisplayed = key;
+		//Compensate for floating keyboard
+		int[] inWindow = ViewTools.getPositionInWindow(inView);
+
+		int verticalOffset = (CodeUtils.getTopParent(inView).getMeasuredHeight()) - (inWindow[1] + inView.getMeasuredHeight());
+		int horizontalOffset = inWindow[0];
+
+		displayKeyAbovePosition(key, text, inView.getMeasuredWidth(), inView.getMeasuredHeight(), horizontalOffset, verticalOffset);
+
+	}
+
+	//Full-screen coordinates
+	public static void displayKeyAbovePosition(KeyDefinition key, String text, int keyboardWidth, int keyboardHeight, int horizontalOffset, int verticalOffset)
+	{
+
+		mLastKeyDisplayed = key.content;
 
 		if (mKeyboardOverlay == null)
 		{
@@ -131,19 +142,44 @@ public class OverlayCommons
 			return;
 		}
 
-		TextView button = getPopup();
+		/////////////////////////////////////////////
+		//Calculate where we want the key to appear
+		/////////////////////////////////////////////
 
+		//Update key size
+		{
+
+			float keyY = (key.hitbox.bottom - key.hitbox.top) * keyboardHeight;
+			float keyX = (key.hitbox.bottom - key.hitbox.top) * keyboardWidth;
+
+			int paddingX = (int) (keyX * 0.25);
+			int paddingY = (int) (keyY * 0.25);
+			float textSize = (float) (keyY * 0.7);
+
+			OverlayCommons.setPopupDimensions(textSize, paddingX, paddingY);
+		}
+
+		float xCenter = keyboardWidth * key.hitbox.centerX();
+		xCenter += horizontalOffset;
+
+		int yPos = (int)(keyboardHeight * key.hitbox.top);
+		yPos = keyboardHeight - yPos;    //From bottom
+
+		////////////////////////////////
+		//Decide on the final position
+		////////////////////////////////
+		TextView button = getPopup();
 
 		button.setText(text);
 
 		//Get the size of the view so we know where to place it
 		button.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
-		int viewWidth = button.getMeasuredWidth();
-		int viewHeight = button.getMeasuredHeight();
+		int keyWidth = button.getMeasuredWidth();
+		int keyHeight = button.getMeasuredHeight();
 
 		//Get the x position we want the left side of the view to be at
-		float xPos = xCenter - (viewWidth / 2);
+		float xPos = xCenter - (keyWidth / 2);
 		if (xPos < 0)
 			xPos = 0;
 
@@ -151,7 +187,7 @@ public class OverlayCommons
 		if (mKeyboardOverlay.getMeasuredWidth() > 0)
 		{
 			//Check if we are off-screen on the right
-			float rightPos = xPos + viewWidth;
+			float rightPos = xPos + keyWidth;
 			if ( rightPos >= mKeyboardOverlay.getMeasuredWidth() )
 			{
 				//Offset left position accordingly
@@ -163,7 +199,7 @@ public class OverlayCommons
 		//////////////////
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)button.getLayoutParams();
 		params.leftMargin = (int)xPos;
-		params.topMargin = (int) mKeyboardOverlay.getMeasuredHeight() - (int) fromBottom - viewHeight;
+		params.topMargin = mKeyboardOverlay.getMeasuredHeight() - yPos - verticalOffset - keyHeight;
 
 		button.setLayoutParams(params);
 
@@ -196,8 +232,6 @@ public class OverlayCommons
 	}
 
 
-
-
 	public static void handleDisplayHotkeyMenuTouch(float x, float y, float viewHeight)
 	{
 
@@ -208,9 +242,18 @@ public class OverlayCommons
 		}
 	}
 
+	//In view
+	public static void displayHotkeyMenu(float spacebarMargin, int width, int height, float xCenter, List<? extends HotkeyPanel.HotkeyMenuItem> items,  View inView)
+	{
+		int[] inWindow = ViewTools.getPositionInWindow(inView);
+		int verticalOffset = (CodeUtils.getTopParent(inView).getMeasuredHeight()) - (inWindow[1] + inView.getMeasuredHeight());
+		int horizontalOffset = inWindow[0];
+
+		displayHotkeyMenu(spacebarMargin, width, height, xCenter, items, horizontalOffset, verticalOffset);
+	}
 
 	//Full-screen coordinates
-	public static void displayHotkeyMenu(float fromBottom, int height, float xCenter, List<? extends HotkeyPanel.HotkeyMenuItem> items)
+	public static void displayHotkeyMenu(float spacebarMargin, int width, int height, float xCenter, List<? extends HotkeyPanel.HotkeyMenuItem> items, int horizontalOffset, int verticalOffset)
 	{
 		if (mKeyboardOverlay == null)
 		{
@@ -218,12 +261,16 @@ public class OverlayCommons
 			return;
 		}
 
-
 		//if (mHotkeyMenuPanel == null)
 		{
 			mHotkeyMenuPanel = new HotkeyPanel( mKeyboardOverlay.getContext(), Settings.QUICK_MENU_HIGHLIGHT_COLOR );
 			RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+			params.bottomMargin = verticalOffset;
+			params.leftMargin = horizontalOffset;
+			params.width = width;
 			params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+
 			mHotkeyMenuPanel.setLayoutParams(params);
 		}
 
@@ -231,11 +278,12 @@ public class OverlayCommons
 		mHotkeyMenuPanel.setHighlightColor(Settings.QUICK_MENU_HIGHLIGHT_COLOR);
 		mHotkeyMenuPanel.setItems(items);
 
-		float centerRatio = mKeyboardOverlay.getMeasuredWidth() != 0 ? xCenter /  mKeyboardOverlay.getMeasuredWidth() : 0.5f;
+		float centerRatio = mKeyboardOverlay.getMeasuredWidth() != 0 ? xCenter /  width : 0.5f;
+
 
 		mHotkeyMenuPanel.setHorizontalCenterRadio( centerRatio );
 		//mHotkeyMenuPanel.setTargetRadius( maxRadius_Y);
-		mHotkeyMenuPanel.setBottomMargin(fromBottom);
+		mHotkeyMenuPanel.setBottomMargin(spacebarMargin);
 		mHotkeyMenuPanel.setCoverTop(0);
 		mHotkeyMenuPanel.setTextSizeRatio(Settings.QUICKMENU_TEXT_SIZE_RATIO);
 

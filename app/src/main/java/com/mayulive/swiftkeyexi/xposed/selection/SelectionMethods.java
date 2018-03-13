@@ -1,6 +1,5 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
-import android.os.Build;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -10,10 +9,11 @@ import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
+import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
@@ -916,23 +916,17 @@ public class SelectionMethods
 
 				if (SelectionState.mSpaceModifierTriggered)
 				{
-
-					//Compact or other weird layout mode.
-					//View may be smaller and gravity'd right
-					//TODO cache somewhere
-					float xOffset = SelectionState.getKeyboardHorizontalOffset(view);
-
 					if (SelectionState.getSpaceModifierBehavior() == SpaceModifierBehavior.MENU)
 					{
 
 						if (!OverlayCommons.isHotkeyMenuDisplayed())
 						{
-							float spaceDistanceFromBottom = ( 1.0f - mFirstDown.hitbox.top )*view.getMeasuredHeight();
-
-							OverlayCommons.displayHotkeyMenu( spaceDistanceFromBottom, view.getMeasuredHeight(), currentPointerInfo.downX + xOffset, SelectionState.mHotkeyMenuItems );
+							// Cover spacebar, but display options above it
+							float spacebarMargin = ( 1.0f - mFirstDown.hitbox.top )*view.getMeasuredHeight();
+							OverlayCommons.displayHotkeyMenu( spacebarMargin, view.getMeasuredWidth(), view.getMeasuredHeight(), currentPointerInfo.downX, SelectionState.mHotkeyMenuItems, view );
 						}
 
-						OverlayCommons.handleDisplayHotkeyMenuTouch(event.getX() + xOffset , event.getY(), view.getMeasuredHeight());
+						OverlayCommons.handleDisplayHotkeyMenuTouch(event.getX() , event.getY(), view.getMeasuredHeight());
 
 					}
 					else if (SelectionState.getSpaceModifierBehavior()== SpaceModifierBehavior.KEY)
@@ -952,33 +946,13 @@ public class SelectionMethods
 									OverlayCommons.setPopupKeyManually( key.getContent() );
 								}
 								else
-
 								{
-									float keyY = (key.hitbox.bottom - key.hitbox.top) * view.getMeasuredHeight();
-									float keyX = (key.hitbox.bottom - key.hitbox.top) * view.getMeasuredHeight();
-
-									int paddingX = (int) (keyX * 0.25);
-									int paddingY = (int) (keyY * 0.25);
-									float textSize = (float) (keyY * 0.7);
-
-
-									float center = view.getMeasuredWidth() * key.hitbox.centerX();
-									//Keyboard may be in comapct mode, add x position offset
-									center += xOffset;
-
-									float bottom = view.getMeasuredHeight() * key.hitbox.top;
-
-									float yPos = bottom;
-									yPos = view.getMeasuredHeight() - yPos;    //From bottom
-
-									OverlayCommons.setPopupDimensions(textSize, paddingX, paddingY);
-									OverlayCommons.displayKeyAbove(key.getContent(), KeyboardInteraction.TextAction.getTextRepresentation(getModuleContext(), textAction), yPos, center);
+									OverlayCommons.displayKeyAbovePosition( 	key,
+																				KeyboardInteraction.TextAction.getTextRepresentation(getModuleContext(), textAction),
+																				view	);
 								}
 							}
 						}
-
-
-
 					}
 				}
 				else //Must be swiping
@@ -1128,7 +1102,6 @@ public class SelectionMethods
 		}
 
 		return false;
-
 	}
 
 	public static boolean handleMotionEvent(View view, MotionEvent event)
