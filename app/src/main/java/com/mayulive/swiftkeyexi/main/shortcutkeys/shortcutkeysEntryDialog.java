@@ -23,7 +23,7 @@ public abstract class shortcutkeysEntryDialog
 {
 
 	AlertDialog mDialog = null;
-	private static final KeyboardInteraction.TextAction[] mDropdownOptions = Arrays.copyOfRange(KeyboardInteraction.TextAction.values(), 1, KeyboardInteraction.TextAction.values().length);
+	private static final KeyboardInteraction.TextAction[] mDropdownOptions = KeyboardInteraction.TextAction.getUsableTextActions();
 
 	shortcutkeysEntryDialog(Context context, DB_ModifierKeyItem inputItem)
 	{

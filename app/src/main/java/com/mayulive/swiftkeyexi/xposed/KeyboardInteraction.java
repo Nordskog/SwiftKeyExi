@@ -1,8 +1,11 @@
 package com.mayulive.swiftkeyexi.xposed;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.mayulive.swiftkeyexi.R;
+
+import java.util.Arrays;
 
 /**
  * Created by Roughy on 2/23/2017.
@@ -12,6 +15,8 @@ public class KeyboardInteraction
 	public enum TextAction
 	{
 		DEFAULT,
+		UNDO,
+		REDO,
 		COPY,
 		CUT,
 		PASTE,
@@ -27,6 +32,10 @@ public class KeyboardInteraction
 				{
 					case DEFAULT:
 						return "DEFAULT";
+					case UNDO:
+						return context.getResources().getString(R.string.textaction_undo);
+					case REDO:
+						return context.getResources().getString(R.string.textaction_redo);
 					case COPY:
 						return context.getResources().getString(R.string.textaction_copy);
 					case CUT:
@@ -60,6 +69,10 @@ public class KeyboardInteraction
 				{
 					case DEFAULT:
 						return "DEFAULT";
+					case UNDO:
+						return context.getResources().getString(R.string.textaction_short_undo);
+					case REDO:
+						return context.getResources().getString(R.string.textaction_short_redo);
 					case COPY:
 						return context.getResources().getString(R.string.textaction_short_copy);
 					case CUT:
@@ -83,6 +96,42 @@ public class KeyboardInteraction
 				//but the loaded xposed side is still using the old ids, causing a crash.
 				return "Null";
 			}
+		}
+
+		public static TextAction[] getUsableTextActions()
+		{
+
+			//Supports everything
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+			{
+				TextAction[] values =
+						{
+								TextAction.UNDO,
+								TextAction.REDO,
+								TextAction.COPY,
+								TextAction.CUT,
+								TextAction.PASTE,
+								TextAction.SELECT_ALL,
+								TextAction.GO_TO_END,
+								TextAction.GO_TO_START
+						};
+				return values;
+			}
+			else
+			{
+				//Supports everything but undo/redo
+				TextAction[] values =
+						{
+								TextAction.COPY,
+								TextAction.CUT,
+								TextAction.PASTE,
+								TextAction.SELECT_ALL,
+								TextAction.GO_TO_END,
+								TextAction.GO_TO_START
+						};
+				return values;
+			}
+
 		}
 	}
 

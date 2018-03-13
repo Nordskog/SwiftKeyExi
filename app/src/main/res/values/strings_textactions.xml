@@ -2,6 +2,8 @@
 <resources>
 
     <!-- Full-sized strings -->
+    <string name="textaction_undo">Undo</string>
+    <string name="textaction_redo">Redo</string>
     <string name="textaction_selectall">Select All</string>
     <string name="textaction_copy">Copy</string>
     <string name="textaction_cut">Cut</string>
@@ -10,6 +12,8 @@
     <string name="textaction_gotostart">Go to Start</string>
 
     <!-- Short-hand for quick menu -->
+    <string name="textaction_short_undo">Undo</string>
+    <string name="textaction_short_redo">Redo</string>
     <string name="textaction_short_selectall">All</string>
     <string name="textaction_short_copy">Copy</string>
     <string name="textaction_short_cut">Cut</string>
