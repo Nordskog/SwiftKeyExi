@@ -60,6 +60,27 @@ public class KeyboardHooks
 				{
 					ViewGroup view = (ViewGroup) param.getResult();
 
+					{
+						// For some strange reaon hooking onCreateInputView doesn't work properly.
+						// This is a mother htat is... nearby, but not quite the same.
+						// It gets called twice, for two views that are probably placed in
+						// the same framelayout. That means we have to set alpha on both of them.
+						// I tried getting the parent lanter but it... didn't work.
+
+						//If first empty or second populated set first, and make sure second is cleared.
+						if (KeyboardMethods.mKeyboardRoots[0] == null || KeyboardMethods.mKeyboardRoots[1] != null )
+						{
+							KeyboardMethods.mKeyboardRoots[0] = view;
+							KeyboardMethods.mKeyboardRoots[1] = null;
+						}
+						else //Set second
+						{
+							KeyboardMethods.mKeyboardRoots[1] = view;
+						}
+					}
+
+					KeyboardMethods.setKeyboardOpacity();
+
 					//If cover is not null, maker sure we have not already added something
 					if (OverlayCommons.mKeyboardOverlay != null)
 					{
@@ -321,7 +342,6 @@ public class KeyboardHooks
 				}
 			}
 		});
-
 	}
 
 	public static boolean HookAll(final PackageTree lpparam)
@@ -384,6 +404,8 @@ public class KeyboardHooks
 						KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
 										KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
 								false );
+
+						KeyboardMethods.setKeyboardOpacity();
 					}
 				});
 

@@ -13,6 +13,8 @@ import com.mayulive.swiftkeyexi.settings.FloatNumberPickerPreference;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreferenceFragment;
+import com.mayulive.swiftkeyexi.settings.OpacityPreference;
+import com.mayulive.swiftkeyexi.settings.OpacityPreferenceFragment;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 
 /**
@@ -176,6 +178,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			fragment.show(getFragmentManager(),
 					"android.support.v7.preference.PreferenceFragment.DIALOG");
 
+		}
+		else if (preference instanceof OpacityPreference)
+		{
+			fragment = OpacityPreferenceFragment.newInstance(preference);
+			fragment.setTargetFragment(this, 0);
+			fragment.show(getFragmentManager(),
+					"android.support.v7.preference.PreferenceFragment.DIALOG");
 		}
 		else super.onDisplayPreferenceDialog(preference);
 	}

@@ -94,6 +94,9 @@ public class Settings
 	//Set to true if any setting that requires a realod of the keyboard is changed
 	public static boolean request_KEYBOARD_RELOAD = false;
 
+	//Transparent keyboard is transparent
+	public static float KEYBOARD_OPACITY = 1f;
+
 
 	public static void loadSettings(SharedPreferences prefs)
 	{
@@ -175,7 +178,6 @@ public class Settings
 		QUICK_MENU_HIGHLIGHT_COLOR = prefs.getInt(PreferenceConstants.pref_quick_menu_color_key, 0xFF2d5bc6);
 		QUICKMENU_TEXT_SIZE_RATIO = prefs.getFloat(PreferenceConstants.pref_hotkey_menu_text_size_key, 0.15f);
 
-
 		{
 			float existingValue = KEYBOARD_SIZE_MULTIPLIER;
 			KEYBOARD_SIZE_MULTIPLIER =  prefs.getFloat(PreferenceConstants.pref_keyboard_size_multiplier_key, 1f);
@@ -185,6 +187,9 @@ public class Settings
 			}
 
 		}
+
+		//Value is int 0 to 100, convert to 0-1f
+		KEYBOARD_OPACITY = ( (float)prefs.getInt(PreferenceConstants.pref_keyboard_opacity_key, 100) / (float)100  ) ;
 
 		checkSettingRequirements();
 	}

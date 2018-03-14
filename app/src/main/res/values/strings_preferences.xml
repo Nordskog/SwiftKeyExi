@@ -28,6 +28,12 @@
     <string name="pref_emoji_text_size_title">Emoji Size</string>
     <string name="pref_emoji_text_size_summary">How large Emoji will appear</string>
 
+    <!-- keyboard opacity -->
+    <string name="pref_keyboard_opacity_key">pref_keyboard_opacity</string>
+    <string name="pref_keyboard_opacity_title">Keyboard opacity</string>
+    <string name="pref_keyboard_opacity_summary">Make the keyboard transparent</string>
+
+
     <!-- fullscreen keyboard -->
     <string name="pref_disable_fullscreen_key">pref_disable_fullscreen</string>
     <string name="pref_disable_fullscreen_title">Disable Fullscreen</string>

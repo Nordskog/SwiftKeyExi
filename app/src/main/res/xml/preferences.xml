@@ -134,6 +134,15 @@
         android:summary="@string/pref_disable_fullscreen_summary"
         android:defaultValue="false" />
 
+    <com.mayulive.swiftkeyexi.settings.OpacityPreference
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:key="@string/pref_keyboard_opacity_key"
+        android:title="@string/pref_keyboard_opacity_title"
+        android:summary="@string/pref_keyboard_opacity_summary"
+        app:opacityPreference_default="100"
+        app:opacityPreference_max="100"
+        />
+
     </PreferenceCategory>
 
     <PreferenceCategory
