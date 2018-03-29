@@ -164,6 +164,11 @@
         android:title="@string/pref_additional_symbol_keys_title"
         android:summary="@string/pref_additional_symbol_keys_summary" />
 
+    <com.mayulive.swiftkeyexi.util.view.LineBreakPreference
+        android:key="@string/pref_remapped_keys_key"
+        android:title="@string/pref_remapped_keys_title"
+        android:summary="@string/pref_remapped_keys_summary" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

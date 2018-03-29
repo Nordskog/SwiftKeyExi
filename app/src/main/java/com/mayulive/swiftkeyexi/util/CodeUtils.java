@@ -29,8 +29,6 @@ public class CodeUtils
 
 		for (StackTraceElement currentElement : stack)
 		{
-
-
 			Log.i(LOGTAG, currentElement.toString());
 		}
 

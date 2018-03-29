@@ -22,8 +22,9 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@id/shortcutkey_modifier"
+                android:id="@+id/shortcutkey_modifier"
                 style="@style/ModButton"
+                android:alpha="1"
                 />
 
             <TextView
@@ -37,7 +38,7 @@
 
             <Button
                 style="@style/ModButton"
-                android:id="@+id/shortcutkey_text"
+                android:id="@id/shortcutkey_text"
                 android:alpha="1"
                 />
 

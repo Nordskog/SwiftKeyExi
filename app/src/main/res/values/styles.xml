@@ -121,6 +121,13 @@
         <item name="android:paddingBottom">@dimen/vertical_item_spacing</item>
     </style>
 
+    <style name="GenericContainerPadding">
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/vertical_item_spacing</item>
+        <item name="android:paddingBottom">@dimen/vertical_item_spacing</item>
+    </style>
+
     <style name="EditboxDescription">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

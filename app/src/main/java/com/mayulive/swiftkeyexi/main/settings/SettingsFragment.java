@@ -109,6 +109,16 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			}
 		});
 
+		Preference remappedKeysPreference = findPreference(this.getContext().getResources().getString( R.string.pref_remapped_keys_key ));
+		remappedKeysPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayRemappedKeysFragment();
+				return true;
+			}
+		});
 
 	}
 
@@ -160,6 +170,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 	private void displaySoundDialog()
 	{
 		SoundFragment nextFrag = new SoundFragment();
+
+		this.getFragmentManager().beginTransaction()
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
+				.addToBackStack(null)
+				.commit();
+	}
+
+	private void displayRemappedKeysFragment()
+	{
+		RemappedKeysFragment nextFrag = new RemappedKeysFragment();
 
 		this.getFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)

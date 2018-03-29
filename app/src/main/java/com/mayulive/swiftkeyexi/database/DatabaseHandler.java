@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.LoadPackageHook;
+import com.mayulive.swiftkeyexi.main.commons.data.DB_ModifierKeyItem;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
@@ -22,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
 	private static String LOGTAG = ExiModule.getLogTag(DatabaseHandler.class);
 
-	public static final int DATABASE_VERSION = 4;
+	public static final int DATABASE_VERSION = 5;
 	public static final String DATABASE_NAME = "exi_main.db";
 
 	private SQLiteDatabase mDb = null;
@@ -96,6 +97,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		query = "CREATE TABLE " + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableName + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableDefinition;
 		db.execSQL(query);
 
+		query = "CREATE TABLE " + TableInfoTemplates.REMAPPED_HARDWAREKEYS_TABLE_INFO.tableName + TableInfoTemplates.REMAPPED_HARDWAREKEYS_TABLE_INFO.tableDefinition;
+		db.execSQL(query);
+
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
@@ -109,7 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			{
 				case 1:
 				{
-					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
+					Log.i(LOGTAG, "upgrading to: "+(presentVersion+1));
 					String query = "CREATE TABLE " + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableName + TableInfoTemplates.HOTKEY_MENU_ITEMS_TABLE_INFO.tableDefinition;
 					db.execSQL(query);
 
@@ -172,6 +176,38 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
 
 					String query = "ALTER TABLE "+TableInfoTemplates.POPUP_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_PopupParentKeyItem.PopupParentKeyEntry.DELETE_EXISTING_TABLE_COLUMN+" BOOLEAN DEFAULT 0";
+					db.execSQL(query);
+
+					break;
+				}
+
+				case 4:
+				{
+					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
+
+					//////////////////////
+					// Hardware hotkeys
+					//////////////////////
+
+					String query = "ALTER TABLE "+TableInfoTemplates.MODIFIER_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_ModifierKeyItem.ModifierKeyEntry.HOTKEY_TYPE+" TEXT DEFAULT 'SOFT'";
+					db.execSQL(query);
+
+					query = "ALTER TABLE "+TableInfoTemplates.MODIFIER_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_ModifierKeyItem.ModifierKeyEntry.HARD_MODIFIER_COLUMN+" INTEGER DEFAULT -1";
+					db.execSQL(query);
+
+					query = "ALTER TABLE "+TableInfoTemplates.MODIFIER_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_ModifierKeyItem.ModifierKeyEntry.HARD_KEY_COLUMN+" INTEGER DEFAULT -1";
+					db.execSQL(query);
+
+					query = "ALTER TABLE "+TableInfoTemplates.MODIFIER_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_ModifierKeyItem.ModifierKeyEntry.HARD_MODIFIER_TYPE_COLUMN+" TEXT DEFAULT 'KEY_CODE'";
+					db.execSQL(query);
+
+					query = "ALTER TABLE "+TableInfoTemplates.MODIFIER_KEY_TABLE_INFO.tableName+" ADD COLUMN "+ DB_ModifierKeyItem.ModifierKeyEntry.HARD_KEY_TYPE_COLUMN+" TEXT DEFAULT 'KEY_CODE'";
+					db.execSQL(query);
+
+					//////////////////////////
+					// Hardware key remapping
+					//////////////////////////
+					query = "CREATE TABLE " + TableInfoTemplates.REMAPPED_HARDWAREKEYS_TABLE_INFO.tableName + TableInfoTemplates.REMAPPED_HARDWAREKEYS_TABLE_INFO.tableDefinition;
 					db.execSQL(query);
 
 					break;

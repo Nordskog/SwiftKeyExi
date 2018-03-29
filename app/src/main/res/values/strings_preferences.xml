@@ -173,9 +173,13 @@
 
     <string name="pref_about_key">pref_about</string>
     <string name="pref_about_title">About</string>
-
     <string name="pref_hotkey_menu_text_size_key">pref_hotkey_menu_text_size</string>
 
+
+    <!--  Remapped keys -->
+    <string name="pref_remapped_keys_key">pref_remapped_keys</string>
+    <string name="pref_remapped_keys_title">Remapped Keys</string>
+    <string name="pref_remapped_keys_summary">Remapped hardware keys</string>
 
 
 </resources>

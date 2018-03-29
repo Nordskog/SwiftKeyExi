@@ -6,9 +6,9 @@ import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.shared.SharedStyles;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.swiftkeyexi.xposed.AndroidHooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.ProfileCache;
-import com.mayulive.xposed.classhunter.ProfileServer;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 
@@ -23,44 +23,49 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 	@Override
 	public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable
 	{
-		if ( !(lpparam.packageName.equals( ExiModule.SWIFTKEY_BETA_PACKAGE_NAME ) || lpparam.packageName.equals( ExiModule.SWIFTKEY_PACKAGE_NAME )) )
-			return;
+		//Swiftkey
+		if ( lpparam.packageName.equals( ExiModule.SWIFTKEY_BETA_PACKAGE_NAME ) || lpparam.packageName.equals( ExiModule.SWIFTKEY_PACKAGE_NAME ) )
+		{
+			ExiXposed.setPackage( lpparam.packageName );
 
-		ExiXposed.setPackage( lpparam.packageName );
+			//Some assets as shared between the app and xposed, requirement some management
+			SharedStyles.setStyleContext(SharedStyles.StyleContext.HOOK);	//Defaults to app
 
-		//Some assets as shared between the app and xposed, requirement some management
-		SharedStyles.setStyleContext(SharedStyles.StyleContext.HOOK);	//Defaults to app
+			int CRC32 = ClassHunter.getApkCRC32(lpparam.appInfo.sourceDir);
+			XposedBridge.log(LOGTAG+", "+"Module loaded in "+lpparam.packageName);
+			Log.i(
+					LOGTAG,
+					"Module loaded in "+ExiXposed.HOOK_PACKAGE_NAME+
+							", CRC: "+Integer.toHexString(CRC32)+
+							", Module version: "+BuildConfig.VERSION_NAME);
 
-		int CRC32 = ClassHunter.getApkCRC32(lpparam.appInfo.sourceDir);
-		XposedBridge.log(LOGTAG+", "+"Module loaded in "+lpparam.packageName);
-		Log.i(
-				LOGTAG,
-				"Module loaded in "+ExiXposed.HOOK_PACKAGE_NAME+
-						", CRC: "+Integer.toHexString(CRC32)+
-						", Module version: "+BuildConfig.VERSION_NAME);
+			PackageTree classTree = new PackageTree(lpparam.appInfo.sourceDir, lpparam.classLoader);
 
-		PackageTree classTree = new PackageTree(lpparam.appInfo.sourceDir, lpparam.classLoader);
+			ProfileCache.setSaveLocation(lpparam.appInfo.dataDir+"/files/EXI_CLASS_CACHE_"+ ExiXposed.HOOK_PACKAGE_NAME);
 
-		ProfileCache.setSaveLocation(lpparam.appInfo.dataDir+"/files/EXI_CLASS_CACHE_"+ ExiXposed.HOOK_PACKAGE_NAME);
+			//Automatically reset class cache on update of module or swiftkey
+			ClassHunter.MODULE_SIGNATURE = BuildConfig.VERSION_CODE;
+			ClassHunter.HOOK_SIGNATURE = CRC32;
 
-		//Automatically reset class cache on update of module or swiftkey
-		ClassHunter.MODULE_SIGNATURE = BuildConfig.VERSION_CODE;
-		ClassHunter.HOOK_SIGNATURE = CRC32;
+			ProfileCache.loadCache();
 
-		ProfileCache.loadCache();
+			Hooks.hookAll(classTree);
 
-		Hooks.hookAll(classTree);
+			ProfileCache.saveCache();
 
-		ProfileCache.saveCache();
+			XposedBridge.log(LOGTAG+", "+"Finished hooking work in"+lpparam.packageName);
+			Log.i(LOGTAG, "Finished hooking work in "+ExiXposed.HOOK_PACKAGE_NAME);
 
-		XposedBridge.log(LOGTAG+", "+"Finished hooking work in"+lpparam.packageName);
-		Log.i(LOGTAG, "Finished hooking work in "+ExiXposed.HOOK_PACKAGE_NAME);
-
-		//Bonus: While it's convenient to load classes only when they are needed,
-		//they cause a bit of a hiccup if they have a long initialization process.
-		//Force load stuff here
-		EmojiModifiers.forceInit();
-
+			//Bonus: While it's convenient to load classes only when they are needed,
+			//they cause a bit of a hiccup if they have a long initialization process.
+			//Force load stuff here
+			EmojiModifiers.forceInit();
+		}
+		else if (lpparam.packageName.equals( AndroidHooks.SYSTEM_SERVER_PACKAGE ))
+		{
+			Log.i(LOGTAG, "In system server context");
+			AndroidHooks.hookAll(lpparam.classLoader);
+		}
 	}
 }
 

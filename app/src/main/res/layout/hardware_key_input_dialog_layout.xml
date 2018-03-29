@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:focusable="true"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:id="@+id/hardware_key_input_text_view"
+            android:focusable="false"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hardware_key_press_key_dialog"/>
+
+        <Button
+            style="@style/ModButton"
+            android:text="@string/hardware_key_select_from_list"
+            android:id="@+id/hardware_key_select_from_list_button"
+            android:alpha="1"
+            />
+
+
+            <ListView
+                android:visibility="gone"
+                android:id="@+id/hardware_key_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ListView>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

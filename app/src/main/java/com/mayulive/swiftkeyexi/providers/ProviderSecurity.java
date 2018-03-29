@@ -27,6 +27,9 @@ public class ProviderSecurity
 	{
 		mAllowedPackages.add(ExiModule.SWIFTKEY_PACKAGE_NAME);
 		mAllowedPackages.add(ExiModule.SWIFTKEY_BETA_PACKAGE_NAME);
+
+		//Looking up system package for uid doesn't seem to work.
+		mAllowedUids.put(1000, true);
 	}
 
 	public static boolean isAllowed(Context context, int uid)
