@@ -125,6 +125,10 @@
     <string name="pref_old_flow_behavior_title">Use old Flow behavior</string>
     <string name="pref_old_flow_behavior_summary">Predict next instead of correcting last</string>
 
+    <!-- Swipe selection RTL mode -->
+    <string name="pref_swipe_rtl_mode_key">pref_swipe_rtl_mode</string>
+    <string name="pref_swipe_rtl_mode_title">Enable RTL swipe selection</string>
+    <string name="pref_swipe_rtl_mode_summary">Support RTL text when swipe-selecting</string>
 
     <!-- Period button -->
     <string name="pref_disable_period_click_key">pref_disable_period_click</string>

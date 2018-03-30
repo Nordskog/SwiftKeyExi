@@ -97,6 +97,8 @@ public class Settings
 	//Transparent keyboard is transparent
 	public static float KEYBOARD_OPACITY = 1f;
 
+	public static boolean SWIPE_RTL_MODE_ENABLED = true;
+
 
 	public static void loadSettings(SharedPreferences prefs)
 	{
@@ -122,6 +124,8 @@ public class Settings
 		DISPLAY_GIFS_FROM_MORE_SOURCES = prefs.getBoolean(PreferenceConstants.pref_gifs_more_sources_key, false);
 
 		DISABLE_FULLSCREEN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_disable_fullscreen_key, false);
+
+		SWIPE_RTL_MODE_ENABLED = prefs.getBoolean(PreferenceConstants.pref_swipe_rtl_mode_key, true);
 
 		SWIPE_SELECTION_BEHAVIOR = SelectionBehavior.valueOf
 				(

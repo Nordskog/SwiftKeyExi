@@ -147,11 +147,13 @@ public class SelectionMethods
 
 	public static boolean updateRtlAndCheckForMixed()
 	{
+		SelectionState.mIsRtl = false;
+		if ( !Settings.SWIPE_RTL_MODE_ENABLED)
+			return false;
 
 		int start = 0;
 		int end = 0;
 
-		SelectionState.mIsRtl = false;
 		boolean isMixed = false;
 
 		//Just incase
@@ -331,6 +333,8 @@ public class SelectionMethods
 			//TODO Combining marks, but any IME worth a damn will input 99% of them as distinct characters, so probably won't be a problem.
 		}
 
+
+		if (Settings.SWIPE_RTL_MODE_ENABLED)
 		{
 			//If base directioanlity differs from the diretionality of the final section of text,
 			//we will hit 0 and get stuck. If we use normal cursor control to move the cursor to position 0,
@@ -365,7 +369,6 @@ public class SelectionMethods
 					return;
 				}
 			}
-
 		}
 
 		SelectionState.setInternalSelectionValue(selection.start,selection.end, state);
@@ -994,8 +997,8 @@ public class SelectionMethods
 							//RTL is difficult. So difficult in fact that we can't really do it properly.
 							//If we are just moving the cursor (not select), use the fallback method
 							//that relies on keypresses instead of actually setting the cursor position
-							//if (mIsMixed)
-							if(updateRtlAndCheckForMixed())
+							//If RTL mode disabled this just set rtl status to false and returns false.
+							if( updateRtlAndCheckForMixed())
 							{
 								//Only works for cursor movement, not selection
 								setSelectionChangeFallback(xCursorChange, currentPointerInfo.state, true);

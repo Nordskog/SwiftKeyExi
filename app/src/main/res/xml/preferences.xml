@@ -143,6 +143,12 @@
         app:opacityPreference_max="100"
         />
 
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_swipe_rtl_mode_key"
+        android:title="@string/pref_swipe_rtl_mode_title"
+        android:summary="@string/pref_swipe_rtl_mode_summary"
+        android:defaultValue="true" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
