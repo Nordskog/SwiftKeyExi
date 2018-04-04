@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(this, SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 		int lastApiVersion = prefs.getInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
-		int lastExiVersion = prefs.getInt(PreferenceConstants.status_exi_version_code_last_launch_key, 0);
+		int lastExiVersion = prefs.getInt(PreferenceConstants.status_exi_version_code_last_launch_key, BuildConfig.VERSION_CODE);
 
 
 
@@ -109,6 +109,9 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 				editor.putLong(PreferenceConstants.pref_popup_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_additional_keys_last_update_key, currentTime);
 				editor.putLong(PreferenceConstants.pref_quickmenu_last_update_key, currentTime);
+
+				editor.putInt(PreferenceConstants.status_api_version_last_launch, Build.VERSION.SDK_INT);
+				editor.putInt(PreferenceConstants.status_exi_version_code_last_launch_key, BuildConfig.VERSION_CODE);
 
 				editor.apply();
 			}
