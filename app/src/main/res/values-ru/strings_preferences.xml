@@ -18,6 +18,9 @@
   <!-- Emoji text size -->
   <string name="pref_emoji_text_size_title">Размер Эмодзи</string>
   <string name="pref_emoji_text_size_summary">Установить размер Эмодзи</string>
+  <!-- keyboard opacity -->
+  <string name="pref_keyboard_opacity_title">Непрозрачность клавиатуры</string>
+  <string name="pref_keyboard_opacity_summary">Сделать клавиатуру прозрачной</string>
   <!-- fullscreen keyboard -->
   <string name="pref_disable_fullscreen_title">Отключить полноэкранный режим</string>
   <string name="pref_disable_fullscreen_summary">Запретить переход в полноэкранный режим. В альбомной ориентации блокируется полноэкранное поле ввода текста, и отображается текущий интерфейс приложения</string>
@@ -68,6 +71,9 @@
   <!-- Swipe behavior -->
   <string name="pref_old_flow_behavior_title">Использовать поведение Flow</string>
   <string name="pref_old_flow_behavior_summary">Предугадать следующее слово вместо исправления текущего</string>
+  <!-- Swipe selection RTL mode -->
+  <string name="pref_swipe_rtl_mode_title">Включить поддержку написания справа налево в режиме жестов и выделения текста</string>
+  <string name="pref_swipe_rtl_mode_summary">Поддержка написания справа налево в режиме жестов и выделения текста</string>
   <!-- Period button -->
   <string name="pref_disable_period_click_title">Случайный ввод точки</string>
   <string name="pref_disable_period_click_summary">Исключить случайное нажатие на клавишу точки. Чтобы поставить точку, нажимайте на клавишу чуть дольше</string>
@@ -92,4 +98,7 @@
   <string name="pref_selection_behavior_summary">Как Вы выбираете текст</string>
   <string name="pref_selection_behavior_dialog_title">Выбор поведения</string>
   <string name="pref_about_title">О приложении</string>
+  <!--  Remapped keys -->
+  <string name="pref_remapped_keys_title">Переназначенные клавиши</string>
+  <string name="pref_remapped_keys_summary">Переназначенные аппаратные клавиши</string>
 </resources>

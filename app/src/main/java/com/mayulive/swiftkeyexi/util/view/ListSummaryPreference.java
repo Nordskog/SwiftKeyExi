@@ -75,6 +75,10 @@ public class ListSummaryPreference extends Preference
 
 			summaryView.setText(builder.toString());
 			summaryView.setVisibility(View.VISIBLE);
+
+			//Wonder if you can just disable it somewhere.
+			//0 removes all lines, -1 crashes
+			summaryView.setMaxLines(99);
 		}
 	}
 
