@@ -57,11 +57,23 @@ public class EmojiProfiles
 						//Method #0: a
 						new MethodProfile
 								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
 										PUBLIC | EXACT ,
 										new ClassItem(java.lang.String.class),
 
 										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype.keyboard.view.fancy.location" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
 										new ClassItem(int.class),
 										new ClassItem(java.lang.String.class),
 										new ClassItem(java.lang.String.class),
@@ -70,7 +82,7 @@ public class EmojiProfiles
 
 								),
 
-						//Method #1: a
+						//Method #2: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
