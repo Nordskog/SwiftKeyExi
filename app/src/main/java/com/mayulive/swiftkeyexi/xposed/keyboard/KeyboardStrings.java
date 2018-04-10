@@ -309,8 +309,8 @@ public class KeyboardStrings
 		"                        ],\n"+
 		"                        \"actions\": [\n"+
 		"                            \"BACKSPACE\",\n"+
-		"                            \"INS_FOCUS\",\n"+
-		"                            \"INS_LANG_SPECIFIC_SPACE\"\n"+
+		"                            \"INS_FOCUS\"\n"+
+	/*	"                            \"INS_LANG_SPECIFIC_SPACE\"\n"+ 			*/
 		"                        ]\n"+
 		"                    }\n"+
 		"                },\n"+
@@ -327,8 +327,8 @@ public class KeyboardStrings
 		"                                        \" $\"\n"+
 		"                                    ],\n"+
 		"                                    \"actions\": [\n"+
-		"                                        \"INS_FOCUS\",\n"+
-		"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
+		"                                        \"INS_FOCUS\"\n"+
+	/*	"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+ */
 		"                                    ]\n"+
 		"                                }\n"+
 		"                            }\n"+
@@ -441,8 +441,8 @@ public class KeyboardStrings
 		"                                    \"state\": \"CLOSE\",\n"+
 		"                                    \"actions\": [\n"+
 		"                                        \"BACKSPACE\",\n"+
-		"                                        \"INS_FOCUS\",\n"+
-		"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
+		"                                        \"INS_FOCUS\"\n"+
+	/*	"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+  	*/
 		"                                    ]\n"+
 		"                                }\n"+
 		"                            }\n"+
@@ -462,8 +462,8 @@ public class KeyboardStrings
 		"                                        \" $\"\n"+
 		"                                    ],\n"+
 		"                                    \"actions\": [\n"+
-		"                                        \"INS_FOCUS\",\n"+
-		"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
+		"                                        \"INS_FOCUS\"\n"+
+	/*	"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+ */
 		"                                    ]\n"+
 		"                                }\n"+
 		"                            }\n"+
