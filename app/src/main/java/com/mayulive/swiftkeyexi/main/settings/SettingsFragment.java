@@ -13,6 +13,8 @@ import com.mayulive.swiftkeyexi.settings.FloatNumberPickerPreference;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreferenceFragment;
+import com.mayulive.swiftkeyexi.settings.OpacityPreference;
+import com.mayulive.swiftkeyexi.settings.OpacityPreferenceFragment;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 
 /**
@@ -107,6 +109,16 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			}
 		});
 
+		Preference remappedKeysPreference = findPreference(this.getContext().getResources().getString( R.string.pref_remapped_keys_key ));
+		remappedKeysPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayRemappedKeysFragment();
+				return true;
+			}
+		});
 
 	}
 
@@ -166,6 +178,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 				.commit();
 	}
 
+	private void displayRemappedKeysFragment()
+	{
+		RemappedKeysFragment nextFrag = new RemappedKeysFragment();
+
+		this.getFragmentManager().beginTransaction()
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
+				.addToBackStack(null)
+				.commit();
+	}
+
 	//Needed for custom prefs to work... ? I don't even
 	@Override
 	public void onDisplayPreferenceDialog(Preference preference) {
@@ -176,6 +199,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			fragment.show(getFragmentManager(),
 					"android.support.v7.preference.PreferenceFragment.DIALOG");
 
+		}
+		else if (preference instanceof OpacityPreference)
+		{
+			fragment = OpacityPreferenceFragment.newInstance(preference);
+			fragment.setTargetFragment(this, 0);
+			fragment.show(getFragmentManager(),
+					"android.support.v7.preference.PreferenceFragment.DIALOG");
 		}
 		else super.onDisplayPreferenceDialog(preference);
 	}

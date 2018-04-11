@@ -6,6 +6,8 @@ package com.mayulive.swiftkeyexi.database;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.mayulive.swiftkeyexi.ExiModule;
+
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 
 public class TableList<T extends DatabaseItem> extends ArrayList<T>
 {
+	private static String LOGTAG = ExiModule.getLogTag(TableList.class);
 
 	private boolean mBatchEdit = false;
 	private DatabaseMode mMode = DatabaseMode.IMMEDIATE;
@@ -335,11 +338,19 @@ public class TableList<T extends DatabaseItem> extends ArrayList<T>
 	{
 		if (mInfo != null)
 		{
-			super.clear();
-			ArrayList<T> dbItems = (ArrayList<T>)DatabaseMethods.getAllItems(mDbWrap, mInfo);
-			super.addAll(dbItems);
+			if (mInfo.tableName != null && !mInfo.tableName.equalsIgnoreCase("null"))
+			{
+				super.clear();
+				ArrayList<T> dbItems = (ArrayList<T>)DatabaseMethods.getAllItems(mDbWrap, mInfo);
+				super.addAll(dbItems);
 
-			TableSyncer.getTime(getTableName());
+				TableSyncer.getTime(getTableName());
+			}
+			else
+			{
+				Log.e(LOGTAG, "Attempted to populate from db with a null table name");
+			}
+
 		}
 	}
 

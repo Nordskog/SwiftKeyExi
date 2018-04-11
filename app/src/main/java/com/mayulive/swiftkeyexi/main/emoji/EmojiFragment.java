@@ -2,17 +2,13 @@ package com.mayulive.swiftkeyexi.main.emoji;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
-import com.mayulive.swiftkeyexi.EmojiCache.ImageEmojiItem;
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
-import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifierBackgroundDrawable;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
-import com.mayulive.swiftkeyexi.util.ColorUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.util.TextUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
@@ -22,12 +18,10 @@ import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.main.commons.PopupLinearLayout;
-import com.mayulive.swiftkeyexi.util.view.ViewTools;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -40,17 +34,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.Space;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -119,8 +110,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		updateTextSize();
 	}
 
-	private void loadEmoij()
-	{
+	private void loadEmoij()	{
+
 		if (mDictionaryPanels == null || mKeyboardPanels == null)
 		{
 			mDictionaryPanels = new TableList<>(mDbWrap, TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO);
@@ -158,7 +149,9 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			//Invalidate panels
 			if (mKeyboardPagerAdapter != null && mDictionaryPagerAdapter != null)
 			{
-				EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
+				//Let's not do this anymore
+				//EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
+
 				mKeyboardPagerAdapter.notifyDataSetChanged();
 				mDictionaryPagerAdapter.notifyDataSetChanged();
 			}
@@ -221,7 +214,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		//Unfortunately it has no effect here ... Shame, I prefer the other size.
 		// TODO do battle with layout tab size
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(this.getContext());
-		tabs.setTabMinWidth( (int)(dimens.singleEmojiWidth * 1.1f) );
+		tabs.setTabMinWidth( (int)(dimens.default_singleEmojiWidth * 1.1f) );
 
 		pager.setAdapter(pagerAdapter);
 

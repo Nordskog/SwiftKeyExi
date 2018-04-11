@@ -7,6 +7,7 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.xposed.emoji.EmojiCommons;
+import com.mayulive.swiftkeyexi.xposed.hardwarekeys.HardwareKeyHooks;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionHooks;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.settings.Settings;
@@ -20,11 +21,6 @@ import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionHooks;
 import com.mayulive.swiftkeyexi.xposed.sound.SoundHooks;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
-
-import java.util.ArrayList;
-
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 
 /**
  * Created by Roughy on 6/22/2017.
@@ -72,6 +68,9 @@ public class Hooks
 	//Sound
 	public static HookCategory soundHooks_base = new HookCategory("SoundHooks base");
 
+	//Hardware keyboard shortcuts and remapping
+	public static HookCategory hardwareKeys_base = new HookCategory("Hardkey SHortcuts base");
+
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
 																						baseHooks_invalidateLayout,
@@ -82,103 +81,9 @@ public class Hooks
 																						baseHooks_theme,
 																						soundHooks_base,
 																						baseHooks_fullscreenMode,
-																						baseHooks_keyHeight
+																						baseHooks_keyHeight,
+			hardwareKeys_base
 	);
-
-	public static class HookCategory extends ArrayList<XC_MethodHook.Unhook>
-	{
-
-		private String mName = "NULL";
-		private boolean mRequirementsMet = true;
-		private HookCategory[] mDepenencies = new HookCategory[0];
-		private boolean mLogMe = true;
-
-		HookCategory(String name)
-		{
-			this(name, new HookCategory[0]);
-		}
-
-		HookCategory(String name,  HookCategory... dependencies)
-		{
-			super();
-			this.mName = name;
-			this.mDepenencies = dependencies;
-		}
-
-
-		//Returns true if change state as a result of this call
-		public boolean setRequirementsMet(boolean depenencyMet)
-		{
-
-			//Only react if state changes from true to false
-			if (mRequirementsMet && !depenencyMet)
-			{
-				//Propegate to depenencies
-				invalidate(null, "Requirement not met");
-				return false;
-			}
-
-			return true;
-		}
-
-		public void invalidate(Throwable ex, String reason)
-		{
-			if (mRequirementsMet)
-			{
-				mRequirementsMet = false;
-				logRemoval(ex,reason);
-				removeHooks();
-				invalidateDepenencies();
-			}
-			else
-			{
-				Log.d(LOGTAG, "Attempted to invalidated already invalidated HookCategory");
-			}
-		}
-
-
-		private void logRemoval(@Nullable Throwable ex, @Nullable String reason)
-		{
-			if (mLogMe)
-			{
-				if (reason == null)
-					reason = "NULL";
-
-				Log.e(LOGTAG, "Removed Hooks: "+mName+", "+reason);
-				XposedBridge.log("Removed hooks: "+mName+", "+reason);
-				if (ex != null)
-				{
-					ex.printStackTrace();
-					XposedBridge.log(ex);
-				}
-
-			}
-		}
-
-		private void invalidateDepenencies()
-		{
-			//Set the state of any depenencies to false, and remove their hooks
-			for (HookCategory hookCategory : mDepenencies)
-			{
-				//hookCategory.mLogMe = false;
-				hookCategory.invalidate(null, "Dependency invalidated");
-			}
-		}
-
-		public boolean isRequirementsMet()
-		{
-			return mRequirementsMet;
-		}
-
-		private void removeHooks()
-		{
-			for (XC_MethodHook.Unhook hook : this)
-			{
-				hook.unhook();
-			}
-			this.clear();
-		}
-	}
 
 	//Convenience method for checking requirement and logging on failure
 	public static void logSetRequirement( HookCategory category, String name, boolean newValue)
@@ -208,6 +113,8 @@ public class Hooks
 
 		if (Hooks.baseHooks_base.isRequirementsMet())
 		{
+
+			HardwareKeyHooks.HookAll(classTree);
 
 			//No a hook, just sets a listener
 			preventPeriodHook();

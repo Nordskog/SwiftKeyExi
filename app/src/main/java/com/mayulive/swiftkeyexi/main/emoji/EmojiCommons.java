@@ -52,9 +52,11 @@ public class EmojiCommons
 
 	public static void preRenderPanel(Context context, DB_EmojiPanelItem item)
 	{
+
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
 		EmojiCache.batchQueue(context, item.get_items(), dimens.configured_emojiTextSize, item, item.get_style(), item.get_column_width(), false);
 		EmojiCache.processQueue();
+
 	}
 
 }

@@ -31,6 +31,8 @@ public class TableInfoTemplates
 
 	protected static final String HOTKEY_MENU_ITEMS_TABLE_NAME = "hotkey_menu_items";
 
+	protected static final String REMAPPED_HARDWARE_KEYS_TABLE_NAME = "remapped_hardware_keys";
+
 
 	public static TableInfo MODIFIER_KEY_TABLE_INFO = new TableInfo(
 			new DB_ModifierKeyItem(),
@@ -95,6 +97,7 @@ public class TableInfoTemplates
 			ADDITIONAL_SYMBOL_KEYS_TABLE_NAME
 	);
 
+
 	public static TableInfo HOTKEY_MENU_ITEMS_TABLE_INFO = new TableInfo(
 			new DB_HotkeyMenuItem(),
 			DB_HotkeyMenuItem.PROJECTION,
@@ -102,4 +105,10 @@ public class TableInfoTemplates
 			HOTKEY_MENU_ITEMS_TABLE_NAME
 	);
 
+	public static TableInfo REMAPPED_HARDWAREKEYS_TABLE_INFO = new TableInfo(
+			new DB_RemappedKey(),
+			DB_RemappedKey.PROJECTION,
+			DB_RemappedKey.DEFINITION,
+			REMAPPED_HARDWARE_KEYS_TABLE_NAME
+	);
 }

@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.MainActivity;
+import com.mayulive.swiftkeyexi.main.commons.data.ModifierKeyItem;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.TableList;
@@ -34,7 +34,7 @@ public class ShortcutkeysFragment extends Fragment
 
 	ListView mListView = null;
 
-	ShortcutkeysAdapter mAdapter = null;
+	ShortcutkeysAdapter mShortcutsAdapter = null;
 
 	TableList<DB_ModifierKeyItem> mItems = null;
 
@@ -55,8 +55,8 @@ public class ShortcutkeysFragment extends Fragment
 
 		if (mItems.sync())
 		{
-			if (mAdapter != null)
-				mAdapter.notifyDataSetChanged();
+			if (mShortcutsAdapter != null)
+				mShortcutsAdapter.notifyDataSetChanged();
 		}
 	}
 
@@ -84,8 +84,8 @@ public class ShortcutkeysFragment extends Fragment
 		mListView = (ListView)mRootView.findViewById(R.id.shortcutkey_listview);
 
 
-		mAdapter = new ShortcutkeysAdapter(mRootView.getContext(), mItems);
-		mListView.setAdapter(mAdapter);
+		mShortcutsAdapter = new ShortcutkeysAdapter(mRootView.getContext(), mItems);
+		mListView.setAdapter(mShortcutsAdapter);
 
 
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -124,31 +124,36 @@ public class ShortcutkeysFragment extends Fragment
 	private void displayEntryDialog(DB_ModifierKeyItem item, int index)
 	{
 
-		shortcutkeysEntryDialog dialog = new shortcutkeysEntryDialog(getContext(), item)
+		shortcutkeysEntryDialog dialog = new shortcutkeysEntryDialog(getContext(), getChildFragmentManager(), item)
 		{
 
 			@Override
-			public void onEntrySaved(DB_ModifierKeyItem item)
+			public void onEntrySaved(ModifierKeyItem item)
 			{
-				if (item.get_id() < 0)
+
+				DB_ModifierKeyItem aItem = (DB_ModifierKeyItem)item;
+
+				if (aItem.get_id() < 0)
 				{
-					mItems.add(item);
+					mItems.add(aItem);
 				}
 				else
 				{
-					mItems.update(item);
+					mItems.update(aItem);
 				}
 
 				setLastUpdateTime();
-				mAdapter.notifyDataSetChanged();
+				mShortcutsAdapter.notifyDataSetChanged();
 			}
 
 			@Override
-			public void onEntryDeleted(DB_ModifierKeyItem item)
+			public void onEntryDeleted(ModifierKeyItem item)
 			{
-				mItems.remove(item);
+				DB_ModifierKeyItem aItem = (DB_ModifierKeyItem)item;
+
+				mItems.remove(aItem);
 				setLastUpdateTime();
-				mAdapter.notifyDataSetChanged();
+				mShortcutsAdapter.notifyDataSetChanged();
 			}
 		};
 		dialog.show();
@@ -156,8 +161,8 @@ public class ShortcutkeysFragment extends Fragment
 
 	public void onResume()
 	{
-		loadItems();
 		super.onResume();
+		loadItems();
 	}
 
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/vertical_item_spacing"
+
+              style="@style/ContainerPadding"
+
+    android:descendantFocusability="blocksDescendants">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/remapped_key_from"
+            style="@style/ModButton"
+            android:alpha="1"
+            />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            app:srcCompat="@drawable/ic_keyboard_arrow_right"
+            />
+
+        <Button
+            style="@style/ModButton"
+            android:id="@+id/remapped_key_to"
+            android:alpha="1"
+            />
+
+    </LinearLayout>
+
+
+
+
+<!--
+    <FrameLayout
+
+        android:layout_width="match_parent"
+
+        android:layout_height="1dp"
+        android:background="?attr/colorAccent"
+        />
+
+-->
+
+</LinearLayout>

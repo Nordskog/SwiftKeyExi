@@ -3,6 +3,10 @@ package com.mayulive.swiftkeyexi.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
+import android.util.Log;
+
+import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.LoadPackageHook;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +20,7 @@ import java.util.Set;
 
 public class DatabaseMethods
 {
+	private static String LOGTAG = ExiModule.getLogTag(DatabaseMethods.class);
 
 	//When deleting by ID
 	public static boolean clearTable(DatabaseWrapper db, TableInfo tableInfo)
@@ -327,6 +332,21 @@ public class DatabaseMethods
 	public static void deleteTable(DatabaseWrapper db, TableInfo tableInfo)
 	{
 		TableSyncer.removeTime(tableInfo.tableName);
+
+		if (tableInfo == null)
+		{
+			Log.e(LOGTAG, "Attempted to delete table without tableInfo");
+			return;
+		}
+
+		if (tableInfo.tableName == null || tableInfo.tableName.equalsIgnoreCase("null"))
+		{
+			Log.e(LOGTAG, "Attempted to delete table with null name");
+			return;
+		}
+
+
+
 		db.deleteTable(tableInfo.tableName);
 
 	}

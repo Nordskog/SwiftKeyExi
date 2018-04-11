@@ -4,6 +4,7 @@ import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_ModifierKeyItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.main.commons.data.ModifierKeyItem;
 import com.mayulive.swiftkeyexi.main.commons.data.TableInfoTemplates;
 import com.mayulive.swiftkeyexi.database.DatabaseMethods;
 import com.mayulive.swiftkeyexi.database.TableList;
@@ -126,6 +127,10 @@ public class SelectionSetup
 
 			for (DB_ModifierKeyItem currentKey : modifierKeys)
 			{
+				//Ignore hard key shortcuts
+				if (currentKey.get_hotkey_type() != ModifierKeyItem.HotkeyKeyType.SOFT)
+					continue;
+
 				mModifierKeyActions.put(currentKey.get_key().toLowerCase(), currentKey.get_textAction());
 			}
 		}

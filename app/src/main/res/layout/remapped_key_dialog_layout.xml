@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+
+
+              style="@style/ContainerPadding"
+    >
+            <LinearLayout
+                android:id="@+id/hotkey_hard_modifier_block"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <Button
+                    style="@style/ModButton"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/hotkeys_hardware_key_undefined"
+                    android:id="@+id/remapped_key_from_button"
+                    android:alpha="1"
+                    />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right"
+                    />
+
+
+                <Button
+                    style="@style/ModButton"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/hotkeys_hardware_key_undefined"
+                    android:id="@+id/remapped_key_to_button"
+                    android:alpha="1"
+                    />
+
+        </LinearLayout>
+
+</LinearLayout>

@@ -165,18 +165,9 @@ public class EmojiCommons
 		{
 			mLastUpdateTime = Settings.LAST_EMOJI_UPDATE;
 
-			if (Settings.changed_EMOJI_TEXT_SIZE)
-			{
-				Context context = getHookContext();
-				EmojiResources.setEmojiTextSize(context, Settings.EMOJI_TEXT_SIZE);
+			Context context = getHookContext();
+			EmojiResources.setEmojiTextSize(context, Settings.EMOJI_TEXT_SIZE);
 
-				//Forces everything to be reloaded, sizes don't update otherwise.
-				//mEmojiPanelAdapter = null;
-				//mEmojiPanelPager = null;
-				//mEmojiPanelTabs = null;
-				//mRecentEmoji = null;
-
-			}
 
 			//Should presist somewhere instead
 			WrappedProvider dbWrap = Provider.getWrapped(getHookContext());
@@ -212,7 +203,9 @@ public class EmojiCommons
 
 			//Only clear if changed.
 			EmojiCache.clearCache();
-			com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels( getHookContext(), mPanelItems );
+
+			//Let's not do this anymore
+			//com.mayulive.swiftkeyexi.main.emoji.EmojiCommons.preRenderPanels( getHookContext(), mPanelItems );
 
 			if (mEmojiPanelAdapter != null)
 				mEmojiPanelAdapter.notifyDataSetChanged();

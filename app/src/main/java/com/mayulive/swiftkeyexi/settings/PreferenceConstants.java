@@ -71,6 +71,8 @@ public class PreferenceConstants
 
 	public static final String pref_emoji_force_version_key = "pref_emoji_force_version";
 
+	public static final String pref_keyboard_opacity_key = "pref_keyboard_opacity";
+
 	//Gifs
 	public static final String pref_gifs_enable_nsfw_key = "pref_gifs_enable_nsfw";
 	public static final String pref_gifs_more_sources_key = "pref_gifs_more_sources";
@@ -84,4 +86,6 @@ public class PreferenceConstants
 	public static final String pref_disable_jumping_cursor_key = "pref_disable_jumping_cursor";
 
 	public static final String pref_keyboard_size_multiplier_key = "pref_keyboard_size_multiplier";
+
+	public static final String pref_swipe_rtl_mode_key = "pref_swipe_rtl_mode";
 }

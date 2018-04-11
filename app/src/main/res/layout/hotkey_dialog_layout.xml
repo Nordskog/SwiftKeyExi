@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/hotkey_softhard_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMinWidth="0dp"
+            app:tabMode="fixed"
+            app:tabGravity="center"
+            android:layout_gravity="top|center_horizontal" />
+
+    </LinearLayout>
+
+
+    <com.mayulive.swiftkeyexi.util.view.FixedViewPager
+        android:id="@+id/hotkey_softhard_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+    </com.mayulive.swiftkeyexi.util.view.FixedViewPager>
+
+</LinearLayout>

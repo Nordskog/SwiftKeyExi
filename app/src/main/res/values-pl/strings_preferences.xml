@@ -18,6 +18,9 @@
   <!-- Emoji text size -->
   <string name="pref_emoji_text_size_title">Rozmiar Emotikon</string>
   <string name="pref_emoji_text_size_summary">Jak duża Emotikona pojawi się</string>
+  <!-- keyboard opacity -->
+  <string name="pref_keyboard_opacity_title">Nieprzezroczystość klawiatury</string>
+  <string name="pref_keyboard_opacity_summary">Zrób przezroczystą klawiaturę</string>
   <!-- fullscreen keyboard -->
   <string name="pref_disable_fullscreen_title">Wyłącz pełny ekran</string>
   <string name="pref_disable_fullscreen_summary">Zapobiega przechodzeniu klawiatury w tryb pełnego ekranu</string>
@@ -68,6 +71,9 @@
   <!-- Swipe behavior -->
   <string name="pref_old_flow_behavior_title">Użyj starego zachowania gestów</string>
   <string name="pref_old_flow_behavior_summary">Przewiduj następne zamiast poprawnego ostatniego</string>
+  <!-- Swipe selection RTL mode -->
+  <string name="pref_swipe_rtl_mode_title">Włącz przesuwanie RTL</string>
+  <string name="pref_swipe_rtl_mode_summary">Wsparcie dla tekstu RTL podczas przesuwania</string>
   <!-- Period button -->
   <string name="pref_disable_period_click_title">Wyłącz okres dotknięcia</string>
   <string name="pref_disable_period_click_summary">Zamiast tego należy kliknąć</string>
@@ -92,4 +98,7 @@
   <string name="pref_selection_behavior_summary">Jak zaznaczasz tekst</string>
   <string name="pref_selection_behavior_dialog_title">Zachowanie zaznaczenia</string>
   <string name="pref_about_title">O module</string>
+  <!--  Remapped keys -->
+  <string name="pref_remapped_keys_title">Przypisz funkcje przyciskom</string>
+  <string name="pref_remapped_keys_summary">Przypisz funkcje przyciskom fizycznym</string>
 </resources>

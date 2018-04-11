@@ -1,15 +1,11 @@
 package com.mayulive.swiftkeyexi.main.emoji;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,9 +18,6 @@ import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifierBackgroundDrawable;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.util.ColorUtils;
 import com.mayulive.swiftkeyexi.util.view.ViewTools;
-import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
-
-import java.util.Arrays;
 
 
 /**
@@ -90,8 +83,8 @@ public class EmojiModifiersPopup extends RelativeLayout
 				}
 			});
 
-			imageView.setMinimumHeight((int)dimens.singleEmojiWidth);
-			imageView.setMinimumWidth((int)dimens.singleEmojiWidth);
+			imageView.setMinimumHeight((int)dimens.configured_singleEmojiWidth);
+			imageView.setMinimumWidth((int)dimens.configured_singleEmojiWidth);
 		}
 	}
 

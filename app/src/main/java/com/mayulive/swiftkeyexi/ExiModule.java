@@ -569,6 +569,14 @@ public class ExiModule
 				modifierKeys.add( new DB_ModifierKeyItem(-1, "x", KeyboardInteraction.TextAction.CUT));
 				modifierKeys.add( new DB_ModifierKeyItem(-1, "c", KeyboardInteraction.TextAction.COPY));
 				modifierKeys.add( new DB_ModifierKeyItem(-1, "v", KeyboardInteraction.TextAction.PASTE));
+
+				//Undo / Redo only supported on Marshmallow and later
+				if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+				{
+					modifierKeys.add( new DB_ModifierKeyItem(-1, "z", KeyboardInteraction.TextAction.UNDO));
+					modifierKeys.add( new DB_ModifierKeyItem(-1, "y", KeyboardInteraction.TextAction.REDO));
+				}
+
 				modifierKeys.endBatchEdit();
 
 				break;

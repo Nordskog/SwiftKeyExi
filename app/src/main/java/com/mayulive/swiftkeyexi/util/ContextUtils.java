@@ -10,7 +10,8 @@ import com.mayulive.swiftkeyexi.ExiModule;
 public class ContextUtils
 {
 	public static Context mHookContext = null;
-	public static  Context mModuleContext = null;	
+	public static Context mModuleContext = null;
+	public static Context mSystemContext = null;
 	
 	public static Context getHookContext()
 	{
@@ -20,7 +21,17 @@ public class ContextUtils
 		mHookContext = AndroidAppHelper.currentApplication();
 		
 		return mHookContext;
-			
+	}
+
+	public static Context getSystemContext()
+	{
+		return mSystemContext;
+
+	}
+
+	public static void setSystemContext(Context context)
+	{
+		mSystemContext = context;
 	}
 	
 	public static Context getModuleContext()

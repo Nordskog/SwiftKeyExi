@@ -15,7 +15,7 @@ public class CandidateProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.f.g.w");
+		newProfile.setFullPath("com.touchtype.keyboard.h.g.y");
 		newProfile.setKnownPath("com.touchtype.keyboard");
 
 		newProfile.setMinDepth(2);
@@ -183,10 +183,11 @@ public class CandidateProfiles
 				{
 						//Constructor #0
 						new ConstructorProfile
-								(		PRIVATE | EXACT ,
+								(		PUBLIC | EXACT ,
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("com.touchtype_fluency.Term" , PUBLIC | EXACT ),
+										new ClassItem(int.class),
 										new ClassItem(boolean.class)
 
 								),

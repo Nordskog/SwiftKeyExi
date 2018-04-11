@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
@@ -42,6 +43,9 @@ public class KeyboardMethods
 	protected static ArrayList<SharedPreferences.OnSharedPreferenceChangeListener> mSwiftkeyPrefChangedListeners = new ArrayList<>();
 
 	protected static int mTheme = -1;
+
+	protected static ViewGroup[] mKeyboardRoots = new ViewGroup[2];
+	protected static float mLastKeyboardOpacity = 1;
 
 	public static int getTheme()
 	{
@@ -256,5 +260,20 @@ public class KeyboardMethods
 	{
 		Context context = ContextUtils.getHookContext();
 		return context.getSharedPreferences(ExiXposed.HOOK_PACKAGE_NAME+"_preferences", Context.MODE_PRIVATE);
+	}
+
+	public static void setKeyboardOpacity()
+	{
+		if (mLastKeyboardOpacity != Settings.KEYBOARD_OPACITY)
+		{
+			for ( ViewGroup root : mKeyboardRoots)
+			{
+				if (root != null)
+					root.setAlpha( Settings.KEYBOARD_OPACITY );
+			}
+		}
+
+		mLastKeyboardOpacity = Settings.KEYBOARD_OPACITY;
+
 	}
 }

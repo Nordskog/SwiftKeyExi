@@ -61,7 +61,9 @@ public class SelectionActions
 		// Pointer-up is handled here rather than in the hotkeypanel though, so no listeners.
 		if (panel != null)
 		{
-			handleTextAction(panel.getLastSelectedAction(), true);
+			KeyboardInteraction.TextAction textAction = panel.getLastSelectedAction();
+			if (textAction != KeyboardInteraction.TextAction.DEFAULT)
+				handleTextAction(panel.getLastSelectedAction(), true);
 		}
 	}
 

@@ -34,7 +34,7 @@ public class QuickMenuListAdapter extends RecyclerView.Adapter<QuickMenuListAdap
 	List<? extends HotkeyPanel.HotkeyMenuItem> mItems = new ArrayList<>();
 
 	//TODO make this a common resource
-	private static final KeyboardInteraction.TextAction[] mDropdownOptions = Arrays.copyOfRange(KeyboardInteraction.TextAction.values(), 1, KeyboardInteraction.TextAction.values().length);
+	private static final KeyboardInteraction.TextAction[] mDropdownOptions = KeyboardInteraction.TextAction.getUsableTextActions();
 	private String[] sMenuItems = new String[mDropdownOptions.length];
 
 	private OnHotkeyMenuItemChangedListener mChangedListener = null;

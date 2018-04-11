@@ -16,6 +16,11 @@
         <attr name="appDefaultValue" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="OpacityPreference">
+        <attr name="opacityPreference_max" format="integer" />
+        <attr name="opacityPreference_default" format="integer" />
+    </declare-styleable>
+
     <!-- can't use attriute with the same name because it's already used ? THEY'RE IN DIFFERENT NAMEPSACES -->
     <declare-styleable name="FloatNumberPickerPreference">
         <attr name="maxFloat" format="float" />

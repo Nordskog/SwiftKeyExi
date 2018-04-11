@@ -22,10 +22,12 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@id/shortcutkey_modifier"
                 style="@style/ModButton"
                 />
 
             <TextView
+                android:id="@+id/plusSign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" + "

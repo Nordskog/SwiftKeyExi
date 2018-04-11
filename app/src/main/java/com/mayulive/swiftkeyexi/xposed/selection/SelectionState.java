@@ -72,13 +72,6 @@ public class SelectionState
 	protected static CharSequence mLastExtractedText = null;
 	protected static int mLastExtractedTextOffset = 0;
 
-	//////////////
-	//Stuff
-	/////////////
-
-	protected static boolean mKeyboardOffsetSet = false;
-	protected static int mKeyboardHorizontalOffset = -1;
-
 	///////////////
 	//Cursor position. Only modify with setSelectionChange()
 	///////////////
@@ -483,31 +476,6 @@ public class SelectionState
 		}
 	}
 
-	//Get the horizontal offset of the keyboard view from the window it is in.
-	//This is necessary because our keyboard overlay fills the entire screen
-	//Note that this is cached, and will not be recalculated until
-	//clearKeyboardHorizentalOffset is called
-	protected static int getKeyboardHorizontalOffset(View view)
-	{
-		if (mKeyboardOffsetSet)
-			return mKeyboardHorizontalOffset;
-		else
-		{
-			mKeyboardHorizontalOffset = ViewTools.getPositionInWindowX(view);
-			mKeyboardOffsetSet = true;
-		}
-
-		return mKeyboardHorizontalOffset;
-	}
-
-	protected static void clearKeyboardHorizontalOffset()
-	{
-		mKeyboardOffsetSet = false;
-	}
-
-
-
-
 	protected static void clearState(int pointerCount)
 	{
 		if (mSwiping)
@@ -527,7 +495,6 @@ public class SelectionState
 		mSwipeBlocked = false;
 		mActionTriggered = false;
 		mSpaceModifierTriggered = false;
-		clearKeyboardHorizontalOffset();
 		mNumberDown = false;
 
 		KeyCommons.setCancelAllKeys(false);

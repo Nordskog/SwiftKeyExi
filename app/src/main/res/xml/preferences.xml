@@ -25,7 +25,7 @@
             android:summary="@string/pref_emoji_text_size_summary"
             app:appDefaultValue="12"
             app:min="8"
-            app:max="17"
+            app:max="50"
             />
 
         <com.mayulive.swiftkeyexi.util.view.ListPreferenceShowSummary
@@ -134,6 +134,21 @@
         android:summary="@string/pref_disable_fullscreen_summary"
         android:defaultValue="false" />
 
+    <com.mayulive.swiftkeyexi.settings.OpacityPreference
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:key="@string/pref_keyboard_opacity_key"
+        android:title="@string/pref_keyboard_opacity_title"
+        android:summary="@string/pref_keyboard_opacity_summary"
+        app:opacityPreference_default="100"
+        app:opacityPreference_max="100"
+        />
+
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_swipe_rtl_mode_key"
+        android:title="@string/pref_swipe_rtl_mode_title"
+        android:summary="@string/pref_swipe_rtl_mode_summary"
+        android:defaultValue="true" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -154,6 +169,11 @@
         android:key="@string/pref_additional_symbol_keys_key"
         android:title="@string/pref_additional_symbol_keys_title"
         android:summary="@string/pref_additional_symbol_keys_summary" />
+
+    <com.mayulive.swiftkeyexi.util.view.LineBreakPreference
+        android:key="@string/pref_remapped_keys_key"
+        android:title="@string/pref_remapped_keys_title"
+        android:summary="@string/pref_remapped_keys_summary" />
 
     </PreferenceCategory>
 

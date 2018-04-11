@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
@@ -25,6 +27,9 @@ import java.util.regex.Pattern;
 
 public class KeyCommons
 {
+
+	private static String LOGTAG = ExiModule.getLogTag(KeyCommons.class);
+
 	///////////////////
 	//Key down stuff
 	///////////////////
@@ -202,6 +207,18 @@ public class KeyCommons
 
 			switch(action)
 			{
+				case UNDO:
+				{
+					menuAction = android.R.id.undo;
+					break;
+				}
+
+				case REDO:
+				{
+					menuAction = android.R.id.redo;
+					break;
+				}
+
 				case COPY:
 				{
 					menuAction = android.R.id.copy;

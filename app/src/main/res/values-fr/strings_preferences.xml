@@ -18,6 +18,9 @@
   <!-- Emoji text size -->
   <string name="pref_emoji_text_size_title">Taille Emoji</string>
   <string name="pref_emoji_text_size_summary">Largeur d\'affichage des Emojis</string>
+  <!-- keyboard opacity -->
+  <string name="pref_keyboard_opacity_title">Opacité du clavier</string>
+  <string name="pref_keyboard_opacity_summary">Rendre le clavier transparent</string>
   <!-- fullscreen keyboard -->
   <string name="pref_disable_fullscreen_title">Bloquer le plein écran</string>
   <string name="pref_disable_fullscreen_summary">Empêcher le clavier de passer en mode plein écran</string>
@@ -68,6 +71,9 @@
   <!-- Swipe behavior -->
   <string name="pref_old_flow_behavior_title">Utiliser l\'ancien comportement Flow</string>
   <string name="pref_old_flow_behavior_summary">Prédire le suivant au lieu de corriger le dernier</string>
+  <!-- Swipe selection RTL mode -->
+  <string name="pref_swipe_rtl_mode_title">Activer la sélection de balayage RTL (right-to-left)</string>
+  <string name="pref_swipe_rtl_mode_summary">Support RTL lors de sélection swipe</string>
   <!-- Period button -->
   <string name="pref_disable_period_click_title">Désactiver le point</string>
   <string name="pref_disable_period_click_summary">Il doit être sélectionné si cette option est cochée</string>
@@ -92,4 +98,7 @@
   <string name="pref_selection_behavior_summary">Comment vous sélectionnez le texte</string>
   <string name="pref_selection_behavior_dialog_title">Comportement de sélection</string>
   <string name="pref_about_title">À propos</string>
+  <!--  Remapped keys -->
+  <string name="pref_remapped_keys_title">Touches réorganisées</string>
+  <string name="pref_remapped_keys_summary">Touches physiques réorganisées</string>
 </resources>

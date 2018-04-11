@@ -16,6 +16,7 @@ public class EmojiCacheItem
 	public boolean isSingleWidth = true;
 	public int widthUnits = 1;
 	public int style = 0;
+	public int memorySize = 0;
 
 	public CacheItemStatus status = CacheItemStatus.UNDEFINED;
 
@@ -39,6 +40,7 @@ public class EmojiCacheItem
 		this.linecount = lineCount;
 		this.isSingleWidth = singleWidth;
 		this.style = style;
+		this.memorySize = bitmap.getRowBytes() * bitmap.getHeight();
 	}
 
 	public void set(Bitmap bitmap, int lineCount, boolean singleWidth, int widthUnits, int style)
@@ -50,6 +52,7 @@ public class EmojiCacheItem
 		linecount = lineCount;
 		isSingleWidth = singleWidth;
 		this.style = style;
+		this.memorySize = bitmap.getRowBytes() * bitmap.getHeight();
 	}
 
 	public int getStyle()

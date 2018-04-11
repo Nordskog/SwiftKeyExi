@@ -54,7 +54,7 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 		mItem = item;
 		this.setLayoutParams( new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		mFlow.setLayoutParams( new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-		mFlow.setTargetItemWidth((int)dimens.singleEmojiWidth);
+		mFlow.setTargetItemWidth((int)dimens.configured_singleEmojiWidth);
 		mFlow.setFittingWeight(0.9f);
 		populate();
 		this.addView(mFlow);
@@ -86,7 +86,7 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 		else
 		{
 			itemView = new NormalEmojiItem(this.getContext());
-			((NormalEmojiItem)itemView).setMinWidth(  (int) dimens.singleEmojiWidth );
+			((NormalEmojiItem)itemView).setMinWidth(  (int) dimens.configured_singleEmojiWidth);
 		}
 
 		itemView.setItemWidth(EmojiContainer.AUTO);

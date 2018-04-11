@@ -1,6 +1,28 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.4.1] - 11-04-2018
+
+### Fixed
+ - Emoji font size setting sometimes not being applied
+ - Quick menu and hotkey popups not displaying correctly in floating keyboard
+ - Crash caused by incomplete database initialization
+ - Swiftkey crash when updating module without restarting device
+ 
+### Added
+ - Remappable hardware keys
+ - Configurable hardware key shortcuts
+ - Undo / Redo text actions ( Android Marshmallow and later )
+ - Keyboard transparency slider ( for floating keyboard)
+ - Option to disable support for RTL text when swipe-selecting ( for compatibility )
+ - Memory limit to emoji render cache
+ - Ability to cancel quick-menu by return finger to start location on the space bar
+ - Croatian translation courtesy of Dino (dugi991) 
+ 
+### Changed
+ - Increased max emoji font size
+ - No-Punctuation auto-space now also applies to ampersand and hyphen characters
+ 
 ## [1.3.4] - 23-01-2018
 
 ### Fixed
