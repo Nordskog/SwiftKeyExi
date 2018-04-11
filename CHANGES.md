@@ -17,7 +17,7 @@ Dates are in the format dd/mm/yyyy
  - Option to disable support for RTL text when swipe-selecting ( for compatibility )
  - Memory limit to emoji render cache
  - Ability to cancel quick-menu by return finger to start location on the space bar
- - Croation translation courtesy of Dino (dugi991) 
+ - Croatian translation courtesy of Dino (dugi991) 
  
 ### Changed
  - Increased max emoji font size
