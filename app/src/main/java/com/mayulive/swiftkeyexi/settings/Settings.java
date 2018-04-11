@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
@@ -259,7 +260,17 @@ public class Settings
 						@Override
 						public void run()
 						{
-							callSettingsUpdatedListeners();
+							try
+							{
+								callSettingsUpdatedListeners();
+							}
+							catch( Throwable ex)
+							{
+								//This usually happens when the user installs an Exi update that
+								//modifies the database definitions and forgets to reboot.
+								Log.e(LOGTAG, "Failed to update settings from exi");
+								ex.printStackTrace();
+							}
 						}
 					});
 
