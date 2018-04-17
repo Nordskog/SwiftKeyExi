@@ -18,9 +18,10 @@ import com.mayulive.swiftkeyexi.util.view.ScrollbarRecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 
 
 /**
@@ -98,17 +99,8 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		for (int i = 0; i < items.size(); i++)
 		{
 			String currentEmoji = items.get(i).get_text();
+			addUsedItem(currentEmoji, i);
 
-			EmojiUsedCounter currentCounter = mUsedCounter.get(currentEmoji);
-			if (currentCounter == null)
-			{
-				currentCounter = new EmojiUsedCounter(i, 0);
-				mUsedCounter.put(currentEmoji, currentCounter);
-			}
-			else
-			{
-				currentCounter.addPosition(i);
-			}
 		}
 	}
 
@@ -141,43 +133,52 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		return mAdapter.getViewIndexFromItemIndex(position);
 	}
 
+	private void addUsedItem(String currentEmoji, int position)
+	{
+		EmojiUsedCounter currentCounter = mUsedCounter.get(currentEmoji);
+		if (currentCounter == null)
+		{
+			currentCounter = new EmojiUsedCounter(position, 0);
+			mUsedCounter.put(currentEmoji, currentCounter);
+		}
+		else
+		{
+			currentCounter.addPosition(position);
+		}
+	}
+
+	private void removeUsedItem(String currentEmoji, int position)
+	{
+		EmojiUsedCounter currentCounter = mUsedCounter.get(currentEmoji);
+		if (currentCounter != null)
+		{
+			currentCounter.removePosition(position);
+			if (currentCounter.getPositionCount() < 1)
+			{
+				mUsedCounter.remove(currentEmoji);
+			}
+		}
+	}
+
 	//Assumes counter has changed, but adapter items and views
 	//have not yet been updated to reflect this change.
 	private void updateMarkByCounter(EmojiUsedCounter counter)
 	{
-		if (counter.count < 1)	//Not used
+		boolean marked = counter.count > 0;
+		for (Integer currentPosition : counter.position)
 		{
-			for (Integer currentPosition : counter.position)
+
+			EmojiAdapterItem adapterItem = mAdapterItems.get(currentPosition);
+			boolean currentValue = adapterItem.marked;
+
+			if (currentValue != marked)	//Only update if state has changed
 			{
-				EmojiAdapterItem adapterItem = mAdapterItems.get(currentPosition);
-				boolean currentValue = adapterItem.marked;
-
-				if (currentValue)	//Only update if state has changed
-				{
-					EmojiContainer currentContainer = (EmojiContainer) mLayoutManager.findViewByPosition(  itemToViewPos(currentPosition) );
-					if (currentContainer != null)
-						currentContainer.setMarked(false);
-				}
-
-				adapterItem.marked = false;
+				EmojiContainer currentContainer = (EmojiContainer) mLayoutManager.findViewByPosition(  itemToViewPos(currentPosition) );
+				if (currentContainer != null)
+					currentContainer.setMarked(marked);
 			}
-		}
-		else	//Used
-		{
-			for (Integer currentPosition : counter.position)
-			{
-				EmojiAdapterItem adapterItem = mAdapterItems.get(currentPosition);
-				boolean currentValue = adapterItem.marked;
 
-				if (!currentValue)	//Only update if state has changed
-				{
-					EmojiContainer currentContainer = (EmojiContainer) mLayoutManager.findViewByPosition(  itemToViewPos(currentPosition) );
-					if (currentContainer != null)
-						currentContainer.setMarked(true);
-				}
-
-				adapterItem.marked = true;
-			}
+			adapterItem.marked = marked;
 		}
 	}
 
@@ -210,6 +211,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		//mItem.set_needsUpdate(true);
 		mItem.get_items().clear();
 		mAdapterItems.clear();
+		mUsedCounter.clear();
 		mAdapter.notifyDataSetChanged();
 
 	}
@@ -309,7 +311,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 
 		localItems.endBatchEdit();
 
-		//mAdapter.notifyDataSetChanged();
+		prepareUsedCounter();
 		mAdapter.notifyItemRangeInserted(startCount, inputItems.size());
 	}
 
@@ -319,6 +321,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		//mItem.set_needsUpdate(true);
 		mItem.get_items().add(position,item);
 		mAdapterItems.add(position, new EmojiAdapterItem(item,false));
+		addUsedItem(item.get_text(), position);
 		mAdapter.notifyItemInserted(position);
 	}
 
@@ -328,6 +331,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		//mItem.set_needsUpdate(true);
 		mItem.get_items().add(item);
 		mAdapterItems.add(new EmojiAdapterItem(item,false));
+		addUsedItem(item.get_text(), mItem.get_items().size()-1);
 		mAdapter.notifyItemInserted(mItem.get_items().size()-1);
 	}
 
@@ -337,7 +341,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		//I'd rather it crash so I can figure out what's broken upstream
 		//if (position >= 0 && position < mItem.get_items().size())
 		{
-			//mItem.set_needsUpdate(true);
+			removeUsedItem(mItem.get_items().get(position).get_text(), position);
 			mItem.get_items().remove(position);
 			mAdapterItems.remove(position);
 			mAdapter.notifyItemRemoved(position);
@@ -477,7 +481,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 	//Access via a hash of the emoji string
 	private static class EmojiUsedCounter
 	{
-		ArrayList<Integer> position = new ArrayList<Integer>();
+		Set<Integer> position = new HashSet<Integer>();
 		int count;
 
 		public EmojiUsedCounter(int position, int count)
@@ -500,6 +504,16 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		public void addPosition(int position)
 		{
 			this.position.add(position);
+		}
+
+		public void removePosition(int pos)
+		{
+			position.remove(pos);
+		}
+
+		public int getPositionCount()
+		{
+			return position.size();
 		}
 
 		public void clearCounter()

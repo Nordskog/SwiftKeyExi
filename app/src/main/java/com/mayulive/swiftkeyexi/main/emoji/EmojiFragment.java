@@ -581,7 +581,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		if(!mIconPickMode)
 		{
 
-			if (sourcePanelType == EmojiPanelType.KEYBOARD && sourcePanelView.getPanelItem().get_source().isEditable() )
+			if ( sourcePanelView.getPanelItem().get_source().isEditable() )
 			{
 				sourcePanelView.removeItem(position);
 
