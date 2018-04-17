@@ -24,10 +24,11 @@ public class EmojiResources
 	private static final int EMOJI_HORIZONTAL_PADDING_DP = 10;
 	private static final int EMOJI_VERTICAL_PADDING_DP = 10;
 
+	private static String DEFAULT_DIVERSE_MODIFIER = "";
+
 	public static int EMOJI_COLOR = 0xFF9c9c9c;
 
 	private static EmojiPixelDimensions mDimensions = null;
-
 
 
 	public static class EmojiPixelDimensions
@@ -43,6 +44,23 @@ public class EmojiResources
 	private static float calculatePixelFromDp(Context context, int dpSize)
 	{
 		return TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, dpSize, context.getResources().getDisplayMetrics() );
+	}
+
+	public static boolean setDefaultDiverseModifier(String def)
+	{
+		if (!DEFAULT_DIVERSE_MODIFIER.equals(def) )
+		{
+			DEFAULT_DIVERSE_MODIFIER = def;
+			return true;
+		}
+
+		DEFAULT_DIVERSE_MODIFIER = def;
+		return false;
+	}
+
+	public static String getDefaultDiverseModifier()
+	{
+		return DEFAULT_DIVERSE_MODIFIER;
 	}
 
 	public static boolean setEmojiTextSize(Context context, int dpSize)

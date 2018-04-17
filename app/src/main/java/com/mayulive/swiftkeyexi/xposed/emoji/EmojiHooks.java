@@ -139,7 +139,7 @@ public class EmojiHooks
 											popup.setOnEmojiClickedListener(new EmojiModifiersPopup.OnEmojiClickedListener()
 											{
 												@Override
-												public void onEmojiClicked(String emoji)
+												public void onEmojiClicked(String emoji, String modifier)
 												{
 													DB_EmojiItem newItem = new DB_EmojiItem(emoji);
 													newItem.set_modifiers_supported(false);	//Recents panel should only display the chosen emoji
@@ -150,7 +150,7 @@ public class EmojiHooks
 													OverlayCommons.clearPopups();
 												}
 											});
-											popup.showInOverlay(OverlayCommons.mKeyboardOverlay, EmojiCommons.mEmojiTopRelative, view);
+											EmojiModifiersPopup.showInOverlay(popup,OverlayCommons.mKeyboardOverlay, EmojiCommons.mEmojiTopRelative, view);
 										}
 									}
 

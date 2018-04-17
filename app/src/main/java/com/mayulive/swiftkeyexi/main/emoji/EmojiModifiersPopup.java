@@ -2,7 +2,11 @@ package com.mayulive.swiftkeyexi.main.emoji;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AlertDialog;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +28,7 @@ import com.mayulive.swiftkeyexi.util.view.ViewTools;
  * Created by Roughy on 10/25/2017.
  */
 
-public class EmojiModifiersPopup extends RelativeLayout
+public class EmojiModifiersPopup extends FrameLayout
 {
 
 	private static String LOGTAG = ExiModule.getLogTag(EmojiModifiersPopup.class);
@@ -51,11 +55,10 @@ public class EmojiModifiersPopup extends RelativeLayout
 		));
 
 
-		String[] modifierApplied = new String[EmojiModifiers.FITZPATRICK_MODIFIERS.length + 1];
-		modifierApplied[0] = baseEmoji;
-		for (int i = 1; i < modifierApplied.length; i++)
+		String[] modifierApplied = new String[EmojiModifiers.FITZPATRICK_MODIFIERS.length];
+		for (int i = 0; i < modifierApplied.length; i++)
 		{
-			modifierApplied[i] = EmojiModifiers.applyModifier( baseEmoji, EmojiModifiers.FITZPATRICK_MODIFIERS[i-1] );
+			modifierApplied[i] = EmojiModifiers.applyModifier( baseEmoji, EmojiModifiers.FITZPATRICK_MODIFIERS[i] );
 		}
 
 
@@ -65,6 +68,7 @@ public class EmojiModifiersPopup extends RelativeLayout
 		{
 
 			final String modifiedString = modifierApplied[i];
+			final String modifier = EmojiModifiers.FITZPATRICK_MODIFIERS[i];
 
 			ImageEmojiItem imageView = new ImageEmojiItem(context);
 			imageView.setRenderImmediate(true);
@@ -78,7 +82,7 @@ public class EmojiModifiersPopup extends RelativeLayout
 				{
 					if (mClickListener != null)
 					{
-						mClickListener.onEmojiClicked(modifiedString);
+						mClickListener.onEmojiClicked(modifiedString, modifier);
 					}
 				}
 			});
@@ -88,7 +92,22 @@ public class EmojiModifiersPopup extends RelativeLayout
 		}
 	}
 
-	public void showInOverlay(RelativeLayout overlay, ViewGroup emojiParent, View anchor)
+	public static AlertDialog showInDialog(EmojiModifiersPopup popup)
+	{
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+		params.gravity = Gravity.CENTER;
+		popup.addView(popup.mContentWindow, params);
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(popup.getContext()).setView(popup);
+
+		AlertDialog dialog = builder.show();
+
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+		return dialog;
+	}
+
+	public static void showInOverlay(EmojiModifiersPopup popup, RelativeLayout overlay, ViewGroup emojiParent, View anchor)
 	{
 		if (emojiParent == null)
 		{
@@ -108,11 +127,13 @@ public class EmojiModifiersPopup extends RelativeLayout
 
 		//Add a background layer that will dismiss on touch
 		FrameLayout background = new FrameLayout(overlay.getContext());
-		RelativeLayout.LayoutParams outerParams = new RelativeLayout.LayoutParams(emojiParent.getMeasuredWidth(), emojiParent.getMeasuredHeight());
-		outerParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		this.addView(background, outerParams);
+		FrameLayout.LayoutParams outerParams = new FrameLayout.LayoutParams(emojiParent.getMeasuredWidth(), emojiParent.getMeasuredHeight());
+		outerParams.gravity = Gravity.BOTTOM;
+		//outerParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-		final View thiz = this;
+		popup.addView(background, outerParams);
+
+		final View thiz = popup;
 		background.setOnTouchListener(new OnTouchListener()
 		{
 			@Override
@@ -148,14 +169,14 @@ public class EmojiModifiersPopup extends RelativeLayout
 		//y+= anchor.getMeasuredHeight()*0.2;
 
 		//Measure content view
-		mContentWindow.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+		popup.mContentWindow.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 
 		//Offset to center at top of anchor
 		x += anchor.getMeasuredWidth() / 2;
 
 		//adjust positions to top/left layout values
-		y -= mContentWindow.getMeasuredHeight();
-		x -= mContentWindow.getMeasuredWidth() / 2;
+		y -= popup.mContentWindow.getMeasuredHeight();
+		x -= popup.mContentWindow.getMeasuredWidth() / 2;
 
 		//Depending on the position of the anchor and the width of the content view
 		//we may end up off-screen. Adjust accordingly.
@@ -163,9 +184,9 @@ public class EmojiModifiersPopup extends RelativeLayout
 			x = 0;
 
 
-		if (x + mContentWindow.getMeasuredWidth() >= overlay.getMeasuredWidth() )
+		if (x + popup.mContentWindow.getMeasuredWidth() >= overlay.getMeasuredWidth() )
 		{
-			x = overlay.getMeasuredWidth() - mContentWindow.getMeasuredWidth();
+			x = overlay.getMeasuredWidth() - popup.mContentWindow.getMeasuredWidth();
 		}
 
 		//Set params for content
@@ -173,12 +194,12 @@ public class EmojiModifiersPopup extends RelativeLayout
 		params.leftMargin = x;
 		params.topMargin = y;
 
-		this.addView(mContentWindow, params);
+		popup.addView(popup.mContentWindow, params);
 
 
 		//And add self to parent
 		RelativeLayout.LayoutParams selfParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		overlay.addView(this, selfParams);
+		overlay.addView(popup, selfParams);
 	}
 
 	public void setOnEmojiClickedListener(OnEmojiClickedListener listener)
@@ -188,7 +209,7 @@ public class EmojiModifiersPopup extends RelativeLayout
 
 	public interface OnEmojiClickedListener
 	{
-		void onEmojiClicked(String emoji);
+		void onEmojiClicked(String emoji, String modifier);
 	}
 
 

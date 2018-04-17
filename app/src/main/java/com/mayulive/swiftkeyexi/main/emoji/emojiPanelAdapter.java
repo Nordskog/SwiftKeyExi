@@ -9,6 +9,7 @@ import com.mayulive.swiftkeyexi.EmojiCache.EmojiContainer;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.EmojiCache.ImageEmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
@@ -114,8 +115,18 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 		if (mUseDefaultTextSize)
 			textSize = dimens.default_emojiTextSize;
 
-		//Setting the text may trigger an async task, that may very very soon.
-		holder.getContainer().setEmojiText(emojiItem.item.get_text(), textSize, mPanelItem, mUseItemStyle ? emojiItem.item.get_style() : mPanelItem.get_style());
+
+		String emojiText = emojiItem.item.get_text();
+		//If diverse modifier supported, check and apply default modifier
+		if (emojiItem.item.get_modifiers_supported())
+		{
+			if (!EmojiResources.getDefaultDiverseModifier().isEmpty())
+			{
+				emojiText = EmojiModifiers.applyModifier(emojiText, EmojiResources.getDefaultDiverseModifier());
+			}
+		}
+
+		holder.getContainer().setEmojiText(emojiText, textSize, mPanelItem, mUseItemStyle ? emojiItem.item.get_style() : mPanelItem.get_style());
 
 		holder.getContainer().getView().setOnClickListener(new View.OnClickListener()
 		{

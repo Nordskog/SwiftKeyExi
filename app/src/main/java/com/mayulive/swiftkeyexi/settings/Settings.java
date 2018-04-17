@@ -82,6 +82,7 @@ public class Settings
 	public static int QUICK_MENU_HIGHLIGHT_COLOR = 0xFF2d5bc6;
 
 	public static int EMOJI_TEXT_SIZE = 12;
+	public static String EMOJI_DEFAULT_DIVERSE_MODIFIER = "";
 	public static boolean EMOJI_TAP_VIBRATE = false;
 
 	public static float QUICKMENU_TEXT_SIZE_RATIO = 0.15f;
@@ -90,7 +91,7 @@ public class Settings
 
 	//We want to keep track of some settings, specifically to make changes when they change
 	public static boolean changed_REMOVE_SUGGESTIONS_PADDING = true;
-	public static boolean changed_EMOJI_TEXT_SIZE = true;
+	public static boolean changed_EMOJI_TEXT_RESOURCE = true;
 
 	//Set to true if any setting that requires a realod of the keyboard is changed
 	public static boolean request_KEYBOARD_RELOAD = false;
@@ -125,6 +126,8 @@ public class Settings
 		DISPLAY_GIFS_FROM_MORE_SOURCES = prefs.getBoolean(PreferenceConstants.pref_gifs_more_sources_key, false);
 
 		DISABLE_FULLSCREEN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_disable_fullscreen_key, false);
+
+
 
 		SWIPE_RTL_MODE_ENABLED = prefs.getBoolean(PreferenceConstants.pref_swipe_rtl_mode_key, true);
 
@@ -173,8 +176,16 @@ public class Settings
 		{
 			float tempEmojiTextSize = EMOJI_TEXT_SIZE;
 			EMOJI_TEXT_SIZE = prefs.getInt(PreferenceConstants.pref_emoji_text_size_key, 12);
-			changed_EMOJI_TEXT_SIZE = tempEmojiTextSize != EMOJI_TEXT_SIZE;
+			changed_EMOJI_TEXT_RESOURCE = tempEmojiTextSize != EMOJI_TEXT_SIZE;
 		}
+
+		{
+			String tempDefaultDiverseModifier = EMOJI_DEFAULT_DIVERSE_MODIFIER;
+			EMOJI_DEFAULT_DIVERSE_MODIFIER = prefs.getString(PreferenceConstants.pref_emoji_default_diverse_modifier_key, "");
+			changed_EMOJI_TEXT_RESOURCE = changed_EMOJI_TEXT_RESOURCE || !tempDefaultDiverseModifier.equals( EMOJI_TEXT_SIZE );
+		}
+
+
 		EMOJI_TAP_VIBRATE = prefs.getBoolean(PreferenceConstants.pref_emoji_tap_vibrate_key, true);
 
 		OLD_FLOW_BEHAVIOR = prefs.getBoolean(PreferenceConstants.pref_old_flow_behavior_key, false);

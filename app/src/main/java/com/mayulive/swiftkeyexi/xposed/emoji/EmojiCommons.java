@@ -2,10 +2,8 @@ package com.mayulive.swiftkeyexi.xposed.emoji;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -15,6 +13,7 @@ import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
@@ -96,7 +95,13 @@ public class EmojiCommons
 	@SuppressLint("MissingPermission")
 	public static void handleEmojiClick(DB_EmojiItem item, int style, boolean sourceIsRecentView)
 	{
-		inputText(item.get_text());
+		String text = item.get_text();
+		if (item.get_modifiers_supported())
+		{
+			text = EmojiModifiers.applyModifier( text, EmojiResources.getDefaultDiverseModifier() );
+		}
+
+		inputText(text);
 
 		if (Settings.EMOJI_TAP_VIBRATE)
 		{
@@ -161,12 +166,13 @@ public class EmojiCommons
 
 	public static void loadEmoji()
 	{
-		if (mLastUpdateTime < Settings.LAST_EMOJI_UPDATE || Settings.changed_EMOJI_TEXT_SIZE)
+		if (mLastUpdateTime < Settings.LAST_EMOJI_UPDATE || Settings.changed_EMOJI_TEXT_RESOURCE)
 		{
 			mLastUpdateTime = Settings.LAST_EMOJI_UPDATE;
 
 			Context context = getHookContext();
 			EmojiResources.setEmojiTextSize(context, Settings.EMOJI_TEXT_SIZE);
+			EmojiResources.setDefaultDiverseModifier(Settings.EMOJI_DEFAULT_DIVERSE_MODIFIER);
 
 
 			//Should presist somewhere instead
