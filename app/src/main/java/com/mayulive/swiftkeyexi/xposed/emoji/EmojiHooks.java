@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.emoji.EmojiCommons;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiModifiersPopup;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
@@ -67,7 +68,7 @@ public class EmojiHooks
 						if (Settings.EMOJI_PANEL_ENABLED)
 						{
 							RelativeLayout thiz = (RelativeLayout) param.getResult();
-							EmojiCommons.mEmojiTopRelative = thiz;
+							EmojiHookCommons.mEmojiTopRelative = thiz;
 
 							//These are the two views we want to replace.
 							int pagerID = thiz.getResources().getIdentifier("emoji_pager", "id", ExiXposed.HOOK_PACKAGE_NAME);
@@ -91,9 +92,9 @@ public class EmojiHooks
 
 							Context context = thiz.getContext();
 
-							boolean reuse = 	EmojiCommons.mEmojiPanelTabs != null &&
-									EmojiCommons.mEmojiPanelAdapter != null &&
-									EmojiCommons.mEmojiPanelPager != null;
+							boolean reuse = 	EmojiHookCommons.mEmojiPanelTabs != null &&
+									EmojiHookCommons.mEmojiPanelAdapter != null &&
+									EmojiHookCommons.mEmojiPanelPager != null;
 
 							//Reuse existing views of they exist
 							if (reuse)
@@ -101,8 +102,8 @@ public class EmojiHooks
 								try
 								{
 									//Which basically just involves removing them from their parents
-									((ViewGroup) EmojiCommons.mEmojiPanelTabs.getParent()).removeView(EmojiCommons.mEmojiPanelTabs);
-									((ViewGroup) EmojiCommons.mEmojiPanelPager.getParent()).removeView(EmojiCommons.mEmojiPanelPager);
+									((ViewGroup) EmojiHookCommons.mEmojiPanelTabs.getParent()).removeView(EmojiHookCommons.mEmojiPanelTabs);
+									((ViewGroup) EmojiHookCommons.mEmojiPanelPager.getParent()).removeView(EmojiHookCommons.mEmojiPanelPager);
 								}
 								catch (Exception ex)
 								{
@@ -118,16 +119,16 @@ public class EmojiHooks
 							if (!reuse)
 							{
 								//Otherwise create and setup
-								EmojiCommons.mEmojiPanelPager = new FixedViewPager(context);
+								EmojiHookCommons.mEmojiPanelPager = new FixedViewPager(context);
 
-								EmojiCommons.mEmojiPanelAdapter = new EmojiPanelPagerAdapter(EmojiCommons.mPanelItems);
+								EmojiHookCommons.mEmojiPanelAdapter = new EmojiPanelPagerAdapter(EmojiHookCommons.mPanelItems);
 
-								EmojiCommons.mEmojiPanelAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
+								EmojiHookCommons.mEmojiPanelAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
 								{
 									@Override
 									public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 									{
-										EmojiCommons.handleEmojiClick(panel.get_items().get(position), panel.get_style(), panel.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS);
+										EmojiHookCommons.handleEmojiClick(panel.get_items().get(position), panel.get_style(), panel.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS);
 									}
 
 									@Override
@@ -145,21 +146,21 @@ public class EmojiHooks
 													newItem.set_modifiers_supported(false);	//Recents panel should only display the chosen emoji
 													newItem.set_type(EmojiItem.EmojiType.CONTAINS_EMOJI);
 
-													EmojiCommons.handleEmojiClick(newItem, 0, false);
+													EmojiHookCommons.handleEmojiClick(newItem, 0, false);
 
 													OverlayCommons.clearPopups();
 												}
 											});
-											EmojiModifiersPopup.showInOverlay(popup,OverlayCommons.mKeyboardOverlay, EmojiCommons.mEmojiTopRelative, view);
+											EmojiModifiersPopup.showInOverlay(popup,OverlayCommons.mKeyboardOverlay, EmojiHookCommons.mEmojiTopRelative, view);
 										}
 									}
 
 								});
 
 
-								EmojiCommons.mEmojiPanelPager.setAdapter(EmojiCommons.mEmojiPanelAdapter);
+								EmojiHookCommons.mEmojiPanelPager.setAdapter(EmojiHookCommons.mEmojiPanelAdapter);
 
-								EmojiCommons.mEmojiPanelPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+								EmojiHookCommons.mEmojiPanelPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
 								{
 									@Override
 									public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
@@ -170,7 +171,12 @@ public class EmojiHooks
 									@Override
 									public void onPageSelected(int position)
 									{
-										EmojiCommons.mLastPanelIndex = position;
+										if (position <= EmojiHookCommons.mPanelItems.size() && !EmojiHookCommons.mPanelItems.isEmpty() )
+										{
+											DB_EmojiPanelItem panelItem = EmojiHookCommons.mPanelItems.get(position);
+											EmojiCommons.preRenderPanel( EmojiHookCommons.mEmojiPanelPager.getContext(), panelItem );
+										}
+										EmojiHookCommons.mLastPanelIndex = position;
 									}
 
 									@Override
@@ -181,9 +187,9 @@ public class EmojiHooks
 								});
 
 
-								EmojiCommons.mEmojiPanelTabs = new EmojiPanelTabLayout(context);
-								EmojiCommons.mEmojiPanelTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-								EmojiCommons.mEmojiPanelTabs.setTabGravity(TabLayout.GRAVITY_CENTER);
+								EmojiHookCommons.mEmojiPanelTabs = new EmojiPanelTabLayout(context);
+								EmojiHookCommons.mEmojiPanelTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+								EmojiHookCommons.mEmojiPanelTabs.setTabGravity(TabLayout.GRAVITY_CENTER);
 
 								//Before lollipop, tablayout doesn't size its tabs properly.
 								//I mean it's pretty broken after lollipop too but you get the idea.
@@ -194,14 +200,14 @@ public class EmojiHooks
 
 									//If no min is set they're all super wide,
 									//if set to 0 they're all tiny.
-									EmojiCommons.mEmojiPanelTabs.setTabMinWidth( (int)(dimens.default_singleEmojiWidth * 1.1f) );
+									EmojiHookCommons.mEmojiPanelTabs.setTabMinWidth( (int)(dimens.default_singleEmojiWidth * 1.1f) );
 								}
 
 
-								EmojiCommons.mEmojiPanelAdapter.setProvidePageTitles(false);
-								EmojiCommons.mEmojiPanelAdapter.setupWithFixedTabLayout(EmojiCommons.mEmojiPanelTabs);
+								EmojiHookCommons.mEmojiPanelAdapter.setProvidePageTitles(false);
+								EmojiHookCommons.mEmojiPanelAdapter.setupWithFixedTabLayout(EmojiHookCommons.mEmojiPanelTabs);
 
-								EmojiCommons.mEmojiPanelTabs.setupWithViewPager(EmojiCommons.mEmojiPanelPager);
+								EmojiHookCommons.mEmojiPanelTabs.setupWithViewPager(EmojiHookCommons.mEmojiPanelPager);
 							}
 
 							RelativeLayout.LayoutParams pagerParams = (RelativeLayout.LayoutParams) pagerView.getLayoutParams();
@@ -214,39 +220,39 @@ public class EmojiHooks
 							//which agains is wrapped in a fill_parent ... parent.
 							//The width/height params probably od nothing, I think the existing params have
 							//a weight set. This is why we use match_parent for all the children.
-							EmojiCommons.mOuterTabsWrapper = new FrameLayout(context);
+							EmojiHookCommons.mOuterTabsWrapper = new FrameLayout(context);
 							tabParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
 							tabParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 							tabParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-							EmojiCommons.mOuterTabsWrapper.setLayoutParams( tabParams );
+							EmojiHookCommons.mOuterTabsWrapper.setLayoutParams( tabParams );
 
-							EmojiCommons.refreshEmojiTheme( );
+							EmojiHookCommons.refreshEmojiTheme( );
 
 							//We are in relative layout, and the actualy pager needs to be placed below the tablayout
-							EmojiCommons.mOuterTabsWrapper.setId( View.generateViewId() );
+							EmojiHookCommons.mOuterTabsWrapper.setId( View.generateViewId() );
 							pagerParams.removeRule( RelativeLayout.BELOW );
-							pagerParams.addRule(RelativeLayout.BELOW, EmojiCommons.mOuterTabsWrapper.getId());
-							EmojiCommons.mEmojiPanelPager.setLayoutParams( pagerParams );
+							pagerParams.addRule(RelativeLayout.BELOW, EmojiHookCommons.mOuterTabsWrapper.getId());
+							EmojiHookCommons.mEmojiPanelPager.setLayoutParams( pagerParams );
 
 							//Next we need an inner wrapper that wrap_content's the tablayout while being centered.
 							FrameLayout InnerTabsWrapper = new FrameLayout(context);
 							FrameLayout.LayoutParams innerWrapperParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
 							innerWrapperParams.gravity = Gravity.CENTER_HORIZONTAL;
-							EmojiCommons.mOuterTabsWrapper.addView(InnerTabsWrapper, innerWrapperParams);
+							EmojiHookCommons.mOuterTabsWrapper.addView(InnerTabsWrapper, innerWrapperParams);
 
 
 
 							//We can then add the actual tablayout to the inner wrapper
 							FrameLayout.LayoutParams innerTabsParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 							innerTabsParams.gravity = Gravity.CENTER_HORIZONTAL;
-							InnerTabsWrapper.addView( EmojiCommons.mEmojiPanelTabs, innerTabsParams );
+							InnerTabsWrapper.addView( EmojiHookCommons.mEmojiPanelTabs, innerTabsParams );
 
 
 
 							//And finally add the views
 
-							thiz.addView(EmojiCommons.mEmojiPanelPager,0);
-							thiz.addView(EmojiCommons.mOuterTabsWrapper,0);
+							thiz.addView(EmojiHookCommons.mEmojiPanelPager,0);
+							thiz.addView(EmojiHookCommons.mOuterTabsWrapper,0);
 
 							//Tbe back button added in 6.7.28 doesn't fill its parent vertically properly
 							//after we've messed around with it. It is contained in the main relativelayout
@@ -254,7 +260,7 @@ public class EmojiHooks
 							{
 								RelativeLayout.LayoutParams backParams = (RelativeLayout.LayoutParams)emojiBackView.getLayoutParams();
 								backParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-								backParams.addRule(RelativeLayout.ALIGN_BOTTOM, EmojiCommons.mOuterTabsWrapper.getId());
+								backParams.addRule(RelativeLayout.ALIGN_BOTTOM, EmojiHookCommons.mOuterTabsWrapper.getId());
 								emojiBackView.setLayoutParams(backParams);
 							}
 						}
@@ -505,7 +511,7 @@ public class EmojiHooks
 					@Override
 					public void OnSettingsUpdated()
 					{
-						EmojiCommons.loadEmoji();
+						EmojiHookCommons.loadEmoji();
 					}
 				});
 
@@ -539,7 +545,7 @@ public class EmojiHooks
 						//If Adapter and other related views are non-null, they will be reused.
 						//Also clear non-shared cache, as item width may have changed.
 						EmojiCache.clearMappedCaches();
-						EmojiCommons.mEmojiPanelAdapter = null;
+						EmojiHookCommons.mEmojiPanelAdapter = null;
 					}
 				});
 
@@ -548,7 +554,7 @@ public class EmojiHooks
 					@Override
 					public void themeChanged(int newTheme)
 					{
-						EmojiCommons.refreshEmojiTheme();
+						EmojiHookCommons.refreshEmojiTheme();
 					}
 				});
 			}

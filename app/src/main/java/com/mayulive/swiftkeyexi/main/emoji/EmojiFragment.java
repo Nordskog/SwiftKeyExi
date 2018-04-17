@@ -263,6 +263,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			{
 				if (panelsValid())
 				{
+					EmojiCommons.preRenderPanel( getContext(), getCurrentPanel(type).getPanelItem() );
 					getCurrentPanel(EmojiPanelType.DICTIONARY).markInput(getCurrentPanel(EmojiPanelType.KEYBOARD).getPanelItem().get_items());
 				}
 			}

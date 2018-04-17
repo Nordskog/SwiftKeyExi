@@ -39,9 +39,9 @@ import static com.mayulive.swiftkeyexi.util.ContextUtils.getHookContext;
  * Created by Roughy on 12/26/2016.
  */
 
-public class EmojiCommons
+public class EmojiHookCommons
 {
-	private static String LOGTAG = ExiModule.getLogTag(EmojiCommons.class);
+	private static String LOGTAG = ExiModule.getLogTag(EmojiHookCommons.class);
 
 	protected static EmojiPanelTabLayout mEmojiPanelTabs;
 	protected static EmojiPanelPagerAdapter mEmojiPanelAdapter;
