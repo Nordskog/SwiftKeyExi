@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.4.2] - 17-04-2018
+### Fixed
+ - Keyboard opacity being reset after orientation change
+ 
+### Added
+ - Default diverse emoji modifier
+
 ## [1.4.1] - 11-04-2018
 
 ### Fixed
