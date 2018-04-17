@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
-import com.mayulive.swiftkeyexi.xposed.emoji.EmojiCommons;
+import com.mayulive.swiftkeyexi.xposed.emoji.EmojiHookCommons;
 import com.mayulive.swiftkeyexi.xposed.hardwarekeys.HardwareKeyHooks;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionHooks;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
@@ -164,7 +164,7 @@ public class Hooks
 								//They shouldn't fail, but if they do it won't be a disaster.
 								//What would be a disaster is them crashing swiftkey in the process.
 								PredictionCommons.savePriority();
-								EmojiCommons.saveRecents();
+								EmojiHookCommons.saveRecents();
 							}
 							catch (Exception ex)
 							{

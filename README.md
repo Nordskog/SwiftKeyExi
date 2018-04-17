@@ -20,7 +20,7 @@ A short list of features:
   * Dictionary importable from file (tab or space delimited)
 * Hotkeys (Ctrl + key )
   * Define any key as CTRL
-  * Supports Select all / Cut / Copy / Paste / Go to end
+  * Supports Select all / Cut / Copy / Paste / Go to end / Undo / Redo
 * Quick Actions
   * Display circular quick-menu by swiping up from spacebar
   * Trigger corresponding hotkey by swiping from spacebar to key
@@ -35,6 +35,8 @@ A short list of features:
   * Prevent period key from triggering on tap
   * Cursor stays where you place it, rather than moving to end word
   * Ability to remove auto-space after punctuation
+  * Set keyboard transparency
+  * Remap hardware keys
   
 ## Libraries used
 

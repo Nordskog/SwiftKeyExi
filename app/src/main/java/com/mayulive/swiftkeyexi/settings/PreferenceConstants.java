@@ -45,7 +45,7 @@ public class PreferenceConstants
 
 	public static final String pref_emoji_panel_key = "pref_emoji_panel";
 	public static final String pref_emoji_text_size_key = "pref_emoji_text_size";
-
+	public static final String pref_emoji_default_diverse_modifier_key = "pref_emoji_default_diverse_modifier";
 
 
 	//App

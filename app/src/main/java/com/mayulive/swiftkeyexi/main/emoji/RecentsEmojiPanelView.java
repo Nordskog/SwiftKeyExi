@@ -14,6 +14,7 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.util.view.DistributedLayout;
 
 import java.util.ArrayList;
@@ -89,8 +90,18 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 			((NormalEmojiItem)itemView).setMinWidth(  (int) dimens.configured_singleEmojiWidth);
 		}
 
+		String emojiText = item.get_text();
+		//If diverse modifier supported, check and apply default modifier
+		if (item.get_modifiers_supported())
+		{
+			if (!EmojiResources.getDefaultDiverseModifier().isEmpty())
+			{
+				emojiText = EmojiModifiers.applyModifier(emojiText, EmojiResources.getDefaultDiverseModifier());
+			}
+		}
+
 		itemView.setItemWidth(EmojiContainer.AUTO);
-		itemView.setEmojiText(item.get_text(), dimens.configured_emojiTextSize, null, 0 );
+		itemView.setEmojiText(emojiText, dimens.configured_emojiTextSize, null, 0 );
 		itemView.setModifable(item.get_modifiers_supported());
 
 		EmojiPanelCommons.setTouchAnimation((View)itemView);

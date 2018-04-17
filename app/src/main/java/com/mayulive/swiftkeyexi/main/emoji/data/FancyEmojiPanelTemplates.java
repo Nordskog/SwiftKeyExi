@@ -470,6 +470,7 @@ public class FancyEmojiPanelTemplates
 		if (emojiOnly)
 		{
 			newItem.updateModifierSupport();
+
 		}
 
 		//newItem.set_needsUpdate(true);

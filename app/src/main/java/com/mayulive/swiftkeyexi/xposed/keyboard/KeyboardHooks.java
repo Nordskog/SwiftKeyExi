@@ -148,6 +148,8 @@ public class KeyboardHooks
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
+					KeyboardMethods.setKeyboardOpacity();
+
 					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
 					{
 						listener.afterKeyboardConfigurationChanged();

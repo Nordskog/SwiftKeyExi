@@ -264,7 +264,8 @@ public class KeyboardMethods
 
 	public static void setKeyboardOpacity()
 	{
-		if (mLastKeyboardOpacity != Settings.KEYBOARD_OPACITY)
+		//Run if changed or opacity not 100%
+		if (mLastKeyboardOpacity != Settings.KEYBOARD_OPACITY || Settings.KEYBOARD_OPACITY < 1)
 		{
 			for ( ViewGroup root : mKeyboardRoots)
 			{

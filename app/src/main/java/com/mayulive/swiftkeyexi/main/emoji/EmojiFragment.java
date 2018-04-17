@@ -87,7 +87,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 	{
 		if (key.endsWith(PreferenceConstants.pref_emoji_text_size_key))
 		{
-			updateTextSize();
+			updateTextResources();
 		}
 	}
 
@@ -107,7 +107,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		super.onCreate(savedInstanceState);
 		setupReferences();
 		loadEmoij();
-		updateTextSize();
+		updateTextResources();
 	}
 
 	private void loadEmoij()	{
@@ -138,11 +138,12 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		}
 	}
 
-	private void updateTextSize()
+	private void updateTextResources()
 	{
 		SharedPreferences prefs = SettingsCommons.getSharedPreferences(this.getContext(), SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
 		int emojiTextSize = prefs.getInt(PreferenceConstants.pref_emoji_text_size_key, 12);
-		if (EmojiResources.setEmojiTextSize(this.getContext(),emojiTextSize))
+		String defaultModifier = prefs.getString(PreferenceConstants.pref_emoji_default_diverse_modifier_key, "");
+		if (EmojiResources.setEmojiTextSize(this.getContext(),emojiTextSize) || EmojiResources.setDefaultDiverseModifier(defaultModifier) )
 		{
 			EmojiCache.clearCache();
 
@@ -239,13 +240,13 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			@Override
 			public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 			{
-				handleEmojiItemClick(type, panelView, item, position);
+				handleEmojiItemClick(type, panelView, view, item, position);
 			}
 
 			@Override
-			public void onLongPress(DB_EmojiItem item,View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
+			public void onLongPress(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 			{
-				handleEmojiItemLongPress(type, panelView, item, position);
+				handleEmojiItemLongPress(type, panelView, view, item, position);
 			}
 
 		});
@@ -262,6 +263,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			{
 				if (panelsValid())
 				{
+					EmojiCommons.preRenderPanel( getContext(), getCurrentPanel(type).getPanelItem() );
 					getCurrentPanel(EmojiPanelType.DICTIONARY).markInput(getCurrentPanel(EmojiPanelType.KEYBOARD).getPanelItem().get_items());
 				}
 			}
@@ -574,13 +576,13 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 	}
 
 
-	private void handleEmojiItemLongPress(EmojiPanelType sourcePanelType, EmojiPanelView sourcePanelView, DB_EmojiItem item, int position)
+	private void handleEmojiItemLongPress(EmojiPanelType sourcePanelType, EmojiPanelView sourcePanelView, View view, DB_EmojiItem item, int position)
 	{
 
 		if(!mIconPickMode)
 		{
 
-			if (sourcePanelType == EmojiPanelType.KEYBOARD && sourcePanelView.getPanelItem().get_source().isEditable() )
+			if ( sourcePanelView.getPanelItem().get_source().isEditable() )
 			{
 				sourcePanelView.removeItem(position);
 
@@ -601,21 +603,40 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		}
 		else
 		{
-			handleEmojiItemClick(sourcePanelType,sourcePanelView,item,position);
+			handleEmojiItemClick(sourcePanelType,sourcePanelView,view,item,position);
 		}
 	}
 
 
-	private void handleEmojiItemClick(EmojiPanelType sourcePanelType, EmojiPanelView sourcePanelView, DB_EmojiItem item, int position)
+	private void handleEmojiItemClick(EmojiPanelType sourcePanelType, EmojiPanelView sourcePanelView, View clickedView, DB_EmojiItem item, int position)
 	{
 
 		if(!mIconPickMode)
 		{
-
 			switch(sourcePanelType)
 			{
 				case KEYBOARD:
 				{
+					if (item.get_modifiers_supported())
+					{
+						//Display default diverse modifier popup
+						EmojiModifiersPopup popup = new EmojiModifiersPopup(clickedView.getContext(), item.get_text());
+						AlertDialog dialog = popup.showInDialog(popup);
+						popup.setOnEmojiClickedListener(new EmojiModifiersPopup.OnEmojiClickedListener()
+						{
+							@Override
+							public void onEmojiClicked(String emoji, String modifier)
+							{
+								SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor(EmojiFragment.this.getContext(), SettingsCommons.MODULE_SHARED_PREFERENCES_KEY);
+								editor.putString(PreferenceConstants.pref_emoji_default_diverse_modifier_key, modifier);
+								editor.apply();
+
+								updateTextResources();
+
+								dialog.dismiss();
+							}
+						});
+					}
 
 					break;
 				}
@@ -1163,7 +1184,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 	@Override
 	public void onResume()
 	{
-		updateTextSize();
+		updateTextResources();
 		loadEmoij();
 		super.onResume();
 		SettingsCommons.getSharedPreferences(this.getContext(), SettingsCommons.MODULE_SHARED_PREFERENCES_KEY).registerOnSharedPreferenceChangeListener(this);

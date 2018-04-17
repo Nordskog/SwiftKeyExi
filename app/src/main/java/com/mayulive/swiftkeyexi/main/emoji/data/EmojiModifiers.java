@@ -16,6 +16,7 @@ import java.util.Set;
 
 public class EmojiModifiers
 {
+	public static final String NO_MODIFIER = "";
 	public static final String FITZPATRICK_1_2 = "\uD83C\uDFFB";
 	public static final String FITZPATRICK_3 = "\uD83C\uDFFC";
 	public static final String FITZPATRICK_4= "\uD83C\uDFFD";
@@ -24,7 +25,7 @@ public class EmojiModifiers
 
 	public static final String[] FITZPATRICK_MODIFIERS = new String[]
 			{
-					FITZPATRICK_1_2, FITZPATRICK_3, FITZPATRICK_4, FITZPATRICK_5, FITZPATRICK_6
+					NO_MODIFIER, FITZPATRICK_1_2, FITZPATRICK_3, FITZPATRICK_4, FITZPATRICK_5, FITZPATRICK_6
 			};
 
 	private static String LOGTAG = ExiModule.getLogTag(EmojiModifiers.class);
@@ -114,6 +115,10 @@ public class EmojiModifiers
 
 	public static String applyModifier(String text, String modifier)
 	{
+		if (modifier.isEmpty())
+			return text;
+
+
 		StringBuilder builder = new StringBuilder();
 
 		for (int i = 0; i < text.length(); i++)
