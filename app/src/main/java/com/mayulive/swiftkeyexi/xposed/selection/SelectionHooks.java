@@ -60,15 +60,19 @@ public class SelectionHooks
 						}
 						else
 						{
-							int currentPosition = CodeUtils.findViewPosition(targetParent, target);
-
 							ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 							SelectionState.mSwipeOverlay = new SwipeOverlay(thiz.getContext());
+
+							//Nested a level deeper because swiftkey changed things
+							targetParent = (ViewGroup)target;
+							target =  targetParent.getChildAt(0);
+
 							SelectionState.mSwipeOverlay.setLayoutParams(params);
 
 							targetParent.removeView(target);
 							SelectionState.mSwipeOverlay.addView(target);
-							targetParent.addView(SelectionState.mSwipeOverlay,currentPosition);
+							targetParent.addView(SelectionState.mSwipeOverlay);
+
 						}
 					}
 					catch (Throwable ex)

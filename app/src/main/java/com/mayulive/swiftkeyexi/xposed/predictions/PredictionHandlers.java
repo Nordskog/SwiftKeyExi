@@ -224,11 +224,24 @@ public class PredictionHandlers
 						{
 							try
 							{
-								final Object candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(PredictionClassManager.buInstance,null,null,null);
+								Object candidateClickListener;
+								int paramCount = PredictionClassManager.candidateClickConstructor.getParameterTypes().length;
+								if ( paramCount == 4 )
+								{
+									candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(PredictionClassManager.buInstance,null,null,null);
+								}
+								else // >= 7.0.5.22
+								{
+									candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(	holder.view.getContext(),
+																																		PredictionClassManager.KeyboardUxOptionsInstance,
+																																		PredictionClassManager.buInstance,null,null,null);
+								}
 								PredictionClassManager.candidateOnCLickMethod.invoke(candidateClickListener, holder.view, holder.source, 0);
 							}
-							catch (IllegalAccessException | InvocationTargetException | InstantiationException e)
+							catch ( Throwable e)
 							{
+								Log.i(LOGTAG, "Failed to invoke onclick, method was: "+PredictionClassManager.candidateOnCLickMethod.toString());
+								Log.i(LOGTAG, "Listener class was: "+PredictionClassManager.candidateClickConstructor.toString());
 								e.printStackTrace();
 							}
 						}

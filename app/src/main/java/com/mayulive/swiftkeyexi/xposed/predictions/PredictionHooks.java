@@ -206,6 +206,15 @@ public class PredictionHooks
 				try
 				{
 					PredictionClassManager.buInstance = PredictionClassManager.keyboardFrameClass_buField.get(param.thisObject);
+
+					if (PredictionClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition != -1)
+					{
+						Log.e(LOGTAG, "KeyboardUxOptionsPosition was not found, this could be bad");
+					}
+					else
+					{
+						PredictionClassManager.KeyboardUxOptionsInstance = param.args[ PredictionClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition  ];
+					}
 				}
 				catch (Throwable ex)
 				{

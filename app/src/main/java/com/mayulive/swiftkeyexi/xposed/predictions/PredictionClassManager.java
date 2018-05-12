@@ -66,6 +66,8 @@ public class PredictionClassManager
 
 	protected static Class candidatesViewFactory;
 
+	protected static Class KeyboardUxOptionsInterfaceClass;
+
 
 	//protected static Class canAClass;
 
@@ -106,6 +108,7 @@ public class PredictionClassManager
 	//Instances
 	////////////
 
+	protected static Object KeyboardUxOptionsInstance = null;
 	protected static Object buInstance = null;
 	protected static Object resultTypeEnum_flow;
 	protected static Object resultTypeEnum_flow_success;
@@ -128,6 +131,8 @@ public class PredictionClassManager
 	protected static int UpdateCandidateTaskClass_getTopCandidateMethod_intPosition = 4;
 
 	protected static int candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition = 1;
+
+	protected static int keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition = -1;	//Will check if not found
 
 	public static void loadKnownClasses(PackageTree param) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException
 	{
@@ -164,6 +169,7 @@ public class PredictionClassManager
 
 		}
 
+		KeyboardUxOptionsInterfaceClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_KEYBOARD_UX_OPTIONS_INTERFACE_PROFILE(), param );
 
 	}
 
@@ -207,20 +213,29 @@ public class PredictionClassManager
 
 		if (keyboardFrameClass != null)
 		{
-			keyboardFrameClass_setBuMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-					(
-							PUBLIC | EXACT ,
-							new ClassItem(void.class),
+			keyboardFrameClass_setBuMethod = ProfileHelpers.findMostSimilar(	new MethodProfile
+							(
+									PUBLIC | EXACT ,
+									new ClassItem(void.class),
 
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem("com.touchtype.telemetry." , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | EXACT ),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem("com.touchtype.util." , PUBLIC | EXACT ),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-					),
+									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),	//ba
+									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT )
+
+							),
 					keyboardFrameClass.getDeclaredMethods(), keyboardFrameClass);
+
+			keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition = ProfileHelpers.findFirstClassIndex(
+																			KeyboardUxOptionsInterfaceClass,
+																			keyboardFrameClass_setBuMethod.getParameterTypes() );
 		}
 
 		if (candidateClickCLass != null)
@@ -407,6 +422,10 @@ public class PredictionClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "keyboardFrameClass_setBuMethod", 	keyboardFrameClass_setBuMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "candidateClickCLass", 	candidateClickCLass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "buClass", 	buClass );
+
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "KeyboardUxOptionsInterfaceClass", 	KeyboardUxOptionsInterfaceClass );
+
+
 
 
 		Hooks.logSetRequirement( Hooks.predictionHooks_more,	 "getViewMethod_EnumArgPosition", getViewMethod_EnumArgPosition != -1 ) ;
