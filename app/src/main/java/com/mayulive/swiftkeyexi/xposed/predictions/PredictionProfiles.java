@@ -2471,5 +2471,502 @@ public class PredictionProfiles
 	}
 
 
+	protected static ClassProfile get_KEYBOARD_UX_OPTIONS_INTERFACE_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("com.touchtype.keyboard.ba");
+		newProfile.setKnownPath("com.touchtype.keyboard");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | INTERFACE | ABSTRACT );
+
+		newProfile.setTypeParamCount(0);
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: A
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #1: B
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #2: C
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #3: D
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #4: E
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #5: F
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #6: G
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #7: H
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #8: I
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #9: J
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #10: K
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #11: L
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #12: M
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #13: N
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #14: O
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #15: P
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #16: Q
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #17: R
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #18: S
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #19: T
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #20: U
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #21: V
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #22: W
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #23: X
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #24: Y
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #25: Z
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(java.util.Set.class)
+
+								),
+
+						//Method #26: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #27: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #28: aa
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #29: ab
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #30: ac
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #31: ad
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #32: ae
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #33: af
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #34: ag
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #35: ah
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #36: h
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #37: i
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #38: j
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #39: k
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #40: m
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #41: n
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #42: o
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #43: p
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #44: q
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #45: r
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #46: s
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #47: t
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #48: u
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #49: v
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #50: w
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #51: x
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #52: y
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #53: z
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+
+				});
+
+		return newProfile;
+	}
 
 }
+
+
