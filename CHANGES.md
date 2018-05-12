@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.4.2] - 12-05-2018
+### Fixed
+ - Keyboard overlay breaking everything ( targeting 7.0.5.22 )
+ - More suggestions suggestions crashing on click ( targeting 7.0.5.22 )
+ 
 ## [1.4.2] - 17-04-2018
 ### Fixed
  - Keyboard opacity being reset after orientation change
