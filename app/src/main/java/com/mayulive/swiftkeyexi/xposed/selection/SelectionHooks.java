@@ -49,9 +49,8 @@ public class SelectionHooks
 
 						//We used to refer to the parent by its ID, but someone forgot to assign the ID to the view
 						//when creatin the layout xml for the compact layout. Luckily the frame holder one is still there.
-						//ViewGroup targetParent = (ViewGroup)thiz.findViewById(targetParentId);
 						View target = thiz.findViewById(targetId);
-						ViewGroup targetParent = (ViewGroup)target.getParent();	//Linear layout
+						ViewGroup targetParent = (ViewGroup)target.getParent();	//Constraint layout
 
 
 						if (targetParent == null || target == null)
@@ -63,16 +62,22 @@ public class SelectionHooks
 							ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 							SelectionState.mSwipeOverlay = new SwipeOverlay(thiz.getContext());
 
-							//Nested a level deeper because swiftkey changed things
-							targetParent = (ViewGroup)target;
-							target =  targetParent.getChildAt(0);
+							//Have to insert in same position
+							int pos = targetParent.indexOfChild(target);
 
-							SelectionState.mSwipeOverlay.setLayoutParams(params);
-
+							//Have to remove view before messing with layout params
 							targetParent.removeView(target);
-							SelectionState.mSwipeOverlay.addView(target);
-							targetParent.addView(SelectionState.mSwipeOverlay);
 
+							//Steal id
+							SelectionState.mSwipeOverlay.setId( target.getId() );
+							target.setId( View.generateViewId() );
+
+							//Steal layout params
+							SelectionState.mSwipeOverlay.setLayoutParams( target.getLayoutParams() );
+							target.setLayoutParams(params);
+
+							SelectionState.mSwipeOverlay.addView(target);
+							targetParent.addView(SelectionState.mSwipeOverlay, pos);
 						}
 					}
 					catch (Throwable ex)
