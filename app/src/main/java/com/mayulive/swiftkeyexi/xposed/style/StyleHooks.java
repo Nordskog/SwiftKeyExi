@@ -17,7 +17,7 @@ import de.robv.android.xposed.XposedBridge;
 public class StyleHooks
 {
 
-	private static String LOGTAG = ExiModule.getLogTag(StyleCommons.class);
+	private static String LOGTAG = ExiModule.getLogTag(StyleHooks.class);
 
 	private static XC_MethodHook.Unhook hookBgTheme(PackageTree param)
 	{
