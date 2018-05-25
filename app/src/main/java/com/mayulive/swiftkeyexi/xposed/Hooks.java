@@ -20,6 +20,7 @@ import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysHooks;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionHooks;
 import com.mayulive.swiftkeyexi.xposed.sound.SoundHooks;
+import com.mayulive.swiftkeyexi.xposed.style.StyleHooks;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 /**
@@ -58,12 +59,15 @@ public class Hooks
 
 	//Keyboard
 	public static HookCategory baseHooks_fullscreenMode = new HookCategory("KeyboardHooks fullscreenMode");
-	public static HookCategory baseHooks_theme= new HookCategory("KeyboardHooks Theme");
 	public static HookCategory baseHooks_viewCreated= new HookCategory("KeyboardHooks ViewCreated", overlayHooks_base);
 	public static HookCategory baseHooks_invalidateLayout = new HookCategory("KeyboardHooks InvalidateLayout", popupHooks_modify);
 	public static HookCategory baseHooks_layoutChange = new HookCategory("KeyboardHooks LayoutChange", overlayHooks_base);
 	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 	public static HookCategory baseHooks_keyHeight = new HookCategory("KeyboardHooks keyHeight");
+
+	//Style
+	public static HookCategory styleHooks_raisedbg = new HookCategory("StyleHooks RasiedBG");
+	public static HookCategory styleHooks_darklight = new HookCategory("StyleHooks Darklight");
 
 	//Sound
 	public static HookCategory soundHooks_base = new HookCategory("SoundHooks base");
@@ -78,11 +82,12 @@ public class Hooks
 																						emojiHooks_base,
 																						predictionHooks_base,
 																						baseHooks_punctuationSpace,
-																						baseHooks_theme,
+																						styleHooks_raisedbg,
+																						styleHooks_darklight,
 																						soundHooks_base,
 																						baseHooks_fullscreenMode,
 																						baseHooks_keyHeight,
-			hardwareKeys_base
+																						hardwareKeys_base
 	);
 
 	//Convenience method for checking requirement and logging on failure
@@ -115,6 +120,9 @@ public class Hooks
 		{
 
 			HardwareKeyHooks.HookAll(classTree);
+
+			//Nothing will break catastrophically without it
+			StyleHooks.HookAll(classTree);
 
 			//No a hook, just sets a listener
 			preventPeriodHook();

@@ -46,7 +46,6 @@ public class KeyboardClassManager
 	/////////////////
 
 	public static Class keyboardLoaderClass = null;
-	public static Class ThemeLoaderClass = null;
 	public static Class keyboardSizerClass = null;
 
 	public static Class KeyHeightClass = null;
@@ -62,7 +61,6 @@ public class KeyboardClassManager
 	protected static Method punctuatorImplClass_AddRulesMethod = null;
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 
-	protected static Method ThemeLoaderClass_getThemeMethod = null;
 
 	protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
 
@@ -100,7 +98,6 @@ public class KeyboardClassManager
 
 		keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
 
-		ThemeLoaderClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_THEME_LOADER_CLASS_PROFILE(), param );
 
 		keyboardSizerClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEYBOARD_SIZER_CLASS_PROFILE(), param );
 
@@ -190,13 +187,6 @@ public class KeyboardClassManager
 
 		}
 
-		if (ThemeLoaderClass != null)
-		{
-			List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, ThemeLoaderClass.getDeclaredMethods());
-			if (!methods.isEmpty())
-				ThemeLoaderClass_getThemeMethod = methods.get(0);
-		}
-
 		if (KeyHeightClass != null)
 		{
 			keyHeightClass_getKeyHeightMethod = ProfileHelpers.findMostSimilar(
@@ -274,10 +264,6 @@ public class KeyboardClassManager
 
 		//Popup
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_invalidateLayout,	 "keyboardLoader_onSharedPreferenceChangedMethod", 	keyboardLoader_onSharedPreferenceChangedMethod );
-
-		//Theme
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", ThemeLoaderClass);
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_theme,	 "Theme", ThemeLoaderClass_getThemeMethod);
 
 		//Hitbox
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "layoutClass", 	layoutClass );

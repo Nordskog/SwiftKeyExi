@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 
+import java.util.ArrayList;
+
 /**
  * Created by Roughy on 2/23/2017.
  */
@@ -18,6 +20,14 @@ import com.mayulive.swiftkeyexi.ExiModule;
 public class StyleCommons
 {
 	private static String LOGTAG = ExiModule.getLogTag(StyleCommons.class);
+
+	protected static ArrayList<ThemeChangedListener> mThemeChangedListeners = new ArrayList<>();
+
+	public static final String EMOJI_LIGHT_BACKGROUND_STRING = "light_fancy_panel_main_background";
+	public static final String EMOJI_DARK_BACKGROUND_STRING = "dark_fancy_panel_main_background";
+	private static Drawable mRaisedBackground = null;
+	static int bottomBarId = 0;
+	protected static int mTheme = -1;
 
 	//Fallback background
 	private static Drawable getGenericBackground()
@@ -50,5 +60,42 @@ public class StyleCommons
 	}
 
 
+	public static void setCurrentRaisedBackground(Drawable bg)
+	{
+		mRaisedBackground = bg;
+	}
 
+	public static Drawable getCurrentRaisedBackground()
+	{
+		return mRaisedBackground;
+	}
+
+	public static void addThemeChangedListener(ThemeChangedListener listener)
+	{
+		mThemeChangedListeners.add(listener);
+	}
+
+	protected static void callThemeChangedListeners(int theme)
+	{
+		for (ThemeChangedListener listener : mThemeChangedListeners)
+		{
+			if (listener != null)
+				listener.themeChanged(theme);
+		}
+	}
+
+	protected static void callThemeChangedListeners(Drawable raisedBackground)
+	{
+		for (ThemeChangedListener listener : mThemeChangedListeners)
+		{
+			if (listener != null)
+				listener.raisedBackgroundChanged(raisedBackground);
+		}
+	}
+
+	public interface ThemeChangedListener
+	{
+		void themeChanged(int newTheme);
+		void raisedBackgroundChanged(Drawable bg);
+	}
 }

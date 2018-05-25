@@ -269,28 +269,6 @@ public class KeyboardHooks
 		});
 	}
 
-	private static XC_MethodHook.Unhook hookTheme(PackageTree param)
-	{
-		return XposedBridge.hookMethod(KeyboardClassManager.ThemeLoaderClass_getThemeMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
-			{
-				int newValue = ((boolean)param.getResult()) ? SharedTheme.DARK_THEME_IDENTIFIER : SharedTheme.LIGHT_THEME_IDENTIFIER;
-
-				//Update regardless.
-				//This value is 0-1, matching the values that exist in SharedTheme
-				SharedTheme.setCurrenThemeType( ContextUtils.getHookContext(), newValue );
-
-				if (newValue != KeyboardMethods.mTheme)
-				{
-					KeyboardMethods.mTheme = newValue;
-					KeyboardMethods.callThemeChangedListeners(newValue);
-				}
-
-			}
-		});
-	}
 
 	private static XC_MethodHook.Unhook hookFullscreen(PackageTree param)
 	{
@@ -371,10 +349,6 @@ public class KeyboardHooks
 					hookFullscreen(lpparam);
 				}
 
-				if (Hooks.baseHooks_theme.isRequirementsMet())
-				{
-					Hooks.baseHooks_theme.add( hookTheme(lpparam) );
-				}
 
 				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
 				{

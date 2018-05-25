@@ -9,7 +9,6 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
@@ -28,6 +27,7 @@ import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
+import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class EmojiHookCommons
 	{
 		if (mOuterTabsWrapper != null)
 		{
-			mOuterTabsWrapper.setBackgroundColor(SharedTheme.getSwiftkeyThemeAccentColor());
+			mOuterTabsWrapper.setBackground( StyleCommons.getCurrentRaisedBackground() );
 		}
 	}
 

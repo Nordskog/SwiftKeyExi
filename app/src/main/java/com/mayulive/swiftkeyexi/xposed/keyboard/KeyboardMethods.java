@@ -2,18 +2,17 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 
 import java.io.ByteArrayInputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,18 +38,11 @@ public class KeyboardMethods
 	protected static PunctuationRuleMode mActivePunctuationMode = PunctuationRuleMode.STOCK;
 
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
-	protected static ArrayList<ThemeChangedListener> mThemeChangedListeners = new ArrayList<>();
 	protected static ArrayList<SharedPreferences.OnSharedPreferenceChangeListener> mSwiftkeyPrefChangedListeners = new ArrayList<>();
-
-	protected static int mTheme = -1;
 
 	protected static ViewGroup[] mKeyboardRoots = new ViewGroup[2];
 	protected static float mLastKeyboardOpacity = 1;
 
-	public static int getTheme()
-	{
-		return mTheme;
-	}
 
 	static protected Set<String> mExtendedPredictionsLayouts = new HashSet<>();
 	static
@@ -86,23 +78,9 @@ public class KeyboardMethods
 		return mCurrentLayoutName;
 	}
 
-	public static void addThemeChangedListener(ThemeChangedListener listener)
-	{
-		mThemeChangedListeners.add(listener);
-	}
-
 	public static void addKeyboardEventListener(KeyboardEventListener listener)
 	{
 		mKeyboardEventListeners.add(listener);
-	}
-
-	protected static void callThemeChangedListeners(int theme)
-	{
-		for (ThemeChangedListener listener : mThemeChangedListeners)
-		{
-			if (listener != null)
-				listener.themeChanged(theme);
-		}
 	}
 
 	public static void removeKeyboardEventListener(KeyboardEventListener listener)
@@ -116,11 +94,6 @@ public class KeyboardMethods
 		void beforeKeyboardClosed();
 		void keyboardInvalidated();
 		void afterKeyboardConfigurationChanged();
-	}
-
-	public interface ThemeChangedListener
-	{
-		void themeChanged(int newTheme);
 	}
 
 	private static long mKeyboardReloadLastRequested = -1;
