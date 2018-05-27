@@ -8,7 +8,7 @@ import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
+import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.pointerInformation;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -35,7 +35,7 @@ public class SelectionActions
 
 		if (action != null)
 		{
-			KeyCommons.PerformTextAction( KeyboardClassManager.getInputConnection(), action);
+			KeyCommons.PerformTextAction( PriorityKeyboardClassManager.getInputConnection(), action);
 			mLastPointerInfo.state = PointerState.ACTION;
 			SelectionState.mActionTriggered = true;
 		}
@@ -80,13 +80,13 @@ public class SelectionActions
 			}
 
 
-			KeyCommons.PerformTextAction( KeyboardClassManager.getInputConnection(), action);
+			KeyCommons.PerformTextAction( PriorityKeyboardClassManager.getInputConnection(), action);
 		}
 	}
 
 	protected static void sendKeyPress(int keyEvent, int repeatCount)
 	{
-		InputConnection connection =  KeyboardClassManager.getInputConnection();
+		InputConnection connection =  PriorityKeyboardClassManager.getInputConnection();
 		if (connection != null)
 		{
 			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, keyEvent, repeatCount) );
@@ -96,7 +96,7 @@ public class SelectionActions
 
 	protected static void sendShiftedKeyPress(int keyEvent, int repeatCount)
 	{
-		InputConnection connection =  KeyboardClassManager.getInputConnection();
+		InputConnection connection =  PriorityKeyboardClassManager.getInputConnection();
 		if (connection != null)
 		{
 

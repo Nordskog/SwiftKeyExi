@@ -1,16 +1,17 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -38,12 +39,12 @@ public class KeyboardHooks
 	//Keyboard service created
 	public static Set<XC_MethodHook.Unhook> hookServiceCreated() throws NoSuchMethodException
 	{
-		return XposedBridge.hookAllConstructors(KeyboardClassManager.keyboardServiceClass, new XC_MethodHook()
+		return XposedBridge.hookAllConstructors(PriorityKeyboardClassManager.keyboardServiceClass, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
-				 KeyboardClassManager.keyboardServiceInstance = param.thisObject;
+				 PriorityKeyboardClassManager.keyboardServiceInstance = param.thisObject;
 			}
 		});
 
@@ -51,7 +52,7 @@ public class KeyboardHooks
 
 	public static XC_MethodHook.Unhook hookViewCreatedFallback(PackageTree param)
 	{
-		return XposedBridge.hookMethod(KeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -93,6 +94,11 @@ public class KeyboardHooks
 					cover.setLayoutParams(params);
 					view.addView(cover);
 					OverlayCommons.mKeyboardOverlay = cover;
+
+					if (!ExiXposed.isFinishedLoading())
+					{
+						OverlayCommons.displayLoadingMessage();
+					}
 				}
 				catch (Throwable ex)
 				{
@@ -107,12 +113,17 @@ public class KeyboardHooks
 	public static XC_MethodHook.Unhook hookKeyboardOpened()
 	{
 		{
-			return XposedHelpers.findAndHookMethod(KeyboardClassManager.keyboardServiceClass, "onStartInputView", EditorInfo.class, boolean.class, new XC_MethodHook()
+			return XposedHelpers.findAndHookMethod(PriorityKeyboardClassManager.keyboardServiceClass, "onStartInputView", EditorInfo.class, boolean.class, new XC_MethodHook()
 			{
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-					Settings.updateSettingsFromProvider(ContextUtils.getHookContext());
+
+					//Do not run unless setup has finished
+					if (ExiXposed.isFinishedLoading())
+					{
+						Settings.updateSettingsFromProvider(ContextUtils.getHookContext());
+					}
 
 					//Something may trigger the keyboard to close without the user interacting with it,
 					//which would leave our popups visible when it is opened next.
@@ -143,7 +154,7 @@ public class KeyboardHooks
 
 	public static XC_MethodHook.Unhook hookKeyboardConfigurationChanged()
 	{
-			return XposedBridge.hookMethod( KeyboardClassManager.keyboardService_onConfigurationChangedMethod,  new XC_MethodHook()
+			return XposedBridge.hookMethod( PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod,  new XC_MethodHook()
 			{
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -161,7 +172,7 @@ public class KeyboardHooks
 
 	private static Set<XC_MethodHook.Unhook> hookKeyboardLoaded()
 	{
-		return XposedBridge.hookAllConstructors(KeyboardClassManager.keyboardLoaderClass, new XC_MethodHook()
+		return XposedBridge.hookAllConstructors(PriorityKeyboardClassManager.keyboardLoaderClass, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -175,7 +186,7 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookLayoutChanged(PackageTree param)
 	{
-			return XposedBridge.hookMethod(KeyboardClassManager.keyboardLoader_loadMethod, new XC_MethodHook()
+			return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardLoader_loadMethod, new XC_MethodHook()
 			{
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -220,7 +231,7 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookLayoutInvalidated(PackageTree param)
 	{
-		return XposedBridge.hookMethod(KeyboardClassManager.keyboardLoader_clearCacheMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardLoader_clearCacheMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -239,7 +250,7 @@ public class KeyboardHooks
 
 	public static XC_MethodHook.Unhook hookKeyboardClosed()
 	{
-			return XposedHelpers.findAndHookMethod(KeyboardClassManager.keyboardServiceClass, "onFinishInputView", boolean.class, new XC_MethodHook()
+			return XposedHelpers.findAndHookMethod(PriorityKeyboardClassManager.keyboardServiceClass, "onFinishInputView", boolean.class, new XC_MethodHook()
 			{
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -272,7 +283,7 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookFullscreen(PackageTree param)
 	{
-		return XposedBridge.hookMethod(KeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -285,7 +296,7 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookPrefChanged()
 	{
-		return XposedBridge.hookMethod(KeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -324,11 +335,11 @@ public class KeyboardHooks
 		});
 	}
 
-	public static boolean HookAll(final PackageTree lpparam)
+	public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
 		{
-			KeyboardClassManager.doAllTheThings(lpparam);
+			PriorityKeyboardClassManager.doAllTheThings(lpparam);
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
@@ -337,22 +348,9 @@ public class KeyboardHooks
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
 
-				Hooks.baseHooks_base.add( hookPrefChanged() );
-
-				if (Hooks.baseHooks_keyHeight.isRequirementsMet())
-				{
-					Hooks.baseHooks_keyHeight.add(  hookKeyHeight() );
-				}
-
 				if (Hooks.baseHooks_fullscreenMode.isRequirementsMet())
 				{
 					hookFullscreen(lpparam);
-				}
-
-
-				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
-				{
-					Hooks.baseHooks_punctuationSpace.add( hookPunctuationRules() );
 				}
 
 				if (Hooks.baseHooks_invalidateLayout.isRequirementsMet())
@@ -365,6 +363,40 @@ public class KeyboardHooks
 				{
 					Hooks.baseHooks_viewCreated.add(hookViewCreatedFallback(lpparam));
 				}
+			}
+		}
+		catch(Throwable ex)
+		{
+			Hooks.baseHooks_base.invalidate(ex, "Failed to Hook");
+			return false;
+		}
+
+		return true;
+	}
+
+	public static boolean HookAll(final PackageTree lpparam)
+	{
+		try
+		{
+			KeyboardClassManager.doAllTheThings(lpparam);
+
+			if (Hooks.baseHooks_base.isRequirementsMet())
+			{
+
+				Hooks.baseHooks_base.add( hookPrefChanged() );
+
+				if (Hooks.baseHooks_keyHeight.isRequirementsMet())
+				{
+					Hooks.baseHooks_keyHeight.add(  hookKeyHeight() );
+				}
+
+
+
+				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
+				{
+					Hooks.baseHooks_punctuationSpace.add( hookPunctuationRules() );
+				}
+
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())
 				{

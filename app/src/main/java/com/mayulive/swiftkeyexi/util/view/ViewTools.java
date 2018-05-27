@@ -1,6 +1,9 @@
 package com.mayulive.swiftkeyexi.util.view;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import com.mayulive.swiftkeyexi.util.MathUtils;
@@ -63,7 +66,16 @@ public class ViewTools
 		returnString +="Size: "+size;
 
 		return returnString;
+	}
 
+	public static int[] getScrenSize()
+	{
+		int[] result = new int[2];
+		DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+		result[0] = dm.widthPixels;
+		result[1] = dm.heightPixels;
+
+		return result;
 	}
 
 

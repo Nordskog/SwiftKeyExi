@@ -1,11 +1,14 @@
 package com.mayulive.swiftkeyexi.xposed;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.util.WorkTimer;
 import com.mayulive.swiftkeyexi.xposed.emoji.EmojiHookCommons;
 import com.mayulive.swiftkeyexi.xposed.hardwarekeys.HardwareKeyHooks;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionHooks;
@@ -30,6 +33,7 @@ import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 public class Hooks
 {
 	private static String LOGTAG = ExiModule.getLogTag(Hooks.class);
+	private static Handler handler = new Handler(Looper.getMainLooper());
 
 	//Predictions
 	public static HookCategory predictionHooks_more = new HookCategory("PredictionHooks More");
@@ -109,94 +113,166 @@ public class Hooks
 		}
 	}
 
+	public static void handleProgress(WorkTimer timer, String thing, final int progressPercentage)
+	{
+		Log.i(LOGTAG,"Elapsed for "+thing+": "+timer.getElapsedAndReset());
+		handler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				ExiXposed.updateLoadingProgress(progressPercentage);
+			}
+		});
+	}
 
 	public static void hookAll(PackageTree classTree)
 	{
+		WorkTimer timer = new WorkTimer();
 
-		//If this fails we are screwed
-		KeyboardHooks.HookAll(classTree);
-
-		if (Hooks.baseHooks_base.isRequirementsMet())
 		{
+			//Priority hooks
+			KeyboardHooks.hookPriority(classTree);
+			handleProgress(timer,"keyboard priority",0);
 
-			HardwareKeyHooks.HookAll(classTree);
+			EmojiHooks.hookPriority(classTree);
+			handleProgress(timer,"emoji priorty",0);
 
-			//Nothing will break catastrophically without it
-			StyleHooks.HookAll(classTree);
+			HardwareKeyHooks.hookPriority(classTree);
+			handleProgress(timer,"hardware priority", 0);
 
-			//No a hook, just sets a listener
-			preventPeriodHook();
+			PredictionHooks.hookPriority(classTree);
+			handleProgress(timer,"prediction priorty", 0);
 
-			SoundHooks.hookAll(classTree);
+			SelectionHooks.hookPriority(classTree);
+			handleProgress(timer,"selection priorty",0);
+		}
 
-			//Emojis do not depend on anything else
-			EmojiHooks.HookAll(classTree);
-
-			KeyHooks.HookAll(classTree);
-
-			//Predictions also fairly independent
-			PredictionHooks.HookAll(classTree);
-
-
-			//Selection requires popups to keep track of
-			//keys with multiple popups.
-			PopupkeysHooks.hookAll(classTree);
-
-
-			SelectionHooks.hookAll(classTree);
-
-
-			//While loading needs to be done /immediatel/ and is thus handled on the main
-			//thread by each individual hook, we don't want to be too wasteful about saving
-			//things that need to saved, so that is handled with a single thread call here.
-
-			//The other ones could of course be handled with futures and all that, but they are
-			//only updated when the user changes something, so it's hardly worth the effort.
-			KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+		Thread thread = new Thread(new Runnable()
+		{
+			@Override
+			public void run()
 			{
-				@Override
-				public void beforeKeyboardOpened() {}
 
-				@Override
-				public void beforeKeyboardClosed()
+				/*
+				try { Thread.sleep(15 * 1000); }catch ( Exception ex)
 				{
-					AsyncTask.execute(new Runnable()
+					Log.e(LOGTAG, "Shit hit fan");
+					ex.printStackTrace();
+				}
+				*/
+
+				Log.i(LOGTAG, "Beginning async setup");
+
+				//If this fails we are screwed
+				KeyboardHooks.HookAll(classTree);
+				handleProgress(timer,"Basehooks", 10);
+
+				if (Hooks.baseHooks_base.isRequirementsMet())
+				{
+					HardwareKeyHooks.hookAll(classTree);
+					handleProgress(timer,"Hardware keys", 20);
+
+					//Nothing will break catastrophically without it
+					StyleHooks.HookAll(classTree);
+					handleProgress(timer,"Stylehooks", 30);
+
+					//No a hook, just sets a listener
+					preventPeriodHook();
+					handleProgress(timer,"Prevent period", 40);
+
+					SoundHooks.hookAll(classTree);
+					handleProgress(timer,"Sounds", 50);
+
+					//Emojis do not depend on anything else
+					EmojiHooks.hookAll(classTree);
+					handleProgress(timer,"Emoji", 60);
+
+					KeyHooks.HookAll(classTree);
+					handleProgress(timer,"Keys", 70);
+
+					//Predictions also fairly independent
+					PredictionHooks.HookAll(classTree);
+					handleProgress(timer,"Predictions", 80);
+
+
+					//Selection requires popups to keep track of
+					//keys with multiple popups.
+					PopupkeysHooks.hookAll(classTree);
+					handleProgress(timer,"Popups", 90);
+
+
+					SelectionHooks.hookAll(classTree);
+					handleProgress(timer,"Selection", 100);
+
+
+					//While loading needs to be done /immediatel/ and is thus handled on the main
+					//thread by each individual hook, we don't want to be too wasteful about saving
+					//things that need to saved, so that is handled with a single thread call here.
+
+					//The other ones could of course be handled with futures and all that, but they are
+					//only updated when the user changes something, so it's hardly worth the effort.
+					KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
 					{
 						@Override
-						public void run()
+						public void beforeKeyboardOpened() {}
+
+						@Override
+						public void beforeKeyboardClosed()
 						{
-							try
+							AsyncTask.execute(new Runnable()
 							{
+								@Override
+								public void run()
+								{
+									try
+									{
 
-								//These will run every time the keyboard closest, so very often.
-								//They shouldn't fail, but if they do it won't be a disaster.
-								//What would be a disaster is them crashing swiftkey in the process.
-								PredictionCommons.savePriority();
-								EmojiHookCommons.saveRecents();
-							}
-							catch (Exception ex)
-							{
-								ex.printStackTrace();
-								Log.e(LOGTAG, "Something went wrong performing keyboardc-close duties. Not fatal, but please report.");
-							}
+										//These will run every time the keyboard closest, so very often.
+										//They shouldn't fail, but if they do it won't be a disaster.
+										//What would be a disaster is them crashing swiftkey in the process.
+										PredictionCommons.savePriority();
+										EmojiHookCommons.saveRecents();
+									}
+									catch (Exception ex)
+									{
+										ex.printStackTrace();
+										Log.e(LOGTAG, "Something went wrong performing keyboardc-close duties. Not fatal, but please report.");
+									}
 
+
+								}
+							});
+						}
+
+						@Override
+						public void keyboardInvalidated()
+						{
 
 						}
+
+						@Override
+						public void afterKeyboardConfigurationChanged() {}
 					});
 				}
 
-				@Override
-				public void keyboardInvalidated()
+				handler.post(new Runnable()
 				{
+					@Override
+					public void run()
+					{
+						ExiXposed.notifyFinishedLoading();
+					}
+				});
 
-				}
+				Log.i(LOGTAG, "Finished async setup");
 
-				@Override
-				public void afterKeyboardConfigurationChanged() {}
-			});
-		}
+			}
+		});
+
+		thread.start();
+
 	}
-
 
 
 	private static void preventPeriodHook()

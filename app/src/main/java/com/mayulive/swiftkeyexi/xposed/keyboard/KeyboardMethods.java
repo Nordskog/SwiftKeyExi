@@ -2,7 +2,6 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.ViewGroup;
 
@@ -163,7 +162,7 @@ public class KeyboardMethods
 			{
 				//Takes a shared pref object, but doesn't use it.
 				//The keyboard will only reload if it cares about the preference. arrow keys pref is as good as any.
-				KeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod.invoke(mKeyboardLoadObject, null, "pref_arrows_key");
+				PriorityKeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod.invoke(mKeyboardLoadObject, null, "pref_arrows_key");
 			}
 			catch (Exception ex)
 			{

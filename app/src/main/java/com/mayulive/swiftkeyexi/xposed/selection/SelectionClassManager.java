@@ -29,7 +29,6 @@ public class SelectionClassManager
 
 	//protected static Class keyboardFrameClass = null;
 
-	protected static Class frameHolderFactoryClass = null;
 	protected static Class FlowDelegateClass = null;
 	protected static Class swipeDelegateClass = null;
 	protected static Class SelectionChangedInputEventClass = null;
@@ -39,7 +38,6 @@ public class SelectionClassManager
 	///////////////////
 
 
-	protected static Method frameHolderFactoryClass_frameHolderInflaterMethod = null;
 	//protected static List<Method> FlowDelegate_flowDetectedMethods = null;
 	protected static Method FlowDelegate_flowDetectedMethod = null;
 	protected static Method swipeDelegate_flowDetectedMethod = null;
@@ -54,12 +52,8 @@ public class SelectionClassManager
 
 	public static void loadUnknownClasses(PackageTree param) throws IOException
 	{
-
-		frameHolderFactoryClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_FRAME_HOLDER_FACTORY_CLASS_PROFILE(), param );
-
 		FlowDelegateClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_FLOW_DELEGATE_CLASS_PROFILE(), param );
 		swipeDelegateClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_SWIPE_DELEGATE_CLASS_PROFILE(), param );
-
 
 		SelectionChangedInputEventClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_SELECTION_CHANGED_INPUT_EVENT_PROFILE(), param );
 	}
@@ -67,24 +61,6 @@ public class SelectionClassManager
 
 	public static void loadMethods() throws NoSuchMethodException
 	{
-
-		if (frameHolderFactoryClass != null)
-		{
-				frameHolderFactoryClass_frameHolderInflaterMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.view.View.class),
-										new ClassItem("com.touchtype.keyboard." , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard.expandedcandidate." , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.keyboard.expandedcandidate." , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem("com.touchtype.keyboard.candidates.view." , PUBLIC | EXACT )
-
-								),
-						frameHolderFactoryClass.getDeclaredMethods(), frameHolderFactoryClass);
-		}
 
 		if (FlowDelegateClass != null)
 		{
@@ -170,10 +146,10 @@ public class SelectionClassManager
 	protected static void updateDependencyState()
 	{
 
-		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "frameHolderFactoryClass", 	frameHolderFactoryClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "frameHolderFactoryClass", 	PrioritySelectionClassManager.frameHolderFactoryClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegateClass", 	FlowDelegateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegateClass", 	swipeDelegateClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "frameHolderFactoryClass_frameHolderInflaterMethod", 	frameHolderFactoryClass_frameHolderInflaterMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "frameHolderFactoryClass_frameHolderInflaterMethod", 	PrioritySelectionClassManager.frameHolderFactoryClass_frameHolderInflaterMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegate_flowDetectedMethod", 	swipeDelegate_flowDetectedMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegate_flowDetectedMethod",  (FlowDelegate_flowDetectedMethod ));
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegate_DRAG_ENUM",  (FlowDelegate_DRAG_ENUM ));

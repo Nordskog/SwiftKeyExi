@@ -490,12 +490,16 @@ public class EmojiHooks
 
 	}
 
+	public static boolean hookAll(final PackageTree param)
+	{
+		//Super simple so just bunch everything into priority
+		return true;
+	}
 
-	public static boolean HookAll(final PackageTree param)
+	public static boolean hookPriority(final PackageTree param)
 	{
         try
-        {     
-
+        {
         	EmojiClassManager.doAllTheThings(param);
 
 			if (Hooks.emojiHooks_base.isRequirementsMet())

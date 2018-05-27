@@ -12,13 +12,11 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.util.CodeUtils;
-import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
+import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysMethods;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
@@ -60,7 +58,7 @@ public class SelectionMethods
 
 	protected static void inputBatchMode(boolean enable)
 	{
-		InputConnection connection = KeyboardClassManager.getInputConnection();
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 
 		if (connection != null)
 		{
@@ -76,7 +74,7 @@ public class SelectionMethods
 	//Return cursor position to where it was on last swipe start
 	protected static void resetCursorPosition()
 	{
-		InputConnection connection = KeyboardClassManager.getInputConnection();
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 		if (connection != null)
 			setSelectionWithOffset(connection, SelectionState.mLeftSelectPosition_Original, SelectionState.mRightSelectPosition_Original);
 	}
@@ -93,7 +91,7 @@ public class SelectionMethods
 
 	public static void moveCursorToStart()
 	{
-		InputConnection connection = KeyboardClassManager.getInputConnection();
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 		SelectionMethods.setSelectionWithoutOffset(connection, 0,0 );
 	}
 
@@ -103,7 +101,7 @@ public class SelectionMethods
 		if (SelectionState.mLastExtractedText == null)
 			SelectionState.mLastExtractedText = new String();
 
-		InputConnection connection = KeyboardClassManager.getInputConnection();
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 		SelectionState.updateSelection();
 		SelectionMethods.setSelectionWithOffset( connection, SelectionState.mLastExtractedText.length(), SelectionState.mLastExtractedText.length());
 	}
@@ -111,7 +109,7 @@ public class SelectionMethods
 	//Set selection using the previous values.
 	private static boolean finalizeSelection()
 	{
-		InputConnection connection = KeyboardClassManager.getInputConnection();
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 		if (connection != null)
 		{
 
@@ -160,7 +158,7 @@ public class SelectionMethods
 		if (SelectionState.mLastExtractedText == null)
 			SelectionState.mLastExtractedText = new String();
 
-		InputConnection connection = KeyboardClassManager.getInputConnection();
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 		if (connection != null)
 		{
 
@@ -225,7 +223,7 @@ public class SelectionMethods
 	{
 		if (state != PointerState.SWIPE && SelectionState.mLastFallbackSelectionPointerState != null)
 		{
-			InputConnection connection = KeyboardClassManager.getInputConnection();
+			InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 
 			if (PointerState.isSelect(mLastFallbackSelectionPointerState) && state != SelectionState.mLastFallbackSelectionPointerState)
 			{
@@ -319,7 +317,7 @@ public class SelectionMethods
 
 		//SelectionClassManager.updateInputConnection();
 
-		InputConnection connection = KeyboardClassManager.getInputConnection();
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 
 		//but the chances of this ever being a problem are fairly slim, and the consequences minor.
 
@@ -862,7 +860,7 @@ public class SelectionMethods
 								{
 									SelectionState.mSwiping = true;
 
-									InputConnection connection = KeyboardClassManager.getInputConnection();
+									InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 
 
 									if (connection != null)

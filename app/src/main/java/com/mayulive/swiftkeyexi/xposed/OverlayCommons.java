@@ -1,11 +1,13 @@
 package com.mayulive.swiftkeyexi.xposed;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.main.keyboard.KeyboardOverlay;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
+import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
@@ -41,6 +44,11 @@ public class OverlayCommons
 	private static HotkeyPanel mHotkeyMenuPanel = null;
 
 	private static KeyboardOverlay mDebugOverlay = null;
+
+	//Due to nonsense we often have two overlay views, once of which does nothing.
+	//Easier to keep track of multiple here than to try and fix that.
+	private static ArrayList<TextView> mLoadingWarnings = new ArrayList<>();
+
 
 	public static void setPopupDimensions(float textSize, int paddingX, int paddingY)
 	{
@@ -250,6 +258,63 @@ public class OverlayCommons
 		int horizontalOffset = inWindow[0];
 
 		displayHotkeyMenu(spacebarMargin, width, height, xCenter, items, horizontalOffset, verticalOffset);
+	}
+
+	public static void displayLoadingMessage()
+	{
+		if (mKeyboardOverlay == null)
+		{
+			Log.e(LOGTAG, "Strange, overlay was null");
+			return;
+		}
+
+		TextView loadingMessage = new TextView(ContextUtils.getHookContext() );
+
+
+		int width = ViewGroup.LayoutParams.MATCH_PARENT;
+		//Usually enough to cover the keyboard
+		int height = ViewTools.getScrenSize()[1];
+		int margin = (int)(height * 0.4f);
+		height = (int)(height * 0.6f);
+
+		loadingMessage.setTextSize( 30 );
+		loadingMessage.setBackgroundColor(Color.BLACK );
+		loadingMessage.setAlpha(0.75f);
+		loadingMessage.setGravity(Gravity.CENTER);
+		loadingMessage.setTextColor(Color.WHITE);
+		loadingMessage.setClickable(true);
+
+
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( width, height);
+		params.topMargin = margin;
+
+		//Not going to risk trying to talk to content from here
+		String percentage = String.valueOf( ExiXposed.getLoadingProgress() );
+		loadingMessage.setText( "Exi loading\n"+percentage+"%");
+		loadingMessage.setLayoutParams(params);
+
+		mLoadingWarnings.add(loadingMessage);
+		mKeyboardOverlay.addView(loadingMessage);
+	}
+
+	public static void updateLoadingMessage(int progressPercentage)
+	{
+		String percentage = String.valueOf(progressPercentage);
+
+		for (TextView warning : mLoadingWarnings)
+		{
+			warning.setText( "Exi loading\n"+percentage+"%");
+		}
+	}
+
+	public static void removeLoadingMessage()
+	{
+		for (TextView warning : mLoadingWarnings)
+		{
+			ViewGroup parent = (ViewGroup)warning.getParent();
+			if (parent != null)
+				parent.removeAllViews();
+		}
 	}
 
 	//Full-screen coordinates

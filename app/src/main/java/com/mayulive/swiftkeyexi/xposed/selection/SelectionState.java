@@ -1,8 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
@@ -11,10 +9,9 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
+import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorSelection;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
@@ -360,7 +357,7 @@ public class SelectionState
 
 	protected static void updateSelection()
 	{
-		InputConnection connection = KeyboardClassManager.getInputConnection();
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 
 		if (connection != null)
 		{

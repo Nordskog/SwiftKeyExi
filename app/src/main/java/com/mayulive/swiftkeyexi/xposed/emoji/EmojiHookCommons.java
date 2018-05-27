@@ -14,7 +14,6 @@ import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.database.DatabaseMethods;
@@ -27,6 +26,7 @@ import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
+import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 
 import java.lang.reflect.InvocationTargetException;
@@ -61,11 +61,11 @@ public class EmojiHookCommons
 
 	public static void inputText(String text)
 	{
-		if (KeyboardClassManager.keyboardServiceInstance != null)
+		if (PriorityKeyboardClassManager.keyboardServiceInstance != null)
 		{
 			try
 			{
-				InputConnection currentConnection = (InputConnection) KeyboardClassManager.getCurrentInputConnectionMethod.invoke( KeyboardClassManager.keyboardServiceInstance );
+				InputConnection currentConnection = (InputConnection) PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod.invoke( PriorityKeyboardClassManager.keyboardServiceInstance );
 
 				if (currentConnection != null)
 				{
