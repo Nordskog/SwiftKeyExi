@@ -913,7 +913,7 @@ public class SelectionMethods
 
 			if (SelectionState.mSwiping || SelectionState.mSpaceModifierTriggered)
 			{
-
+				KeyCommons.clearDelayedKeys();
 
 				if (SelectionState.mSpaceModifierTriggered)
 				{
@@ -1033,6 +1033,7 @@ public class SelectionMethods
 
 		if (actionIsCurrent && action == MotionEvent.ACTION_UP)
 		{
+			KeyCommons.processDelayedKeys();
 
 			if (SelectionState.mSpaceModifierTriggered)
 			{
@@ -1062,6 +1063,8 @@ public class SelectionMethods
 		else if (actionIsCurrent && action == MotionEvent.ACTION_POINTER_UP)
 		{
 			SelectionState.mLastPointerUpTime = System.currentTimeMillis();
+
+			KeyCommons.processDelayedKeys();
 
 			SelectionState.mPointerInformation.remove(pointerID);
 

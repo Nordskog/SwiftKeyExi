@@ -3,6 +3,8 @@ package com.mayulive.swiftkeyexi.xposed.key;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.TextUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -46,7 +48,6 @@ public class KeyHooks
 				try
 				{
 					Object thiz = param.thisObject;
-
 					KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
 
 					if (DebugSettings.DEBUG_KEYS)
@@ -63,8 +64,18 @@ public class KeyHooks
 					//so let's just not pass them along.
 					if (key != null)
 					{
-						//key = new KeyDefinition("", KeyCommons.KeyType.DEFAULT);
 						KeyCommons.callKeyDownListeners(key);
+
+						//If we will ever be swiping for from the shift key, we have to delay it triggering
+						//until pointer_up and we're sure we're not going to enter swipe.
+						//This is also technically necessary when swiping from anywhere, but it is unlikely the user
+						//will swipe from shift.
+						if ( key.is(KeyType.SHIFT) && ( Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey() || Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() ) )
+						{
+							KeyCommons.DelayedKey delayedKey = new KeyCommons.DelayedKey( param.args, thiz, (Method)param.method, 2000 );
+							KeyCommons.addDelayedKey(delayedKey);
+							param.setResult(null);
+						}
 					}
 
 				}
