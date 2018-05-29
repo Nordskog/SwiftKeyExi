@@ -173,11 +173,6 @@ public class EmojiHooks
 									@Override
 									public void onPageSelected(int position)
 									{
-										if (position <= EmojiHookCommons.mPanelItems.size() && !EmojiHookCommons.mPanelItems.isEmpty() )
-										{
-											DB_EmojiPanelItem panelItem = EmojiHookCommons.mPanelItems.get(position);
-											EmojiCommons.preRenderPanel( EmojiHookCommons.mEmojiPanelPager.getContext(), panelItem );
-										}
 										EmojiHookCommons.mLastPanelIndex = position;
 									}
 

@@ -218,22 +218,6 @@ public class EmojiHookCommons
 		}
 	}
 
-/*
-	//Now reundant
-	public static void loadRecents()
-	{
-		if (mRecentEmoji == null)
-		{
-			WrappedProvider dbWrap = Provider.getWrapped(getHookContext());
-
-			List<DB_EmojiItem> recents = (ArrayList<DB_EmojiItem> ) DatabaseMethods.getAllItems(dbWrap, TableInfoTemplates.RECENT_EMOJI_TABLE_INFO);
-			mRecentEmoji = new DB_EmojiPanelItem(-1, 0, 0, "", "", 0, 0);
-			mRecentEmoji.get_items().clear();
-			mRecentEmoji.get_items().addAll(recents);
-		}
-	}
-*/
-
 	public static void saveRecents()
 	{
 		if (mEmojiPanelRecentsTabIndex != -1)
@@ -241,7 +225,6 @@ public class EmojiHookCommons
 			DB_EmojiPanelItem recentsItem = mPanelItems.get(mEmojiPanelRecentsTabIndex);
 			if (recentsItem != null)
 			{
-
 				if (recentsItem.get_items().isConnected())
 				{
 					//recentsItem.get_items().processPendingOperations();
@@ -254,6 +237,10 @@ public class EmojiHookCommons
 					Log.e(LOGTAG, "Attempted to save recent emoji, but panel table was not connected to database");
 				}
 
+			}
+			else
+			{
+				Log.e(LOGTAG, "Could not find recent emoji tab");
 			}
 		}
 	}
