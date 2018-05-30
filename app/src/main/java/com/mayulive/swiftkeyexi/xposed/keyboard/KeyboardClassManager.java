@@ -34,16 +34,11 @@ public class KeyboardClassManager
 	public static Class layoutClass = null;
 	public static Class breadcrumbClass = null;
 
-	protected static Class punctuatorImplClass = null;
-
 	/////////////////
 	//unknown classes
 	/////////////////
 
 	public static Class KeyHeightClass = null;
-
-	protected static Method punctuatorImplClass_AddRulesMethod = null;
-	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 
 
 	protected static Method keyHeightClass_getKeyHeightMethod = null;
@@ -55,7 +50,6 @@ public class KeyboardClassManager
 
 
 	public static InputConnection currentInputConnection = null;
-	public static Object punctuatorImplInstance = null;
 
 
 	public static void loadKnownClasses(PackageTree param)
@@ -63,7 +57,6 @@ public class KeyboardClassManager
 
 		layoutClass = ClassHunter.loadClass("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout", param.getClassLoader());
 
-		punctuatorImplClass = ClassHunter.loadClass("com.touchtype_fluency.impl.PunctuatorImpl", param.getClassLoader());
 	}
 
 	public static void loadUnknownClasses(PackageTree param)
@@ -76,25 +69,6 @@ public class KeyboardClassManager
 
 	public static void loadMethods() throws NoSuchMethodException
 	{
-
-		if (punctuatorImplClass != null)
-		{
-			punctuatorImplClass_AddRulesMethod = ProfileHelpers.findFirstProfileMatch(
-
-					new MethodProfile
-							(
-									PUBLIC,
-									new ClassItem(void.class),
-
-									new ClassItem(InputStream.class )
-							),
-
-					punctuatorImplClass.getDeclaredMethods(), punctuatorImplClass);
-
-			punctuatorImplClass_ClearRulesMethod = ProfileHelpers.findFirstMethodByName(punctuatorImplClass.getDeclaredMethods(), "resetRules");
-
-
-		}
 
 		if (KeyHeightClass != null)
 		{
@@ -140,13 +114,6 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "breadcrumbClass", 	breadcrumbClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoaderClass", 	PriorityKeyboardClassManager.keyboardLoaderClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoader_clearCacheMethod", 	PriorityKeyboardClassManager.keyboardLoader_clearCacheMethod );
-
-
-
-
-		//Punctuation space
-		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_AddRulesMethod", punctuatorImplClass_AddRulesMethod);
-		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_ClearRulesMethod", punctuatorImplClass_ClearRulesMethod);
 
 
 		//Popup

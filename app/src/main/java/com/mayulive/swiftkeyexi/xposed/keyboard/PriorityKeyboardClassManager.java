@@ -12,6 +12,7 @@ import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -42,13 +43,19 @@ public class PriorityKeyboardClassManager
 	public static Method keyboardLoader_onSharedPreferenceChangedMethod;
 	public static Method keyboardLoader_loadMethod = null;
 	public static Method keyboardLoader_clearCacheMethod = null;
+	public static Object punctuatorImplInstance = null;
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
 	protected static Method keyboardService_onConfigurationChangedMethod = null;
 	protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
+	protected static Method punctuatorImplClass_AddRulesMethod = null;
+	protected static Method punctuatorImplClass_ClearRulesMethod = null;
+	protected static Class punctuatorImplClass = null;
 
 	public static void loadKnownClasses(PackageTree param)
 	{
 		PriorityKeyboardClassManager.keyboardServiceClass = ClassHunter.loadClass("com.touchtype.KeyboardService", param.getClassLoader());
+
+		PriorityKeyboardClassManager.punctuatorImplClass = ClassHunter.loadClass("com.touchtype_fluency.impl.PunctuatorImpl", param.getClassLoader());
 	}
 
 	public static void loadUnknownClasses(PackageTree param)
@@ -69,6 +76,24 @@ public class PriorityKeyboardClassManager
 			PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onConfigurationChanged", ( new Class[]{ Configuration.class }) );
 		}
 
+		if (PriorityKeyboardClassManager.punctuatorImplClass != null)
+		{
+			PriorityKeyboardClassManager.punctuatorImplClass_AddRulesMethod = ProfileHelpers.findFirstProfileMatch(
+
+					new MethodProfile
+							(
+									PUBLIC,
+									new ClassItem(void.class),
+
+									new ClassItem(InputStream.class )
+							),
+
+					PriorityKeyboardClassManager.punctuatorImplClass.getDeclaredMethods(), PriorityKeyboardClassManager.punctuatorImplClass);
+
+			PriorityKeyboardClassManager.punctuatorImplClass_ClearRulesMethod = ProfileHelpers.findFirstMethodByName(PriorityKeyboardClassManager.punctuatorImplClass.getDeclaredMethods(), "resetRules");
+
+
+		}
 
 
 		if (PriorityKeyboardClassManager.keyboardLoaderClass != null)
@@ -156,12 +181,20 @@ public class PriorityKeyboardClassManager
 		//View created (Overlay)
 		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "KeyboardServiceClass", 	PriorityKeyboardClassManager.keyboardServiceClass );
 
+
+
 		//Base
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "KeyboardServiceClass", 	PriorityKeyboardClassManager.keyboardServiceClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardService_getCurrentInputConnectionMethod", PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod);
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardService_onConfigurationChangedMethod", 	PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "keyboardSizerClass_sizeKeyboardMethod", 	PriorityKeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod );
+
+
+		//Punctuation space
+		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_AddRulesMethod", PriorityKeyboardClassManager.punctuatorImplClass_AddRulesMethod);
+		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_ClearRulesMethod", PriorityKeyboardClassManager.punctuatorImplClass_ClearRulesMethod);
+
 
 	}
 

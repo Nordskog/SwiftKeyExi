@@ -181,11 +181,11 @@ public class KeyboardMethods
 			mActivePunctuationMode = mode;
 
 			//PunctuatorImpl instance must be present
-			if (KeyboardClassManager.punctuatorImplInstance != null)
+			if (PriorityKeyboardClassManager.punctuatorImplInstance != null)
 			{
 				try
 				{
-					KeyboardClassManager.punctuatorImplClass_ClearRulesMethod.invoke(KeyboardClassManager.punctuatorImplInstance);
+					PriorityKeyboardClassManager.punctuatorImplClass_ClearRulesMethod.invoke(PriorityKeyboardClassManager.punctuatorImplInstance);
 
 					Object[] args = new Object[1];
 
@@ -203,7 +203,7 @@ public class KeyboardMethods
 						}
 					}
 
-					KeyboardClassManager.punctuatorImplClass_AddRulesMethod.invoke(KeyboardClassManager.punctuatorImplInstance, args);
+					PriorityKeyboardClassManager.punctuatorImplClass_AddRulesMethod.invoke(PriorityKeyboardClassManager.punctuatorImplInstance, args);
 
 				}
 				catch (Throwable ex)

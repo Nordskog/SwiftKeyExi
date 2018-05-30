@@ -1,7 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
@@ -265,7 +264,7 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookPunctuationRules()
 	{
-		return XposedBridge.hookMethod(KeyboardClassManager.punctuatorImplClass_AddRulesMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.punctuatorImplClass_AddRulesMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -274,7 +273,7 @@ public class KeyboardHooks
 				//I guess punctuation rules never really change between languages.
 				//Since our settings won't be loaded at this point anyway, we deal with this
 				//in a keyboardLoded callback instead.
-				KeyboardClassManager.punctuatorImplInstance = param.thisObject;
+				PriorityKeyboardClassManager.punctuatorImplInstance = param.thisObject;
 			}
 
 		});
@@ -363,6 +362,11 @@ public class KeyboardHooks
 				{
 					Hooks.baseHooks_viewCreated.add(hookViewCreatedFallback(lpparam));
 				}
+
+				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
+				{
+					Hooks.baseHooks_punctuationSpace.add( hookPunctuationRules() );
+				}
 			}
 		}
 		catch(Throwable ex)
@@ -390,12 +394,6 @@ public class KeyboardHooks
 					Hooks.baseHooks_keyHeight.add(  hookKeyHeight() );
 				}
 
-
-
-				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())
-				{
-					Hooks.baseHooks_punctuationSpace.add( hookPunctuationRules() );
-				}
 
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())
