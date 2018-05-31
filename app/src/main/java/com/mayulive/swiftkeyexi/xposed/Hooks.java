@@ -26,6 +26,8 @@ import com.mayulive.swiftkeyexi.xposed.sound.SoundHooks;
 import com.mayulive.swiftkeyexi.xposed.style.StyleHooks;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
+import java.util.ArrayList;
+
 /**
  * Created by Roughy on 6/22/2017.
  */
@@ -34,6 +36,7 @@ public class Hooks
 {
 	private static String LOGTAG = ExiModule.getLogTag(Hooks.class);
 	private static Handler handler = new Handler(Looper.getMainLooper());
+	private static ArrayList<HookWorkFinishedListener> mHookFinishedListeners = new ArrayList<>();
 
 	//Predictions
 	public static HookCategory predictionHooks_more = new HookCategory("PredictionHooks More");
@@ -261,6 +264,7 @@ public class Hooks
 					@Override
 					public void run()
 					{
+						callOnWorkFinishedListeners();
 						ExiXposed.notifyFinishedLoading();
 					}
 				});
@@ -292,5 +296,23 @@ public class Hooks
 				}
 			}
 		});
+	}
+
+	public interface HookWorkFinishedListener
+	{
+		void onHookWorkFinished();
+	}
+
+	public static void addOnWorkFinishedListener( HookWorkFinishedListener listener )
+	{
+		mHookFinishedListeners.add(listener);
+	}
+
+	public static void callOnWorkFinishedListeners()
+	{
+		for (HookWorkFinishedListener listener : mHookFinishedListeners)
+		{
+			listener.onHookWorkFinished();
+		}
 	}
 }

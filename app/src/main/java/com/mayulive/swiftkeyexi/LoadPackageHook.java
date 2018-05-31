@@ -51,10 +51,12 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 
 			Hooks.hookAll(classTree);
 
-			ProfileCache.saveCache();
+			//Cache is saved once all async work has finished, so add a callback.
+			//Callbacks are called on the main thread, so no worrying about race conditions.
+			Hooks.addOnWorkFinishedListener( () -> ProfileCache.saveCache() );
 
-			XposedBridge.log(LOGTAG+", "+"Finished hooking work in"+lpparam.packageName);
-			Log.i(LOGTAG, "Finished hooking work in "+ExiXposed.HOOK_PACKAGE_NAME);
+			XposedBridge.log(LOGTAG+", "+"Finished priority work in"+lpparam.packageName);
+			Log.i(LOGTAG, "Finished priority work in "+ExiXposed.HOOK_PACKAGE_NAME);
 
 			//Bonus: While it's convenient to load classes only when they are needed,
 			//they cause a bit of a hiccup if they have a long initialization process.
