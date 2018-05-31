@@ -2,7 +2,7 @@ package com.mayulive.swiftkeyexi.xposed.hardwarekeys;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
+import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
@@ -24,8 +24,8 @@ public class HardwareKeyClassManager
 
 	public static void loadMethods() throws NoSuchMethodException
 	{
-		keyboardServiceClass_keyDownMethod = ProfileHelpers.findFirstMethodByName( KeyboardClassManager.keyboardServiceClass.getDeclaredMethods(), "onKeyDown");
-		keyboardServiceClass_keyUpMethod = ProfileHelpers.findFirstMethodByName( KeyboardClassManager.keyboardServiceClass.getDeclaredMethods(), "onKeyUp");
+		keyboardServiceClass_keyDownMethod = ProfileHelpers.findFirstMethodByName( PriorityKeyboardClassManager.keyboardServiceClass.getDeclaredMethods(), "onKeyDown");
+		keyboardServiceClass_keyUpMethod = ProfileHelpers.findFirstMethodByName( PriorityKeyboardClassManager.keyboardServiceClass.getDeclaredMethods(), "onKeyUp");
 	}
 
 	public static void doAllTheThings(PackageTree param) throws IOException, NoSuchFieldException, NoSuchMethodException

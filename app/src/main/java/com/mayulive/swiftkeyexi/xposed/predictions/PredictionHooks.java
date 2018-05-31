@@ -8,21 +8,14 @@ import java.util.Set;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.util.CodeUtils;
-import com.mayulive.swiftkeyexi.util.SteppedHookLog;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
-import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysSetup;
-import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.ProfileHelpers;
+import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -118,7 +111,7 @@ public class PredictionHooks
 		////////////////
 
 		{
-			return XposedBridge.hookMethod(PredictionClassManager.candidatesViewFactory_getViewMethod, new XC_MethodHook()
+			return XposedBridge.hookMethod(PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod, new XC_MethodHook()
 			//XposedBridge.hookAllConstructors(keyboardEventClass, new XC_MethodHook()
 			{
 				
@@ -147,7 +140,7 @@ public class PredictionHooks
 		//Candidate bar
 		////////////////
 		{
-			return XposedBridge.hookMethod(PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod, new XC_MethodHook()
+			return XposedBridge.hookMethod(PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod, new XC_MethodHook()
 			{
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -157,7 +150,7 @@ public class PredictionHooks
 					{
 						//Due a view hierarchy change, we must make sure to remove the candidate kview from
 						//our container before we enter this method, as it will attempt to attach it to a new parent
-						LinearLayout centerLinear = (LinearLayout)param.args[PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition];
+						LinearLayout centerLinear = (LinearLayout)param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition];
 						if (centerLinear.getChildCount() >= 3)
 						{
 							View centerView = centerLinear.getChildAt(1);
@@ -182,7 +175,7 @@ public class PredictionHooks
 				{
 					try
 					{
-						PredictionHandlers.handleCandidateViewHook_replace((ViewGroup) param.args[PredictionClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition]);
+						PredictionHandlers.handleCandidateViewHook_replace((ViewGroup) param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition]);
 					}
 					catch (Throwable ex)
 					{
@@ -198,22 +191,22 @@ public class PredictionHooks
 	{
 
 		//XposedHelpers.findAndHookMethod(fluencyCandidateClass, "toString", new XC_MethodHook()
-		return XposedBridge.hookMethod(PredictionClassManager.keyboardFrameClass_setBuMethod,  new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod,  new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
 				try
 				{
-					PredictionClassManager.buInstance = PredictionClassManager.keyboardFrameClass_buField.get(param.thisObject);
+					PriorityPredictionsClassManager.buInstance = PriorityPredictionsClassManager.keyboardFrameClass_buField.get(param.thisObject);
 
-					if (PredictionClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition != -1)
+					if (PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition != -1)
 					{
 						Log.e(LOGTAG, "KeyboardUxOptionsPosition was not found, this could be bad");
 					}
 					else
 					{
-						PredictionClassManager.KeyboardUxOptionsInstance = param.args[ PredictionClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition  ];
+						PriorityPredictionsClassManager.KeyboardUxOptionsInstance = param.args[ PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition  ];
 					}
 				}
 				catch (Throwable ex)
@@ -284,6 +277,32 @@ public class PredictionHooks
 
 	}
 
+	public static boolean hookPriority(final PackageTree param)
+	{
+		try
+		{
+			//Loads all the classes we will ever need to load!
+			PriorityPredictionsClassManager.doAllTheThings(param);
+
+			if (Hooks.predictionHooks_more.isRequirementsMet())
+			{
+				Hooks.predictionHooks_more.add( hookCandidatesDisplayView() );
+				Hooks.predictionHooks_more.add( hookCandidatesDisplayView_getViewWrapper() );
+				Hooks.predictionHooks_more.add( hookBu() );
+			}
+
+		}
+		catch(Throwable ex)
+		{
+			Hooks.predictionHooks_base.invalidate(ex, "Failed to hook");
+			return false;
+		}
+
+		return true;
+
+
+	}
+
 	public static boolean HookAll(final PackageTree param)
 	{
         try
@@ -301,13 +320,6 @@ public class PredictionHooks
 			if (Hooks.predictionHooks_priority.isRequirementsMet())
 			{
 				Hooks.predictionHooks_priority.addAll( hookCandidateSelected() );
-			}
-
-			if (Hooks.predictionHooks_more.isRequirementsMet())
-			{
-				Hooks.predictionHooks_more.add( hookCandidatesDisplayView() );
-				Hooks.predictionHooks_more.add( hookCandidatesDisplayView_getViewWrapper() );
-				Hooks.predictionHooks_more.add( hookBu() );
 			}
 
 			Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()

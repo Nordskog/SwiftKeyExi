@@ -1,6 +1,5 @@
 package com.mayulive.swiftkeyexi.xposed.hardwarekeys;
 
-import android.util.Log;
 import android.view.KeyEvent;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -15,7 +14,7 @@ import com.mayulive.swiftkeyexi.providers.Provider;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
+import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -221,7 +220,7 @@ public class HardwareKeyMethods
 
 	private static void handleTextAction(KeyboardInteraction.TextAction action)
 	{
-		KeyCommons.PerformTextAction( KeyboardClassManager.getInputConnection(), action);
+		KeyCommons.PerformTextAction( PriorityKeyboardClassManager.getInputConnection(), action);
 	}
 
 	public static boolean handleHotkeyKeyDown(int keyCode, int scanCode )

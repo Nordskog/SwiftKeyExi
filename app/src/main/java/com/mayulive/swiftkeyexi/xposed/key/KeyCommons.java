@@ -14,6 +14,8 @@ import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionMethods;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +44,10 @@ public class KeyCommons
 	//until we clear them. Use system has to avoid blocking garbage collection.
 	// In the case of android, the system identifier for an object is (last I checked) just the pointer address.
 	private static Map<Integer, KeyDefinition> mKeyDefinitions = new HashMap<>();
+
+	//Sometimes we potentially don't want a key to fire on down.
+	//We can later decide to fire these.
+	private static ArrayList<DelayedKey> mDelayedKeys = new ArrayList<>();
 
 	public static String sLastSymbolDefined = null;
 	public static String sSymboledDefinedOnLastKeyLoop = null;
@@ -140,8 +146,51 @@ public class KeyCommons
 	}
 
 	//////////////////
+	// Delay key stuff
+	/////////////////
+
+	protected static boolean mDelayNextKey = false;
+	protected static long mDelayNextKey_RequestTime = 0;
+
+	public static void addDelayedKey( DelayedKey key)
+	{
+		mDelayedKeys.add(key);
+	}
+	
+	public static void processDelayedKeys()
+	{
+		for (DelayedKey key : mDelayedKeys)
+		{
+			try
+			{
+				key.execute();
+			}
+			catch ( Exception ex)
+			{
+				Log.e(LOGTAG, "Failed to executed delayed key");
+				ex.printStackTrace();
+			}
+
+		}
+
+		mDelayedKeys.clear();
+	}
+
+	public static void clearDelayedKeys()
+	{
+		mDelayedKeys.clear();
+	}
+
+	public static void requestDelayNextKey()
+	{
+		mDelayNextKey = true;
+		mDelayNextKey_RequestTime = System.currentTimeMillis();
+	}
+
+	//////////////////
 	//Cancel tap stuff
 	//////////////////
+
 
 	protected static boolean mCancelNextKey = false;
 	protected static long mCancelNextKey_RequestTime = 0;
@@ -339,6 +388,33 @@ public class KeyCommons
 
 
 		return null;
+	}
+
+	public static class DelayedKey
+	{
+		public Object[] arguments;
+		public Object thiz;
+		public Method method;
+		public long createTime;
+		public long timeout;
+
+		public DelayedKey(Object[] arguments, Object thiz, Method method, long timeout)
+		{
+			this.arguments = arguments;
+			this.thiz = thiz;
+			this.method = method;
+			this.timeout = timeout;
+		}
+
+		public void execute() throws InvocationTargetException, IllegalAccessException
+		{
+			long currentTime = System.currentTimeMillis();
+			if ( createTime + timeout > currentTime )
+				return;
+
+			method.invoke(thiz, arguments);
+		}
+
 	}
 
 }

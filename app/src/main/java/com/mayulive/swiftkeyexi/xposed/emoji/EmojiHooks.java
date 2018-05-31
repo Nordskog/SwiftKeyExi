@@ -2,6 +2,7 @@ package com.mayulive.swiftkeyexi.xposed.emoji;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
+import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -171,11 +173,6 @@ public class EmojiHooks
 									@Override
 									public void onPageSelected(int position)
 									{
-										if (position <= EmojiHookCommons.mPanelItems.size() && !EmojiHookCommons.mPanelItems.isEmpty() )
-										{
-											DB_EmojiPanelItem panelItem = EmojiHookCommons.mPanelItems.get(position);
-											EmojiCommons.preRenderPanel( EmojiHookCommons.mEmojiPanelPager.getContext(), panelItem );
-										}
 										EmojiHookCommons.mLastPanelIndex = position;
 									}
 
@@ -488,12 +485,16 @@ public class EmojiHooks
 
 	}
 
+	public static boolean hookAll(final PackageTree param)
+	{
+		//Super simple so just bunch everything into priority
+		return true;
+	}
 
-	public static boolean HookAll(final PackageTree param)
+	public static boolean hookPriority(final PackageTree param)
 	{
         try
-        {     
-
+        {
         	EmojiClassManager.doAllTheThings(param);
 
 			if (Hooks.emojiHooks_base.isRequirementsMet())
@@ -549,10 +550,16 @@ public class EmojiHooks
 					}
 				});
 
-				KeyboardMethods.addThemeChangedListener(new KeyboardMethods.ThemeChangedListener()
+				StyleCommons.addThemeChangedListener(new StyleCommons.ThemeChangedListener()
 				{
 					@Override
 					public void themeChanged(int newTheme)
+					{
+						//EmojiHookCommons.refreshEmojiTheme();
+					}
+
+					@Override
+					public void raisedBackgroundChanged(Drawable bg)
 					{
 						EmojiHookCommons.refreshEmojiTheme();
 					}

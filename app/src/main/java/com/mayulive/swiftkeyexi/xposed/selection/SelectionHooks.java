@@ -6,22 +6,14 @@ import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
-import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
-import com.mayulive.swiftkeyexi.xposed.predictions.PredictionSetup;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
-
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -34,7 +26,7 @@ public class SelectionHooks
 	public static XC_MethodHook.Unhook hookViewCreated( )
 	{
 		{
-			return XposedBridge.hookMethod(SelectionClassManager.frameHolderFactoryClass_frameHolderInflaterMethod, new XC_MethodHook()
+			return XposedBridge.hookMethod(PrioritySelectionClassManager.frameHolderFactoryClass_frameHolderInflaterMethod, new XC_MethodHook()
 			{
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -49,9 +41,8 @@ public class SelectionHooks
 
 						//We used to refer to the parent by its ID, but someone forgot to assign the ID to the view
 						//when creatin the layout xml for the compact layout. Luckily the frame holder one is still there.
-						//ViewGroup targetParent = (ViewGroup)thiz.findViewById(targetParentId);
 						View target = thiz.findViewById(targetId);
-						ViewGroup targetParent = (ViewGroup)target.getParent();	//Linear layout
+						ViewGroup targetParent = (ViewGroup)target.getParent();	//Constraint layout
 
 
 						if (targetParent == null || target == null)
@@ -63,16 +54,22 @@ public class SelectionHooks
 							ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 							SelectionState.mSwipeOverlay = new SwipeOverlay(thiz.getContext());
 
-							//Nested a level deeper because swiftkey changed things
-							targetParent = (ViewGroup)target;
-							target =  targetParent.getChildAt(0);
+							//Have to insert in same position
+							int pos = targetParent.indexOfChild(target);
 
-							SelectionState.mSwipeOverlay.setLayoutParams(params);
-
+							//Have to remove view before messing with layout params
 							targetParent.removeView(target);
-							SelectionState.mSwipeOverlay.addView(target);
-							targetParent.addView(SelectionState.mSwipeOverlay);
 
+							//Steal id
+							SelectionState.mSwipeOverlay.setId( target.getId() );
+							target.setId( View.generateViewId() );
+
+							//Steal layout params
+							SelectionState.mSwipeOverlay.setLayoutParams( target.getLayoutParams() );
+							target.setLayoutParams(params);
+
+							SelectionState.mSwipeOverlay.addView(target);
+							targetParent.addView(SelectionState.mSwipeOverlay, pos);
 						}
 					}
 					catch (Throwable ex)
@@ -174,6 +171,30 @@ public class SelectionHooks
 	}
 
 
+	public static void hookPriority(final PackageTree param)
+	{
+		try
+		{
+
+			if ( Hooks.selectionHooks_base.isRequirementsMet() )
+			{
+				PrioritySelectionClassManager.doAllTheThings(param);
+
+				if ( Hooks.selectionHooks_base.isRequirementsMet() )
+				{
+					//Selection
+					Hooks.selectionHooks_base.add( hookViewCreated() );
+				}
+			}
+		}
+		catch ( Throwable ex )// | InstantiationException | IllegalAccessException | InvocationTargetException e)
+		{
+			Hooks.selectionHooks_base.invalidate(ex, "Failed to hook");
+		}
+
+	}
+
+
 	public static void hookAll(final PackageTree param)
 	{
 		try
@@ -188,9 +209,6 @@ public class SelectionHooks
 					//Disable flow and gestures
 					Hooks.selectionHooks_base.add( hookFlowHandler() );
 					Hooks.selectionHooks_base.add( hookSwipeHandler() );
-
-					//Selection
-					Hooks.selectionHooks_base.add( hookViewCreated() );
 
 					//Prevent swiftkey from moving cursor to end of word
 					//Not a requirement, and may be null

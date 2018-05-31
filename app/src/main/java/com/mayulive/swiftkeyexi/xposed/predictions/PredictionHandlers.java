@@ -1,7 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
@@ -19,15 +16,9 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
-import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.xposed.classhunter.ProfileHelpers;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -63,21 +54,21 @@ public class PredictionHandlers
 		//4 of these are passed to the method we are hooking, while the last
 		//is an enum. The enum we're after is "CANDIDATE".
 		//As of 6.7.4.31 there is also a bool that switches the min-width between two resources
-		candidateViewArgs = new Object[PredictionClassManager.candidateViewClass_Constructor.getParameterTypes().length];
+		candidateViewArgs = new Object[PriorityPredictionsClassManager.candidateViewClass_Constructor.getParameterTypes().length];
 
 		{
-			for (int i = 0; i < PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions.length; i++)
+			for (int i = 0; i < PriorityPredictionsClassManager.getViewMethod_CandidateViewClassConstructorArgPositions.length; i++)
 			{
-				if (PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions[i] != -1)
+				if (PriorityPredictionsClassManager.getViewMethod_CandidateViewClassConstructorArgPositions[i] != -1)
 				{
-					candidateViewArgs[i] = param.args[ PredictionClassManager.getViewMethod_CandidateViewClassConstructorArgPositions[i] ];
+					candidateViewArgs[i] = param.args[ PriorityPredictionsClassManager.getViewMethod_CandidateViewClassConstructorArgPositions[i] ];
 				}
 			}
 
-			Object someEnum =  CodeUtils.findEnumByName( (Enum[])  PredictionClassManager.candidateViewClass_Constructor.getParameterTypes()[PredictionClassManager.getViewMethod_EnumArgPosition].getEnumConstants(), "CANDIDATE");
-			candidateViewArgs[PredictionClassManager.getViewMethod_EnumArgPosition] = someEnum;
-			if ( PredictionClassManager.getViewMethod_BooleanArgPosition != -1)
-				candidateViewArgs[ PredictionClassManager.getViewMethod_BooleanArgPosition] = false;	//z ? R.dimen.floating_sequential_candidate_min_width : R.dimen.sequential_candidate_min_width);
+			Object someEnum =  CodeUtils.findEnumByName( (Enum[])  PriorityPredictionsClassManager.candidateViewClass_Constructor.getParameterTypes()[PriorityPredictionsClassManager.getViewMethod_EnumArgPosition].getEnumConstants(), "CANDIDATE");
+			candidateViewArgs[PriorityPredictionsClassManager.getViewMethod_EnumArgPosition] = someEnum;
+			if ( PriorityPredictionsClassManager.getViewMethod_BooleanArgPosition != -1)
+				candidateViewArgs[ PriorityPredictionsClassManager.getViewMethod_BooleanArgPosition] = false;	//z ? R.dimen.floating_sequential_candidate_min_width : R.dimen.sequential_candidate_min_width);
 		}
 	}
 
@@ -179,7 +170,7 @@ public class PredictionHandlers
 						try
 						{
 
-							View returnView = (View) PredictionClassManager.candidateViewClass_Constructor.newInstance(candidateViewArgs);
+							View returnView = (View) PriorityPredictionsClassManager.candidateViewClass_Constructor.newInstance(candidateViewArgs);
 
 							RecyclerView.LayoutParams candidateParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.MATCH_PARENT);
 							returnView.setLayoutParams(candidateParams);
@@ -201,7 +192,7 @@ public class PredictionHandlers
 					{
 						try
 						{
-							PredictionClassManager.candidateViewClass_setCandidateMethod.invoke(view, source);
+							PriorityPredictionsClassManager.candidateViewClass_setCandidateMethod.invoke(view, source);
 						}
 						catch (Exception ex)
 						{
@@ -228,13 +219,13 @@ public class PredictionHandlers
 								int paramCount = PredictionClassManager.candidateClickConstructor.getParameterTypes().length;
 								if ( paramCount == 4 )
 								{
-									candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(PredictionClassManager.buInstance,null,null,null);
+									candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(PriorityPredictionsClassManager.buInstance,null,null,null);
 								}
 								else // >= 7.0.5.22
 								{
 									candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(	holder.view.getContext(),
-																																		PredictionClassManager.KeyboardUxOptionsInstance,
-																																		PredictionClassManager.buInstance,null,null,null);
+																																		PriorityPredictionsClassManager.KeyboardUxOptionsInstance,
+																																		PriorityPredictionsClassManager.buInstance,null,null,null);
 								}
 								PredictionClassManager.candidateOnCLickMethod.invoke(candidateClickListener, holder.view, holder.source, 0);
 							}

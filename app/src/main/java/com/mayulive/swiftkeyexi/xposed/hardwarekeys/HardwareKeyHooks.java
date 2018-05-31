@@ -68,8 +68,13 @@ public class HardwareKeyHooks
 		});
 	}
 
+	public static boolean hookAll(final PackageTree lpparam)
+	{
+		//Super simple, just return true.
+		return true;
+	}
 
-	public static boolean HookAll(final PackageTree lpparam)
+	public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
 		{

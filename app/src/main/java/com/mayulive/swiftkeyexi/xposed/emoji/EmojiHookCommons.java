@@ -9,13 +9,11 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.database.DatabaseMethods;
@@ -28,6 +26,8 @@ import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
+import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
+import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -61,11 +61,11 @@ public class EmojiHookCommons
 
 	public static void inputText(String text)
 	{
-		if (KeyboardClassManager.keyboardServiceInstance != null)
+		if (PriorityKeyboardClassManager.keyboardServiceInstance != null)
 		{
 			try
 			{
-				InputConnection currentConnection = (InputConnection) KeyboardClassManager.getCurrentInputConnectionMethod.invoke( KeyboardClassManager.keyboardServiceInstance );
+				InputConnection currentConnection = (InputConnection) PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod.invoke( PriorityKeyboardClassManager.keyboardServiceInstance );
 
 				if (currentConnection != null)
 				{
@@ -87,7 +87,7 @@ public class EmojiHookCommons
 	{
 		if (mOuterTabsWrapper != null)
 		{
-			mOuterTabsWrapper.setBackgroundColor(SharedTheme.getSwiftkeyThemeAccentColor());
+			mOuterTabsWrapper.setBackground( StyleCommons.getCurrentRaisedBackground() );
 		}
 	}
 
@@ -218,22 +218,6 @@ public class EmojiHookCommons
 		}
 	}
 
-/*
-	//Now reundant
-	public static void loadRecents()
-	{
-		if (mRecentEmoji == null)
-		{
-			WrappedProvider dbWrap = Provider.getWrapped(getHookContext());
-
-			List<DB_EmojiItem> recents = (ArrayList<DB_EmojiItem> ) DatabaseMethods.getAllItems(dbWrap, TableInfoTemplates.RECENT_EMOJI_TABLE_INFO);
-			mRecentEmoji = new DB_EmojiPanelItem(-1, 0, 0, "", "", 0, 0);
-			mRecentEmoji.get_items().clear();
-			mRecentEmoji.get_items().addAll(recents);
-		}
-	}
-*/
-
 	public static void saveRecents()
 	{
 		if (mEmojiPanelRecentsTabIndex != -1)
@@ -241,7 +225,6 @@ public class EmojiHookCommons
 			DB_EmojiPanelItem recentsItem = mPanelItems.get(mEmojiPanelRecentsTabIndex);
 			if (recentsItem != null)
 			{
-
 				if (recentsItem.get_items().isConnected())
 				{
 					//recentsItem.get_items().processPendingOperations();
@@ -254,6 +237,10 @@ public class EmojiHookCommons
 					Log.e(LOGTAG, "Attempted to save recent emoji, but panel table was not connected to database");
 				}
 
+			}
+			else
+			{
+				Log.e(LOGTAG, "Could not find recent emoji tab");
 			}
 		}
 	}

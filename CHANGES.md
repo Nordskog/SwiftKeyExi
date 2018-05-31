@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.5.2] - 31-05-2018
+### Fixed
+ - Keyboard not centering properly on some devices
+ - Swiping from shift messing with auto-capitalization
+ - Emoji tabs not matching keyboard theme
+ 
+### Added
+ - Async hook setup with progress displayed on keyboard
+ 
+### Changed
+ - Removed Emoji pre-rendering
+ 
 ## [1.4.2] - 12-05-2018
 ### Fixed
  - Keyboard overlay breaking everything ( targeting 7.0.5.22 )
