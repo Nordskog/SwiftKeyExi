@@ -19,7 +19,7 @@ public class EmojiProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.view.fancy.g");
+		newProfile.setFullPath("com.touchtype.keyboard.view.fancy.h");
 		newProfile.setKnownPath("com.touchtype.keyboard.view.fancy");
 
 		newProfile.setMinDepth(0);
@@ -57,18 +57,6 @@ public class EmojiProfiles
 						//Method #0: a
 						new MethodProfile
 								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(java.lang.String.class),
-
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #1: a
-						new MethodProfile
-								(
 										PUBLIC | EXACT ,
 										new ClassItem(java.lang.String.class),
 
@@ -82,7 +70,7 @@ public class EmojiProfiles
 
 								),
 
-						//Method #2: a
+						//Method #1: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,

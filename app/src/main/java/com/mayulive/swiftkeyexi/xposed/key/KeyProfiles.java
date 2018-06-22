@@ -1024,7 +1024,7 @@ public class KeyProfiles
 /////////////////////////
 		newProfile.setInterfaces(new ClassItem[]
 				{
-						new ClassItem(android.content.SharedPreferences.OnSharedPreferenceChangeListener.class),
+						new ClassItem("android.content.SharedPreferences.OnSharedPreferenceChangeListener" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
@@ -1047,15 +1047,14 @@ public class KeyProfiles
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//C
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//D
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//E
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT )),	//F
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//G
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//F
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//G
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//H
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//I
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//J
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//K
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//L
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//M
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//N
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//a
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//c
@@ -1111,7 +1110,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #2: c
+						//Method #2: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -1129,7 +1128,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #4: d
+						//Method #4: c
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -1137,7 +1136,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #5: e
+						//Method #5: d
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -1149,7 +1148,7 @@ public class KeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem(void.class)
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -1255,7 +1254,9 @@ public class KeyProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.LanguageLayoutChangeSource" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -1267,8 +1268,7 @@ public class KeyProfiles
 
 										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-										new ClassItem("com.swiftkey.avro.telemetry.sk.android.LanguageLayoutChangeSource" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem(java.util.Map.class)
 
 								),
 
@@ -1280,7 +1280,8 @@ public class KeyProfiles
 
 										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-										new ClassItem(java.util.Map.class)
+										new ClassItem(boolean.class),
+										new ClassItem(int.class)
 
 								),
 
@@ -1321,7 +1322,9 @@ public class KeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+										new ClassItem(void.class),
+
+										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1331,7 +1334,7 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1341,21 +1344,11 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #25: b
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
 										new ClassItem("com.touchtype.telemetry" , PUBLIC | EXACT )
 
 								),
 
-						//Method #26: m
+						//Method #25: m
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1363,7 +1356,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #27: onSharedPreferenceChanged
+						//Method #26: onSharedPreferenceChanged
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1401,8 +1394,7 @@ public class KeyProfiles
 										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT )
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )
 
 								),
 
