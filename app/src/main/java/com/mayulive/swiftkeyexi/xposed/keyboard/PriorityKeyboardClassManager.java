@@ -1,6 +1,8 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.res.Configuration;
+import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -30,15 +32,17 @@ public class PriorityKeyboardClassManager
 
 
 	public static Class keyboardServiceClass =  null;
+	public static Class FullKeyboardServiceDelegate = null;
 	/////////////////////////
 	//Methods
 	/////////////////////////
 	public static Method keyboardService_getCurrentInputConnectionMethod = null;
+	public static Method FullKeyboardServiceDelegate_onCreateInputView = null;
 	///////////////////
 	//Objects and instances
 	//////////////////
 	public static Object keyboardServiceInstance = null;
-	public static Class keyboardSizerClass = null;
+	//public static Class keyboardSizerClass = null;
 	public static Class keyboardLoaderClass = null;
 	public static Method keyboardLoader_onSharedPreferenceChangedMethod;
 	public static Method keyboardLoader_loadMethod = null;
@@ -46,7 +50,7 @@ public class PriorityKeyboardClassManager
 	public static Object punctuatorImplInstance = null;
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
 	protected static Method keyboardService_onConfigurationChangedMethod = null;
-	protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
+	//protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
 	protected static Method punctuatorImplClass_AddRulesMethod = null;
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 	protected static Class punctuatorImplClass = null;
@@ -60,9 +64,10 @@ public class PriorityKeyboardClassManager
 
 	public static void loadUnknownClasses(PackageTree param)
 	{
-		PriorityKeyboardClassManager.keyboardSizerClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEYBOARD_SIZER_CLASS_PROFILE(), param );
-
 		PriorityKeyboardClassManager.keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
+
+
+		PriorityKeyboardClassManager.FullKeyboardServiceDelegate = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_FULL_KEYBOARD_SERVICE_DELEGATE_CLASS_PROFILE(), param );
 
 	}
 
@@ -74,6 +79,18 @@ public class PriorityKeyboardClassManager
 
 			PriorityKeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onEvaluateFullscreenMode", (Class[])null);
 			PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onConfigurationChanged", ( new Class[]{ Configuration.class }) );
+
+			FullKeyboardServiceDelegate_onCreateInputView = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onCreateInputView", ( Class[] ) null );
+		}
+
+		if (FullKeyboardServiceDelegate != null)
+		{
+
+			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findMostSimilar( new MethodProfile(
+					EXACT,
+					new ClassItem(View.class)
+			), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
+
 		}
 
 		if (PriorityKeyboardClassManager.punctuatorImplClass != null)
@@ -132,26 +149,6 @@ public class PriorityKeyboardClassManager
 					PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
 		}
 
-
-
-
-
-		if (PriorityKeyboardClassManager.keyboardSizerClass != null)
-		{
-
-			PriorityKeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
-			(
-					PUBLIC | STATIC | EXACT ,
-					new ClassItem(android.view.View.class),
-
-					new ClassItem(android.content.Context.class),
-					new ClassItem(android.view.View.class),
-					new ClassItem(int.class),
-					new ClassItem(int.class)
-
-			), PriorityKeyboardClassManager.keyboardSizerClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardSizerClass );
-
-		}
 	}
 
 	public static void loadFields()
@@ -188,7 +185,7 @@ public class PriorityKeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardService_getCurrentInputConnectionMethod", PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod);
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardService_onConfigurationChangedMethod", 	PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod );
 
-		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "keyboardSizerClass_sizeKeyboardMethod", 	PriorityKeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "FullKeyboardServiceDelegate_onCreateInputView", 	PriorityKeyboardClassManager.FullKeyboardServiceDelegate_onCreateInputView);
 
 
 		//Punctuation space

@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
@@ -51,47 +52,28 @@ public class KeyboardHooks
 
 	public static XC_MethodHook.Unhook hookViewCreatedFallback(PackageTree param)
 	{
-		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardSizerClass_sizeKeyboardMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.FullKeyboardServiceDelegate_onCreateInputView, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
 				try
 				{
-					ViewGroup view = (ViewGroup) param.getResult();
-
-					{
-						// For some strange reaon hooking onCreateInputView doesn't work properly.
-						// This is a mother htat is... nearby, but not quite the same.
-						// It gets called twice, for two views that are probably placed in
-						// the same framelayout. That means we have to set alpha on both of them.
-						// I tried getting the parent lanter but it... didn't work.
-
-						//If first empty or second populated set first, and make sure second is cleared.
-						if (KeyboardMethods.mKeyboardRoots[0] == null || KeyboardMethods.mKeyboardRoots[1] != null )
-						{
-							KeyboardMethods.mKeyboardRoots[0] = view;
-							KeyboardMethods.mKeyboardRoots[1] = null;
-						}
-						else //Set second
-						{
-							KeyboardMethods.mKeyboardRoots[1] = view;
-						}
-					}
+					KeyboardMethods.mKeyboardRoot = (ViewGroup) param.getResult();
 
 					KeyboardMethods.setKeyboardOpacity();
 
 					//If cover is not null, maker sure we have not already added something
 					if (OverlayCommons.mKeyboardOverlay != null)
 					{
-						view.removeView(OverlayCommons.mKeyboardOverlay);
+						KeyboardMethods.mKeyboardRoot.removeView(OverlayCommons.mKeyboardOverlay);
 					}
 
-					RelativeLayout cover = new RelativeLayout(view.getContext());
+					RelativeLayout cover = new RelativeLayout( KeyboardMethods.mKeyboardRoot.getContext());
 
 					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 					cover.setLayoutParams(params);
-					view.addView(cover);
+					KeyboardMethods.mKeyboardRoot.addView(cover);
 					OverlayCommons.mKeyboardOverlay = cover;
 
 					if (!ExiXposed.isFinishedLoading())

@@ -39,7 +39,7 @@ public class KeyboardMethods
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
 	protected static ArrayList<SharedPreferences.OnSharedPreferenceChangeListener> mSwiftkeyPrefChangedListeners = new ArrayList<>();
 
-	protected static ViewGroup[] mKeyboardRoots = new ViewGroup[2];
+	protected static ViewGroup mKeyboardRoot = null;
 	protected static float mLastKeyboardOpacity = 1;
 
 
@@ -239,11 +239,8 @@ public class KeyboardMethods
 		//Run if changed or opacity not 100%
 		if (mLastKeyboardOpacity != Settings.KEYBOARD_OPACITY || Settings.KEYBOARD_OPACITY < 1)
 		{
-			for ( ViewGroup root : mKeyboardRoots)
-			{
-				if (root != null)
-					root.setAlpha( Settings.KEYBOARD_OPACITY );
-			}
+			if (mKeyboardRoot != null)
+				mKeyboardRoot.setAlpha( Settings.KEYBOARD_OPACITY );
 		}
 
 		mLastKeyboardOpacity = Settings.KEYBOARD_OPACITY;
