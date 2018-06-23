@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.5.3] - 23-06-2018
+### Fixed
+ - Module not working due to main hook failing ( 7.0 7.28/8.362 )
+
 ## [1.5.2] - 31-05-2018
 ### Fixed
  - Keyboard not centering properly on some devices

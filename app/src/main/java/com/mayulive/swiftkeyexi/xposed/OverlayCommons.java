@@ -47,7 +47,7 @@ public class OverlayCommons
 
 	//Due to nonsense we often have two overlay views, once of which does nothing.
 	//Easier to keep track of multiple here than to try and fix that.
-	private static ArrayList<TextView> mLoadingWarnings = new ArrayList<>();
+	private static TextView mLoadingWarning = null;
 
 
 	public static void setPopupDimensions(float textSize, int paddingX, int paddingY)
@@ -268,8 +268,7 @@ public class OverlayCommons
 			return;
 		}
 
-		TextView loadingMessage = new TextView(ContextUtils.getHookContext() );
-
+		mLoadingWarning = new TextView(ContextUtils.getHookContext() );
 
 		int width = ViewGroup.LayoutParams.MATCH_PARENT;
 		//Usually enough to cover the keyboard
@@ -277,12 +276,12 @@ public class OverlayCommons
 		int margin = (int)(height * 0.4f);
 		height = (int)(height * 0.6f);
 
-		loadingMessage.setTextSize( 30 );
-		loadingMessage.setBackgroundColor(Color.BLACK );
-		loadingMessage.setAlpha(0.75f);
-		loadingMessage.setGravity(Gravity.CENTER);
-		loadingMessage.setTextColor(Color.WHITE);
-		loadingMessage.setClickable(true);
+		mLoadingWarning.setTextSize( 30 );
+		mLoadingWarning.setBackgroundColor(Color.BLACK );
+		mLoadingWarning.setAlpha(0.75f);
+		mLoadingWarning.setGravity(Gravity.CENTER);
+		mLoadingWarning.setTextColor(Color.WHITE);
+		mLoadingWarning.setClickable(true);
 
 
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( width, height);
@@ -290,31 +289,42 @@ public class OverlayCommons
 
 		//Not going to risk trying to talk to content from here
 		String percentage = String.valueOf( ExiXposed.getLoadingProgress() );
-		loadingMessage.setText( "Exi loading\n"+percentage+"%");
-		loadingMessage.setLayoutParams(params);
+		mLoadingWarning.setText( "Exi loading\n"+percentage+"%");
+		mLoadingWarning.setLayoutParams(params);
 
-		mLoadingWarnings.add(loadingMessage);
-		mKeyboardOverlay.addView(loadingMessage);
+
+		mKeyboardOverlay.addView(mLoadingWarning);
 	}
 
 	public static void updateLoadingMessage(int progressPercentage)
 	{
 		String percentage = String.valueOf(progressPercentage);
 
-		for (TextView warning : mLoadingWarnings)
+		if (mLoadingWarning != null)
 		{
-			warning.setText( "Exi loading\n"+percentage+"%");
+			//Why are we doing this nonense?
+			//For some reason, if you add a view to the overlay too early,
+			//it will never be measured as anything but 0,0.
+			//The overlay itself is immediately measured to full-scren,
+			//but it tells any and all children that they don't exist for a while.
+			//Request-layout does nothing, view has to be removed completely.
+			//I give up. There is no god.
+
+			mKeyboardOverlay.removeView(mLoadingWarning);
+			mLoadingWarning.setText( "Exi loading\n"+percentage+"%");
+			mKeyboardOverlay.addView(mLoadingWarning);
 		}
 	}
 
+
 	public static void removeLoadingMessage()
 	{
-		for (TextView warning : mLoadingWarnings)
+		if (mKeyboardOverlay != null)
 		{
-			ViewGroup parent = (ViewGroup)warning.getParent();
-			if (parent != null)
-				parent.removeAllViews();
+			mKeyboardOverlay.removeAllViews();
 		}
+
+		mLoadingWarning = null;
 	}
 
 	//Full-screen coordinates
