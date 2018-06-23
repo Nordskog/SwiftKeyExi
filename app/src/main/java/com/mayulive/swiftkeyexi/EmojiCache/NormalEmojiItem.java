@@ -118,7 +118,8 @@ public class NormalEmojiItem extends AppCompatTextView implements EmojiContainer
 
 	}
 
-
+	//Linter is wrong, claims that COMPLEX_UNIT_PX should be typeface.normal/bold/italic/bold_italic.
+	@SuppressWarnings("WrongConstant")
 	@Override
 	public void setEmojiText(String text, float textSize, Object key, int styleId)
 	{
