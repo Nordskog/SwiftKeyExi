@@ -130,6 +130,9 @@
     <string name="pref_swipe_rtl_mode_title">Enable RTL swipe selection</string>
     <string name="pref_swipe_rtl_mode_summary">Support RTL text when swipe-selecting</string>
 
+    <!-- Swipe direction  -->
+    <string name="pref_swipe_direction_any_key">pref_swipe_direction_any</string>
+
     <!-- Period button -->
     <string name="pref_disable_period_click_key">pref_disable_period_click</string>
     <string name="pref_disable_period_click_title">Disable Period tap</string>

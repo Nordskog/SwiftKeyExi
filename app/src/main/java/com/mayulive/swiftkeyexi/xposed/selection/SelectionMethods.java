@@ -964,6 +964,12 @@ public class SelectionMethods
 						int xCursorChange = (int) currentPointerInfo.xCursorDistanceChange;
 						int yCursorChange = (int) currentPointerInfo.yCursorDistanceChange;
 
+						//If swipe direction is not set to any direction, null y change.
+						if (!Settings.SWIPE_DIRECTION_ANY)
+						{
+							yCursorChange = 0;
+						}
+
 						//Prioritize horizontal change
 						if ( Math.abs(yCursorChange) > (Math.abs(xCursorChange) * 2f) )
 						{
