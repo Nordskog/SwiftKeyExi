@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class SwipeFragment extends Fragment
 	private static final int SPEED_SEEKBAR_EXPONENT_MULTIPLIER = 2;
 
 	View mRootView = null;
+
+	AppCompatImageView mSwipeDirectionButton;
 
 	ArrayList<View> mSwipeModeViews = new ArrayList<>();
 	ArrayList<View> mSelectModeViews = new ArrayList<>();
@@ -101,6 +104,7 @@ public class SwipeFragment extends Fragment
 	SpaceModifierBehavior mCurrentSpaceModBehavior = SpaceModifierBehavior.MENU ;
 	boolean mSelectionShiftDeleteState = true;
 	boolean mSelectionTwoFingerState = true;
+	boolean mSwipeDirectionAny = true;
 
 	private void setupButtons()
 	{
@@ -147,6 +151,10 @@ public class SwipeFragment extends Fragment
 		mSelectModeViews.clear();
 		mSpaceModifierViews.clear();
 
+		/////////////////////////////////
+		//Swipe modes
+		/////////////////////////////////
+
 		for (int i = 0; i < mSwipeModes.length; i++)
 		{
 			View view = mRootView.findViewById(mViewIds[i]);
@@ -155,6 +163,25 @@ public class SwipeFragment extends Fragment
 			mSwipeModeViews.add(view);
 		}
 
+		/////////////////////////////////
+		//Direction mode
+		/////////////////////////////////
+
+		mSwipeDirectionButton = mRootView.findViewById(R.id.swipe_direction_switch_button);
+
+		mSwipeDirectionButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				setSwipeDirectionAny(!mSwipeDirectionAny);
+			}
+		});
+
+
+		/////////////////////////////////
+		//Selection modes
+		/////////////////////////////////
 
 		View selectTwoFinger = mRootView.findViewById(R.id.swipe_select_mode_two_finger);
 		View selectShiftDelete = mRootView.findViewById(R.id.swipe_select_mode_shift_delete);
@@ -354,7 +381,7 @@ public class SwipeFragment extends Fragment
 								)
 						);
 
-
+		mSwipeDirectionAny = prefs.getBoolean(PreferenceConstants.pref_swipe_direction_any_key, true);
 
 		mLastPixelSpeed = prefs.getFloat(PreferenceConstants.pref_cursor_speed_key, 100);
 
@@ -366,6 +393,7 @@ public class SwipeFragment extends Fragment
 		setSelectionSelectedFromState();
 		setSpaceModifierFromState();
 		setSwipeSelected(mCurrentSwipeMode);
+		setSwipeDirectionAny(mSwipeDirectionAny);
 	}
 
 	private void saveSettings()
@@ -380,6 +408,7 @@ public class SwipeFragment extends Fragment
 		editor.putFloat(PreferenceConstants.pref_cursor_speed_key, mLastPixelSpeed );
 		editor.putFloat(PreferenceConstants.pref_swipe_threshold_key, mLastPixelThreshold);
 
+		editor.putBoolean(PreferenceConstants.pref_swipe_direction_any_key, mSwipeDirectionAny);
 
 		editor.apply();
 	}
@@ -580,6 +609,31 @@ public class SwipeFragment extends Fragment
 			}
 		});
 	}
+
+
+	////////////////
+	// Direction
+	////////////////
+
+	private void setSwipeDirectionAny(boolean directionAny)
+	{
+		mSwipeDirectionAny = directionAny;
+
+		if (directionAny)
+		{
+			mSwipeDirectionButton.setImageResource( R.drawable.ic_swipe_direction_any );
+		}
+		else
+		{
+			mSwipeDirectionButton.setImageResource( R.drawable.ic_swipe_direction_horizontal );
+		}
+
+
+		saveSettings();
+	}
+
+
+
 
 	////////////
 	//Selection

@@ -141,9 +141,29 @@
             </LinearLayout>
 
 
-            <TextView
-                style="@style/SectionTitle"
-                android:text="@string/swipe_mode_title"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_gravity="left"
+                    style="@style/SectionTitle"
+                    android:text="@string/swipe_mode_title"/>
+
+
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_gravity="right|center_vertical"
+                        android:id="@+id/swipe_direction_switch_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_swipe_direction_any"
+                        />
+
+
+            </FrameLayout>
             <FrameLayout style="@style/SectionSeparator" />
 
 
@@ -179,6 +199,8 @@
                     />
 
             </com.mayulive.swiftkeyexi.util.view.BoundedLinearLayout>
+
+
 
 
             <TextView

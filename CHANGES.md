@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.5.4] - 21-07-2018
+### Fixed
+ - Immediate crash on Oreo devices ( Async setup disabled to fix )
+ - Disable full-screen mode not working correctly
+ 
+### Added
+ - Option to disable vertical cusor movement when swiping
+
 ## [1.5.3] - 23-06-2018
 ### Fixed
  - Module not working due to main hook failing ( 7.0 7.28/8.362 )

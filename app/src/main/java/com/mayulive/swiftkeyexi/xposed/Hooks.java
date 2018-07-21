@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
@@ -151,62 +152,54 @@ public class Hooks
 			handleProgress(timer,"selection priorty",0);
 		}
 
-		Thread thread = new Thread(new Runnable()
+		Runnable asyncSetup = new Runnable()
 		{
 			@Override
 			public void run()
 			{
 
-				/*
-				try { Thread.sleep(15 * 1000); }catch ( Exception ex)
-				{
-					Log.e(LOGTAG, "Shit hit fan");
-					ex.printStackTrace();
-				}
-				*/
-
 				Log.i(LOGTAG, "Beginning async setup");
 
 				//If this fails we are screwed
 				KeyboardHooks.HookAll(classTree);
-				handleProgress(timer,"Basehooks", 10);
+				handleProgress(timer, "Basehooks", 10);
 
 				if (Hooks.baseHooks_base.isRequirementsMet())
 				{
 					HardwareKeyHooks.hookAll(classTree);
-					handleProgress(timer,"Hardware keys", 20);
+					handleProgress(timer, "Hardware keys", 20);
 
 					//Nothing will break catastrophically without it
 					StyleHooks.HookAll(classTree);
-					handleProgress(timer,"Stylehooks", 30);
+					handleProgress(timer, "Stylehooks", 30);
 
 					//No a hook, just sets a listener
 					preventPeriodHook();
-					handleProgress(timer,"Prevent period", 40);
+					handleProgress(timer, "Prevent period", 40);
 
 					SoundHooks.hookAll(classTree);
-					handleProgress(timer,"Sounds", 50);
+					handleProgress(timer, "Sounds", 50);
 
 					//Emojis do not depend on anything else
 					EmojiHooks.hookAll(classTree);
-					handleProgress(timer,"Emoji", 60);
+					handleProgress(timer, "Emoji", 60);
 
 					KeyHooks.HookAll(classTree);
-					handleProgress(timer,"Keys", 70);
+					handleProgress(timer, "Keys", 70);
 
 					//Predictions also fairly independent
 					PredictionHooks.HookAll(classTree);
-					handleProgress(timer,"Predictions", 80);
+					handleProgress(timer, "Predictions", 80);
 
 
 					//Selection requires popups to keep track of
 					//keys with multiple popups.
 					PopupkeysHooks.hookAll(classTree);
-					handleProgress(timer,"Popups", 90);
+					handleProgress(timer, "Popups", 90);
 
 
 					SelectionHooks.hookAll(classTree);
-					handleProgress(timer,"Selection", 100);
+					handleProgress(timer, "Selection", 100);
 
 
 					//While loading needs to be done /immediatel/ and is thus handled on the main
@@ -218,7 +211,9 @@ public class Hooks
 					KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
 					{
 						@Override
-						public void beforeKeyboardOpened() {}
+						public void beforeKeyboardOpened()
+						{
+						}
 
 						@Override
 						public void beforeKeyboardClosed()
@@ -255,9 +250,12 @@ public class Hooks
 						}
 
 						@Override
-						public void afterKeyboardConfigurationChanged() {}
+						public void afterKeyboardConfigurationChanged()
+						{
+						}
 					});
 				}
+
 
 				handler.post(new Runnable()
 				{
@@ -272,9 +270,22 @@ public class Hooks
 				Log.i(LOGTAG, "Finished async setup");
 
 			}
-		});
+		};
 
-		thread.start();
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+		{
+			//Run on main thread on oreo and later.
+			//Xposed bug causes async setup to sometimes fail.
+			asyncSetup.run();
+		}
+		else
+		{
+			//Async on separate thread on nougat and below.
+			Thread thread = new Thread( asyncSetup );
+			thread.start();
+		}
+
 
 	}
 

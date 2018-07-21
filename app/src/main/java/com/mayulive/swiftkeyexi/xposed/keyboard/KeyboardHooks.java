@@ -24,6 +24,7 @@ import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -277,17 +278,31 @@ public class KeyboardHooks
 	}
 
 
-	private static XC_MethodHook.Unhook hookFullscreen(PackageTree param)
+	private static Set<XC_MethodHook.Unhook> hookFullscreen(PackageTree param)
 	{
-		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod, new XC_MethodHook()
+		Set<XC_MethodHook.Unhook> unhooks = new HashSet<>();
+
+		unhooks.add( XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod, new XC_MethodHook()
 		{
 			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
 				if (Settings.DISABLE_FULLSCREEN_KEYBOARD)
 					param.setResult(false);
 			}
-		});
+		}));
+
+		unhooks.add( XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardService_isFullscreenModeMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				if (Settings.DISABLE_FULLSCREEN_KEYBOARD)
+					param.setResult(false);
+			}
+		}));
+
+		return unhooks;
 	}
 
 	private static XC_MethodHook.Unhook hookPrefChanged()

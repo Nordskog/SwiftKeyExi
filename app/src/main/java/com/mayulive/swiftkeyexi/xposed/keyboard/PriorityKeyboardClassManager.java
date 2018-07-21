@@ -50,7 +50,7 @@ public class PriorityKeyboardClassManager
 	public static Object punctuatorImplInstance = null;
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
 	protected static Method keyboardService_onConfigurationChangedMethod = null;
-	//protected static Method keyboardSizerClass_sizeKeyboardMethod = null;
+	protected static Method keyboardService_isFullscreenModeMethod = null;
 	protected static Method punctuatorImplClass_AddRulesMethod = null;
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 	protected static Class punctuatorImplClass = null;
@@ -78,6 +78,8 @@ public class PriorityKeyboardClassManager
 			PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("getCurrentInputConnection", (Class[])null);
 
 			PriorityKeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onEvaluateFullscreenMode", (Class[])null);
+			PriorityKeyboardClassManager.keyboardService_isFullscreenModeMethod = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("isFullscreenMode", (Class[])null);
+
 			PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onConfigurationChanged", ( new Class[]{ Configuration.class }) );
 
 			FullKeyboardServiceDelegate_onCreateInputView = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onCreateInputView", ( Class[] ) null );
@@ -173,6 +175,7 @@ public class PriorityKeyboardClassManager
 	{
 		//Fullscreen mode
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_fullscreenMode,	 "keyboardService_onEvaluateFullscreenModeMethod", 	PriorityKeyboardClassManager.keyboardService_onEvaluateFullscreenModeMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_fullscreenMode,	 "keyboardService_keyboardService_isFullscreenModeMethod", 	PriorityKeyboardClassManager.keyboardService_isFullscreenModeMethod );
 
 
 		//View created (Overlay)

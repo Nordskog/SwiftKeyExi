@@ -67,6 +67,8 @@ public class Settings
 	public static SelectionBehavior SWIPE_SELECTION_BEHAVIOR = SelectionBehavior.HYBRID;
 	public static CursorBehavior SWIPE_CURSOR_BEHAVIOR = CursorBehavior.SWIPE;
 
+	public static boolean SWIPE_DIRECTION_ANY = true;
+
 	public static float SWIPE_CURSOR_UNITS = 50;
 	public static float SWIPE_THRESHOLD = 50;
 
@@ -124,6 +126,8 @@ public class Settings
 
 		DISPLAY_NSFW_GIFS = prefs.getBoolean(PreferenceConstants.pref_gifs_enable_nsfw_key, false);
 		DISPLAY_GIFS_FROM_MORE_SOURCES = prefs.getBoolean(PreferenceConstants.pref_gifs_more_sources_key, false);
+
+		SWIPE_DIRECTION_ANY = prefs.getBoolean(PreferenceConstants.pref_swipe_direction_any_key, true);
 
 		DISABLE_FULLSCREEN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_disable_fullscreen_key, false);
 
