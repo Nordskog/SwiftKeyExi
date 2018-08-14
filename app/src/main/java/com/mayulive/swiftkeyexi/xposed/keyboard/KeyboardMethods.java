@@ -173,16 +173,28 @@ public class KeyboardMethods
 		mKeyboardReloadLastRequested = time;
 	}
 
+
+	public static boolean loadPunctuationRules()
+	{
+		return KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
+						KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
+				false );
+	}
+
 	public static boolean loadPunctuationRules(PunctuationRuleMode mode, boolean force)
 	{
 		//Don't bother changing if mode already matches
 		if (mode != mActivePunctuationMode || force)
 		{
-			mActivePunctuationMode = mode;
 
 			//PunctuatorImpl instance must be present
 			if (PriorityKeyboardClassManager.punctuatorImplInstance != null)
 			{
+
+				//Do not update active mode if we were unable to set it
+				//In that scenario we will also be calling this method when we set the instance
+				mActivePunctuationMode = mode;
+
 				try
 				{
 					PriorityKeyboardClassManager.punctuatorImplClass_ClearRulesMethod.invoke(PriorityKeyboardClassManager.punctuatorImplInstance);

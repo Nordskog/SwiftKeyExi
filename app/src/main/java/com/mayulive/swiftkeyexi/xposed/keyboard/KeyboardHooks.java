@@ -265,13 +265,18 @@ public class KeyboardHooks
 		return XposedBridge.hookMethod(PriorityKeyboardClassManager.punctuatorImplClass_AddRulesMethod, new XC_MethodHook()
 		{
 			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
 				//This method is only called when the app is launched.
 				//I guess punctuation rules never really change between languages.
 				//Since our settings won't be loaded at this point anyway, we deal with this
 				//in a keyboardLoded callback instead.
 				PriorityKeyboardClassManager.punctuatorImplInstance = param.thisObject;
+
+				//There is a race condition between this and the settingsLoaded callback,
+				//Manually load punctuation rules here incase it fired before this.
+				KeyboardMethods.loadPunctuationRules();
+
 			}
 
 		});
