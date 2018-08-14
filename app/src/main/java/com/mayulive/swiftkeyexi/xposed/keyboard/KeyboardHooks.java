@@ -1,17 +1,27 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -21,15 +31,27 @@ import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
+import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
+import com.mayulive.xposed.classhunter.ClassHunter;
+import com.mayulive.xposed.classhunter.Modifiers;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.xposed.classhunter.profiles.ClassItem;
+import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+
+import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
+import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 
 /**
  * Created by Roughy on 1/6/2017.
@@ -351,6 +373,141 @@ public class KeyboardHooks
 		});
 	}
 
+
+	private static XC_MethodHook.Unhook hookToolbar()
+	{
+
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.toolbarFrameClass_inflateMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+
+				//Toolbar inflates a layout inside itself with a framelayout root containing a constriantlayout.
+				//We remove the constraint layout and place it inside a linear layout along with our button,
+				//and insert it back into the original frame layout.
+
+				try
+				{
+					//Run init always since we may need to remove the view if disabled
+
+					ViewGroup toolbarView = (ViewGroup)param.thisObject;
+
+					int toolbar_content_ID = toolbarView.getResources().getIdentifier("toolbar_content", "id", ExiXposed.HOOK_PACKAGE_NAME);
+
+					ViewGroup contentView = toolbarView.findViewById(toolbar_content_ID);
+
+					if (contentView != null)
+					{
+
+						FrameLayout toolParent = (FrameLayout) contentView.getParent();
+
+						//Check if we've already done this
+						{
+							ViewParent parentParent = toolParent.getParent();
+							if (parentParent != null && parentParent instanceof LinearLayout)
+							{
+
+								if ( !Settings.DISPLAY_TOOLBAR_SHORTCUT)
+								{
+									//Hide icon if already present
+									if (KeyboardMethods.mToolbarButton != null)
+									{
+										KeyboardMethods.mToolbarButton.setVisibility(View.GONE);
+									}
+
+								}
+								else
+								{
+									//Make visible again
+									if (KeyboardMethods.mToolbarButton != null)
+									{
+										KeyboardMethods.mToolbarButton.setVisibility(View.VISIBLE);
+									}
+								}
+
+
+								return;
+							}
+						}
+
+						//Do nto add if disabled.
+						if ( !Settings.DISPLAY_TOOLBAR_SHORTCUT )
+						{
+							return;
+						}
+
+						toolParent.removeView(contentView);
+
+						ViewGroup.LayoutParams matchParentParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+						LinearLayout.LayoutParams originalContainerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+						originalContainerParams.weight = 1;
+
+						LinearLayout toolbarContainer = new LinearLayout( contentView.getContext() );
+						FrameLayout originalContainer = new FrameLayout(contentView.getContext());
+
+						toolbarContainer.setLayoutParams(matchParentParams);
+						originalContainer.setLayoutParams(originalContainerParams);
+
+						ExiIconView button = new ExiIconView(contentView.getContext());
+						KeyboardMethods.mToolbarButton = button;
+
+						int currentTheme = StyleCommons.getCurrentTheme();
+						KeyboardMethods.updateToolbarButtonColor(currentTheme);
+
+						FrameLayout buttonContainer = new FrameLayout( contentView.getContext() );
+						LinearLayout.LayoutParams buttonContainerParams = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+						buttonContainerParams.weight = 0;
+
+						FrameLayout.LayoutParams buttonParams = new FrameLayout.LayoutParams( (int)DimenUtils.calculatePixelFromDp(contentView.getContext(), 26), (int)DimenUtils.calculatePixelFromDp(contentView.getContext(), 26));
+						buttonParams.gravity = Gravity.CENTER;
+
+						button.setLayoutParams(buttonParams);
+						buttonParams.leftMargin =  (int)DimenUtils.calculatePixelFromDp(contentView.getContext(), 6);
+						buttonParams.rightMargin = (int)DimenUtils.calculatePixelFromDp(contentView.getContext(), 8);	//A bit greater to compensate for lopsided icon
+						buttonContainer.setLayoutParams(buttonContainerParams);
+
+
+
+						buttonContainer.setOnClickListener(new View.OnClickListener()
+						{
+							@Override
+							public void onClick(View v)
+							{
+
+								Intent launchIntent = v.getContext().getPackageManager().getLaunchIntentForPackage(ExiModule.PACKAGE);
+								if (launchIntent != null)
+								{
+									v.getContext().startActivity(launchIntent);
+								}
+								else
+								{
+									Log.e(LOGTAG, "Could not obtain launch intent for swiftkeyexi");
+								}
+							}
+						});
+
+
+						buttonContainer.addView(button);
+						originalContainer.addView(contentView);
+						toolbarContainer.addView(originalContainer);
+						toolbarContainer.addView(buttonContainer);
+
+						toolParent.addView(toolbarContainer);
+					}
+
+				}
+				catch (Throwable ex)
+				{
+					//No point in removing hook I don't think.
+					Log.e(LOGTAG, "Something went wrong adding toolbar button");
+					ex.printStackTrace();
+				}
+			}
+		});
+	}
+
 	public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
@@ -364,9 +521,31 @@ public class KeyboardHooks
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
 
+				if (Hooks.baseHooks_toolbarButton.isRequirementsMet())
+				{
+					Hooks.baseHooks_toolbarButton.add( hookToolbar() );
+				}
+
+
 				if (Hooks.baseHooks_fullscreenMode.isRequirementsMet())
 				{
 					hookFullscreen(lpparam);
+
+					StyleCommons.addThemeChangedListener(new StyleCommons.ThemeChangedListener()
+					{
+						@Override
+						public void themeChanged(int newTheme)
+						{
+							KeyboardMethods.updateToolbarButtonColor(newTheme);
+						}
+
+						@Override
+						public void raisedBackgroundChanged(Drawable bg)
+						{
+
+						}
+					});
+
 				}
 
 				if (Hooks.baseHooks_invalidateLayout.isRequirementsMet())
@@ -403,7 +582,6 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
-
 				Hooks.baseHooks_base.add( hookPrefChanged() );
 
 				if (Hooks.baseHooks_keyHeight.isRequirementsMet())

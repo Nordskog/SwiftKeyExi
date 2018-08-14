@@ -188,5 +188,10 @@
     <string name="pref_remapped_keys_title">Remapped Keys</string>
     <string name="pref_remapped_keys_summary">Remapped hardware keys</string>
 
+    <!-- toolbar button -->
+    <string name="pref_toolbar_button_key">pref_toolbar_button</string>
+    <string name="pref_toolbar_button_title">Toolbar Button</string>
+    <string name="pref_toolbar_button_summary">Display Exi shortcut in toolbar</string>
+
 
 </resources>

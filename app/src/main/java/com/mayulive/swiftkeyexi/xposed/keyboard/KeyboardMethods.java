@@ -2,10 +2,12 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
@@ -33,6 +35,8 @@ public class KeyboardMethods
 	protected static boolean mLayoutIsWeird = false;
 	protected static boolean mLayoutIsExtendedPredictions = false;	//Assume false if we have a hook failure or something
 	protected static boolean mIsSymbols = false;
+
+	protected static ExiIconView mToolbarButton = null;
 
 	protected static PunctuationRuleMode mActivePunctuationMode = PunctuationRuleMode.STOCK;
 
@@ -69,6 +73,21 @@ public class KeyboardMethods
 		for (String layout : extendedPredictionLayouts)
 		{
 			mExtendedPredictionsLayouts.add( layout );
+		}
+	}
+
+	public static void updateToolbarButtonColor(int theme)
+	{
+		if (mToolbarButton != null)
+		{
+			if (theme == SharedTheme.DARK_THEME_IDENTIFIER )
+			{
+				mToolbarButton.setIconColor(Color.WHITE);
+			}
+			else if ( theme == SharedTheme.LIGHT_THEME_IDENTIFIER )
+			{
+				mToolbarButton.setIconColor(Color.DKGRAY);
+			}
 		}
 	}
 

@@ -61,11 +61,11 @@ public class StyleHooks
 					String lookupString = (String)param.args[0];
 
 					int newValue = -1;
-					if (lookupString.equals(StyleCommons.EMOJI_DARK_BACKGROUND_STRING ))
+					if ( lookupString.equals(StyleCommons.TOOLBAR_DARK_SEARCH_TEXT_STRING ))
 					{
 						newValue = SharedTheme.DARK_THEME_IDENTIFIER;
 					}
-					else if (lookupString.equals(StyleCommons.EMOJI_LIGHT_BACKGROUND_STRING ))
+					else if (lookupString.equals(StyleCommons.TOOLBAR_LIGHT_SEARCH_TEXT_STRING ))
 					{
 						newValue = SharedTheme.LIGHT_THEME_IDENTIFIER;
 					}

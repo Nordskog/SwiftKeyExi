@@ -72,6 +72,7 @@ public class Hooks
 	public static HookCategory baseHooks_layoutChange = new HookCategory("KeyboardHooks LayoutChange", overlayHooks_base);
 	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 	public static HookCategory baseHooks_keyHeight = new HookCategory("KeyboardHooks keyHeight");
+	public static HookCategory baseHooks_toolbarButton = new HookCategory("KeyboardHooks toolbarButton");
 
 	//Style
 	public static HookCategory styleHooks_raisedbg = new HookCategory("StyleHooks RasiedBG");
@@ -95,7 +96,8 @@ public class Hooks
 																						soundHooks_base,
 																						baseHooks_fullscreenMode,
 																						baseHooks_keyHeight,
-																						hardwareKeys_base
+																						hardwareKeys_base,
+																						baseHooks_toolbarButton
 	);
 
 	//Convenience method for checking requirement and logging on failure

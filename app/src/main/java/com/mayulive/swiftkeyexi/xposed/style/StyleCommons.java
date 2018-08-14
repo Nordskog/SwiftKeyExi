@@ -25,9 +25,18 @@ public class StyleCommons
 
 	public static final String EMOJI_LIGHT_BACKGROUND_STRING = "light_fancy_panel_main_background";
 	public static final String EMOJI_DARK_BACKGROUND_STRING = "dark_fancy_panel_main_background";
+
+	public static final String TOOLBAR_LIGHT_SEARCH_TEXT_STRING = "light_gif_search_text";
+	public static final String TOOLBAR_DARK_SEARCH_TEXT_STRING = "dark_gif_search_text";
+
 	private static Drawable mRaisedBackground = null;
 	static int bottomBarId = 0;
 	protected static int mTheme = -1;
+
+	public static int getCurrentTheme()
+	{
+		return mTheme;
+	}
 
 	//Fallback background
 	private static Drawable getGenericBackground()
