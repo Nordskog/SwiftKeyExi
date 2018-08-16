@@ -12,6 +12,224 @@ import static com.mayulive.xposed.classhunter.Modifiers.*;
 public class KeyboardProfiles
 {
 
+	public static ClassProfile get_TOOLBAR_OPEN_BUTTON_OVERLAY_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("com.touchtype.keyboard.toolbar.bc");
+		newProfile.setKnownPath("com.touchtype.keyboard.toolbar");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem(android.widget.FrameLayout.class));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+						new ClassItem(android.view.ViewTreeObserver.OnGlobalLayoutListener.class),
+						new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("com.touchtype" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//a
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )),	//b
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//d
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//e
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//f
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT )),	//g
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT )),	//h
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//i
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//j
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )),	//k
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #1: b
+						new MethodProfile
+								(
+										STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #2: c
+						new MethodProfile
+								(
+										STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #3: d
+						new MethodProfile
+								(
+										STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #4: e
+						new MethodProfile
+								(
+										STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT ),
+
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #5: setUpRedDot
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.widget.ImageView.class)
+
+								),
+
+						//Method #6: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | STATIC | EXACT ),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #7: a
+						new MethodProfile
+								(
+										PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.lang.Object.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #8: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #9: b
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #10: onAttachedToWindow
+						new MethodProfile
+								(
+										PROTECTED | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #11: onDetachedFromWindow
+						new MethodProfile
+								(
+										PROTECTED | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #12: onGlobalLayout
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #13: setVisibility
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(int.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
+
 	public static ClassProfile get_KEY_HEIGHT_CLASS_PROFILE()
 	{
 		ClassProfile newProfile = new ClassProfile();

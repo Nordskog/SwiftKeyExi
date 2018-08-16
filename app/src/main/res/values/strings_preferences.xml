@@ -8,7 +8,7 @@
 
     <!-- Categories -->
     <string name="category_pref_emoji_panel">Emoji Panel</string>
-    <string name="category_pref_flow_suggestions">Flow &amp; Suggestions </string>
+    <string name="category_pref_flow_suggestions">Flow &amp; Predictions </string>
     <string name="category_pref_misc">Misc</string>
     <string name="category_pref_app">App</string>
     <string name="category_pref_keys">Keys</string>
@@ -91,24 +91,24 @@
 
     <!-- Suggestions -->
     <string name="pref_more_suggestions_key">pref_more_suggestions</string>
-    <string name="pref_more_suggestions_title">More Suggestions</string>
-    <string name="pref_more_suggestions_summary">Display more suggestions</string>
+    <string name="pref_more_suggestions_title">More Predictions</string>
+    <string name="pref_more_suggestions_summary">Display more predictions</string>
 
     <string name="pref_flow_suggestions_key">pref_flow_suggestions</string>
     <string name="pref_flow_suggestions_title">Flow shortcuts</string>
     <string name="pref_flow_suggestions_summary">Insert shortcuts into flow</string>
 
     <string name="pref_prediction_suggestions_key">pref_prediction_suggestions</string>
-    <string name="pref_prediction_suggestions_title">Suggestion shortcuts</string>
-    <string name="pref_prediction_suggestions_summary">Shortcuts also trigger on suggestions</string>
+    <string name="pref_prediction_suggestions_title">Prediction shortcuts</string>
+    <string name="pref_prediction_suggestions_summary">Shortcuts also trigger on predictions</string>
 
     <string name="pref_disable_auto_correct_on_cursor_move_key">pref_disable_auto_correct_on_cursor_move</string>
     <string name="pref_disable_auto_correct_on_cursor_move_title">No auto-correct after swiping</string>
     <string name="pref_disable_auto_correct_on_cursor_move_summary">Insert space instead of correction</string>
 
     <string name="pref_remove_suggestion_padding_key">pref_remove_suggestion_padding</string>
-    <string name="pref_remove_suggestion_padding_title">Maximize Suggestions</string>
-    <string name="pref_remove_suggestion_padding_summary">Make suggestions bar fill screen</string>
+    <string name="pref_remove_suggestion_padding_title">Maximize predictions</string>
+    <string name="pref_remove_suggestion_padding_summary">Make predictions bar fill screen</string>
 
 
     <string name="pref_disable_punctuation_autospace_key">pref_disable_punctuation_autospace</string>
@@ -192,6 +192,10 @@
     <string name="pref_toolbar_button_key">pref_toolbar_button</string>
     <string name="pref_toolbar_button_title">Toolbar Button</string>
     <string name="pref_toolbar_button_summary">Display Exi shortcut in toolbar</string>
+
+    <string name="pref_hide_predictions_key">pref_hide_predictions</string>
+    <string name="pref_hide_predictions_title">Hide predictions</string>
+    <string name="pref_hide_predictions_summary">Do not display the predictions bar</string>
 
 
 </resources>

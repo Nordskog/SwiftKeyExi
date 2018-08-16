@@ -1,7 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
@@ -35,11 +34,14 @@ public class PriorityKeyboardClassManager
 	public static Class keyboardServiceClass =  null;
 	public static Class FullKeyboardServiceDelegate = null;
 	public static Class toolbarFrameClass = null;
+
+	public static Class toolbarOpenButtonOverlayViewClass = null;
 	/////////////////////////
 	//Methods
 	/////////////////////////
 	public static Method keyboardService_getCurrentInputConnectionMethod = null;
 	public static Method FullKeyboardServiceDelegate_onCreateInputView = null;
+	public static Method toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = null;
 	///////////////////
 	//Objects and instances
 	//////////////////
@@ -72,6 +74,7 @@ public class PriorityKeyboardClassManager
 	{
 		PriorityKeyboardClassManager.keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
 
+		toolbarOpenButtonOverlayViewClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_TOOLBAR_OPEN_BUTTON_OVERLAY_CLASS_PROFILE(), param );
 
 		PriorityKeyboardClassManager.FullKeyboardServiceDelegate = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_FULL_KEYBOARD_SERVICE_DELEGATE_CLASS_PROFILE(), param );
 
@@ -169,6 +172,19 @@ public class PriorityKeyboardClassManager
 							),
 
 					toolbarFrameClass.getDeclaredMethods(), toolbarFrameClass);
+
+
+			toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = ProfileHelpers.findMostSimilar(
+
+					new MethodProfile
+							(
+									Modifiers.PUBLIC | Modifiers.EXACT,
+									new ClassItem(void.class),
+									new ClassItem(null),
+									new ClassItem(int.class)
+							),
+
+					PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass.getDeclaredMethods(), PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass);
 		}
 
 	}

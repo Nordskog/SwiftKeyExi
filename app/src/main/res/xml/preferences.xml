@@ -88,6 +88,12 @@
         android:summary="@string/pref_remove_suggestion_padding_summary"
         android:defaultValue="false" />
 
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_hide_predictions_key"
+        android:title="@string/pref_hide_predictions_title"
+        android:summary="@string/pref_hide_predictions_summary"
+        android:defaultValue="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -2,11 +2,9 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -18,9 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
@@ -32,26 +30,15 @@ import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
-import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.Modifiers;
-import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
-import com.mayulive.xposed.classhunter.profiles.ClassItem;
-import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-
-import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
-import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 
 /**
  * Created by Roughy on 1/6/2017.
@@ -373,8 +360,49 @@ public class KeyboardHooks
 		});
 	}
 
+	private static XC_MethodHook.Unhook hookToolbarPredictionBarRemoval()
+	{
 
-	private static XC_MethodHook.Unhook hookToolbar()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+
+				if (Settings.HIDE_PREDICTIONS_BAR)
+				{
+					ViewGroup thiz = (ViewGroup) param.thisObject;
+					View button = thiz.getChildAt(0);
+					if (button != null)
+					{
+						//Button will be centered inside this container
+						FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(
+								(int) DimenUtils.calculatePixelFromDp(thiz.getContext(), 32),
+								(int) DimenUtils.calculatePixelFromDp(thiz.getContext(), 18)
+						);
+						FrameLayout container = new FrameLayout(button.getContext());
+						container.setLayoutParams(containerParams);
+
+						//The actual button will stretch to fit whatever dimensions you give it, so we render it
+						//at 64x64dp before cropping it above.
+						FrameLayout.LayoutParams buttonParams = (FrameLayout.LayoutParams) button.getLayoutParams();
+						buttonParams.gravity = Gravity.CENTER;
+						buttonParams.height = (int) DimenUtils.calculatePixelFromDp(thiz.getContext(), 64);
+						buttonParams.width = (int) DimenUtils.calculatePixelFromDp(thiz.getContext(), 64);
+						button.setLayoutParams(buttonParams);
+
+						//Place view into container
+						thiz.removeView(button);
+						container.addView(button);
+						thiz.addView(container);
+					}
+				}
+			}
+		});
+	}
+
+
+	private static XC_MethodHook.Unhook hookToolbarButton()
 	{
 
 		return XposedBridge.hookMethod(PriorityKeyboardClassManager.toolbarFrameClass_inflateMethod, new XC_MethodHook()
@@ -523,7 +551,12 @@ public class KeyboardHooks
 
 				if (Hooks.baseHooks_toolbarButton.isRequirementsMet())
 				{
-					Hooks.baseHooks_toolbarButton.add( hookToolbar() );
+					Hooks.baseHooks_toolbarButton.add( hookToolbarButton() );
+				}
+
+				if (Hooks.baseHooks_hidePredictions.isRequirementsMet())
+				{
+					Hooks.baseHooks_hidePredictions.add( hookToolbarPredictionBarRemoval() );
 				}
 
 
@@ -607,6 +640,46 @@ public class KeyboardHooks
 								false );
 
 						KeyboardMethods.setKeyboardOpacity();
+					}
+				});
+
+				//We ... need to update the toolbar and proediction bar thing a lot.
+				KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
+				{
+					@Override
+					public void beforeKeyboardOpened()
+					{
+						if (OverlayCommons.mKeyboardOverlay != null)
+						{
+							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
+							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+						}
+					}
+
+					@Override
+					public void beforeKeyboardClosed()
+					{
+
+					}
+
+					@Override
+					public void keyboardInvalidated()
+					{
+						if (OverlayCommons.mKeyboardOverlay != null)
+						{
+							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
+							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+						}
+					}
+
+					@Override
+					public void afterKeyboardConfigurationChanged()
+					{
+						if (OverlayCommons.mKeyboardOverlay != null)
+						{
+							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
+							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+						}
 					}
 				});
 

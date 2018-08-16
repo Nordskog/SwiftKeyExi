@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -11,7 +12,9 @@ import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
+import com.mayulive.swiftkeyexi.xposed.Hooks;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -198,6 +201,82 @@ public class KeyboardMethods
 		return KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
 						KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
 				false );
+	}
+
+
+	public static void updateHidePredictionBarAndPadKeyboardTop( View rootView )
+	{
+
+		//This is called from a lot of places where things might have changed.
+		//Make sure the hook is event active.
+		if (!Hooks.baseHooks_hidePredictions.isRequirementsMet())
+		{
+			return;
+		}
+
+		try
+		{
+
+			int candidatesId = rootView.getContext().getResources().getIdentifier("ribbon_model_tracking_frame", "id", ExiXposed.HOOK_PACKAGE_NAME);
+			int keyboardId = rootView.getContext().getResources().getIdentifier("keyboard_frame_holder", "id", ExiXposed.HOOK_PACKAGE_NAME);
+
+			{
+				ViewGroup targetView = rootView.findViewById(candidatesId);
+				if (targetView != null)
+				{
+					if (Settings.HIDE_PREDICTIONS_BAR)
+					{
+						targetView.setVisibility(View.GONE);
+					}
+					else
+					{
+						targetView.setVisibility(View.VISIBLE);
+					}
+				}
+			}
+
+
+			{
+				ViewGroup targetView = rootView.findViewById(keyboardId);
+				if (targetView != null)
+				{
+
+					//With the predictions bar removed, the open-toolbar button ends superimposed ontop of the keyboard.
+					//We add a bit of padding ontop of the keyboard input section for it to live in.
+					//In another hook we crop and resize the button so that it matches this.
+
+					if (Settings.HIDE_PREDICTIONS_BAR)
+					{
+						targetView.setPadding(
+								0,
+								(int) DimenUtils.calculatePixelFromDp(targetView.getContext(), 18),
+								0,
+								0);
+					}
+					else
+					{
+						if (targetView.getPaddingTop() != 0)
+						{
+							targetView.setPadding(
+									0,
+									0,
+									0,
+									0 );
+						}
+					}
+
+				}
+
+			}
+
+
+		}
+		catch ( Throwable ex)
+		{
+			Log.e(LOGTAG, "Something went wrong hiding predictions bar");
+			ex.printStackTrace();
+		}
+
 	}
 
 	public static boolean loadPunctuationRules(PunctuationRuleMode mode, boolean force)

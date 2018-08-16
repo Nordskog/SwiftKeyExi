@@ -16,6 +16,7 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -74,6 +75,14 @@ public class PredictionHandlers
 
 	public static void handleCandidateViewHook_replace(ViewGroup childFrame)
 	{
+
+		//Not really this guy's responsbility, but good to run here. Lots of other places too.
+		if (childFrame != null)
+		{
+			View parent = CodeUtils.getTopParent( childFrame );
+			KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+		}
+
 		if (candidateViewArgs == null)
 		{
 			Log.e(LOGTAG, "Expeceted candidateViewArgs to be popuplated, cannot create candidate views");

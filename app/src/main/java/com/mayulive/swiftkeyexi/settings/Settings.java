@@ -105,6 +105,8 @@ public class Settings
 
 	public static boolean DISPLAY_TOOLBAR_SHORTCUT = false;
 
+	public static boolean HIDE_PREDICTIONS_BAR = false;
+
 
 	public static void loadSettings(SharedPreferences prefs)
 	{
@@ -208,12 +210,20 @@ public class Settings
 				KeyboardMethods.forceKeyboardResize();
 			}
 
-		}
+	}
 
 		//Value is int 0 to 100, convert to 0-1f
 		KEYBOARD_OPACITY = ( (float)prefs.getInt(PreferenceConstants.pref_keyboard_opacity_key, 100) / (float)100  ) ;
 
 		DISPLAY_TOOLBAR_SHORTCUT = prefs.getBoolean(PreferenceConstants.pref_toolbar_button_key, false);
+
+		{
+			boolean originalValue = HIDE_PREDICTIONS_BAR;
+			HIDE_PREDICTIONS_BAR = prefs.getBoolean(PreferenceConstants.pref_hide_predictions_key, false);
+			if (originalValue != HIDE_PREDICTIONS_BAR)
+				request_KEYBOARD_RELOAD = true;
+		}
+
 
 		checkSettingRequirements();
 	}
