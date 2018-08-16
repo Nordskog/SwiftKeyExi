@@ -237,7 +237,6 @@ public class Hooks
 										//They shouldn't fail, but if they do it won't be a disaster.
 										//What would be a disaster is them crashing swiftkey in the process.
 										PredictionCommons.savePriority();
-										EmojiHookCommons.saveRecents();
 									}
 									catch (Exception ex)
 									{

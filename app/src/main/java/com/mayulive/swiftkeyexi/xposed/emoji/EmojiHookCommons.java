@@ -113,9 +113,20 @@ public class EmojiHookCommons
 		if (!sourceIsRecentView)
 		{
 			DB_EmojiItem newItem = new DB_EmojiItem(item);
+			newItem.set_last_change( System.currentTimeMillis()  );
 			newItem.set_style(style);
 
-			addRecentItem(item);
+			try
+			{
+				//TableLists are now in immediate mode, let's make sure we don't take down everything.
+				addRecentItem(newItem);
+			}
+			catch ( Throwable ex)
+			{
+				Log.e(LOGTAG, "Problem modifying recent emoji");
+				ex.printStackTrace();
+			}
+
 		}
 	}
 
@@ -151,8 +162,10 @@ public class EmojiHookCommons
 			{
 				int existingItem = recentsView.getPanelItem().findExistingItemIndex(item);
 
+
 				if (existingItem != -1)
 				{
+					recentsView.getPanelItem().get_items().get(existingItem).set_last_change( item.get_last_change() );
 					recentsView.moveItem(existingItem, 0);
 				}
 				else
@@ -193,12 +206,14 @@ public class EmojiHookCommons
 					if (item.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
 					{
 						//Recents is the only panel we will ever update from swiftkey.
-						//Normally this would be fast enough to do as the operation is performed,
-						//but in swiftkey-space we're dealing with a cursor rather than a direct
-						//database connection. Sync will manually be called on a separate thread
-						//at an opportune time.
-						item.get_items().setDatabaseMode(TableList.DatabaseMode.MANUAL);
+						//Used to be manual update but are now immediate.
+						//Reconsider depending on performance.
+						item.get_items().setDatabaseMode(TableList.DatabaseMode.IMMEDIATE);
 						mEmojiPanelRecentsTabIndex = iterator;
+
+						//Sort by last change time descending
+						Collections.sort( item.get_items(), (a, b) -> (int)( b.get_last_change() - a.get_last_change() ) );
+
 						break;
 					}
 
@@ -218,30 +233,4 @@ public class EmojiHookCommons
 		}
 	}
 
-	public static void saveRecents()
-	{
-		if (mEmojiPanelRecentsTabIndex != -1)
-		{
-			DB_EmojiPanelItem recentsItem = mPanelItems.get(mEmojiPanelRecentsTabIndex);
-			if (recentsItem != null)
-			{
-				if (recentsItem.get_items().isConnected())
-				{
-					//recentsItem.get_items().processPendingOperations();
-
-					//There are only 32 items, this is easier than keeping track of indices.
-					recentsItem.get_items().replaceTableWithContents();
-				}
-				else
-				{
-					Log.e(LOGTAG, "Attempted to save recent emoji, but panel table was not connected to database");
-				}
-
-			}
-			else
-			{
-				Log.e(LOGTAG, "Could not find recent emoji tab");
-			}
-		}
-	}
 }

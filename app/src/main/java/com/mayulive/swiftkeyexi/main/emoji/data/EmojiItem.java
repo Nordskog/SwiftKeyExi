@@ -34,6 +34,7 @@ public class EmojiItem
 	protected EmojiType _type = TEXT;
 	protected String _variants = "";
 	protected boolean _modifiers_supported = false;
+	protected long _last_change = System.currentTimeMillis();
 
 	public EmojiItem copy()
 	{
@@ -49,6 +50,7 @@ public class EmojiItem
 		this.set_type(other.get_type());
 		this.set_variants(other.get_variants());
 		this.set_modifiers_supported(other.get_modifiers_supported());
+		this.set_last_change( other.get_last_change() );
 	}
 
 	public EmojiItem(String text, int style, EmojiType type)
@@ -108,6 +110,16 @@ public class EmojiItem
 	public void set_style(int _style)
 	{
 		this._style = _style;
+	}
+
+	public void set_last_change(long last_change)
+	{
+		this._last_change = last_change;
+	}
+
+	public long get_last_change()
+	{
+		return this._last_change;
 	}
 
 	public boolean get_modifiers_supported()
