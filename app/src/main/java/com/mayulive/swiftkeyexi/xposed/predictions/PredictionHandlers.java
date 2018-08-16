@@ -76,13 +76,6 @@ public class PredictionHandlers
 	public static void handleCandidateViewHook_replace(ViewGroup childFrame)
 	{
 
-		//Not really this guy's responsbility, but good to run here. Lots of other places too.
-		if (childFrame != null)
-		{
-			View parent = CodeUtils.getTopParent( childFrame );
-			KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
-		}
-
 		if (candidateViewArgs == null)
 		{
 			Log.e(LOGTAG, "Expeceted candidateViewArgs to be popuplated, cannot create candidate views");
