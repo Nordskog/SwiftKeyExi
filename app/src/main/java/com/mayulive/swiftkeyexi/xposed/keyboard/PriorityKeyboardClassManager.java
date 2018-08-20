@@ -54,7 +54,6 @@ public class PriorityKeyboardClassManager
 	public static Class keyboardLoaderClass = null;
 	public static Method keyboardLoader_onSharedPreferenceChangedMethod;
 	public static Method keyboardLoader_loadMethod = null;
-	public static Method keyboardLoader_clearCacheWhenIntZeroMethod = null;
 	public static Object punctuatorImplInstance = null;
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
 	protected static Method keyboardService_onConfigurationChangedMethod = null;
@@ -62,8 +61,6 @@ public class PriorityKeyboardClassManager
 	protected static Method punctuatorImplClass_AddRulesMethod = null;
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 	protected static Class punctuatorImplClass = null;
-
-	protected static int keyboardLoader_clearCacheWhenIntZeroMethod_intArgLocation = -1;
 
 	protected static Method toolbarFrameClass_inflateMethod = null;
 
@@ -154,23 +151,6 @@ public class PriorityKeyboardClassManager
 							),
 
 					PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
-
-			PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod = ProfileHelpers.findFirstProfileMatch(
-
-					new MethodProfile
-							(
-									PUBLIC | FINAL | EXACT ,
-									new ClassItem(void.class),
-
-									new ClassItem("" , PUBLIC | EXACT ),
-									new ClassItem(boolean.class),
-									new ClassItem(int.class)
-
-							),
-
-					PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
-
-			keyboardLoader_clearCacheWhenIntZeroMethod_intArgLocation = ProfileHelpers.findFirstClassIndex( int.class,  keyboardLoader_clearCacheWhenIntZeroMethod.getParameterTypes() );
 		}
 
 		if (toolbarFrameClass != null)

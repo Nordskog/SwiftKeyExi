@@ -241,32 +241,6 @@ public class KeyboardHooks
 			});
 	}
 
-	private static XC_MethodHook.Unhook hookLayoutInvalidated(PackageTree param)
-	{
-		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-			{
-				if (PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod_intArgLocation != -1 )
-				{
-
-					if ( (int) (param.args[  PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod_intArgLocation ]) == 0)
-					{
-						//Called a few different places, but we originally hooked a method that calls this with 0.
-
-						for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
-						{
-							listener.keyboardInvalidated();
-						}
-					}
-
-
-				}
-			}
-		});
-	}
-
 
 	public static XC_MethodHook.Unhook hookKeyboardClosed()
 	{
@@ -651,7 +625,6 @@ public class KeyboardHooks
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())
 				{
 					Hooks.baseHooks_layoutChange.add( hookLayoutChanged(lpparam) );
-					Hooks.baseHooks_layoutChange.add( hookLayoutInvalidated(lpparam) );
 				}
 
 				Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
@@ -696,16 +669,6 @@ public class KeyboardHooks
 					public void beforeKeyboardClosed()
 					{
 
-					}
-
-					@Override
-					public void keyboardInvalidated()
-					{
-						if (OverlayCommons.mKeyboardOverlay != null)
-						{
-							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
-							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
-						}
 					}
 
 					@Override

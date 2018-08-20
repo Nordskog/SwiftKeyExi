@@ -254,12 +254,6 @@ public class Hooks
 						}
 
 						@Override
-						public void keyboardInvalidated()
-						{
-
-						}
-
-						@Override
 						public void afterKeyboardConfigurationChanged()
 						{
 						}

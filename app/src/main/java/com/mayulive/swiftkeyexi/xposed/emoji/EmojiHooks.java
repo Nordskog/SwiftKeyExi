@@ -567,12 +567,6 @@ public class EmojiHooks
 						//Handled by shared thread in loadpacakgehook
 					}
 
-					@Override
-					public void keyboardInvalidated()
-					{
-
-					}
-
 
 					@Override
 					public void afterKeyboardConfigurationChanged()

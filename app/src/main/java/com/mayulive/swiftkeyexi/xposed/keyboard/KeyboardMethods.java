@@ -114,7 +114,6 @@ public class KeyboardMethods
 		void beforeKeyboardOpened();
 		void afterKeyboardOpened();
 		void beforeKeyboardClosed();
-		void keyboardInvalidated();
 		void afterKeyboardConfigurationChanged();
 	}
 

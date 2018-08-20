@@ -105,7 +105,6 @@ public class KeyboardClassManager
 	{
 		//Base
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoaderClass", 	PriorityKeyboardClassManager.keyboardLoaderClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoader_clearCacheWhenIntZeroMethod", 	PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod);
 
 
 		//Popup

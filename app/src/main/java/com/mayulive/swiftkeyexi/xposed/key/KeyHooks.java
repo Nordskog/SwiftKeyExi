@@ -52,7 +52,7 @@ public class KeyHooks
 
 					if (DebugSettings.DEBUG_KEYS)
 					{
-						Log.i(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" ));
+						Log.i(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" )+", pointer: "+System.identityHashCode(thiz));
 					}
 
 					//Maybe keys are defined somewhere else too?
@@ -279,11 +279,6 @@ public class KeyHooks
 
 				@Override public void beforeKeyboardClosed() {}
 
-				@Override
-				public void keyboardInvalidated()
-				{
-					KeyCommons.clearKeys();
-				}
 
 				@Override public void afterKeyboardConfigurationChanged() {}
 
