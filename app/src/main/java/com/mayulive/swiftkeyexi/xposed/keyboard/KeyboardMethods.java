@@ -208,6 +208,15 @@ public class KeyboardMethods
 	public static void updateHidePredictionBarAndPadKeyboardTop( View rootView )
 	{
 
+
+		//Once activated even once, we have to do all this work to make sure visibility is restored.
+		//It's a lot of work though, so we want to avoid doing it if the option has never been enabled.
+		if ( !Settings.everActivated_HIDE_PREDICTIONS_BAR)
+		{
+			return;
+		}
+
+
 		//This is called from a lot of places where things might have changed.
 		//Make sure the hook is event active.
 		if (!Hooks.baseHooks_hidePredictions.isRequirementsMet())

@@ -278,30 +278,16 @@ public class Hooks
 				});
 
 				Log.i(LOGTAG, "Finished async setup");
+				Log.i(LOGTAG, "Total time elapsed: "+(timer.getTotal() / 1000f)+" seconds");
 
 			}
 		};
 
-		//asyncSetup.run();
+		//Used to be async, caused too many problems.
+		//Maybe cleanup one of these days.
 
-		Log.i(LOGTAG, "Total time elapsed: "+(timer.getTotal() / 1000f)+" seconds");
-
+		asyncSetup.run();
 		handleProgress(timer, "Total", 100);
-
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-		{
-			//Run on main thread on oreo and later.
-			//Xposed bug causes async setup to sometimes fail.
-			asyncSetup.run();
-		}
-		else
-		{
-			//Async on separate thread on nougat and below.
-			Thread thread = new Thread( asyncSetup );
-			thread.start();
-		}
-
 
 	}
 
