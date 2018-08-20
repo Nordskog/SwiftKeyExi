@@ -94,6 +94,7 @@ public class Settings
 	//We want to keep track of some settings, specifically to make changes when they change
 	public static boolean changed_REMOVE_SUGGESTIONS_PADDING = true;
 	public static boolean changed_EMOJI_TEXT_RESOURCE = true;
+	public static boolean changed_HIDE_PREDICTIONS_BAR = true;
 
 	//Set to true if any setting that requires a realod of the keyboard is changed
 	public static boolean request_KEYBOARD_RELOAD = false;
@@ -221,7 +222,7 @@ public class Settings
 			boolean originalValue = HIDE_PREDICTIONS_BAR;
 			HIDE_PREDICTIONS_BAR = prefs.getBoolean(PreferenceConstants.pref_hide_predictions_key, false);
 			if (originalValue != HIDE_PREDICTIONS_BAR)
-				request_KEYBOARD_RELOAD = true;
+				changed_HIDE_PREDICTIONS_BAR = true;
 		}
 
 

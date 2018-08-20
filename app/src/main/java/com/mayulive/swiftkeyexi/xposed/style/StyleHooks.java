@@ -1,5 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.style;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -19,34 +22,6 @@ public class StyleHooks
 
 	private static String LOGTAG = ExiModule.getLogTag(StyleHooks.class);
 
-	private static XC_MethodHook.Unhook hookBgTheme(PackageTree param)
-	{
-		return XposedBridge.hookMethod(StyleClassManager.OverlayThemeUtil_getFancyEmojiBackgroundMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
-				try
-				{
-					ViewGroup fancyContainer = (ViewGroup) param.args[0];
-
-					if (StyleCommons.bottomBarId == 0)
-					{
-						StyleCommons.bottomBarId = ContextUtils.getHookContext().getResources().getIdentifier("fancy_bottom_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
-					}
-
-					View bottomBar = fancyContainer.findViewById(StyleCommons.bottomBarId);
-					StyleCommons.setCurrentRaisedBackground(bottomBar.getBackground());
-					StyleCommons.callThemeChangedListeners(StyleCommons.getCurrentRaisedBackground());
-				}
-				catch (Throwable ex)
-				{
-					Log.e(LOGTAG, "Failed to get raised background drawable, emoji panel will now look terrible");
-					ex.printStackTrace();
-				}
-			}
-		});
-	}
 
 	private static XC_MethodHook.Unhook hookTheme(PackageTree param)
 	{
@@ -58,14 +33,19 @@ public class StyleHooks
 			{
 				try
 				{
-					String lookupString = (String)param.args[0];
+					int colorResource = (Integer)param.getResult();
+
+					if (!StyleCommons.toolbarColorResourceSet)
+					{
+						StyleCommons.setToolbarColorResources( ContextUtils.getHookContext() );
+					}
 
 					int newValue = -1;
-					if ( lookupString.equals(StyleCommons.TOOLBAR_DARK_SEARCH_TEXT_STRING ))
+					if ( colorResource == StyleCommons.TOOLBAR_DARK_SEARCH_TEXT_COLOR_RESOURCE)
 					{
 						newValue = SharedTheme.DARK_THEME_IDENTIFIER;
 					}
-					else if (lookupString.equals(StyleCommons.TOOLBAR_LIGHT_SEARCH_TEXT_STRING ))
+					else if ( colorResource == StyleCommons.TOOLBAR_LIGHT_SEARCH_TEXT_COLOR_RESOURCE )
 					{
 						newValue = SharedTheme.LIGHT_THEME_IDENTIFIER;
 					}
@@ -81,6 +61,14 @@ public class StyleHooks
 							StyleCommons.mTheme = newValue;
 							StyleCommons.callThemeChangedListeners(newValue);
 						}
+
+
+						if (OverlayCommons.mKeyboardOverlay != null)
+						{
+							StyleCommons.updateRaisedBackground();
+
+						}
+
 					}
 				}
 				catch (Throwable ex)
@@ -103,11 +91,6 @@ public class StyleHooks
 			if (Hooks.styleHooks_darklight.isRequirementsMet())
 			{
 				Hooks.styleHooks_darklight.add( hookTheme(param) );
-			}
-
-			if (Hooks.styleHooks_raisedbg.isRequirementsMet())
-			{
-				Hooks.styleHooks_raisedbg.add( hookBgTheme(param) );
 			}
 		}
 		catch(Throwable ex)

@@ -55,7 +55,6 @@ public class KeyCommons
 
 	protected static KeyDefinition mLastKeyDefined = null;
 
-	static boolean mKeyFieldsSetIntCalled = false;
 	static String mLastTag = null;			//Last tag defined
 
 	////////////

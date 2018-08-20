@@ -46,10 +46,10 @@ public class Hooks
 	public static HookCategory predictionHooks_candidate = new HookCategory("PredictionHooks Candidate", predictionHooks_base);
 
 	//Selection
-	public static HookCategory selectionHooks_base = new HookCategory("SelectionHooks");
+	public static HookCategory selectionHooks_movedAbruptly = new HookCategory("selectionHooks_movedAbruptly");
+	public static HookCategory selectionHooks_base = new HookCategory("SelectionHooks", selectionHooks_movedAbruptly);
 
 	//Popups
-	public static HookCategory popupHooks_delay = new HookCategory("PopupHooks Delay");
 	public static HookCategory popupHooks_cancel = new HookCategory("PopupHooks Cancel", selectionHooks_base);
 	public static HookCategory popupHooks_modify = new HookCategory("PopupHooks Modify");
 	public static HookCategory popupHooks_read = new HookCategory("PopupHooks Read", popupHooks_modify);
@@ -79,7 +79,6 @@ public class Hooks
 
 
 	//Style
-	public static HookCategory styleHooks_raisedbg = new HookCategory("StyleHooks RasiedBG");
 	public static HookCategory styleHooks_darklight = new HookCategory("StyleHooks Darklight");
 
 	//Sound
@@ -95,7 +94,6 @@ public class Hooks
 																						emojiHooks_base,
 																						predictionHooks_base,
 																						baseHooks_punctuationSpace,
-																						styleHooks_raisedbg,
 																						styleHooks_darklight,
 																						soundHooks_base,
 																						baseHooks_fullscreenMode,
@@ -126,7 +124,7 @@ public class Hooks
 
 	public static void handleProgress(WorkTimer timer, String thing, final int progressPercentage)
 	{
-		Log.i(LOGTAG,"Elapsed for "+thing+": "+timer.getElapsedAndReset());
+		Log.i(LOGTAG,"Elapsed for "+thing+": "+(timer.getElapsedAndReset() / 1000f) +" seconds" );
 		handler.post(new Runnable()
 		{
 			@Override
@@ -223,6 +221,12 @@ public class Hooks
 						}
 
 						@Override
+						public void afterKeyboardOpened()
+						{
+
+						}
+
+						@Override
 						public void beforeKeyboardClosed()
 						{
 							AsyncTask.execute(new Runnable()
@@ -277,6 +281,12 @@ public class Hooks
 
 			}
 		};
+
+		//asyncSetup.run();
+
+		Log.i(LOGTAG, "Total time elapsed: "+(timer.getTotal() / 1000f)+" seconds");
+
+		handleProgress(timer, "Total", 100);
 
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)

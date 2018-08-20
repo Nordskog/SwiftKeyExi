@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyProfiles;
 import com.mayulive.xposed.classhunter.ClassHunter;
@@ -26,9 +27,12 @@ import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
 import static com.mayulive.xposed.classhunter.Modifiers.PRIVATE;
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 import static com.mayulive.xposed.classhunter.Modifiers.STATIC;
+import static com.mayulive.xposed.classhunter.Modifiers.SYNTHETIC;
 
 public class PriorityKeyboardClassManager
 {
+
+	private static String LOGTAG = ExiModule.getLogTag(PriorityKeyboardClassManager.class);
 
 
 	public static Class keyboardServiceClass =  null;
@@ -50,7 +54,7 @@ public class PriorityKeyboardClassManager
 	public static Class keyboardLoaderClass = null;
 	public static Method keyboardLoader_onSharedPreferenceChangedMethod;
 	public static Method keyboardLoader_loadMethod = null;
-	public static Method keyboardLoader_clearCacheMethod = null;
+	public static Method keyboardLoader_clearCacheWhenIntZeroMethod = null;
 	public static Object punctuatorImplInstance = null;
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
 	protected static Method keyboardService_onConfigurationChangedMethod = null;
@@ -58,6 +62,8 @@ public class PriorityKeyboardClassManager
 	protected static Method punctuatorImplClass_AddRulesMethod = null;
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 	protected static Class punctuatorImplClass = null;
+
+	protected static int keyboardLoader_clearCacheWhenIntZeroMethod_intArgLocation = -1;
 
 	protected static Method toolbarFrameClass_inflateMethod = null;
 
@@ -72,6 +78,8 @@ public class PriorityKeyboardClassManager
 
 	public static void loadUnknownClasses(PackageTree param)
 	{
+
+
 		PriorityKeyboardClassManager.keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
 
 		toolbarOpenButtonOverlayViewClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_TOOLBAR_OPEN_BUTTON_OVERLAY_CLASS_PROFILE(), param );
@@ -98,7 +106,7 @@ public class PriorityKeyboardClassManager
 		{
 
 			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findMostSimilar( new MethodProfile(
-					EXACT,
+					FINAL | EXACT,
 					new ClassItem(View.class)
 			), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
 
@@ -134,30 +142,35 @@ public class PriorityKeyboardClassManager
 					new MethodProfile
 							(
 									PRIVATE | EXACT ,
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | ABSTRACT | ARRAY | EXACT ),
+									new ClassItem("" , PUBLIC | ABSTRACT | ARRAY | EXACT ),
 
-									new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | ARRAY | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | EXACT ),
+									new ClassItem("" , PUBLIC | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | ARRAY | EXACT ),
+									new ClassItem("" , PUBLIC | STATIC | EXACT ),
 									new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
 									new ClassItem(int[].class),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT ),
-									new ClassItem(boolean.class)
+									new ClassItem("" , PUBLIC | FINAL | EXACT )
+
 							),
 
 					PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
 
-			PriorityKeyboardClassManager.keyboardLoader_clearCacheMethod = ProfileHelpers.findFirstProfileMatch(
+			PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod = ProfileHelpers.findFirstProfileMatch(
 
 					new MethodProfile
 							(
-									PRIVATE | EXACT ,
-									new ClassItem(void.class ),
-									new ClassItem[0]
+									PUBLIC | FINAL | EXACT ,
+									new ClassItem(void.class),
+
+									new ClassItem("" , PUBLIC | EXACT ),
+									new ClassItem(boolean.class),
+									new ClassItem(int.class)
 
 							),
 
 					PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
+
+			keyboardLoader_clearCacheWhenIntZeroMethod_intArgLocation = ProfileHelpers.findFirstClassIndex( int.class,  keyboardLoader_clearCacheWhenIntZeroMethod.getParameterTypes() );
 		}
 
 		if (toolbarFrameClass != null)
@@ -166,22 +179,27 @@ public class PriorityKeyboardClassManager
 
 					new MethodProfile
 							(
-									Modifiers.EXACT,	//Important, there is another identical method that is public
+									PRIVATE | Modifiers.EXACT,
 									new ClassItem( void.class ),
 									new ClassItem( boolean.class )
 							),
 
 					toolbarFrameClass.getDeclaredMethods(), toolbarFrameClass);
 
+		}
 
+		if (toolbarOpenButtonOverlayViewClass != null)
+		{
 			toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = ProfileHelpers.findMostSimilar(
 
 					new MethodProfile
 							(
-									Modifiers.PUBLIC | Modifiers.EXACT,
+									PUBLIC | FINAL | SYNTHETIC | EXACT ,
 									new ClassItem(void.class),
-									new ClassItem(null),
+
+									new ClassItem(java.lang.Object.class),
 									new ClassItem(int.class)
+
 							),
 
 					PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass.getDeclaredMethods(), PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass);

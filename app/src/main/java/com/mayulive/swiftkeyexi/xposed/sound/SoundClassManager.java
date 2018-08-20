@@ -1,20 +1,17 @@
 package com.mayulive.swiftkeyexi.xposed.sound;
 
-import android.content.Context;
-
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.swiftkeyexi.xposed.emoji.EmojiClassManager;
-import com.mayulive.swiftkeyexi.xposed.emoji.EmojiProfiles;
-import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
-import com.mayulive.xposed.classhunter.profiles.Profile;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+
+import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
+import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
+import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 
 /**
  * Created by Roughy on 11/15/2017.
@@ -42,12 +39,13 @@ public class SoundClassManager
 
 		if (keySoundClass != null)
 		{
-			keySoundClass_playSoundMethod = ProfileHelpers.findMostSimilar(new MethodProfile(
-
-					Modifiers.PUBLIC,
+			keySoundClass_playSoundMethod = ProfileHelpers.findMostSimilar(new MethodProfile
+			(
+					PUBLIC | FINAL | EXACT ,
 					new ClassItem(void.class),
+
 					new ClassItem(int.class),
-					new ClassItem(Context.class)
+					new ClassItem(android.content.Context.class)
 
 			), keySoundClass.getDeclaredMethods(), keySoundClass);
 

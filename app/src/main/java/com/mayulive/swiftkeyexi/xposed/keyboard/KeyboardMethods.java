@@ -112,6 +112,7 @@ public class KeyboardMethods
 	public interface KeyboardEventListener
 	{
 		void beforeKeyboardOpened();
+		void afterKeyboardOpened();
 		void beforeKeyboardClosed();
 		void keyboardInvalidated();
 		void afterKeyboardConfigurationChanged();

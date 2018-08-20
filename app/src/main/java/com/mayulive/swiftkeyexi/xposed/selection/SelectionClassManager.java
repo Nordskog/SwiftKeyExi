@@ -3,12 +3,12 @@ package com.mayulive.swiftkeyexi.xposed.selection;
 import android.util.Log;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardClassManager;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
@@ -27,11 +27,15 @@ public class SelectionClassManager
 	private static String LOGTAG = ExiModule.getLogTag(SelectionClassManager.class);
 
 
+
 	//protected static Class keyboardFrameClass = null;
 
 	protected static Class FlowDelegateClass = null;
 	protected static Class swipeDelegateClass = null;
 	protected static Class SelectionChangedInputEventClass = null;
+
+	protected static Class selectionChangedInfoClass = null;
+	protected static Class SelectionChangedMethodArgumentClass = null;
 
 	///////////////////
 	//Methods
@@ -43,6 +47,11 @@ public class SelectionClassManager
 	protected static Method swipeDelegate_flowDetectedMethod = null;
 	protected static Method SelectionChangedInputEventClass_hasMovedAbruptlyMethod = null;
 
+	////////////////////////
+	// Fields
+	////////////////////////
+
+	protected static Field selectionChangedInfoClass_aFirstIntField;
 
 	////////////
 	//Objects
@@ -55,7 +64,12 @@ public class SelectionClassManager
 		FlowDelegateClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_FLOW_DELEGATE_CLASS_PROFILE(), param );
 		swipeDelegateClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_SWIPE_DELEGATE_CLASS_PROFILE(), param );
 
-		SelectionChangedInputEventClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_SELECTION_CHANGED_INPUT_EVENT_PROFILE(), param );
+		//Don't need this directly, but classes we want are very generic, so daisy-chaining profiles.
+		SelectionChangedMethodArgumentClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_SELECTION_CHANGED_METHOD_ARGUMENT_CLASS_PROFILE(), param );
+		//Class we actually care about, extends? implements? the above
+		selectionChangedInfoClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_SELECTION_CHANGED_INFO_CLASS_PROFILE(), param );
+
+		SelectionChangedInputEventClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_SELECTION_CHANGED_INPUT_EVENT_PROFILE(SelectionChangedMethodArgumentClass), param );
 	}
 
 
@@ -67,8 +81,6 @@ public class SelectionClassManager
 			//Catches another method I don't quite remember what does, but it's ... probably fine.
 			//It is possible to tell them apart if need be.
 			//FlowDelegate_flowDetectedMethods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, FlowDelegateClass.getDeclaredMethods());
-
-
 
 			FlowDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar(new MethodProfile
 							(
@@ -96,14 +108,10 @@ public class SelectionClassManager
 		{
 			swipeDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar(new MethodProfile
 							(
-									PROTECTED | EXACT ,
+									PUBLIC | FINAL | EXACT ,
 									new ClassItem(boolean.class),
 
-									new ClassItem(KeyboardClassManager.breadcrumbClass ),
-									new ClassItem(float.class),
-									new ClassItem(float.class),
-									new ClassItem(float.class),
-									new ClassItem(float.class)
+									new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 							),
 					swipeDelegateClass.getDeclaredMethods(), swipeDelegateClass);
@@ -116,12 +124,17 @@ public class SelectionClassManager
 			//Not a requirement
 			if ( SelectionChangedInputEventClass != null)
 			{
-				List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, SelectionChangedInputEventClass.getDeclaredMethods());
 
-				//You generally don't want to rely on methods being in the same order, as this is not assured.
-				//In the case of swiftkey fields change a lot, but method orders have been constant for years.
-				//This class in particular hasns't been modified at all.
-				SelectionChangedInputEventClass_hasMovedAbruptlyMethod = methods.get( methods.size() - 2 );
+				SelectionChangedInputEventClass_hasMovedAbruptlyMethod = ProfileHelpers.findMostSimilar(new MethodProfile
+								(
+										PUBLIC | FINAL | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(SelectionChangedMethodArgumentClass),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )	//I am castable to selectionChangedInfoClass
+
+								),
+						SelectionChangedInputEventClass.getDeclaredMethods(), SelectionChangedInputEventClass);
 			}
 		}
 		catch (Exception ex)
@@ -130,12 +143,20 @@ public class SelectionClassManager
 			ex.printStackTrace();
 		}
 	}
+
+	public static void loadFields() throws NoSuchMethodException
+	{
+		// Fields have a nasty habit of moving around, but these match the constructor param order, so hopefully we're good.
+		selectionChangedInfoClass_aFirstIntField = ProfileHelpers.findFirstDeclaredFieldWithType( int.class, selectionChangedInfoClass );
+		selectionChangedInfoClass_aFirstIntField.setAccessible(true);
+	}
 	
 
 	public static void doAllTheThings(PackageTree param) throws IOException, NoSuchFieldException, NoSuchMethodException
 	{
 		loadUnknownClasses(param);
 		loadMethods();
+		loadFields();
 
 		updateDependencyState();
 	}
@@ -153,6 +174,8 @@ public class SelectionClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegate_flowDetectedMethod", 	swipeDelegate_flowDetectedMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegate_flowDetectedMethod",  (FlowDelegate_flowDetectedMethod ));
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegate_DRAG_ENUM",  (FlowDelegate_DRAG_ENUM ));
+
+		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_movedAbruptly,	 "SelectionChangedInputEventClass_hasMovedAbruptlyMethod",  (SelectionChangedInputEventClass_hasMovedAbruptlyMethod ));
 	}
 
 }

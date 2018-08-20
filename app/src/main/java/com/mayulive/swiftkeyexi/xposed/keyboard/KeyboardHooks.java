@@ -33,6 +33,7 @@ import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -152,6 +153,11 @@ public class KeyboardHooks
 				{
 					if (DebugSettings.DEBUG_HITBOXES)
 						OverlayCommons.displayDebugHithoxes(ContextUtils.getHookContext(), SelectionState.getSwipeOverlayHeight());
+
+					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
+					{
+						listener.afterKeyboardOpened();
+					}
 				}
 
 			});
@@ -237,16 +243,24 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookLayoutInvalidated(PackageTree param)
 	{
-		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardLoader_clearCacheMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
+				if (PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod_intArgLocation != -1 )
 				{
-					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
+
+					if ( (int) (param.args[  PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod_intArgLocation ]) == 0)
 					{
-						listener.keyboardInvalidated();
+						//Called a few different places, but we originally hooked a method that calls this with 0.
+
+						for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
+						{
+							listener.keyboardInvalidated();
+						}
 					}
+
 
 				}
 			}
@@ -335,29 +349,39 @@ public class KeyboardHooks
 
 	}
 
-	private static  XC_MethodHook.Unhook hookKeyHeight()
+	private static  Set<XC_MethodHook.Unhook> hookKeyHeight()
 	{
-		return XposedBridge.hookMethod(KeyboardClassManager.keyHeightClass_getKeyHeightMethod, new XC_MethodHook()
+
+		HashSet<XC_MethodHook.Unhook> returnSet = new HashSet<>();
+
+		for (Method getKeyHeightMethod : KeyboardClassManager.keyHeightClass_getKeyHeightMethods)
 		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			returnSet.add( XposedBridge.hookMethod(getKeyHeightMethod, new XC_MethodHook()
 			{
-				try
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
-					if ( Settings.KEYBOARD_SIZE_MULTIPLIER != 1f )
+					try
 					{
-						int value = (int) param.getResult();
-						param.setResult((int) (value * Settings.KEYBOARD_SIZE_MULTIPLIER));
+						if ( Settings.KEYBOARD_SIZE_MULTIPLIER != 1f )
+						{
+							int value = (int) param.getResult();
+							param.setResult((int) (value * Settings.KEYBOARD_SIZE_MULTIPLIER));
+						}
+					}
+					catch (Throwable ex)
+					{
+
+						Hooks.baseHooks_keyHeight.invalidate(ex, "Unexpected problem in Key Height hook");
+
 					}
 				}
-				catch (Throwable ex)
-				{
+			}));
+		}
+		
 
-					Hooks.baseHooks_keyHeight.invalidate(ex, "Unexpected problem in Key Height hook");
 
-				}
-			}
-		});
+		return returnSet;
 	}
 
 	private static XC_MethodHook.Unhook hookToolbarPredictionBarRemoval()
@@ -619,7 +643,7 @@ public class KeyboardHooks
 
 				if (Hooks.baseHooks_keyHeight.isRequirementsMet())
 				{
-					Hooks.baseHooks_keyHeight.add(  hookKeyHeight() );
+					Hooks.baseHooks_keyHeight.addAll(  hookKeyHeight() );
 				}
 
 
@@ -640,6 +664,12 @@ public class KeyboardHooks
 								false );
 
 						KeyboardMethods.setKeyboardOpacity();
+
+						if ( Settings.changed_HIDE_PREDICTIONS_BAR && OverlayCommons.mKeyboardOverlay != null)
+						{
+							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
+							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+						}
 					}
 				});
 
@@ -648,6 +678,12 @@ public class KeyboardHooks
 				{
 					@Override
 					public void beforeKeyboardOpened()
+					{
+
+					}
+
+					@Override
+					public void afterKeyboardOpened()
 					{
 						if (OverlayCommons.mKeyboardOverlay != null)
 						{

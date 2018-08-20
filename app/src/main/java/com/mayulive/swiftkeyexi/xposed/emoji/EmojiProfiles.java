@@ -19,8 +19,8 @@ public class EmojiProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.keyboard.view.fancy.h");
-		newProfile.setKnownPath("com.touchtype.keyboard.view.fancy");
+		newProfile.setFullPath("gbl");
+		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
 		newProfile.setMaxDepth(0);
@@ -33,6 +33,7 @@ public class EmojiProfiles
 /////////////////////////
 		newProfile.setInterfaces(new ClassItem[]
 				{
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 				});
 /////////////////////////
@@ -40,6 +41,7 @@ public class EmojiProfiles
 /////////////////////////
 		newProfile.setNestedClasses(new ClassItem[]
 				{
+						new ClassItem("" , STATIC | EXACT )
 
 				});
 /////////////////////////
@@ -47,6 +49,21 @@ public class EmojiProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
+						new FieldItem( FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//a
+						new FieldItem( FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
+						new FieldItem( FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//c
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//d
+						new FieldItem( EXACT , 	new ClassItem(int.class)),	//e
+						new FieldItem( EXACT , 	new ClassItem(int.class)),	//f
+						new FieldItem( EXACT , 	new ClassItem(int.class)),	//g
+						new FieldItem( EXACT , 	new ClassItem(java.lang.String.class)),	//h
+						new FieldItem( EXACT , 	new ClassItem(boolean.class)),	//i
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//j
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//k
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//l
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.concurrent.Executor.class)),	//m
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.lang.String.class)),	//n
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.lang.String.class)),	//o
 
 				});
 /////////////////////////
@@ -57,33 +74,113 @@ public class EmojiProfiles
 						//Method #0: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(java.lang.String.class),
+										PRIVATE | EXACT ,
+										new ClassItem(long.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(float.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("com.google.gson.JsonObject" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #1: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PRIVATE | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("" , STATIC | EXACT )
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.GifResultStatus" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.GifResultSource" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , STATIC | EXACT )
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(void.class),
+
 										new ClassItem(java.lang.String.class),
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.GifResultSource" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , STATIC | EXACT )
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | BRIDGE | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+
+								),
+
+						//Method #5: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+
+								),
+
+						//Method #6: a
+						new MethodProfile
+								(
+										FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , STATIC | EXACT )
+
+								),
+
+						//Method #7: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.io.InputStream.class),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+
+								),
+
+						//Method #8: a
+						new MethodProfile
+								(
+										FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #9: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class)
+										new ClassItem(boolean.class)
 
 								),
 
@@ -98,7 +195,13 @@ public class EmojiProfiles
 						new ConstructorProfile
 								(		PUBLIC | EXACT ,
 
-										new ClassItem[0]
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(java.util.concurrent.Executor.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 

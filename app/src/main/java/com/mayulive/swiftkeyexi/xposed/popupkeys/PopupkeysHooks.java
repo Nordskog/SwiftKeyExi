@@ -38,46 +38,12 @@ public class PopupkeysHooks
 
 	private static String LOGTAG = ExiModule.getLogTag(PopupkeysHooks.class);
 
-	public static XC_MethodHook.Unhook hookPopupScheduler() throws NoSuchMethodException, NoSuchFieldException
-	{
-		return XposedBridge.hookMethod(PopupkeysClassManager.popupScheduler_schedulePopupMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-			{
-				try
-				{
-					if (PopupkeysCommons.mDelayNextPopup)
-					{
-						PopupkeysCommons.mDelayNextPopup = false;
-						param.args[1] = ( (long)param.args[1] )* 2;
-
-						Method superMethod = (Method)param.method;
-						param.setResult( superMethod.invoke(param.thisObject, param.args) );
-					}
-				}
-				catch (Throwable ex)
-				{
-					Hooks.popupHooks_delay.invalidate(ex, "Unexpected problem in Popup Delay hook");
-				}
-
-
-			}
-		});
-	}
 
 	public static XC_MethodHook.Unhook hookSymbolsA( ) throws NoSuchFieldException
 	{
 
 		return XposedBridge.hookMethod(PopupkeysClassManager.addLongPressCharacters_A_Method, new XC_MethodHook()
 		{
-			/*
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-			{
-				Log.i(LOGTAG, "A input: "+param.args[0].toString());
-			}
-			*/
 
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -424,10 +390,6 @@ public class PopupkeysHooks
 			{
 				PopupkeysClassManager.doAllTheThings(param);
 
-				if ( Hooks.popupHooks_delay.isRequirementsMet() )
-				{
-					Hooks.popupHooks_delay.add( hookPopupScheduler() );
-				}
 
 				if ( Hooks.popupHooks_cancel.isRequirementsMet() )
 				{
@@ -465,7 +427,6 @@ public class PopupkeysHooks
 		catch ( Throwable ex)
 		{
 			Hooks.popupHooks_read.invalidate(ex, "Failed to hook");
-			Hooks.popupHooks_delay.invalidate(ex, "Failed to hook");
 			Hooks.popupHooks_cancel.invalidate(ex, "Failed to hook");
 		}
 

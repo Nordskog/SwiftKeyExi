@@ -4,22 +4,20 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
  * Created by Roughy on 2/15/2017.
  */
 
+import android.util.Log;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.profiles.ClassItem;
-import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
-import static com.mayulive.xposed.classhunter.Modifiers.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class KeyboardClassManager
@@ -32,7 +30,6 @@ public class KeyboardClassManager
 	/////////////////
 
 	public static Class layoutClass = null;
-	public static Class breadcrumbClass = null;
 
 	/////////////////
 	//unknown classes
@@ -41,13 +38,12 @@ public class KeyboardClassManager
 	public static Class KeyHeightClass = null;
 
 
-	protected static Method keyHeightClass_getKeyHeightMethod = null;
+	protected static List<Method> keyHeightClass_getKeyHeightMethods = new ArrayList<Method>();
 
 	////////////////////
 	//Fields
 	////////////////////
 	public static Field keyboardLoaderClass_layoutField = null;
-
 
 	public static InputConnection currentInputConnection = null;
 
@@ -61,8 +57,6 @@ public class KeyboardClassManager
 
 	public static void loadUnknownClasses(PackageTree param)
 	{
-		breadcrumbClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_BREADCRUMB_CLASS_PROFILE(), param );
-
 		KeyHeightClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEY_HEIGHT_CLASS_PROFILE(), param );
 	}
 
@@ -72,20 +66,19 @@ public class KeyboardClassManager
 
 		if (KeyHeightClass != null)
 		{
-			keyHeightClass_getKeyHeightMethod = ProfileHelpers.findMostSimilar(
+			//Profile used to have multiple float, int, and bool inputs, but has been simplified.
+			//There are now several methods with the same signature returning int. The first, and only complicated one, decides key height.
+			//The other two will increase bar height (toolbars).
+			keyHeightClass_getKeyHeightMethods = ProfileHelpers.findAllMethodsWithReturnType( int.class, KeyHeightClass.getDeclaredMethods() );
+			if (!keyHeightClass_getKeyHeightMethods.isEmpty())
+			{
+				Method firstMethod = keyHeightClass_getKeyHeightMethods.get(0);
+				keyHeightClass_getKeyHeightMethods = new ArrayList<Method>();
+				keyHeightClass_getKeyHeightMethods.add(firstMethod);
+			}
 
-					new MethodProfile
-							(
-									PUBLIC | EXACT ,
-									new ClassItem(int.class),
 
-									new ClassItem(int.class),
-									new ClassItem(boolean.class),
-									new ClassItem(int.class),
-									new ClassItem(boolean.class)
-							),
 
-					KeyHeightClass.getDeclaredMethods(), KeyHeightClass);
 		}
 
 	}
@@ -111,9 +104,8 @@ public class KeyboardClassManager
 	protected static void updateDependencyState()
 	{
 		//Base
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "breadcrumbClass", 	breadcrumbClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoaderClass", 	PriorityKeyboardClassManager.keyboardLoaderClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoader_clearCacheMethod", 	PriorityKeyboardClassManager.keyboardLoader_clearCacheMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoader_clearCacheWhenIntZeroMethod", 	PriorityKeyboardClassManager.keyboardLoader_clearCacheWhenIntZeroMethod);
 
 
 		//Popup
@@ -125,7 +117,7 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_layoutChange,	 "keyboardLoaderClass_layoutField", 	keyboardLoaderClass_layoutField );
 
 		//Keyboard size
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_keyHeight,	 "keyHeightClass_getKeyHeightMethod", 	keyHeightClass_getKeyHeightMethod );
+		Hooks.logSetRequirement( Hooks.baseHooks_keyHeight,	 "keyHeightClass_getKeyHeightMethod", 	!keyHeightClass_getKeyHeightMethods.isEmpty() );
 
 	}
 }

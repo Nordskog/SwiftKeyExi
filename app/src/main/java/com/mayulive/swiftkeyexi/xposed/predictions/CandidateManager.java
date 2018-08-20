@@ -13,10 +13,14 @@ import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
+import com.mayulive.xposed.classhunter.profiles.Profile;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,11 +53,13 @@ public class CandidateManager
 	protected static Method candidate_getSubRequestMethod = null;
 	protected static Method candidate_setTrailingSeparatorMethod = null;
 	protected static Method candidate_getTrailingSeparatorMethod = null;
+	protected static Method candidate_getTokensMethod = null;
 
 	//May be null
 	protected static Method candidate_getCorrectionSpanReplacementText = null;
 
-	protected static Method subCandidateClass_inputStringMethod = null;
+	//protected static Method subCandidateClass_inputStringMethod = null;
+	protected static Field subCandidateClass_inputStringField = null;
 
 	//Takes text, shortcut, list of token(text), sburequest
 	protected static Constructor clipboardCandidate_Constructor = null;
@@ -121,6 +127,7 @@ public class CandidateManager
 			candidate_getTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "getTrailingSeparator");
 			candidate_setTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "setTrailingSeparator");
 			candidate_getCorrectionSpanReplacementText = ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "getCorrectionSpanReplacementText");
+			candidate_getTokensMethod =  ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "getTokens");
 		}
 
 		fluencyCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.FluencyCandidate", classLoader);
@@ -136,8 +143,17 @@ public class CandidateManager
 
 		/////////////
 
+		if (candidate_getTokensMethod != null)
+		{
+			tokenClass = (Class)  ( ( ParameterizedType )candidate_getTokensMethod.getGenericReturnType() ).getActualTypeArguments()[0] ;
 
-		tokenClass = ProfileHelpers.loadProfiledClass(CandidateProfiles.get_PREDICTION_TOKEN_PROFILE(), param);
+		}
+		else
+		{
+			Log.i(LOGTAG, "get tokens was null");
+		}
+
+
 
 		///////////
 
@@ -148,7 +164,8 @@ public class CandidateManager
 
 			if (subCandidateClass != null)
 			{
-				subCandidateClass_inputStringMethod = ProfileHelpers.findAllMethodsWithReturnType(String.class, subCandidateClass.getDeclaredMethods()).get(1);
+				subCandidateClass_inputStringField = ProfileHelpers.findAllDeclaredFieldsWithType(String.class, subCandidateClass).get(1);
+				subCandidateClass_inputStringField.setAccessible(true);
 			}
 		}
 
@@ -253,7 +270,8 @@ public class CandidateManager
 		try
 		{
 			Object subrequest = candidate_getSubRequestMethod.invoke(candidate);
-			return (String) subCandidateClass_inputStringMethod.invoke(subrequest);
+			return (String) subCandidateClass_inputStringField.get(subrequest);
+			//return (String) subCandidateClass_inputStringMethod.invoke(subrequest);
 		}
 		catch (IllegalAccessException | InvocationTargetException e)
 		{
@@ -304,7 +322,7 @@ public class CandidateManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "candidate_getTrailingSeparatorMethod", 	candidate_getTrailingSeparatorMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "candidate_setTrailingSeparatorMethod", 	candidate_setTrailingSeparatorMethod );
 
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "subCandidateClass_inputStringMethod", 	subCandidateClass_inputStringMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "subCandidateClass_inputStringMethod", 	subCandidateClass_inputStringField );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "tokenClass", 	tokenClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidateClass", 	clipboardCandidateClass );

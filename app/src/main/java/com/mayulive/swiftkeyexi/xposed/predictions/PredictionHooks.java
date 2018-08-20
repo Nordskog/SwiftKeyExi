@@ -73,24 +73,6 @@ public class PredictionHooks
 
 				try
 				{
-					if ( PredictionClassManager.UpdateCandidateTaskClass_getTopCandidateMethod_intPosition != -1)
-					{
-						//Method might have changed to no longer have the int
-
-						//The only reason we care to hook this method is because it sometimes grabs
-						//the primary method from here, instead of from our previously modified list.
-						//The int now passed here is now the index to get from the list, so don't do
-						//anything if it is anything but 0.
-						if ( (int)param.args[PredictionClassManager.UpdateCandidateTaskClass_getTopCandidateMethod_intPosition] != 0 )
-						{
-							if (DebugSettings.DEBUG_PREDICTIONS)
-							{
-								Log.i(LOGTAG, "Top candidate called with non-zero index. Not doing anything.");
-							}
-
-							return;
-						}
-					}
 
 					//Method changed from single candidate to list.
 					boolean returnList = ((Method)param.method).getReturnType() == List.class;
@@ -254,15 +236,6 @@ public class PredictionHooks
 				try
 				{
 					PriorityPredictionsClassManager.buInstance = PriorityPredictionsClassManager.keyboardFrameClass_buField.get(param.thisObject);
-
-					if (PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition != -1)
-					{
-						Log.e(LOGTAG, "KeyboardUxOptionsPosition was not found, this could be bad");
-					}
-					else
-					{
-						PriorityPredictionsClassManager.KeyboardUxOptionsInstance = param.args[ PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition  ];
-					}
 				}
 				catch (Throwable ex)
 				{
@@ -281,9 +254,9 @@ public class PredictionHooks
 		Set<XC_MethodHook.Unhook> returnHooks = new HashSet<>();
 		{
 			//Only needed to update shortcut priority, not critical.
-			if ( PredictionClassManager.candidateSelectedMethod != null )
+			if ( PredictionClassManager.handleCandidateClass_candidateSelectedMethod != null )
 			{
-				returnHooks.add( XposedBridge.hookMethod(PredictionClassManager.candidateSelectedMethod, new XC_MethodHook()
+				returnHooks.add( XposedBridge.hookMethod(PredictionClassManager.handleCandidateClass_candidateSelectedMethod, new XC_MethodHook()
 				{
 					@Override
 					protected void beforeHookedMethod(MethodHookParam param) throws Throwable
