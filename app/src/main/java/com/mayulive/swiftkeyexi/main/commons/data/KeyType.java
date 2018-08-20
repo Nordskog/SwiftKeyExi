@@ -50,7 +50,7 @@ public enum KeyType
 
 	public static KeyType getType(String tag)
 	{
-		if (tag.contains("SpaceKey"))
+		if (tag.contains("SpaceKey") || tag.contains("SpaceOpenBoxKey"))
 			return SPACE;
 		if (tag.equals("SymbolKey") )
 			return SYMBOL;
