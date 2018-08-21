@@ -52,7 +52,7 @@ public class KeyHooks
 
 					if (DebugSettings.DEBUG_KEYS)
 					{
-						Log.i(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" ));
+						Log.i(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" )+", pointer: "+System.identityHashCode(thiz));
 					}
 
 					//Maybe keys are defined somewhere else too?
@@ -143,19 +143,24 @@ public class KeyHooks
 	}
 
 
+
 	public static Set<XC_MethodHook.Unhook> hookKeyFields(PackageTree param)
 	{
 
 		Set<XC_MethodHook.Unhook> returnSet = new HashSet<>();
 
 
-
-
-		returnSet.add( XposedBridge.hookMethod(KeyClassManager.keyFieldsClass_setIntegerMethod, new XC_MethodHook()
+		returnSet.add( XposedBridge.hookMethod(KeyClassManager.keyRawDefinitionClass_getKeyFieldsMethod, new XC_MethodHook()
 		{
+
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
+				//Set last tag
+				if (DebugSettings.DEBUG_KEYS)
+					Log.i(LOGTAG, "Got param tag: "+ KeyCommons.mLastTag);
+				KeyCommons.mLastTag = (String)param.args[1];
+
 				//We should only pass through this once for every key.
 				//The Symbol is not actually defined for all keys, and that method is thus not always run.
 				//Null here if symbol has not changed
@@ -167,31 +172,11 @@ public class KeyHooks
 				}
 				KeyCommons.sSymboledDefinedOnLastKeyLoop = KeyCommons.sLastSymbolDefined;
 
-
-				if (DebugSettings.DEBUG_KEYS)
-					Log.i(LOGTAG, "Param int set");
-				KeyCommons.mKeyFieldsSetIntCalled = true;
 			}
 		}) );
 
-		for (Method method : KeyClassManager.keyFieldsClass_setStringMethods)
-		{
-			returnSet.add( XposedBridge.hookMethod(method, new XC_MethodHook()
-			{
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-				{
-					if (KeyCommons.mKeyFieldsSetIntCalled)
-					{
 
-						if (DebugSettings.DEBUG_KEYS)
-							Log.i(LOGTAG, "Got param tag: "+ KeyCommons.mLastTag);
-						KeyCommons.mLastTag = (String)param.args[0];
-						KeyCommons.mKeyFieldsSetIntCalled = false;
-					}
-				}
-			}) );
-		}
+
 
 		return returnSet;
 	}
@@ -285,13 +270,15 @@ public class KeyHooks
 			KeyboardMethods.addKeyboardEventListener(new KeyboardMethods.KeyboardEventListener()
 			{
 				@Override public void beforeKeyboardOpened() {}
-				@Override public void beforeKeyboardClosed() {}
 
 				@Override
-				public void keyboardInvalidated()
+				public void afterKeyboardOpened()
 				{
-					KeyCommons.clearKeys();
+
 				}
+
+				@Override public void beforeKeyboardClosed() {}
+
 
 				@Override public void afterKeyboardConfigurationChanged() {}
 

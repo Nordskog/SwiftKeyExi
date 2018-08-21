@@ -1,15 +1,11 @@
 package com.mayulive.swiftkeyexi.xposed.key;
 
-import android.content.Context;
 import android.graphics.RectF;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
-import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionMethods;
@@ -18,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,6 +41,12 @@ public class KeyCommons
 	// In the case of android, the system identifier for an object is (last I checked) just the pointer address.
 	private static Map<Integer, KeyDefinition> mKeyDefinitions = new HashMap<>();
 
+	//Since we cannot reliably detect when a layout is invalidated, and swiftkey will often create a key in a layout
+	//but display the old one instead of the new one, we will keep a buffer of... 150? keys that we keep references to.
+	//Remove from mKeyDefinitions as they expire. Some chinese keyboards do weirds things that may cause problems,
+	//but they're broken anyway.
+	private static Map<String, LinkedList< Integer> > mLayoutKeyStack = new HashMap<>();
+
 	//Sometimes we potentially don't want a key to fire on down.
 	//We can later decide to fire these.
 	private static ArrayList<DelayedKey> mDelayedKeys = new ArrayList<>();
@@ -55,18 +57,11 @@ public class KeyCommons
 
 	protected static KeyDefinition mLastKeyDefined = null;
 
-	static boolean mKeyFieldsSetIntCalled = false;
 	static String mLastTag = null;			//Last tag defined
 
 	////////////
 	//Misc
 	////////////
-
-	public static void clearKeys()
-	{
-		mHitboxMap.clear();
-		mKeyDefinitions.clear();
-	}
 
 	//Fun fact: You cannot obtain multiple capture groups when using quantifiers, and java regex does not support recursion. Result: This nonsense.
 	//Matches: ag { Content: {Bottom: com.touchtype.keyboard.e.f.j@ec9390a, Top: {Text: , Label: }}, Area: RectF(0.0025000572, 0.42631578, 0.14750004, 0.6263158) }
@@ -102,14 +97,48 @@ public class KeyCommons
 		return new RectF(values[0], values[1], values[2], values[3] );
 	}
 
-
 	/////////////
 	//Key down
 	/////////////
 
+	private static LinkedList<Integer> getKeyStackForCurrentLayout()
+	{
+		LinkedList<Integer> keyStack = mLayoutKeyStack.get( KeyboardMethods.getCurrentLayoutName() );
+		if (keyStack == null)
+		{
+			keyStack = new LinkedList<>();
+			mLayoutKeyStack.put( KeyboardMethods.getCurrentLayoutName(), keyStack );
+
+		}
+
+		return keyStack;
+	}
+
+	private static void updateKeyStack(KeyDefinition key, Object newSwiftkeyKey)
+	{
+		Integer pointer = System.identityHashCode(newSwiftkeyKey);
+
+		//Sometimes we are fed the same object multiple times, skip.
+		if ( mKeyDefinitions.containsKey( pointer ) )
+			return;
+
+		LinkedList<Integer> keyStack = getKeyStackForCurrentLayout();
+
+		//Prune to 150, starting with oldest.
+		keyStack.add(pointer);
+		if (keyStack.size() > 150)
+		{
+			Integer removedPointer = keyStack.removeFirst();
+			mKeyDefinitions.remove(removedPointer);
+
+		}
+	}
+
 	public static void addKeyDefinition(Object swiftkeyKey, KeyDefinition key)
 	{
+		updateKeyStack(key, swiftkeyKey);
 		mKeyDefinitions.put( System.identityHashCode(swiftkeyKey), key);
+
 	}
 
 	public static void removeKeyDefinition(Object swiftkeyObject)

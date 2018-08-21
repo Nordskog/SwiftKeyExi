@@ -1,5 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -11,7 +13,6 @@ import java.util.concurrent.Future;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
@@ -31,8 +32,6 @@ public class PredictionClassManager
 	//Known classes
 	/////////////
 
-	//protected static Class breadcrumbCandidateWrapperInterfaceClass = null;
-
 
 	/////////////
 	//Unknown classes
@@ -44,15 +43,11 @@ public class PredictionClassManager
 	protected static Class UpdateCandidateTaskClass;
 
 	protected static Class resultTypeEnum;
+	protected static Class CandidateSourceTypeEnum;
 
 
 	protected static Class handleCandidateClass;
 
-
-	protected static Class candidateClickCLass;
-
-
-	//protected static Class canAClass;
 
 	///////////
 	//Fields
@@ -61,7 +56,6 @@ public class PredictionClassManager
 	protected static Field UpdateCandidateTaskClass_FutureField ;
 
 
-	//protected static Field breadcrumbCandidateWrapperInterfaceClass_candidateField;
 
 	///////////
 	//Methods
@@ -69,10 +63,8 @@ public class PredictionClassManager
 
 	protected static Method UpdateCandidateTaskClass_getTopCandidateMethod;
 
-	protected static Constructor candidateClickConstructor;
-	protected static Method candidateOnCLickMethod;
 
-	protected static Method candidateSelectedMethod;
+	protected static Method handleCandidateClass_candidateSelectedMethod;
 
 
 	//////////
@@ -82,6 +74,10 @@ public class PredictionClassManager
 	protected static Object resultTypeEnum_flow;
 	protected static Object resultTypeEnum_flow_success;
 	protected static Object resultTypeEnum_flow_liftoff;
+
+
+
+	protected static Object candidateSourceTypeEnum_candidate_bar;
 
 	/////////////
 	//Misc
@@ -93,7 +89,6 @@ public class PredictionClassManager
 	protected static int updateCandidateDisplayClass_constructor_lastCandidateResultTypeArgPosition = 2;
 
 	protected static int UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition = 1;
-	protected static int UpdateCandidateTaskClass_getTopCandidateMethod_intPosition = 4;
 
 	public static void loadKnownClasses(PackageTree param) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException
 	{
@@ -109,7 +104,8 @@ public class PredictionClassManager
 		resultTypeEnum = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_RESULT_TYPE_ENUM_PROFILE(), param );
 
 
-		candidateClickCLass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_CLICK_CLASS_PROFILE(), param );
+		CandidateSourceTypeEnum = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_CANDIDATE_SOURCE_TYPE_ENUN_PROFILE(), param );
+
 
 		if (updateCandidateDisplayClass != null)
 		{
@@ -130,6 +126,12 @@ public class PredictionClassManager
 			resultTypeEnum_flow_success = CodeUtils.findEnumByName( (Enum[]) resultTypeEnum.getEnumConstants(), "FLOW_SUCCEEDED");
 			resultTypeEnum_flow_liftoff = CodeUtils.findEnumByName( (Enum[]) resultTypeEnum.getEnumConstants(), "FLOW_LIFT_OFF");
 		}
+
+		if (CandidateSourceTypeEnum != null)
+		{
+			candidateSourceTypeEnum_candidate_bar = CodeUtils.findEnumByName( (Enum[]) CandidateSourceTypeEnum.getEnumConstants(), "CANDIDATE_BAR");
+		}
+
 	}
 
 	public static void loadMethods()
@@ -139,14 +141,13 @@ public class PredictionClassManager
 		{
 			UpdateCandidateTaskClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(			new MethodProfile
 					(
-							PRIVATE | EXACT ,
-							new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+							FINAL | EXACT ,
+							new ClassItem(java.util.List.class),
 
-							new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-							new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | FINAL | ENUM | EXACT ),
-							new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem(int.class)
+							new ClassItem("" , PUBLIC | EXACT ),
+							new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+							new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+							new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 					), UpdateCandidateTaskClass.getDeclaredMethods(), UpdateCandidateTaskClass);
 
@@ -154,51 +155,32 @@ public class PredictionClassManager
 			{
 				UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition = ProfileHelpers.findFirstClassIndex( resultTypeEnum, UpdateCandidateTaskClass_getTopCandidateMethod.getParameterTypes() );
 
-				UpdateCandidateTaskClass_getTopCandidateMethod_intPosition= ProfileHelpers.findFirstClassIndex( int.class, UpdateCandidateTaskClass_getTopCandidateMethod.getParameterTypes() );
 			}
-		}
-
-
-		if (candidateClickCLass != null)
-		{
-			candidateClickConstructor = candidateClickCLass.getDeclaredConstructors()[0];
-
-
-			candidateOnCLickMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-							(
-									PUBLIC | EXACT ,
-									new ClassItem(void.class),
-
-									new ClassItem(android.view.View.class),
-									new ClassItem(null, "com.touchtype_fluency.service.candidates.Candidate" ),
-									new ClassItem(int.class)
-							),
-					candidateClickCLass.getDeclaredMethods(), candidateClickCLass);
 		}
 
 		if (handleCandidateClass != null)
 		{
 
-			candidateSelectedMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-					(
-							PUBLIC | EXACT ,
-							new ClassItem(void.class),
+			handleCandidateClass_candidateSelectedMethod = ProfileHelpers.findMostSimilar(new MethodProfile
+							(
+									PUBLIC | FINAL | EXACT ,
+									new ClassItem(void.class),
 
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | EXACT ),
-							new ClassItem(null, "com.touchtype_fluency.service.candidates.Candidate"),
-							new ClassItem("com.touchtype.keyboard." , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem("com\t\t\t\t\t\t\tnew ClassItem(int.class),\n.touchtype.keyboard." , PUBLIC | FINAL | ENUM | EXACT ),
-							new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT )
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+									new ClassItem(int.class)
 
-					),
+							),
 					handleCandidateClass.getDeclaredMethods(), handleCandidateClass);
 
-			if (candidateSelectedMethod != null)
+			if (handleCandidateClass_candidateSelectedMethod != null)
 			{
 				handleCandidateClass_CandidateSelectedMethod_CandidateArgPosition = ProfileHelpers.findFirstClassIndex
 						(
 							new ClassItem(null, "com.touchtype_fluency.service.candidates.Candidate"),
-							candidateSelectedMethod.getParameterTypes(),
+							handleCandidateClass_candidateSelectedMethod.getParameterTypes(),
 							null
 						);
 			}
@@ -249,12 +231,7 @@ public class PredictionClassManager
 		Hooks.logSetRequirement( Hooks.predictionHooks_base,	 "updateCandidateDisplayClass_constructor_lastCandidateResultTypeArgPosition ", 	updateCandidateDisplayClass_constructor_lastCandidateResultTypeArgPosition  != -1 ) ;
 
 		//Priority update
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_priority,	 "candidateSelectedMethod", 	candidateSelectedMethod );
-
-		//More suggestions
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "candidateOnCLickMethod", 	candidateOnCLickMethod );
-
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "candidateClickCLass", 	candidateClickCLass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_priority,	 "handleCandidateClass_candidateSelectedMethod", handleCandidateClass_candidateSelectedMethod);
 
 	}
 	

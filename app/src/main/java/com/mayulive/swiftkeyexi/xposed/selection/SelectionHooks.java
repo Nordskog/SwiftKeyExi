@@ -151,20 +151,64 @@ public class SelectionHooks
 		//flicker as we first get the predictions from the cursor being at the end of the word, then again after we move it back to
 		//where the user actually wanted it.
 
-		//This methof is not called anywhere else.
+		//This used to be its own separate method, but they inlined it at some point.
+		//The new method does a bunch of stuff, and this check is just... in there.
+		//It will not move the cursor if a certain value is -1, so we set that at the beginning of
+		//the method and restore it at the end. I don't think this should affect anything else.
 
 		{
 			return XposedBridge.hookMethod(SelectionClassManager.SelectionChangedInputEventClass_hasMovedAbruptlyMethod, new XC_MethodHook()
 			{
+				int originalValue = 0;
+				boolean valueModified = false;
+
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-					//Call if pointer down on overlay, or <100ms since end of swipe selection event
-					if ( Settings.DISABLE_CURSOR_JUMPING ||
-							(SelectionState.mValidFirstDown || (System.currentTimeMillis() - SelectionState.mSwipeEndTime) < 100 ) )
+					try
 					{
-						param.setResult(false);
+						originalValue = (int) SelectionClassManager.selectionChangedInfoClass_aFirstIntField.get( param.args[1] );
+
+						//Call if pointer down on overlay, or <100ms since end of swipe selection event
+						if ( Settings.DISABLE_CURSOR_JUMPING ||
+								(SelectionState.mValidFirstDown || (System.currentTimeMillis() - SelectionState.mSwipeEndTime) < 100 ) )
+						{
+							//Will force the bit of code we're after to execute in a certain way, without affecting the rest.
+							//Rest in after hook.
+							SelectionClassManager.selectionChangedInfoClass_aFirstIntField.set( param.args[1], -1 );
+							valueModified = true;
+						}
+						else
+						{
+							valueModified = false;
+						}
 					}
+					catch ( Throwable ex)
+					{
+						Hooks.selectionHooks_movedAbruptly.invalidate(ex, "Something went wrong intercepting cursor moved abruptly event");
+					}
+
+
+				}
+
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					try
+					{
+						//Call if pointer down on overlay, or <100ms since end of swipe selection event
+						if (valueModified)
+						{
+							SelectionClassManager.selectionChangedInfoClass_aFirstIntField.set( param.args[1], originalValue );
+							valueModified = false;
+						}
+					}
+					catch  (Throwable ex)
+					{
+						Hooks.selectionHooks_movedAbruptly.invalidate(ex, "Something went wrong intercepting cursor moved abruptly event, the sequel.");
+					}
+
+
 				}
 			});
 		}
@@ -212,7 +256,7 @@ public class SelectionHooks
 
 					//Prevent swiftkey from moving cursor to end of word
 					//Not a requirement, and may be null
-					if (SelectionClassManager.SelectionChangedInputEventClass_hasMovedAbruptlyMethod != null)
+					if ( Hooks.selectionHooks_movedAbruptly.isRequirementsMet() )
 					{
 						hookSelectionChangedEvent();
 					}

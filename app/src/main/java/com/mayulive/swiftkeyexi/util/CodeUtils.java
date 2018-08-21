@@ -90,7 +90,7 @@ public class CodeUtils
 		}
 
 
-		Log.i(LOGTAG,depthIndent + className+", ID: "+viewIdName );
+		Log.i(LOGTAG,depthIndent + className+", ID: "+viewIdName+", Viz: "+getVisibility(view) );
 
 
 
@@ -150,6 +150,30 @@ public class CodeUtils
 		return builder.toString();
 
 
+	}
+
+	public static String getVisibility(View view)
+	{
+		if (view == null)
+			return "null";
+
+		switch(view.getVisibility())
+		{
+			case View.VISIBLE:
+			{
+				return "VISIBLE";
+			}
+			case View.INVISIBLE:
+			{
+				return "IN-INVISIBLE";
+			}
+			case View.GONE:
+			{
+				return "GONE";
+			}
+		};
+
+		return "null";
 	}
 
 	public static void traverseLayout(View rootView, int depth)

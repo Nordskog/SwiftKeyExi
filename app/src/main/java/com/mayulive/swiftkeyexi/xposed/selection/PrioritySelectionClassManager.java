@@ -1,6 +1,10 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
+import android.util.Log;
+
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.swiftkeyexi.xposed.key.KeyClassManager;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
@@ -11,6 +15,7 @@ import java.lang.reflect.Method;
 
 import static com.mayulive.xposed.classhunter.Modifiers.ABSTRACT;
 import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
+import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
 import static com.mayulive.xposed.classhunter.Modifiers.INTERFACE;
 import static com.mayulive.xposed.classhunter.Modifiers.PRIVATE;
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
@@ -18,6 +23,8 @@ import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 
 public class PrioritySelectionClassManager
 {
+
+	private static String LOGTAG = ExiModule.getLogTag(PrioritySelectionClassManager.class);
 
 
 	protected static Method frameHolderFactoryClass_frameHolderInflaterMethod = null;
@@ -43,11 +50,12 @@ public class PrioritySelectionClassManager
 									new ClassItem(void.class),
 
 									new ClassItem(android.view.View.class),
-									new ClassItem("com.touchtype.keyboard." , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype.keyboard.expandedcandidate." , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype.keyboard.expandedcandidate." , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem(int.class),
-									new ClassItem("com.touchtype.keyboard.candidates.view." , PUBLIC | EXACT )
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 							),
 					PrioritySelectionClassManager.frameHolderFactoryClass.getDeclaredMethods(), PrioritySelectionClassManager.frameHolderFactoryClass);

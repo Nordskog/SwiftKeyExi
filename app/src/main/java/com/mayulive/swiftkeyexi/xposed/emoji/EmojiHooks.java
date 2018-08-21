@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.main.emoji.EmojiCommons;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiModifiersPopup;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
@@ -260,7 +259,12 @@ public class EmojiHooks
 								backParams.addRule(RelativeLayout.ALIGN_BOTTOM, EmojiHookCommons.mOuterTabsWrapper.getId());
 								emojiBackView.setLayoutParams(backParams);
 							}
+
+							//Update the toolbar background
+							StyleCommons.updateRaisedBackground();
 						}
+
+
 					}
 					catch (Throwable ex)
 					{
@@ -449,39 +453,64 @@ public class EmojiHooks
 		return returnSet;
 	}
 
-	public static XC_MethodHook.Unhook hookGifSafesearch( PackageTree param) throws NoSuchMethodException
+	private static String lastAuthority = null;
+
+	public static Set<XC_MethodHook.Unhook> hookGifSafesearch( PackageTree param) throws NoSuchMethodException
 	{
 
-		return XposedBridge.hookMethod( EmojiClassManager.gifUrlQueryClass_createQueryMethod, new XC_MethodHook()
+
+		HashSet<XC_MethodHook.Unhook> returnSet = new HashSet<>();
+
+		returnSet.add(XposedBridge.hookMethod( EmojiClassManager.uriBuilderSetAuthorityMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param)
 			{
 
-				Object result = null;
-				Method superMethod = (Method)param.method;
-				try
-				{
-
-				Object[] args = param.args;
-
-				if (Settings.DISPLAY_NSFW_GIFS)
-					args[3] ="Off";
-
-				if (Settings.DISPLAY_GIFS_FROM_MORE_SOURCES)
-					args[4] = "All";
-
-					result = superMethod.invoke(param.thisObject, args);
-				}
-				catch ( Throwable ex)
-				{
-					Hooks.gifHooksNSFW.invalidate(ex, "Something went wrong changing gif safesearch value");
-				}
-
-				if (result != null)
-					param.setResult(result);
+				lastAuthority = (String)param.args[0];
 			}
-		});
+		}));
+
+
+		returnSet.add(XposedBridge.hookMethod( EmojiClassManager.uriBuilderAppendParameterMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param)
+			{
+				if (Settings.DISPLAY_NSFW_GIFS || Settings.DISPLAY_GIFS_FROM_MORE_SOURCES)
+				{
+					try
+					{
+						String parameter = (String)param.args[0];
+
+						boolean isSafeSearch = Settings.DISPLAY_NSFW_GIFS 			&& 	parameter.equals("safeSearch");
+						boolean isLicense = Settings.DISPLAY_GIFS_FROM_MORE_SOURCES && 	parameter.equals("license");
+
+						if ( (isLicense || isSafeSearch ) && lastAuthority != null && lastAuthority.equals("www.bingapis.com"))
+						{
+							Object[] newArgs = param.args;
+							if (isSafeSearch)
+								newArgs[1] ="Off";
+
+							if (isLicense)
+								newArgs[1] ="All";
+
+							Method superMethod = (Method)param.method;
+							Object result = superMethod.invoke(param.thisObject, newArgs);
+							param.setResult(result);
+						}
+					}
+					catch ( Throwable ex)
+					{
+						Hooks.gifHooksNSFW.invalidate(ex, "Something went wrong changing gif safesearch value");
+						ex.printStackTrace();
+					}
+				}
+
+			}
+		}));
+
+		return returnSet;
 
 	}
 
@@ -526,16 +555,16 @@ public class EmojiHooks
 					}
 
 					@Override
+					public void afterKeyboardOpened()
+					{
+
+					}
+
+					@Override
 					public void beforeKeyboardClosed()
 					{
 						//EmojiCommons.saveRecents();
 						//Handled by shared thread in loadpacakgehook
-					}
-
-					@Override
-					public void keyboardInvalidated()
-					{
-
 					}
 
 
@@ -570,7 +599,7 @@ public class EmojiHooks
 			{
 				if (Hooks.gifHooksNSFW.isRequirementsMet())
 				{
-					Hooks.gifHooksNSFW.add(hookGifSafesearch(param));
+					Hooks.gifHooksNSFW.addAll(hookGifSafesearch(param));
 				}
 			}
 			catch(Throwable ex)

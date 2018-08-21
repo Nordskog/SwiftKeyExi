@@ -46,10 +46,10 @@ public class Hooks
 	public static HookCategory predictionHooks_candidate = new HookCategory("PredictionHooks Candidate", predictionHooks_base);
 
 	//Selection
-	public static HookCategory selectionHooks_base = new HookCategory("SelectionHooks");
+	public static HookCategory selectionHooks_movedAbruptly = new HookCategory("selectionHooks_movedAbruptly");
+	public static HookCategory selectionHooks_base = new HookCategory("SelectionHooks", selectionHooks_movedAbruptly);
 
 	//Popups
-	public static HookCategory popupHooks_delay = new HookCategory("PopupHooks Delay");
 	public static HookCategory popupHooks_cancel = new HookCategory("PopupHooks Cancel", selectionHooks_base);
 	public static HookCategory popupHooks_modify = new HookCategory("PopupHooks Modify");
 	public static HookCategory popupHooks_read = new HookCategory("PopupHooks Read", popupHooks_modify);
@@ -73,8 +73,12 @@ public class Hooks
 	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 	public static HookCategory baseHooks_keyHeight = new HookCategory("KeyboardHooks keyHeight");
 
+
+	public static HookCategory baseHooks_toolbarButton = new HookCategory("KeyboardHooks toolbarButton");
+	public static HookCategory baseHooks_hidePredictions = new HookCategory("KeyboardHooks baseHooks_hidePredictions");
+
+
 	//Style
-	public static HookCategory styleHooks_raisedbg = new HookCategory("StyleHooks RasiedBG");
 	public static HookCategory styleHooks_darklight = new HookCategory("StyleHooks Darklight");
 
 	//Sound
@@ -90,12 +94,13 @@ public class Hooks
 																						emojiHooks_base,
 																						predictionHooks_base,
 																						baseHooks_punctuationSpace,
-																						styleHooks_raisedbg,
 																						styleHooks_darklight,
 																						soundHooks_base,
 																						baseHooks_fullscreenMode,
 																						baseHooks_keyHeight,
-																						hardwareKeys_base
+																						hardwareKeys_base,
+																						baseHooks_toolbarButton,
+																						baseHooks_hidePredictions
 	);
 
 	//Convenience method for checking requirement and logging on failure
@@ -119,7 +124,7 @@ public class Hooks
 
 	public static void handleProgress(WorkTimer timer, String thing, final int progressPercentage)
 	{
-		Log.i(LOGTAG,"Elapsed for "+thing+": "+timer.getElapsedAndReset());
+		Log.i(LOGTAG,"Elapsed for "+thing+": "+(timer.getElapsedAndReset() / 1000f) +" seconds" );
 		handler.post(new Runnable()
 		{
 			@Override
@@ -216,6 +221,12 @@ public class Hooks
 						}
 
 						@Override
+						public void afterKeyboardOpened()
+						{
+
+						}
+
+						@Override
 						public void beforeKeyboardClosed()
 						{
 							AsyncTask.execute(new Runnable()
@@ -230,7 +241,6 @@ public class Hooks
 										//They shouldn't fail, but if they do it won't be a disaster.
 										//What would be a disaster is them crashing swiftkey in the process.
 										PredictionCommons.savePriority();
-										EmojiHookCommons.saveRecents();
 									}
 									catch (Exception ex)
 									{
@@ -241,12 +251,6 @@ public class Hooks
 
 								}
 							});
-						}
-
-						@Override
-						public void keyboardInvalidated()
-						{
-
 						}
 
 						@Override
@@ -268,24 +272,16 @@ public class Hooks
 				});
 
 				Log.i(LOGTAG, "Finished async setup");
+				Log.i(LOGTAG, "Total time elapsed: "+(timer.getTotal() / 1000f)+" seconds");
 
 			}
 		};
 
+		//Used to be async, caused too many problems.
+		//Maybe cleanup one of these days.
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-		{
-			//Run on main thread on oreo and later.
-			//Xposed bug causes async setup to sometimes fail.
-			asyncSetup.run();
-		}
-		else
-		{
-			//Async on separate thread on nougat and below.
-			Thread thread = new Thread( asyncSetup );
-			thread.start();
-		}
-
+		asyncSetup.run();
+		handleProgress(timer, "Total", 100);
 
 	}
 

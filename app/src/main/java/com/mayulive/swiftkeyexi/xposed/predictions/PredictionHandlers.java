@@ -1,6 +1,8 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Vibrator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,9 +17,11 @@ import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
+import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 
 import java.lang.ref.WeakReference;
+import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -72,8 +76,10 @@ public class PredictionHandlers
 		}
 	}
 
+	@SuppressLint("MissingPermission")
 	public static void handleCandidateViewHook_replace(ViewGroup childFrame)
 	{
+
 		if (candidateViewArgs == null)
 		{
 			Log.e(LOGTAG, "Expeceted candidateViewArgs to be popuplated, cannot create candidate views");
@@ -215,24 +221,31 @@ public class PredictionHandlers
 						{
 							try
 							{
-								Object candidateClickListener;
-								int paramCount = PredictionClassManager.candidateClickConstructor.getParameterTypes().length;
-								if ( paramCount == 4 )
+								Object[] args = new Object[4];
+								args[0] = PriorityPredictionsClassManager.hpeClass_constructor.newInstance();
+								args[1] = holder.source;	//Apparently this is the candidate?
+								args[2] = PredictionClassManager.candidateSourceTypeEnum_candidate_bar;
+								args[3] = 0;
+
+								PriorityPredictionsClassManager.buClass_submitCandidateMethod.invoke( PriorityPredictionsClassManager.buInstance, args );
+
+								//Nested tries!
+								try
 								{
-									candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(PriorityPredictionsClassManager.buInstance,null,null,null);
+									//We used to create a click listener which would do this for us, but now we call the submit method directly.
+									Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
+									v.vibrate(25);
 								}
-								else // >= 7.0.5.22
+								catch (Throwable ex)
 								{
-									candidateClickListener = PredictionClassManager.candidateClickConstructor.newInstance(	holder.view.getContext(),
-																																		PriorityPredictionsClassManager.KeyboardUxOptionsInstance,
-																																		PriorityPredictionsClassManager.buInstance,null,null,null);
+									Log.i(LOGTAG, "Emoji click vibrate failed, super weird.");
+									ex.printStackTrace();
 								}
-								PredictionClassManager.candidateOnCLickMethod.invoke(candidateClickListener, holder.view, holder.source, 0);
+
 							}
 							catch ( Throwable e)
 							{
-								Log.i(LOGTAG, "Failed to invoke onclick, method was: "+PredictionClassManager.candidateOnCLickMethod.toString());
-								Log.i(LOGTAG, "Listener class was: "+PredictionClassManager.candidateClickConstructor.toString());
+								Log.i(LOGTAG, "Failed to invoke onclick, method was: "+PriorityPredictionsClassManager.buClass_submitCandidateMethod.toString());
 								e.printStackTrace();
 							}
 						}
@@ -242,6 +255,8 @@ public class PredictionHandlers
 						}
 					}
 				});
+
+
 
 
 

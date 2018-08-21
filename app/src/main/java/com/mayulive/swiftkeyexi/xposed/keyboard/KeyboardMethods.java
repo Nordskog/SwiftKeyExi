@@ -2,14 +2,19 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
+import com.mayulive.swiftkeyexi.xposed.Hooks;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +38,8 @@ public class KeyboardMethods
 	protected static boolean mLayoutIsWeird = false;
 	protected static boolean mLayoutIsExtendedPredictions = false;	//Assume false if we have a hook failure or something
 	protected static boolean mIsSymbols = false;
+
+	protected static ExiIconView mToolbarButton = null;
 
 	protected static PunctuationRuleMode mActivePunctuationMode = PunctuationRuleMode.STOCK;
 
@@ -72,6 +79,21 @@ public class KeyboardMethods
 		}
 	}
 
+	public static void updateToolbarButtonColor(int theme)
+	{
+		if (mToolbarButton != null)
+		{
+			if (theme == SharedTheme.DARK_THEME_IDENTIFIER )
+			{
+				mToolbarButton.setIconColor(Color.WHITE);
+			}
+			else if ( theme == SharedTheme.LIGHT_THEME_IDENTIFIER )
+			{
+				mToolbarButton.setIconColor(Color.DKGRAY);
+			}
+		}
+	}
+
 	public static String getCurrentLayoutName()
 	{
 		return mCurrentLayoutName;
@@ -90,8 +112,8 @@ public class KeyboardMethods
 	public interface KeyboardEventListener
 	{
 		void beforeKeyboardOpened();
+		void afterKeyboardOpened();
 		void beforeKeyboardClosed();
-		void keyboardInvalidated();
 		void afterKeyboardConfigurationChanged();
 	}
 
@@ -173,16 +195,113 @@ public class KeyboardMethods
 		mKeyboardReloadLastRequested = time;
 	}
 
+
+	public static boolean loadPunctuationRules()
+	{
+		return KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
+						KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
+				false );
+	}
+
+
+	public static void updateHidePredictionBarAndPadKeyboardTop( View rootView )
+	{
+
+
+		//Once activated even once, we have to do all this work to make sure visibility is restored.
+		//It's a lot of work though, so we want to avoid doing it if the option has never been enabled.
+		if ( !Settings.everActivated_HIDE_PREDICTIONS_BAR)
+		{
+			return;
+		}
+
+
+		//This is called from a lot of places where things might have changed.
+		//Make sure the hook is event active.
+		if (!Hooks.baseHooks_hidePredictions.isRequirementsMet())
+		{
+			return;
+		}
+
+		try
+		{
+
+			int candidatesId = rootView.getContext().getResources().getIdentifier("ribbon_model_tracking_frame", "id", ExiXposed.HOOK_PACKAGE_NAME);
+			int keyboardId = rootView.getContext().getResources().getIdentifier("keyboard_frame_holder", "id", ExiXposed.HOOK_PACKAGE_NAME);
+
+			{
+				ViewGroup targetView = rootView.findViewById(candidatesId);
+				if (targetView != null)
+				{
+					if (Settings.HIDE_PREDICTIONS_BAR)
+					{
+						targetView.setVisibility(View.GONE);
+					}
+					else
+					{
+						targetView.setVisibility(View.VISIBLE);
+					}
+				}
+			}
+
+
+			{
+				ViewGroup targetView = rootView.findViewById(keyboardId);
+				if (targetView != null)
+				{
+
+					//With the predictions bar removed, the open-toolbar button ends superimposed ontop of the keyboard.
+					//We add a bit of padding ontop of the keyboard input section for it to live in.
+					//In another hook we crop and resize the button so that it matches this.
+
+					if (Settings.HIDE_PREDICTIONS_BAR)
+					{
+						targetView.setPadding(
+								0,
+								(int) DimenUtils.calculatePixelFromDp(targetView.getContext(), 18),
+								0,
+								0);
+					}
+					else
+					{
+						if (targetView.getPaddingTop() != 0)
+						{
+							targetView.setPadding(
+									0,
+									0,
+									0,
+									0 );
+						}
+					}
+
+				}
+
+			}
+
+
+		}
+		catch ( Throwable ex)
+		{
+			Log.e(LOGTAG, "Something went wrong hiding predictions bar");
+			ex.printStackTrace();
+		}
+
+	}
+
 	public static boolean loadPunctuationRules(PunctuationRuleMode mode, boolean force)
 	{
 		//Don't bother changing if mode already matches
 		if (mode != mActivePunctuationMode || force)
 		{
-			mActivePunctuationMode = mode;
 
 			//PunctuatorImpl instance must be present
 			if (PriorityKeyboardClassManager.punctuatorImplInstance != null)
 			{
+
+				//Do not update active mode if we were unable to set it
+				//In that scenario we will also be calling this method when we set the instance
+				mActivePunctuationMode = mode;
+
 				try
 				{
 					PriorityKeyboardClassManager.punctuatorImplClass_ClearRulesMethod.invoke(PriorityKeyboardClassManager.punctuatorImplInstance);

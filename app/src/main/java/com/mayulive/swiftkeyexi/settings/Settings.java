@@ -30,11 +30,13 @@ public class Settings
 
 	private static ArrayList<OnSettingsUpdatedListener> mSettingsUpdatedListeners = new ArrayList<>();
 
-	private static boolean mFirstUpdateRun = false;
+	//////////////////////////
+	// Settings
+	//////////////////////////
 
-	//These should be considered read-only for any external class
+
 	public static boolean DICTIONARY_ENABLED = true;
-	//public static boolean LONGPRESS_BUTTON_INSERTION_ENABLED = true;
+
 	public static boolean SHORTCUT_KEYS_ENABLED = true;
 	public static boolean EMOJI_PANEL_ENABLED = true;
 
@@ -91,9 +93,6 @@ public class Settings
 
 	public static boolean DISABLE_PUNCTUATION_AUTO_SPACE = false;
 
-	//We want to keep track of some settings, specifically to make changes when they change
-	public static boolean changed_REMOVE_SUGGESTIONS_PADDING = true;
-	public static boolean changed_EMOJI_TEXT_RESOURCE = true;
 
 	//Set to true if any setting that requires a realod of the keyboard is changed
 	public static boolean request_KEYBOARD_RELOAD = false;
@@ -102,6 +101,27 @@ public class Settings
 	public static float KEYBOARD_OPACITY = 1f;
 
 	public static boolean SWIPE_RTL_MODE_ENABLED = true;
+
+	public static boolean DISPLAY_TOOLBAR_SHORTCUT = false;
+
+	public static boolean HIDE_PREDICTIONS_BAR = false;
+
+
+	///////////////////////
+	// Settings changed
+	///////////////////////
+
+	//We want to keep track of some settings, specifically to make changes when they change
+	public static boolean changed_REMOVE_SUGGESTIONS_PADDING = true;
+	public static boolean changed_EMOJI_TEXT_RESOURCE = true;
+	public static boolean changed_HIDE_PREDICTIONS_BAR = true;
+
+	///////////////////////
+	// Ever modified
+	///////////////////////
+
+	//If never enabled, we do not need to perform the work required when disabling it.
+	public static boolean everActivated_HIDE_PREDICTIONS_BAR = false;
 
 
 	public static void loadSettings(SharedPreferences prefs)
@@ -206,10 +226,22 @@ public class Settings
 				KeyboardMethods.forceKeyboardResize();
 			}
 
-		}
+	}
 
 		//Value is int 0 to 100, convert to 0-1f
 		KEYBOARD_OPACITY = ( (float)prefs.getInt(PreferenceConstants.pref_keyboard_opacity_key, 100) / (float)100  ) ;
+
+		DISPLAY_TOOLBAR_SHORTCUT = prefs.getBoolean(PreferenceConstants.pref_toolbar_button_key, false);
+
+		{
+			boolean originalValue = HIDE_PREDICTIONS_BAR;
+			HIDE_PREDICTIONS_BAR = prefs.getBoolean(PreferenceConstants.pref_hide_predictions_key, false);
+			if (originalValue != HIDE_PREDICTIONS_BAR)
+				changed_HIDE_PREDICTIONS_BAR = true;
+
+			everActivated_HIDE_PREDICTIONS_BAR = everActivated_HIDE_PREDICTIONS_BAR || HIDE_PREDICTIONS_BAR;
+		}
+
 
 		checkSettingRequirements();
 	}

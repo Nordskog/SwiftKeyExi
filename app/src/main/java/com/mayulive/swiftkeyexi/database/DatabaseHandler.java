@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
 	private static String LOGTAG = ExiModule.getLogTag(DatabaseHandler.class);
 
-	public static final int DATABASE_VERSION = 5;
+	public static final int DATABASE_VERSION = 6;
 	public static final String DATABASE_NAME = "exi_main.db";
 
 	private SQLiteDatabase mDb = null;
@@ -209,6 +209,52 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					//////////////////////////
 					query = "CREATE TABLE " + TableInfoTemplates.REMAPPED_HARDWAREKEYS_TABLE_INFO.tableName + TableInfoTemplates.REMAPPED_HARDWAREKEYS_TABLE_INFO.tableDefinition;
 					db.execSQL(query);
+
+					break;
+				}
+
+				case 5:
+				{
+					Log.i(LOGTAG, "upgrading to: "+presentVersion+1);
+
+					String query = "";
+
+					//Add modifiers supported column to emoji lists.
+					//Since the projection has changed we can't use the usual simplified databaseitem interface
+					Cursor c = db.query(
+							TableInfoTemplates.EMOJI_DICTIONARY_PANEL_TABLE_INFO.tableName,
+							new String[]{DB_EmojiPanelItem.EmojiPanelContract.ITEMS_TABLE_COLUMN},
+							null,
+							null,
+							null,
+							null,
+							null
+					);
+
+					List<String> tableNames = CursorUtils.getStringsFromCursor(c);
+					c.close();
+					for (String item : tableNames)
+					{
+						query = "ALTER TABLE "+item+" ADD COLUMN "+ DB_EmojiItem.EmojiEntry.LAST_CHANGE_COLUMN+" INTEGER DEFAULT 0";
+						db.execSQL(query);
+					}
+
+					c = db.query(
+							TableInfoTemplates.EMOJI_KEYBOARD_PANEL_TABLE_INFO.tableName,
+							new String[]{DB_EmojiPanelItem.EmojiPanelContract.ITEMS_TABLE_COLUMN},
+							null,
+							null,
+							null,
+							null,
+							null
+					);
+					tableNames = CursorUtils.getStringsFromCursor(c);
+					c.close();
+					for (String item : tableNames)
+					{
+						query = "ALTER TABLE "+item+" ADD COLUMN "+ DB_EmojiItem.EmojiEntry.LAST_CHANGE_COLUMN+" INTEGER DEFAULT 0";
+						db.execSQL(query);
+					}
 
 					break;
 				}

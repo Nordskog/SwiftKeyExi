@@ -1,10 +1,9 @@
 package com.mayulive.swiftkeyexi.xposed.emoji;
 
-import android.util.Log;
+import android.net.Uri;
 
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
@@ -12,7 +11,8 @@ import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.List;
+
+import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 
 
 public class EmojiClassManager 
@@ -27,13 +27,15 @@ public class EmojiClassManager
 	//Unknown classes
 	/////////////////
 
-	protected static Class gifUrlQueryClass = null;
 
 	/////////////////
 	//Methods
 	/////////////////
 
-	protected static Method gifUrlQueryClass_createQueryMethod = null;
+	protected static Method uriBuilderAppendParameterMethod = null;
+
+	protected static Method uriBuilderSetAuthorityMethod = null;
+
 
 
 	protected static Method emojiPanel_staticConstructorMethod = null;
@@ -45,7 +47,7 @@ public class EmojiClassManager
 
 	protected static void loadUnknownClasses(PackageTree param)
 	{
-		gifUrlQueryClass = ProfileHelpers.loadProfiledClass(EmojiProfiles.get_GIF_URL_QUERY_CLASS_PROFILE(), param);
+
 	}
 
 
@@ -57,24 +59,18 @@ public class EmojiClassManager
 			emojiPanel_staticConstructorMethod.setAccessible(true);
 		}
 
-		if (gifUrlQueryClass != null)
-		{
-			gifUrlQueryClass_createQueryMethod = ProfileHelpers.findMostSimilar(	new MethodProfile
-					(
-							Modifiers.PUBLIC | Modifiers.EXACT ,
-							new ClassItem(java.lang.String.class),
 
-							new ClassItem(java.lang.String.class),
-							new ClassItem(java.lang.String.class),
-							new ClassItem(java.lang.String.class),
-							new ClassItem(java.lang.String.class),	// "Moderate"
-							new ClassItem(java.lang.String.class),
-							new ClassItem(int.class),
-							new ClassItem(int.class),
-							new ClassItem(int.class)
+		uriBuilderAppendParameterMethod = ProfileHelpers.firstMethodByName(android.net.Uri.Builder.class.getDeclaredMethods(), "appendQueryParameter");
 
-					), gifUrlQueryClass.getDeclaredMethods(), gifUrlQueryClass);
-		}
+
+		uriBuilderSetAuthorityMethod  = ProfileHelpers.findFirstMatchingMethodWithName(new MethodProfile(
+						PUBLIC,
+						new ClassItem(Uri.Builder.class),
+						new ClassItem(String.class)
+				),
+				Uri.Builder.class.getDeclaredMethods(), Uri.Builder.class, "authority");
+
+
 	}
 
 	protected static void doAllTheThings(PackageTree param) throws IOException, NoSuchFieldException, NoSuchMethodException
@@ -91,8 +87,8 @@ public class EmojiClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.emojiHooks_base,	 "emojiPanelClass", 	emojiPanelClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.emojiHooks_base,	 "emojiPanel_staticConstructorMethod", 	emojiPanel_staticConstructorMethod );
 
-		Hooks.logSetRequirementFalseIfNull( Hooks.gifHooksNSFW,	 "gifUrlQueryClass", 	gifUrlQueryClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.gifHooksNSFW,	 "gifUrlQueryClass_createQueryMethod", 	gifUrlQueryClass_createQueryMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.gifHooksNSFW,	 "uriBuilderAppendParameterMethod", uriBuilderAppendParameterMethod);
+		Hooks.logSetRequirementFalseIfNull( Hooks.gifHooksNSFW,	 "uriBuilderAppendParameterMethod", uriBuilderSetAuthorityMethod);
 	}
 
 }

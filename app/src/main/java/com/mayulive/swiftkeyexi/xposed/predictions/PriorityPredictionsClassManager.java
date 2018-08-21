@@ -2,6 +2,7 @@ package com.mayulive.swiftkeyexi.xposed.predictions;
 
 import android.widget.LinearLayout;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
@@ -19,20 +20,24 @@ import java.lang.reflect.Method;
 import de.robv.android.xposed.XposedHelpers;
 
 import static com.mayulive.xposed.classhunter.Modifiers.ABSTRACT;
+import static com.mayulive.xposed.classhunter.Modifiers.ENUM;
 import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
 import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
 import static com.mayulive.xposed.classhunter.Modifiers.INTERFACE;
-import static com.mayulive.xposed.classhunter.Modifiers.PRIVATE;
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 import static com.mayulive.xposed.classhunter.Modifiers.STATIC;
 
 public class PriorityPredictionsClassManager
 {
+
+	private static String LOGTAG = ExiModule.getLogTag(PriorityPredictionsClassManager.class);
+
+
 	public static Class candidatesViewFactory;
 	protected static Class candidateViewClass;
-	protected static Class KeyboardUxOptionsInterfaceClass;
 	protected static Class keyboardFrameClass;
 	protected static Class buClass = null;
+	protected static Class hpeClass = null;
 
 	protected static Constructor candidateViewClass_Constructor;
 	public static Method candidatesViewFactory_getViewMethod;
@@ -42,14 +47,16 @@ public class PriorityPredictionsClassManager
 	protected static Method keyboardFrameClass_setBuMethod;
 	protected static Field keyboardFrameClass_buField;
 
+	protected static Method buClass_submitCandidateMethod;
+
+	protected static Constructor hpeClass_constructor;
+
 	public static int candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition = 1;
 	protected static int[] getViewMethod_CandidateViewClassConstructorArgPositions;
 	protected static int getViewMethod_EnumArgPosition;
 	protected static int getViewMethod_BooleanArgPosition = 5;
-	protected static int keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition = -1;	//Will check if not found
 
 	protected static Object buInstance = null;
-	protected static Object KeyboardUxOptionsInstance = null;
 
 
 	public static void loadKnownClasses(PackageTree param) throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException
@@ -62,18 +69,37 @@ public class PriorityPredictionsClassManager
 
 	public static void loadUnknownClasses(PackageTree param)
 	{
-		PriorityPredictionsClassManager.candidateViewClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_VIEW_CLASS_PROFILE(), param );
+		PriorityPredictionsClassManager.candidateViewClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_CANDIDATE_VIEW_CLASS_PROFILE(), param );
 
-		//Targets >= 6.6.7.24
 		PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE(), param );
 
 		PriorityPredictionsClassManager.buClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_BU_CLASS_PROFILE(), param );
-
-		PriorityPredictionsClassManager.KeyboardUxOptionsInterfaceClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_KEYBOARD_UX_OPTIONS_INTERFACE_PROFILE(), param );
 	}
 
 	public static void loadMethods() throws NoSuchMethodException
 	{
+
+		if (buClass != null)
+		{
+			buClass_submitCandidateMethod =  ProfileHelpers.findMostSimilar(		new MethodProfile
+							(
+									PUBLIC | ABSTRACT | EXACT ,
+									new ClassItem(void.class),
+
+									new ClassItem("" , PUBLIC | EXACT ),
+									new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+									new ClassItem(int.class)
+
+							),
+					buClass.getDeclaredMethods(), buClass);
+
+			hpeClass = buClass_submitCandidateMethod.getParameterTypes()[0];	//Some class we need as first param
+			hpeClass_constructor = hpeClass.getConstructors()[0];	//No arguments
+
+		}
+
+
 		if (PriorityPredictionsClassManager.candidatesViewFactory != null)
 		{
 
@@ -84,31 +110,32 @@ public class PriorityPredictionsClassManager
 
 			PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
 							(
-									PRIVATE | STATIC | EXACT ,
-									new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									PUBLIC | STATIC | EXACT ,
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 									new ClassItem(android.content.Context.class),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard.candidates" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem(int.class),
 									new ClassItem(int.class),
-									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem(android.view.View.class),
-									new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view.fancy.emoji" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard.candidates.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs.searchbox" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view.quicksettings" , PUBLIC | FINAL | EXACT )
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
 
 							),
 					PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
@@ -121,7 +148,11 @@ public class PriorityPredictionsClassManager
 									new ClassItem(android.content.Context.class),
 									new ClassItem(android.widget.LinearLayout.class),
 									new ClassItem(android.view.View.class),
-									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT )
+
 							),
 					PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
 
@@ -150,27 +181,22 @@ public class PriorityPredictionsClassManager
 		{
 			PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod = ProfileHelpers.findMostSimilar(	new MethodProfile
 							(
-									PUBLIC | EXACT ,
+									PUBLIC | FINAL | EXACT ,
 									new ClassItem(void.class),
 
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.telemetry" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),	//ba
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype.keyboard.view.frames" , PUBLIC | FINAL | EXACT )
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 							),
 					PriorityPredictionsClassManager.keyboardFrameClass.getDeclaredMethods(), PriorityPredictionsClassManager.keyboardFrameClass);
-
-			PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition = ProfileHelpers.findFirstClassIndex(
-					PriorityPredictionsClassManager.KeyboardUxOptionsInterfaceClass,
-					PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod.getParameterTypes() );
 		}
 
 	}
@@ -212,7 +238,6 @@ public class PriorityPredictionsClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "keyboardFrameClass_setBuMethod", 	PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "buClass", 	PriorityPredictionsClassManager.buClass );
 
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_more,	 "KeyboardUxOptionsInterfaceClass", 	PriorityPredictionsClassManager.KeyboardUxOptionsInterfaceClass );
 
 		Hooks.logSetRequirement( Hooks.predictionHooks_more,	 "getViewMethod_EnumArgPosition", PriorityPredictionsClassManager.getViewMethod_EnumArgPosition != -1 ) ;
 

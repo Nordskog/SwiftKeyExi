@@ -90,4 +90,8 @@ public class PreferenceConstants
 	public static final String pref_swipe_rtl_mode_key = "pref_swipe_rtl_mode";
 
 	public static final String pref_swipe_direction_any_key = "pref_swipe_direction_any";
+
+	public static final String pref_toolbar_button_key = "pref_toolbar_button";
+
+	public static final String pref_hide_predictions_key = "pref_hide_predictions";
 }

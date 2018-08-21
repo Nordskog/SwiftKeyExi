@@ -42,10 +42,11 @@ public class PopupkeysClassManager
 	protected static Class keyLongPressPopupConfigureClass = null;
 	protected static Class keyRawDefinitionInputClass = null;
 
+	protected static Class extraKeyPopupRunnableContainerClass = null;
 	protected static Class extraKeyPopupRunnableClass = null;
+
 	protected static Class btSubClass = null;
 
-	protected static Class popupSchedulerClass = null;
 
 	public static Class keyConfigureClass = null;
 
@@ -60,7 +61,6 @@ public class PopupkeysClassManager
 
 	protected static Method btSubClass_getProperOrderMethod = null;
 
-	protected static Method popupScheduler_schedulePopupMethod = null;
 
 	////////////
 	//Fields
@@ -80,16 +80,14 @@ public class PopupkeysClassManager
 	private static void loadUnknownClasses(PackageTree param) throws IOException
 	{
 
-		popupSchedulerClass = ProfileHelpers.loadProfiledClass(PopupkeyProfiles._get_POPUP_SCHEDULER_CLASS_PROFILE(), param );
-
-
-		extraKeyPopupRunnableClass = 		ProfileHelpers.loadProfiledClass( PopupkeyProfiles._get_EXTRA_KEY_POPUP_RUNNABLE_PROFILE(), param);
+		//Daisy-chain profiles
+		extraKeyPopupRunnableContainerClass = ProfileHelpers.loadProfiledClass( PopupkeyProfiles._get_EXTRA_KEY_POPUP_RUNNABLE_CONTAINER_PROFILE(), param);
+		extraKeyPopupRunnableClass =  ProfileHelpers.loadProfiledClass( PopupkeyProfiles._get_EXTRA_KEY_POPUP_RUNNABLE_PROFILE( extraKeyPopupRunnableContainerClass ), param);
 
 		keyLongPressPopupConfigureClass = ProfileHelpers.loadProfiledClass( PopupkeyProfiles.get_KEY_LONGPRESS_POPUP_CONFIGURE_PROFILE(), param);
 
 
 		{
-			//btSubClass = XposedHelpers.findClassIfExists("com.touchtype.keyboard.bt.a", classLoader);
 			btSubClass = keyLongPressPopupConfigureClass.getDeclaredClasses()[0];	//Only has a single inner class
 		}
 		{
@@ -113,21 +111,6 @@ public class PopupkeysClassManager
 
 	private static void loadMethods() throws NoSuchMethodException
 	{
-		if (popupSchedulerClass != null)
-		{
-			popupScheduler_schedulePopupMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-							(
-									PUBLIC | EXACT ,
-									new ClassItem(void.class),
-
-									new ClassItem(java.lang.Runnable.class),
-									new ClassItem(long.class),
-									new ClassItem(java.util.concurrent.TimeUnit.class)
-
-							),
-					popupSchedulerClass.getDeclaredMethods(), popupSchedulerClass);
-		}
-
 
 
 		addLongPressCharacters_A_Method = ProfileHelpers.findMostSimilar(new MethodProfile
@@ -181,10 +164,6 @@ public class PopupkeysClassManager
 
 	protected static void updateDependencyState()
 	{
-		//If we are using space to swipe we want to delay the popup. Not a requirement.
-		Hooks.logSetRequirementFalseIfNull(Hooks.popupHooks_delay, "popupSchedulerClass", popupSchedulerClass);
-		Hooks.logSetRequirementFalseIfNull(Hooks.popupHooks_delay, "popupScheduler_schedulePopupMethod", popupScheduler_schedulePopupMethod);
-
 		//Necessary to cancel/block popups
 		Hooks.logSetRequirementFalseIfNull(Hooks.popupHooks_cancel, "extraKeyPopupRunnableClass", extraKeyPopupRunnableClass);
 		Hooks.logSetRequirementFalseIfNull(Hooks.popupHooks_cancel, "extraKeyPopupRunnableRunMethod", extraKeyPopupRunnableRunMethod);

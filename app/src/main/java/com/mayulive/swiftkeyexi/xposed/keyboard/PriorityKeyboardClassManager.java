@@ -1,13 +1,14 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyProfiles;
 import com.mayulive.xposed.classhunter.ClassHunter;
+import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
@@ -26,18 +27,25 @@ import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
 import static com.mayulive.xposed.classhunter.Modifiers.PRIVATE;
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 import static com.mayulive.xposed.classhunter.Modifiers.STATIC;
+import static com.mayulive.xposed.classhunter.Modifiers.SYNTHETIC;
 
 public class PriorityKeyboardClassManager
 {
 
+	private static String LOGTAG = ExiModule.getLogTag(PriorityKeyboardClassManager.class);
+
 
 	public static Class keyboardServiceClass =  null;
 	public static Class FullKeyboardServiceDelegate = null;
+	public static Class toolbarFrameClass = null;
+
+	public static Class toolbarOpenButtonOverlayViewClass = null;
 	/////////////////////////
 	//Methods
 	/////////////////////////
 	public static Method keyboardService_getCurrentInputConnectionMethod = null;
 	public static Method FullKeyboardServiceDelegate_onCreateInputView = null;
+	public static Method toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = null;
 	///////////////////
 	//Objects and instances
 	//////////////////
@@ -46,7 +54,6 @@ public class PriorityKeyboardClassManager
 	public static Class keyboardLoaderClass = null;
 	public static Method keyboardLoader_onSharedPreferenceChangedMethod;
 	public static Method keyboardLoader_loadMethod = null;
-	public static Method keyboardLoader_clearCacheMethod = null;
 	public static Object punctuatorImplInstance = null;
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
 	protected static Method keyboardService_onConfigurationChangedMethod = null;
@@ -55,17 +62,24 @@ public class PriorityKeyboardClassManager
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 	protected static Class punctuatorImplClass = null;
 
+	protected static Method toolbarFrameClass_inflateMethod = null;
+
 	public static void loadKnownClasses(PackageTree param)
 	{
 		PriorityKeyboardClassManager.keyboardServiceClass = ClassHunter.loadClass("com.touchtype.KeyboardService", param.getClassLoader());
 
 		PriorityKeyboardClassManager.punctuatorImplClass = ClassHunter.loadClass("com.touchtype_fluency.impl.PunctuatorImpl", param.getClassLoader());
+
+		toolbarFrameClass = ClassHunter.loadClass("com.touchtype.keyboard.toolbar.ToolbarFrame", param.getClassLoader());
 	}
 
 	public static void loadUnknownClasses(PackageTree param)
 	{
+
+
 		PriorityKeyboardClassManager.keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
 
+		toolbarOpenButtonOverlayViewClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_TOOLBAR_OPEN_BUTTON_OVERLAY_CLASS_PROFILE(), param );
 
 		PriorityKeyboardClassManager.FullKeyboardServiceDelegate = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_FULL_KEYBOARD_SERVICE_DELEGATE_CLASS_PROFILE(), param );
 
@@ -89,7 +103,7 @@ public class PriorityKeyboardClassManager
 		{
 
 			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findMostSimilar( new MethodProfile(
-					EXACT,
+					FINAL | EXACT,
 					new ClassItem(View.class)
 			), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
 
@@ -125,30 +139,50 @@ public class PriorityKeyboardClassManager
 					new MethodProfile
 							(
 									PRIVATE | EXACT ,
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | ABSTRACT | ARRAY | EXACT ),
+									new ClassItem("" , PUBLIC | ABSTRACT | ARRAY | EXACT ),
 
-									new ClassItem("com.touchtype.telemetry.Breadcrumb" , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | ARRAY | EXACT ),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | STATIC | EXACT ),
+									new ClassItem("" , PUBLIC | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | ARRAY | EXACT ),
+									new ClassItem("" , PUBLIC | STATIC | EXACT ),
 									new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
 									new ClassItem(int[].class),
-									new ClassItem("com.touchtype.keyboard" , PUBLIC | EXACT ),
-									new ClassItem(boolean.class)
+									new ClassItem("" , PUBLIC | FINAL | EXACT )
+
 							),
 
 					PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
+		}
 
-			PriorityKeyboardClassManager.keyboardLoader_clearCacheMethod = ProfileHelpers.findFirstProfileMatch(
+		if (toolbarFrameClass != null)
+		{
+			toolbarFrameClass_inflateMethod = ProfileHelpers.findMostSimilar(
 
 					new MethodProfile
 							(
-									PRIVATE | EXACT ,
-									new ClassItem(void.class ),
-									new ClassItem[0]
+									PRIVATE | Modifiers.EXACT,
+									new ClassItem( void.class ),
+									new ClassItem( boolean.class )
+							),
+
+					toolbarFrameClass.getDeclaredMethods(), toolbarFrameClass);
+
+		}
+
+		if (toolbarOpenButtonOverlayViewClass != null)
+		{
+			toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = ProfileHelpers.findMostSimilar(
+
+					new MethodProfile
+							(
+									PUBLIC | FINAL | SYNTHETIC | EXACT ,
+									new ClassItem(void.class),
+
+									new ClassItem(java.lang.Object.class),
+									new ClassItem(int.class)
 
 							),
 
-					PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
+					PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass.getDeclaredMethods(), PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass);
 		}
 
 	}
@@ -182,6 +216,8 @@ public class PriorityKeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "KeyboardServiceClass", 	PriorityKeyboardClassManager.keyboardServiceClass );
 
 
+		//Toolbar button
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_toolbarButton,	 "toolbarFrameClass_inflateMethod", 	PriorityKeyboardClassManager.toolbarFrameClass_inflateMethod );
 
 		//Base
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "KeyboardServiceClass", 	PriorityKeyboardClassManager.keyboardServiceClass );

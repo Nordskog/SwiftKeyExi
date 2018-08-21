@@ -15,178 +15,8 @@ public class StyleProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("com.touchtype.themes.d.f");
-		newProfile.setKnownPath("com.touchtype.themes");
-
-		newProfile.setMinDepth(1);
-		newProfile.setMaxDepth(1);
-		newProfile.setModifiers(PUBLIC | FINAL );
-
-		newProfile.setTypeParamCount(0);
-		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
-/////////////////////////
-//Interfaces
-/////////////////////////
-		newProfile.setInterfaces(new ClassItem[]
-				{
-
-				});
-/////////////////////////
-//Nested Classes
-/////////////////////////
-		newProfile.setNestedClasses(new ClassItem[]
-				{
-						new ClassItem("com.touchtype.themes" , PRIVATE | STATIC | FINAL | ENUM | EXACT )
-
-				});
-/////////////////////////
-//Declared fields
-/////////////////////////
-		newProfile.setDeclaredFields(new FieldItem[]
-				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.res.Resources.class)),	//a
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype.themes" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//c
-
-				});
-/////////////////////////
-//Declared Methods
-/////////////////////////
-		newProfile.setDeclaredMethods(new MethodProfile[]
-				{
-						//Method #0: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.Bitmap.class),
-
-										new ClassItem(android.graphics.BitmapRegionDecoder.class),
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #1: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.RectF.class),
-
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #2: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class),
-
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #3: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class),
-
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.google.common" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #4: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class),
-
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #5: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class),
-
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #6: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class),
-
-										new ClassItem(java.lang.Integer.class)
-
-								),
-
-						//Method #7: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class),
-
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #8: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(android.text.TextPaint.class),
-
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #9: b
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(int.class),
-
-										new ClassItem(java.lang.String.class)
-
-								),
-
-
-				});
-/////////////////////////
-//Declared Constructors
-/////////////////////////
-		newProfile.setDeclaredConstructors(new ConstructorProfile[]
-				{
-						//Constructor #0
-						new ConstructorProfile
-								(		PUBLIC | EXACT ,
-
-										new ClassItem(android.content.res.Resources.class),
-										new ClassItem("com.touchtype.themes" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-
-				});
-
-		return newProfile;
-	}
-
-	public static ClassProfile get_OVERLAY_THEME_UTIL_PROFILE()
-	{
-		ClassProfile newProfile = new ClassProfile();
-
-		newProfile.setFullPath("com.touchtype.keyboard.view.fancy.i");
-		newProfile.setKnownPath("com.touchtype.keyboard.view.fancy");
+		newProfile.setFullPath("ics");
+		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
 		newProfile.setMaxDepth(0);
@@ -199,6 +29,7 @@ public class StyleProfiles
 /////////////////////////
 		newProfile.setInterfaces(new ClassItem[]
 				{
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 				});
 /////////////////////////
@@ -206,6 +37,7 @@ public class StyleProfiles
 /////////////////////////
 		newProfile.setNestedClasses(new ClassItem[]
 				{
+						new ClassItem("" , STATIC | INTERFACE | ABSTRACT | EXACT )
 
 				});
 /////////////////////////
@@ -213,8 +45,11 @@ public class StyleProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(android.content.Context.class)),	//a
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )),	//b
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//b
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//c
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//d
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//e
 
 				});
 /////////////////////////
@@ -226,9 +61,10 @@ public class StyleProfiles
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
-										new ClassItem(void.class),
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem(android.widget.ImageView.class)
+										new ClassItem(java.lang.Object.class),
+										new ClassItem("" , STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -236,179 +72,170 @@ public class StyleProfiles
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
-										new ClassItem(int.class)
+										new ClassItem(android.graphics.drawable.Drawable.class),
+
+										new ClassItem(java.lang.Object.class),
+										new ClassItem("" , STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
-						//Method #2: c
+						//Method #2: a
 						new MethodProfile
 								(
-										PRIVATE | EXACT ,
-										new ClassItem(int.class)
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(float.class),
+
+										new ClassItem(double.class)
 
 								),
 
-						//Method #3: d
+						//Method #3: a
 						new MethodProfile
 								(
-										PRIVATE | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class)
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #4: e
+						//Method #4: a
 						new MethodProfile
 								(
-										PRIVATE | EXACT ,
-										new ClassItem(int.class)
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.RectF.class),
+
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #5: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.toolbar.ToolbarFrame" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #6: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #7: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #8: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.toolbar" , PUBLIC | FINAL | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #9: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.view.fancy.FancyPanelContainer" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #10: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.view.fancy" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #11: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.view.fancy.emoji.EmojiPanel" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #12: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.view.fancy.emoji.EmojiPredictionCaption" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #13: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.text.TextPaint.class),
 
-										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.collection.CollectionPanel" , PUBLIC | EXACT )
+										new ClassItem(java.lang.String.class)
 
 								),
 
 						//Method #14: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.Integer.class),
 
-										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.gifs.GifPanel" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #15: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #16: a
+						//Method #16: b
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.keyboard.view.fancy.richcontent.stickers.StickerGalleryPanel" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #17: a
+						//Method #17: b
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("com.touchtype.ui.SwiftKeyTabLayout" , PUBLIC | EXACT )
-
-								),
-
-						//Method #18: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(java.util.List.class)
-
-								),
-
-						//Method #19: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -423,8 +250,8 @@ public class StyleProfiles
 						new ConstructorProfile
 								(		PUBLIC | EXACT ,
 
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype" , PUBLIC | FINAL | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -433,9 +260,5 @@ public class StyleProfiles
 
 		return newProfile;
 	}
-
-
-
-
 
 }

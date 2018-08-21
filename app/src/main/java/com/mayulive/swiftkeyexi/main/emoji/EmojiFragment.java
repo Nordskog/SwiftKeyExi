@@ -120,7 +120,16 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			sortAndValidatePanelIndices(mDictionaryPanels,true);
 			sortAndValidatePanelIndices(mKeyboardPanels,true);
 
-			//EmojiCommons.preRenderPanels(getContext(), mDictionaryPanels, mKeyboardPanels);
+			///Find and sort the recents panel
+			for (DB_EmojiPanelItem panel : mKeyboardPanels)
+			{
+				if (panel.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
+				{
+					//Sort by last change time descending
+					Collections.sort( panel.get_items(), (a, b) -> (int)( b.get_last_change() - a.get_last_change() ) );
+					break;
+				}
+			}
 		}
 
 		boolean syncDict = mDictionaryPanels.sync();

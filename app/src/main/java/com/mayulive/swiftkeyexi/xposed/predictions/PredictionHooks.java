@@ -8,11 +8,15 @@ import java.util.Set;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
+import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,24 +73,6 @@ public class PredictionHooks
 
 				try
 				{
-					if ( PredictionClassManager.UpdateCandidateTaskClass_getTopCandidateMethod_intPosition != -1)
-					{
-						//Method might have changed to no longer have the int
-
-						//The only reason we care to hook this method is because it sometimes grabs
-						//the primary method from here, instead of from our previously modified list.
-						//The int now passed here is now the index to get from the list, so don't do
-						//anything if it is anything but 0.
-						if ( (int)param.args[PredictionClassManager.UpdateCandidateTaskClass_getTopCandidateMethod_intPosition] != 0 )
-						{
-							if (DebugSettings.DEBUG_PREDICTIONS)
-							{
-								Log.i(LOGTAG, "Top candidate called with non-zero index. Not doing anything.");
-							}
-
-							return;
-						}
-					}
 
 					//Method changed from single candidate to list.
 					boolean returnList = ((Method)param.method).getReturnType() == List.class;
@@ -128,6 +114,45 @@ public class PredictionHooks
 						   Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
 					   }
 	        	   }
+
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+
+					//Again, this doesn't really go here, but this method happens to be called
+					//after a layout change. Layout changes resets some of our changes, soooo
+					//run again here if we need to.
+					//This runs at a 500ms delay because ... things arne't ready yet I guess.
+					if (Settings.HIDE_PREDICTIONS_BAR)
+					{
+						if (OverlayCommons.mKeyboardOverlay != null)
+						{
+							Handler handler = new Handler(Looper.getMainLooper());
+
+							handler.postDelayed(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									try
+									{
+										View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
+										KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+									}
+									catch ( Throwable ex )
+									{
+										Log.e(LOGTAG, "Tried to update hide predictionss bar in predictions hooks, failed.");
+									}
+
+								}
+							}, 500);
+
+
+						}
+					}
+
+
+				}
 			});
 
 
@@ -181,6 +206,18 @@ public class PredictionHooks
 					{
 						Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
 					}
+
+					try
+					{
+						//Not really this guy's responsbility, but good to run here. Lots of other places too.
+						View parent = CodeUtils.getTopParent( (ViewGroup) param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition] );
+						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop(parent);
+					}
+					catch (Throwable ex)
+					{
+						Log.e(LOGTAG, "Tried to update hide prediction bar in candidatesDisplayView hook, but failed.");
+					}
+
 				}
 			});
 		}
@@ -199,15 +236,6 @@ public class PredictionHooks
 				try
 				{
 					PriorityPredictionsClassManager.buInstance = PriorityPredictionsClassManager.keyboardFrameClass_buField.get(param.thisObject);
-
-					if (PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition != -1)
-					{
-						Log.e(LOGTAG, "KeyboardUxOptionsPosition was not found, this could be bad");
-					}
-					else
-					{
-						PriorityPredictionsClassManager.KeyboardUxOptionsInstance = param.args[ PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod_KeyboardUxOptionsPosition  ];
-					}
 				}
 				catch (Throwable ex)
 				{
@@ -226,9 +254,9 @@ public class PredictionHooks
 		Set<XC_MethodHook.Unhook> returnHooks = new HashSet<>();
 		{
 			//Only needed to update shortcut priority, not critical.
-			if ( PredictionClassManager.candidateSelectedMethod != null )
+			if ( PredictionClassManager.handleCandidateClass_candidateSelectedMethod != null )
 			{
-				returnHooks.add( XposedBridge.hookMethod(PredictionClassManager.candidateSelectedMethod, new XC_MethodHook()
+				returnHooks.add( XposedBridge.hookMethod(PredictionClassManager.handleCandidateClass_candidateSelectedMethod, new XC_MethodHook()
 				{
 					@Override
 					protected void beforeHookedMethod(MethodHookParam param) throws Throwable

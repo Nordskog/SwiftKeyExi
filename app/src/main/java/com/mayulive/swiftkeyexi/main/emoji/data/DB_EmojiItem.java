@@ -80,6 +80,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 		public static final String TYPE_COLUMN = "type";
 		public static final String VARIANTS_COLUMN = "variants";
 		public static final String MODIFIERS_SUPPORTED_COLUMN = "modifiers_supported";
+		public static final String LAST_CHANGE_COLUMN = "last_change";
     }
 	//}
 	
@@ -90,7 +91,8 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 			EmojiEntry.STYLE_COLUMN,
 			EmojiEntry.TYPE_COLUMN,
 			EmojiEntry.VARIANTS_COLUMN,
-			EmojiEntry.MODIFIERS_SUPPORTED_COLUMN
+			EmojiEntry.MODIFIERS_SUPPORTED_COLUMN,
+			EmojiEntry.LAST_CHANGE_COLUMN
 	};
 
 	public static final String DEFINITION =
@@ -100,7 +102,8 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 					EmojiEntry.STYLE_COLUMN +" NUMBER, " +
 					EmojiEntry.TYPE_COLUMN +" TEXT, " +
 					EmojiEntry.VARIANTS_COLUMN +" TEXT, " +
-					EmojiEntry.MODIFIERS_SUPPORTED_COLUMN +" INTEGER " +
+					EmojiEntry.MODIFIERS_SUPPORTED_COLUMN +" INTEGER, " +
+					EmojiEntry.LAST_CHANGE_COLUMN +" INTEGER " +
 			");";
 
 	@Override
@@ -114,6 +117,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 		values.put(EmojiEntry.TYPE_COLUMN, get_type().toString());
 		values.put(EmojiEntry.VARIANTS_COLUMN, get_variants());
 		values.put(EmojiEntry.MODIFIERS_SUPPORTED_COLUMN, get_modifiers_supported() ? 1 : 0);
+		values.put(EmojiEntry.LAST_CHANGE_COLUMN, get_last_change());
 
 		return values;
 	}
@@ -129,6 +133,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 		int typeColumnIndex = c.getColumnIndex(EmojiEntry.TYPE_COLUMN);
 		int variantsColumnIndex = c.getColumnIndex(EmojiEntry.VARIANTS_COLUMN);
 		int intModifiersSupportedColumn = c.getColumnIndex(EmojiEntry.MODIFIERS_SUPPORTED_COLUMN);
+		int lastChangeColumnIndex = c.getColumnIndex( EmojiEntry.LAST_CHANGE_COLUMN );
 		
 		set_id( c.getInt(idColumnIndex) );
 		set_text( c.getString(textColumnIndex) );
@@ -136,6 +141,7 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 		set_type( EmojiType.valueOf( c.getString(typeColumnIndex) ) );
 		set_variants( c.getString(variantsColumnIndex) );
 		set_modifiers_supported( c.getInt(intModifiersSupportedColumn) != 0 );
+		set_last_change( c.getLong( lastChangeColumnIndex ) );
 
 	}
 

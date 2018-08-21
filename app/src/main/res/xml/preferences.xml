@@ -88,6 +88,12 @@
         android:summary="@string/pref_remove_suggestion_padding_summary"
         android:defaultValue="false" />
 
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_hide_predictions_key"
+        android:title="@string/pref_hide_predictions_title"
+        android:summary="@string/pref_hide_predictions_summary"
+        android:defaultValue="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -148,6 +154,12 @@
         android:title="@string/pref_swipe_rtl_mode_title"
         android:summary="@string/pref_swipe_rtl_mode_summary"
         android:defaultValue="true" />
+
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_toolbar_button_key"
+        android:title="@string/pref_toolbar_button_title"
+        android:summary="@string/pref_toolbar_button_summary"
+        android:defaultValue="false" />
 
     </PreferenceCategory>
 
