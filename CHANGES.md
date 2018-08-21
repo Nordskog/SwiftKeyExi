@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.6.0] - 21-08-2018
+### Fixed
+ - Compatibility targeting 7.1.2.20 ( breaks backwards compatibility )
+ - Recent emoji being cleared at random
+ - No punctuation auto-space sometimes not being applied until toggled again
+ 
+### Added
+ - Option to hide predictions bar
+ - Option to display shortcut to Exi config app in toolbar
+
 ## [1.5.4] - 21-07-2018
 ### Fixed
  - Immediate crash on Oreo devices ( Async setup disabled to fix )
