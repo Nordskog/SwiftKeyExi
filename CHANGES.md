@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.6.1] - 02-09-2018
+### Fixed
+ - Swipe, quick-menu, and hotkeys breaking after a while.
+
+### Changed
+ - Added missing translations
+
+### Unchanged
+ - Still not compatible with old Swiftkey stable version.
+   Wait until Swiftkey update or use beta ( or revert to Exi 1.5.4 )
+
+
 ## [1.6.0] - 21-08-2018
 ### Fixed
  - Compatibility targeting 7.1.2.20 ( breaks backwards compatibility )

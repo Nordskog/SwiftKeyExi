@@ -74,6 +74,7 @@
   <!-- Swipe selection RTL mode -->
   <string name="pref_swipe_rtl_mode_title">Включить поддержку написания справа налево в режиме жестов и выделения текста</string>
   <string name="pref_swipe_rtl_mode_summary">Поддержка написания справа налево в режиме жестов и выделения текста</string>
+  <!-- Swipe direction  -->
   <!-- Period button -->
   <string name="pref_disable_period_click_title">Случайный ввод точки</string>
   <string name="pref_disable_period_click_summary">Исключить случайное нажатие на клавишу точки. Чтобы поставить точку, нажимайте на клавишу чуть дольше</string>
@@ -101,4 +102,9 @@
   <!--  Remapped keys -->
   <string name="pref_remapped_keys_title">Переназначенные клавиши</string>
   <string name="pref_remapped_keys_summary">Переназначенные аппаратные клавиши</string>
+  <!-- toolbar button -->
+  <string name="pref_toolbar_button_title">Кнопка на панели инструментов</string>
+  <string name="pref_toolbar_button_summary"> </string>
+  <string name="pref_hide_predictions_title">Убрать прогнозинование</string>
+  <string name="pref_hide_predictions_summary">Не отображать панель прогнозирования</string>
 </resources>
