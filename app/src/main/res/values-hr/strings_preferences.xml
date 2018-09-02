@@ -74,6 +74,7 @@
   <!-- Swipe selection RTL mode -->
   <string name="pref_swipe_rtl_mode_title">Omogući odabir RTL klizača (lijevo/desno)</string>
   <string name="pref_swipe_rtl_mode_summary">Podrži RTL tekst prilikom klizanja za odabir</string>
+  <!-- Swipe direction  -->
   <!-- Period button -->
   <string name="pref_disable_period_click_title">Onemogućite dodirivanje točke</string>
   <string name="pref_disable_period_click_summary">Umjesto toga, mora se kliknuti</string>
@@ -101,4 +102,5 @@
   <!--  Remapped keys -->
   <string name="pref_remapped_keys_title">Premapirane tipke</string>
   <string name="pref_remapped_keys_summary">Premapirane hardverske tipke</string>
+  <!-- toolbar button -->
 </resources>

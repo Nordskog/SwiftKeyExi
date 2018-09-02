@@ -74,6 +74,7 @@
   <!-- Swipe selection RTL mode -->
   <string name="pref_swipe_rtl_mode_title">Habilitar seleção de deslize RTL (Dir. P/ Esq.)</string>
   <string name="pref_swipe_rtl_mode_summary">Suportar texto RTL quando estiver deslizando p/ selecionar</string>
+  <!-- Swipe direction  -->
   <!-- Period button -->
   <string name="pref_disable_period_click_title">Desativar o toque no Ponto</string>
   <string name="pref_disable_period_click_summary">Deve ser clicado ao invés disso</string>
@@ -101,4 +102,9 @@
   <!--  Remapped keys -->
   <string name="pref_remapped_keys_title">Teclas Remapeadas</string>
   <string name="pref_remapped_keys_summary">Teclas físicas remapeadas</string>
+  <!-- toolbar button -->
+  <string name="pref_toolbar_button_title">Botão da Barra de Ferramentas</string>
+  <string name="pref_toolbar_button_summary">Exibir atalho do Exi na barra de ferramentas</string>
+  <string name="pref_hide_predictions_title">Ocultar as previsões</string>
+  <string name="pref_hide_predictions_summary">Não exibir a barra de previsões</string>
 </resources>
