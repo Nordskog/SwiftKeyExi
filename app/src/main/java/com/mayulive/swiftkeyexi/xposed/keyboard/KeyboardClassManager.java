@@ -10,8 +10,11 @@ import android.view.inputmethod.InputConnection;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
+import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
+import com.mayulive.xposed.classhunter.profiles.ClassItem;
+import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -37,6 +40,10 @@ public class KeyboardClassManager
 
 	public static Class KeyHeightClass = null;
 
+	public static Class incogControllerClass;
+
+
+	protected static Method incogControllerClass_ChangeIncogStateMethod;
 
 	protected static List<Method> keyHeightClass_getKeyHeightMethods = new ArrayList<Method>();
 
@@ -46,6 +53,8 @@ public class KeyboardClassManager
 	public static Field keyboardLoaderClass_layoutField = null;
 
 	public static InputConnection currentInputConnection = null;
+
+	public static Field incogControllerClass_staticInstanceField;
 
 
 	public static void loadKnownClasses(PackageTree param)
@@ -58,6 +67,8 @@ public class KeyboardClassManager
 	public static void loadUnknownClasses(PackageTree param)
 	{
 		KeyHeightClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEY_HEIGHT_CLASS_PROFILE(), param );
+
+		incogControllerClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_INCOG_CONTROL_CLASS_PROFILE(), param );
 	}
 
 
@@ -76,8 +87,15 @@ public class KeyboardClassManager
 				keyHeightClass_getKeyHeightMethods = new ArrayList<Method>();
 				keyHeightClass_getKeyHeightMethods.add(firstMethod);
 			}
+		}
 
-
+		if (incogControllerClass != null)
+		{
+			incogControllerClass_ChangeIncogStateMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
+					Modifiers.STATIC | Modifiers.FINAL,
+					new ClassItem(void.class),
+					new ClassItem(int.class)
+			), incogControllerClass.getDeclaredMethods(), incogControllerClass);
 
 		}
 
@@ -87,6 +105,16 @@ public class KeyboardClassManager
 	{
 		keyboardLoaderClass_layoutField = ProfileHelpers.findFirstDeclaredFieldWithType( layoutClass, PriorityKeyboardClassManager.keyboardLoaderClass);
 		keyboardLoaderClass_layoutField.setAccessible(true);
+
+		if (incogControllerClass != null)
+		{
+			incogControllerClass_staticInstanceField = ProfileHelpers.findFirstDeclaredFieldWithType( incogControllerClass, incogControllerClass );
+			if ( incogControllerClass_staticInstanceField != null )
+			{
+				incogControllerClass_staticInstanceField.setAccessible(true);
+			}
+
+		}
 	}
 
 

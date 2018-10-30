@@ -94,6 +94,12 @@
         android:summary="@string/pref_hide_predictions_summary"
         android:defaultValue="false" />
 
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_incognito_always_on_key"
+        android:title="@string/pref_incognito_always_on_title"
+        android:summary="@string/pref_incognito_always_on_summary"
+        android:defaultValue="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

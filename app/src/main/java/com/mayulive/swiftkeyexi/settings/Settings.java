@@ -106,6 +106,8 @@ public class Settings
 
 	public static boolean HIDE_PREDICTIONS_BAR = false;
 
+	public static boolean INCOGNITO_ALWAYS_ON = false;
+
 
 	///////////////////////
 	// Settings changed
@@ -115,6 +117,7 @@ public class Settings
 	public static boolean changed_REMOVE_SUGGESTIONS_PADDING = true;
 	public static boolean changed_EMOJI_TEXT_RESOURCE = true;
 	public static boolean changed_HIDE_PREDICTIONS_BAR = true;
+	public static boolean changed_INCOGNITO_ALWAYS_ON = true;
 
 	///////////////////////
 	// Ever modified
@@ -240,6 +243,12 @@ public class Settings
 				changed_HIDE_PREDICTIONS_BAR = true;
 
 			everActivated_HIDE_PREDICTIONS_BAR = everActivated_HIDE_PREDICTIONS_BAR || HIDE_PREDICTIONS_BAR;
+		}
+
+		{
+			boolean originalValue = INCOGNITO_ALWAYS_ON;
+			INCOGNITO_ALWAYS_ON = prefs.getBoolean(PreferenceConstants.pref_incognito_always_on_key, false);
+			changed_INCOGNITO_ALWAYS_ON = originalValue != INCOGNITO_ALWAYS_ON;
 		}
 
 

@@ -144,6 +144,42 @@ public class KeyboardMethods
 		mKeyboardEventListeners.remove(listener);
 	}
 
+	public static void setIncogState( boolean state )
+	{
+
+		if ( KeyboardClassManager.incogControllerClass_staticInstanceField == null )
+		{
+			Log.e(LOGTAG, "incogControllerClass_staticInstanceField null");
+			return;
+		}
+
+		if ( KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod == null )
+		{
+			Log.e(LOGTAG, "incogControllerClass_ChangeIncogStateMethod null");
+			return;
+		}
+
+		try
+		{
+			Object instance = KeyboardClassManager.incogControllerClass_staticInstanceField.get(null);
+			if ( instance == null )
+			{
+				Log.e(LOGTAG, "Incog instance null");
+				return;
+			}
+
+			KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 1);
+
+		}
+		catch ( Throwable ex )
+		{
+			Log.e(LOGTAG, "Failed to set incog state");
+			ex.printStackTrace();
+		}
+
+
+	}
+
 	public interface KeyboardEventListener
 	{
 		void beforeKeyboardOpened();

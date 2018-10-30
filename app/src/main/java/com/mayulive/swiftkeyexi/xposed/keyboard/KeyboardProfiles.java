@@ -1929,4 +1929,130 @@ public class KeyboardProfiles
 
 
 
+
+
+	public static ClassProfile _get_INCOG_CONTROL_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("emy");
+		newProfile.setKnownPath("");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//a
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//b
+						new FieldItem( PRIVATE | STATIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )),	//c
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(int.class)
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #3: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #4: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #5: c
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PRIVATE | EXACT ,
+
+										new ClassItem[0]
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
+
+
+
+
+
+
+
 }

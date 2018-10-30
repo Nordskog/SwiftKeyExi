@@ -30,6 +30,7 @@ import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
+import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -679,6 +680,12 @@ public class KeyboardHooks
 							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
+
+						// Only call if enabled AND changed
+						if ( Settings.changed_INCOGNITO_ALWAYS_ON && Settings.INCOGNITO_ALWAYS_ON)
+						{
+							KeyboardMethods.setIncogState(true);
+						}
 					}
 				});
 
@@ -694,11 +701,17 @@ public class KeyboardHooks
 					@Override
 					public void afterKeyboardOpened()
 					{
+						// I guess this does something
 						if (OverlayCommons.mKeyboardOverlay != null)
 						{
 							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
+
+						// Always call if enabled, basically force re-enable every time
+						// keyboard is opened.
+						if (Settings.INCOGNITO_ALWAYS_ON)
+							KeyboardMethods.setIncogState(true);
 					}
 
 					@Override
@@ -715,6 +728,7 @@ public class KeyboardHooks
 							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
+
 					}
 				});
 
