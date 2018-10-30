@@ -30,9 +30,14 @@ import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
+import com.mayulive.xposed.classhunter.Modifiers;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.xposed.classhunter.profiles.ClassItem;
+import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
@@ -534,6 +539,37 @@ public class KeyboardHooks
 		});
 	}
 
+	// This hook doesn't have any ... hooks. It just sets a value.
+	// Not going to bother with the class manager.
+	private static void hookLocation(  PackageTree lpparam )
+	{
+		try
+		{
+			Class locClass = ProfileHelpers.loadProfiledClass(KeyboardProfiles._get_LOCATION_MANAGER_CLASS_PROFILE(), lpparam);
+			Class someCollectionClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_COLLECTION_CLASS_USE_BY_LOCATION_PROFILE() ,lpparam);
+
+
+			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
+					Modifiers.STATIC,
+					new ClassItem(Modifiers.THIS),
+					new ClassItem(Modifiers.ARRAY)
+			), someCollectionClass.getDeclaredMethods(), someCollectionClass);
+
+			Field locClass_arrField = ProfileHelpers.findFirstDeclaredFieldWithType( someCollectionClass,  locClass);
+			locClass_arrField.setAccessible(true);
+
+			Object casCollection = someCollectionClassCreateMethod.invoke(null, new Object[]{KeyboardStrings.ALL_COUNTRY_CODES});
+
+			locClass_arrField.set(null, casCollection);
+		}
+		catch ( Throwable ex )
+		{
+			Log.e(LOGTAG, "Failed to add countries to location list");
+			ex.printStackTrace();
+		}
+	}
+
+
 	public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
@@ -681,6 +717,9 @@ public class KeyboardHooks
 						}
 					}
 				});
+
+				// Doesn't have any hooks, just sets a value.
+				hookLocation(lpparam);
 
 			}
 		}
