@@ -426,7 +426,7 @@ public class KeyboardHooks
 					if (contentView != null)
 					{
 
-						FrameLayout toolParent = (FrameLayout) contentView.getParent();
+						ViewGroup toolParent = (ViewGroup) contentView.getParent();
 
 						//Check if we've already done this
 						{
