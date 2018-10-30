@@ -3,9 +3,11 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.SharedTheme;
@@ -17,6 +19,7 @@ import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,6 +28,38 @@ import java.util.Set;
 
 public class KeyboardMethods
 {
+	public static void inputText(String text)
+	{
+		inputText(text, null);
+	}
+
+	public static void inputText(String text, @Nullable InputConnection currentConnection )
+	{
+		if (PriorityKeyboardClassManager.keyboardServiceInstance != null)
+		{
+			try
+			{
+				if (currentConnection == null)
+				{
+					currentConnection = (InputConnection) PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod.invoke( PriorityKeyboardClassManager.keyboardServiceInstance );
+				}
+
+				if (currentConnection != null)
+				{
+					//If the cursor is after a letter or digit, swiftkey will insist on
+					//putting us into composing mode. Committing text in this state will replace
+					//the composing text. Finish composing to prevent. Might confuse swiftkey state?
+					currentConnection.finishComposingText();
+					currentConnection.commitText(text,1);
+				}
+			}
+			catch (IllegalAccessException | InvocationTargetException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public enum PunctuationRuleMode
 	{
 		STOCK, MODIFIED

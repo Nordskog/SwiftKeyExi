@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.selection;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Vibrator;
+import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
 
@@ -61,14 +62,21 @@ public class SelectionActions
 		// Pointer-up is handled here rather than in the hotkeypanel though, so no listeners.
 		if (panel != null)
 		{
-			KeyboardInteraction.TextAction textAction = panel.getLastSelectedAction();
-			if (textAction != KeyboardInteraction.TextAction.DEFAULT)
-				handleTextAction(panel.getLastSelectedAction(), true);
+			HotkeyPanel.HotkeyMenuItem item = panel.getLastSelectedItem();
+			if (item != null && item.action != KeyboardInteraction.TextAction.DEFAULT)
+			{
+				handleTextAction(item.action, true, item.text);
+			}
 		}
 	}
 
-	@SuppressLint("MissingPermission")
 	protected static void handleTextAction(KeyboardInteraction.TextAction action, boolean vibrate)
+	{
+		handleTextAction(action, vibrate, null);
+	}
+
+	@SuppressLint("MissingPermission")
+	protected static void handleTextAction(KeyboardInteraction.TextAction action, boolean vibrate, @Nullable String text)
 	{
 		if (action != null)
 		{
@@ -80,7 +88,7 @@ public class SelectionActions
 			}
 
 
-			KeyCommons.PerformTextAction( PriorityKeyboardClassManager.getInputConnection(), action);
+			KeyCommons.PerformTextAction( PriorityKeyboardClassManager.getInputConnection(), action, text);
 		}
 	}
 

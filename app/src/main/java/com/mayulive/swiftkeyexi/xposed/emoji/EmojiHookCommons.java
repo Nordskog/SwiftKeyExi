@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.inputmethod.InputConnection;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -26,10 +25,9 @@ import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
-import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
+import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -59,30 +57,6 @@ public class EmojiHookCommons
 	static long mLastUpdateTime = -1;
 	static int mLastPanelIndex = 0;
 
-	public static void inputText(String text)
-	{
-		if (PriorityKeyboardClassManager.keyboardServiceInstance != null)
-		{
-			try
-			{
-				InputConnection currentConnection = (InputConnection) PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod.invoke( PriorityKeyboardClassManager.keyboardServiceInstance );
-
-				if (currentConnection != null)
-				{
-					//If the cursor is after a letter or digit, swiftkey will insist on
-					//putting us into composing mode. Committing text in this state will replace
-					//the composing text. Finish composing to prevent. Might confuse swiftkey state?
-					currentConnection.finishComposingText();
-					currentConnection.commitText(text,1);
-				}
-			}
-			catch (IllegalAccessException | InvocationTargetException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public static void refreshEmojiTheme()
 	{
 		if (mOuterTabsWrapper != null)
@@ -101,7 +75,7 @@ public class EmojiHookCommons
 			text = EmojiModifiers.applyModifier( text, EmojiResources.getDefaultDiverseModifier() );
 		}
 
-		inputText(text);
+		KeyboardMethods.inputText(text);
 
 		if (Settings.EMOJI_TAP_VIBRATE)
 		{

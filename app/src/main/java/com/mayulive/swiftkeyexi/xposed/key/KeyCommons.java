@@ -286,6 +286,21 @@ public class KeyCommons
 	//Actions
 	///////////////////
 
+	public static boolean PerformTextAction( InputConnection connection, KeyboardInteraction.TextAction action, String text  )
+	{
+		if (action == KeyboardInteraction.TextAction.INSERT && text != null )
+		{
+			KeyboardMethods.inputText(text, connection);
+
+			return true;
+		}
+		else
+		{
+			return PerformTextAction(connection, action);
+		}
+
+	}
+
 	public static boolean PerformTextAction(InputConnection connection, KeyboardInteraction.TextAction action)
 	{
 		if (action != null && action != KeyboardInteraction.TextAction.DEFAULT)

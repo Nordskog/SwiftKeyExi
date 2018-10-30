@@ -380,14 +380,14 @@ public class HotkeyPanel extends View
 		mCircle.setFillType(Path.FillType.EVEN_ODD);
 	}
 
-	public KeyboardInteraction.TextAction getLastSelectedAction()
+	public HotkeyMenuItem getLastSelectedItem()
 	{
 		if (mLastSelectedItem != null)
 		{
-			return mLastSelectedItem.action;
+			return mLastSelectedItem;
 		}
 
-		return KeyboardInteraction.TextAction.DEFAULT;
+		return null;
 	}
 
 
