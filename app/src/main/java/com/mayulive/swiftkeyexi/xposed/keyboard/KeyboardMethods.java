@@ -243,6 +243,43 @@ public class KeyboardMethods
 		}
 	}
 
+	public static int getVibrationDuration()
+	{
+		int duration = 25;
+		// Default is 10 is we are using system value.
+		// Otherwise try to get swiftkey value.
+
+		try
+		{
+			SharedPreferences prefs = SettingsCommons.getSharedPreferences(ContextUtils.getHookContext(), ExiXposed.getPrefsPath());
+
+			boolean useSystemVib = prefs.getBoolean("pref_system_vibration_key", true);
+			if (useSystemVib)
+				duration = 25;
+			else
+			{
+				boolean vibOnKey = prefs.getBoolean("pref_vibrate_on_key", true);
+				if (!vibOnKey)
+				{
+					duration = 0; //disabled!
+				}
+				else
+				{
+					duration = prefs.getInt("pref_vibration_slider_key", 10);	//Swiftkey's default is 10, which doesn't register at all.
+				}
+
+
+			}
+		}
+		catch ( Exception ex )
+		{
+			Log.e(LOGTAG, "Failed to get swiftkey vibration setting");
+			ex.printStackTrace();
+		}
+
+		return duration;
+	}
+
 	public static void requestKeyboardReload()
 	{
 

@@ -77,6 +77,8 @@ public class EmojiHookCommons
 
 		KeyboardMethods.inputText(text);
 
+		// In other instances we respect swiftkey's key press vibrate option.
+		// We already have a setting for this though, so we'll just leave it.
 		if (Settings.EMOJI_TAP_VIBRATE)
 		{
 			Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);

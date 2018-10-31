@@ -19,6 +19,7 @@ import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import java.lang.ref.WeakReference;
 import java.sql.SQLInvalidAuthorizationSpecException;
@@ -234,7 +235,7 @@ public class PredictionHandlers
 								{
 									//We used to create a click listener which would do this for us, but now we call the submit method directly.
 									Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
-									v.vibrate(25);
+									v.vibrate( KeyboardMethods.getVibrationDuration() );
 								}
 								catch (Throwable ex)
 								{

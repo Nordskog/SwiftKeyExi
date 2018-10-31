@@ -9,6 +9,7 @@ import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
+import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.pointerInformation;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
@@ -84,7 +85,7 @@ public class SelectionActions
 			if(vibrate)
 			{
 				Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
-				v.vibrate(25);
+				v.vibrate(KeyboardMethods.getVibrationDuration());
 			}
 
 
