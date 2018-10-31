@@ -90,21 +90,25 @@ public class Hooks
 	//Hardware keyboard shortcuts and remapping
 	public static HookCategory quickSettings = new HookCategory("quickSettings base");
 
+	//Hardware keyboard shortcuts and remapping
+	public static HookCategory incognito = new HookCategory("incognito base");
+
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
-																						baseHooks_invalidateLayout,
-																						keyHooks_keyDefinition,
-																						emojiHooks_base,
-																						predictionHooks_base,
-																						baseHooks_punctuationSpace,
-																						styleHooks_darklight,
-																						soundHooks_base,
-																						baseHooks_fullscreenMode,
-																						baseHooks_keyHeight,
-																						hardwareKeys_base,
-																						baseHooks_toolbarButton,
-																						baseHooks_hidePredictions,
-																						quickSettings
+																								baseHooks_invalidateLayout,
+																								keyHooks_keyDefinition,
+																								emojiHooks_base,
+																								predictionHooks_base,
+																								baseHooks_punctuationSpace,
+																								styleHooks_darklight,
+																								soundHooks_base,
+																								baseHooks_fullscreenMode,
+																								baseHooks_keyHeight,
+																								hardwareKeys_base,
+																								baseHooks_toolbarButton,
+																								baseHooks_hidePredictions,
+																								quickSettings,
+																								incognito
 	);
 
 	//Convenience method for checking requirement and logging on failure

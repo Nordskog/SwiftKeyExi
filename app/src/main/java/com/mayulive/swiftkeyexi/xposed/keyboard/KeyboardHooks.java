@@ -576,6 +576,38 @@ public class KeyboardHooks
 		}
 	}
 
+	private static XC_MethodHook.Unhook hookIncognito(PackageTree lpparam )
+	{
+		return XposedBridge.hookMethod( KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				try
+				{
+					int state = (int)param.args[0];
+
+					// 0 for on, 2 for off. Gets called with 1 all the time for seemingly no reason.
+					if (state == 0)
+					{
+						KeyboardMethods.saveIncogState(true);
+					}
+					else if (state == 2)
+					{
+						KeyboardMethods.saveIncogState(false);
+					}
+				}
+				catch ( Throwable ex )
+				{
+					Hooks.incognito.invalidate(ex, "Failed to intercept incognito state change");
+
+					// Since we don't know what it is anymore, set to false.
+					KeyboardMethods.saveIncogState(false);
+				}
+			}
+		});
+	}
+
 	private static XC_MethodHook.Unhook hookQuickSettings(PackageTree lpparam )
 	{
 
@@ -735,11 +767,7 @@ public class KeyboardHooks
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
 
-						// Only call if enabled AND changed
-						if ( Settings.changed_INCOGNITO_ALWAYS_ON && Settings.INCOGNITO_ALWAYS_ON)
-						{
-							KeyboardMethods.setIncogState(true);
-						}
+
 					}
 				});
 
@@ -762,10 +790,16 @@ public class KeyboardHooks
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
 
-						// Always call if enabled, basically force re-enable every time
-						// keyboard is opened.
-						if (Settings.INCOGNITO_ALWAYS_ON)
-							KeyboardMethods.setIncogState(true);
+						// Only called once
+						if ( !KeyboardMethods.mIncogStateLoaded )
+						{
+							KeyboardMethods.mIncogStateLoaded = true;
+
+							if (Hooks.incognito.isRequirementsMet())
+							{
+								KeyboardMethods.loadIncogState();
+							}
+						}
 					}
 
 					@Override
@@ -788,6 +822,11 @@ public class KeyboardHooks
 
 				// Doesn't have any hooks, just sets a value.
 				hookLocation(lpparam);
+
+				if (Hooks.incognito.isRequirementsMet())
+				{
+					Hooks.incognito.add( hookIncognito(lpparam) );
+				}
 
 			}
 		}

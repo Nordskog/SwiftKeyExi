@@ -84,6 +84,9 @@ public class KeyboardMethods
 	protected static ViewGroup mKeyboardRoot = null;
 	protected static float mLastKeyboardOpacity = 1;
 
+	// Only loaded once on first keyboard load.
+	protected static boolean mIncogStateLoaded = false;
+
 
 	static protected Set<String> mExtendedPredictionsLayouts = new HashSet<>();
 	static
@@ -144,9 +147,27 @@ public class KeyboardMethods
 		mKeyboardEventListeners.remove(listener);
 	}
 
-	public static void setIncogState( boolean state )
+	public static void saveIncogState( boolean state )
 	{
+		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor( ContextUtils.getHookContext(), ExiXposed.getPrefsPath() );
+		editor.putBoolean("pref_exi_xposed_incog_enabled", state);
+		editor.apply();
+	}
 
+	public static void loadIncogState( )
+	{
+		SharedPreferences prefs = SettingsCommons.getSharedPreferences( ContextUtils.getHookContext(), ExiXposed.getPrefsPath() );
+
+		boolean state = prefs.getBoolean("pref_exi_xposed_incog_enabled", false);
+
+		if ( state )
+		{
+			setIncogState(true);
+		}
+	}
+
+	private static void setIncogState( boolean state )
+	{
 		if ( KeyboardClassManager.incogControllerClass_staticInstanceField == null )
 		{
 			Log.e(LOGTAG, "incogControllerClass_staticInstanceField null");
@@ -168,7 +189,8 @@ public class KeyboardMethods
 				return;
 			}
 
-			KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 1);
+			// 0 is on, 2 is off. 1 I have no idea, but it keeps getting set.
+			KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2);
 
 		}
 		catch ( Throwable ex )
@@ -176,8 +198,6 @@ public class KeyboardMethods
 			Log.e(LOGTAG, "Failed to set incog state");
 			ex.printStackTrace();
 		}
-
-
 	}
 
 	public interface KeyboardEventListener

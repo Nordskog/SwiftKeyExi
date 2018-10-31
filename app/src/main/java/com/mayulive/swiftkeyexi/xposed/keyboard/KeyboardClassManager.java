@@ -214,5 +214,9 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.quickSettings,	 "quickSettingPrefReferenceClass_constructor", 	quickSettingPrefReferenceClass_constructor );
 		Hooks.logSetRequirementFalseIfNull( Hooks.quickSettings,	 "quicksettingPrefItemClass_constructor", 	quicksettingPrefItemClass_constructor );
 
+		//Incognito
+		Hooks.logSetRequirementFalseIfNull( Hooks.incognito,	 "incogControllerClass_ChangeIncogStateMethod", 	incogControllerClass_ChangeIncogStateMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.incognito,	 "incogControllerClass_staticInstanceField;", 	incogControllerClass_staticInstanceField );
+
 	}
 }

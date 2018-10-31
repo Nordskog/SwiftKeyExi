@@ -94,6 +94,4 @@ public class PreferenceConstants
 	public static final String pref_toolbar_button_key = "pref_toolbar_button";
 
 	public static final String pref_hide_predictions_key = "pref_hide_predictions";
-
-	public static final String pref_incognito_always_on_key = "pref_incognito_always_on";
 }

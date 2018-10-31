@@ -197,10 +197,5 @@
     <string name="pref_hide_predictions_title">Hide predictions</string>
     <string name="pref_hide_predictions_summary">Do not display the predictions bar</string>
 
-    <!-- Incognito always on -->
-    <string name="pref_incognito_always_on_key">pref_incognito_always_on</string>
-    <string name="pref_incognito_always_on_title">Keep Incognito enabled</string>
-    <string name="pref_incognito_always_on_summary">Incognito mode will re-enable itself</string>
-
 
 </resources>
