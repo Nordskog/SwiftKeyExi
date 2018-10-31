@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -32,14 +33,17 @@ import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
+import static com.mayulive.xposed.classhunter.Modifiers.*;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -322,6 +326,8 @@ public class KeyboardHooks
 			{
 				for (SharedPreferences.OnSharedPreferenceChangeListener listener : KeyboardMethods.mSwiftkeyPrefChangedListeners)
 				{
+					//Log.i(LOGTAG, "Pref changed: "+(String)param.args[1]);
+
 					listener.onSharedPreferenceChanged((SharedPreferences)param.args[0], (String)param.args[1]);
 				}
 			}
@@ -570,6 +576,49 @@ public class KeyboardHooks
 		}
 	}
 
+	private static XC_MethodHook.Unhook hookQuickSettings(PackageTree lpparam )
+	{
+
+			return XposedBridge.hookMethod( KeyboardClassManager.quickSettingsClass_createSettingsMethod, new XC_MethodHook()
+			{
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+
+					try
+					{
+						Context context = (Context) param.args[0];
+
+						Object dyhInstance = param.args[1];
+						Object hmlInstance = param.args[2];
+						Object hwcInstance = param.args[3];
+
+						ArrayList itemList = (ArrayList)param.getResult();
+
+						Object vibrateItem = KeyboardMethods.createQuicksettingItem(
+								context,
+								"pref_system_vibration_key",
+								"prefs_system_vibration_title",
+								dyhInstance,
+								hmlInstance,
+								hwcInstance );
+
+						if (vibrateItem != null)
+						{
+							itemList.add(vibrateItem);
+						}
+
+					}
+					catch ( Throwable ex)
+					{
+						Log.e(LOGTAG, "Failed to add quicksetting");
+						ex.printStackTrace();
+					}
+				}
+			});
+
+	}
+
 
 	public static boolean hookPriority(final PackageTree lpparam)
 	{
@@ -579,6 +628,7 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
+
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.add( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
@@ -657,6 +707,10 @@ public class KeyboardHooks
 					Hooks.baseHooks_keyHeight.addAll(  hookKeyHeight() );
 				}
 
+				if (Hooks.quickSettings.isRequirementsMet())
+				{
+					hookQuickSettings(lpparam);
+				}
 
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())

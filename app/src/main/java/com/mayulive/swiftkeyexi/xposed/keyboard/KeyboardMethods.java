@@ -274,6 +274,70 @@ public class KeyboardMethods
 				false );
 	}
 
+	public static Object createQuicksettingItem( Context context, String prefKey, String prefStringResourceName, Object dyhInstance, Object hmlInstance, Object hwcInstance )
+	{
+
+		Object newSetting = null;
+
+		try
+		{
+			String prefTitle;
+			{
+				int titleResourceId = context.getResources().getIdentifier(prefStringResourceName, "string", ExiXposed.HOOK_PACKAGE_NAME);
+				if (titleResourceId > 0)
+				{
+					prefTitle = context.getString(titleResourceId);
+				}
+				else
+				{
+					Log.e(LOGTAG, "Title resource was null: "+prefStringResourceName);
+					return null;
+				}
+			}
+
+
+			long delay = 0;
+			boolean defaultState = false;
+
+			// Interestingly, it does not display this icon, which suits us just fine.
+			int iconDrawable = context.getResources().getIdentifier("quick_settings_emoji", "drawable", ExiXposed.HOOK_PACKAGE_NAME);
+			int prefId = 0;	// Don't think this is used anyway, mgiht screw us up though.
+
+			if (iconDrawable <= 0)
+			{
+				Log.e(LOGTAG, "Quick setting icon drawble was null");
+				return null;
+			}
+
+			Object prefItemInstance;
+			{
+				prefItemInstance = KeyboardClassManager.quickSettingPrefReferenceClass_constructor.newInstance(dyhInstance);
+			}
+
+			Object[] args = new Object[]
+					{
+							prefTitle,
+							iconDrawable,
+							prefId,
+							prefKey,
+							defaultState,
+							delay,
+							hmlInstance,
+							hwcInstance,
+							prefItemInstance
+					};
+
+			newSetting = KeyboardClassManager.quicksettingPrefItemClass_constructor.newInstance(args);
+		}
+		catch ( Throwable ex)
+		{
+			Log.e(LOGTAG, "Failed to create quicksetting item");
+			ex.printStackTrace();
+		}
+
+
+		return newSetting;
+	}
 
 	public static void updateHidePredictionBarAndPadKeyboardTop( View rootView )
 	{

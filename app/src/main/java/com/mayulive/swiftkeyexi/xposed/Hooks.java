@@ -87,6 +87,9 @@ public class Hooks
 	//Hardware keyboard shortcuts and remapping
 	public static HookCategory hardwareKeys_base = new HookCategory("Hardkey SHortcuts base");
 
+	//Hardware keyboard shortcuts and remapping
+	public static HookCategory quickSettings = new HookCategory("quickSettings base");
+
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
 																						baseHooks_invalidateLayout,
@@ -100,7 +103,8 @@ public class Hooks
 																						baseHooks_keyHeight,
 																						hardwareKeys_base,
 																						baseHooks_toolbarButton,
-																						baseHooks_hidePredictions
+																						baseHooks_hidePredictions,
+																						quickSettings
 	);
 
 	//Convenience method for checking requirement and logging on failure
