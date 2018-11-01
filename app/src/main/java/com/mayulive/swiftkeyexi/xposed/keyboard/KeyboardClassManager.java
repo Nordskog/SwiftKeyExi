@@ -166,8 +166,13 @@ public class KeyboardClassManager
 
 	public static void loadFields()
 	{
-		keyboardLoaderClass_layoutField = ProfileHelpers.findFirstDeclaredFieldWithType( layoutClass, PriorityKeyboardClassManager.keyboardLoaderClass);
-		keyboardLoaderClass_layoutField.setAccessible(true);
+		if ( PriorityKeyboardClassManager.keyboardLoaderClass != null && layoutClass != null)
+		{
+			keyboardLoaderClass_layoutField = ProfileHelpers.findFirstDeclaredFieldWithType( layoutClass, PriorityKeyboardClassManager.keyboardLoaderClass);
+			if (keyboardLoaderClass_layoutField != null)
+				keyboardLoaderClass_layoutField.setAccessible(true);
+		}
+
 
 		if (incogControllerClass != null)
 		{
