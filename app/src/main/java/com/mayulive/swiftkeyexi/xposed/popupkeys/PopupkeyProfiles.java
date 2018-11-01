@@ -239,7 +239,7 @@ public class PopupkeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("dxy");
+		newProfile.setFullPath("eah");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -289,7 +289,7 @@ public class PopupkeyProfiles
 										new ClassItem(android.graphics.RectF.class),
 										new ClassItem(int.class),
 										new ClassItem(float.class),
-										new ClassItem("" , PUBLIC | STATIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -330,7 +330,7 @@ public class PopupkeyProfiles
 										new ClassItem(float.class),
 										new ClassItem(float.class),
 										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | STATIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -373,7 +373,7 @@ public class PopupkeyProfiles
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -434,7 +434,7 @@ public class PopupkeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("ews");
+		newProfile.setFullPath("eze");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -463,6 +463,7 @@ public class PopupkeyProfiles
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//A
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//B
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//a
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
@@ -476,19 +477,19 @@ public class PopupkeyProfiles
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(float.class)),	//k
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//l
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//m
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//n
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//o
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//n
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//o
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//p
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | STATIC | EXACT )),	//q
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//r
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.util.Locale.class)),	//s
-						new FieldItem( FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//t
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//q
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | STATIC | EXACT )),	//r
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//s
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.util.Locale.class)),	//t
 						new FieldItem( FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//u
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//v
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//w
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//x
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//y
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//z
+						new FieldItem( FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//v
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//w
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//x
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//y
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//z
 
 				});
 /////////////////////////
@@ -658,10 +659,7 @@ public class PopupkeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -672,8 +670,7 @@ public class PopupkeyProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(android.graphics.Typeface.class)
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -685,7 +682,7 @@ public class PopupkeyProfiles
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
+										new ClassItem(android.graphics.Typeface.class)
 
 								),
 
@@ -697,7 +694,7 @@ public class PopupkeyProfiles
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -709,7 +706,7 @@ public class PopupkeyProfiles
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(java.util.List.class)
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -721,11 +718,23 @@ public class PopupkeyProfiles
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem(java.util.List.class)
 
 								),
 
 						//Method #19: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #20: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -740,7 +749,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #20: a
+						//Method #21: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -751,7 +760,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #21: a
+						//Method #22: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -763,23 +772,12 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #22: a
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
 						//Method #23: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
@@ -791,8 +789,7 @@ public class PopupkeyProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(float.class)
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -800,7 +797,11 @@ public class PopupkeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
-										new ClassItem(java.util.Set.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(float.class)
 
 								),
 
@@ -825,14 +826,6 @@ public class PopupkeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #28: b
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
@@ -840,7 +833,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #29: b
+						//Method #28: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -855,6 +848,14 @@ public class PopupkeyProfiles
 
 								),
 
+						//Method #29: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
+
+								),
+
 						//Method #30: c
 						new MethodProfile
 								(
@@ -866,15 +867,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #31: c
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #32: d
+						//Method #31: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -885,7 +878,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #33: e
+						//Method #32: e
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -896,7 +889,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #34: f
+						//Method #33: f
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -907,7 +900,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #35: g
+						//Method #34: g
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -918,7 +911,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #36: h
+						//Method #35: h
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -929,7 +922,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #37: i
+						//Method #36: i
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -940,7 +933,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #38: j
+						//Method #37: j
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -951,7 +944,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #39: k
+						//Method #38: k
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -962,7 +955,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #40: l
+						//Method #39: l
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -973,7 +966,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #41: m
+						//Method #40: m
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -984,7 +977,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #42: n
+						//Method #41: n
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -995,7 +988,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #43: o
+						//Method #42: o
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1006,7 +999,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #44: p
+						//Method #43: p
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1017,7 +1010,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #45: q
+						//Method #44: q
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1028,7 +1021,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #46: r
+						//Method #45: r
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1039,7 +1032,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #47: s
+						//Method #46: s
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1050,7 +1043,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #48: t
+						//Method #47: t
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1061,7 +1054,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #49: u
+						//Method #48: u
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1072,7 +1065,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #50: v
+						//Method #49: v
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1083,7 +1076,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #51: w
+						//Method #50: w
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1094,7 +1087,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #52: x
+						//Method #51: x
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1105,7 +1098,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #53: y
+						//Method #52: y
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1116,7 +1109,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #54: z
+						//Method #53: z
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
