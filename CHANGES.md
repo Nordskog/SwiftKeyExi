@@ -1,6 +1,23 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.7.0] - 01-11-2018
+### Fixed
+ - Primary candidate missing punctuation immediately after swipe-selecting
+ - Exi shortcut button in toolbar
+ 
+### Added
+ - Unlocked the Location feature for all territories
+ - Insert text action to Quick Menu
+ - Use system vibration setting toggle to quick settings
+ 
+### Changed
+ - Made incognito mode setting persist across reboots
+ - Vibration when triggering quick menu or inserted candidate will respect Swiftkey vibration setting
+ - Updated Russian translations
+ - Updated Croatian translations
+
+
 ## [1.6.1] - 02-09-2018
 ### Fixed
  - Swipe, quick-menu, and hotkeys breaking after a while.

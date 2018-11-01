@@ -3,9 +3,11 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.SharedTheme;
@@ -17,6 +19,7 @@ import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,6 +28,38 @@ import java.util.Set;
 
 public class KeyboardMethods
 {
+	public static void inputText(String text)
+	{
+		inputText(text, null);
+	}
+
+	public static void inputText(String text, @Nullable InputConnection currentConnection )
+	{
+		if (PriorityKeyboardClassManager.keyboardServiceInstance != null)
+		{
+			try
+			{
+				if (currentConnection == null)
+				{
+					currentConnection = (InputConnection) PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod.invoke( PriorityKeyboardClassManager.keyboardServiceInstance );
+				}
+
+				if (currentConnection != null)
+				{
+					//If the cursor is after a letter or digit, swiftkey will insist on
+					//putting us into composing mode. Committing text in this state will replace
+					//the composing text. Finish composing to prevent. Might confuse swiftkey state?
+					currentConnection.finishComposingText();
+					currentConnection.commitText(text,1);
+				}
+			}
+			catch (IllegalAccessException | InvocationTargetException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public enum PunctuationRuleMode
 	{
 		STOCK, MODIFIED
@@ -48,6 +83,9 @@ public class KeyboardMethods
 
 	protected static ViewGroup mKeyboardRoot = null;
 	protected static float mLastKeyboardOpacity = 1;
+
+	// Only loaded once on first keyboard load.
+	protected static boolean mIncogStateLoaded = false;
 
 
 	static protected Set<String> mExtendedPredictionsLayouts = new HashSet<>();
@@ -107,6 +145,59 @@ public class KeyboardMethods
 	public static void removeKeyboardEventListener(KeyboardEventListener listener)
 	{
 		mKeyboardEventListeners.remove(listener);
+	}
+
+	public static void saveIncogState( boolean state )
+	{
+		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor( ContextUtils.getHookContext(), ExiXposed.getPrefsPath() );
+		editor.putBoolean("pref_exi_xposed_incog_enabled", state);
+		editor.apply();
+	}
+
+	public static void loadIncogState( )
+	{
+		SharedPreferences prefs = SettingsCommons.getSharedPreferences( ContextUtils.getHookContext(), ExiXposed.getPrefsPath() );
+
+		boolean state = prefs.getBoolean("pref_exi_xposed_incog_enabled", false);
+
+		if ( state )
+		{
+			setIncogState(true);
+		}
+	}
+
+	private static void setIncogState( boolean state )
+	{
+		if ( KeyboardClassManager.incogControllerClass_staticInstanceField == null )
+		{
+			Log.e(LOGTAG, "incogControllerClass_staticInstanceField null");
+			return;
+		}
+
+		if ( KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod == null )
+		{
+			Log.e(LOGTAG, "incogControllerClass_ChangeIncogStateMethod null");
+			return;
+		}
+
+		try
+		{
+			Object instance = KeyboardClassManager.incogControllerClass_staticInstanceField.get(null);
+			if ( instance == null )
+			{
+				Log.e(LOGTAG, "Incog instance null");
+				return;
+			}
+
+			// 0 is on, 2 is off. 1 I have no idea, but it keeps getting set.
+			KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2);
+
+		}
+		catch ( Throwable ex )
+		{
+			Log.e(LOGTAG, "Failed to set incog state");
+			ex.printStackTrace();
+		}
 	}
 
 	public interface KeyboardEventListener
@@ -172,6 +263,43 @@ public class KeyboardMethods
 		}
 	}
 
+	public static int getVibrationDuration()
+	{
+		int duration = 25;
+		// Default is 10 is we are using system value.
+		// Otherwise try to get swiftkey value.
+
+		try
+		{
+			SharedPreferences prefs = SettingsCommons.getSharedPreferences(ContextUtils.getHookContext(), ExiXposed.getPrefsPath());
+
+			boolean useSystemVib = prefs.getBoolean("pref_system_vibration_key", true);
+			if (useSystemVib)
+				duration = 25;
+			else
+			{
+				boolean vibOnKey = prefs.getBoolean("pref_vibrate_on_key", true);
+				if (!vibOnKey)
+				{
+					duration = 0; //disabled!
+				}
+				else
+				{
+					duration = prefs.getInt("pref_vibration_slider_key", 10);	//Swiftkey's default is 10, which doesn't register at all.
+				}
+
+
+			}
+		}
+		catch ( Exception ex )
+		{
+			Log.e(LOGTAG, "Failed to get swiftkey vibration setting");
+			ex.printStackTrace();
+		}
+
+		return duration;
+	}
+
 	public static void requestKeyboardReload()
 	{
 
@@ -203,6 +331,70 @@ public class KeyboardMethods
 				false );
 	}
 
+	public static Object createQuicksettingItem( Context context, String prefKey, String prefStringResourceName, Object dyhInstance, Object hmlInstance, Object hwcInstance )
+	{
+
+		Object newSetting = null;
+
+		try
+		{
+			String prefTitle;
+			{
+				int titleResourceId = context.getResources().getIdentifier(prefStringResourceName, "string", ExiXposed.HOOK_PACKAGE_NAME);
+				if (titleResourceId > 0)
+				{
+					prefTitle = context.getString(titleResourceId);
+				}
+				else
+				{
+					Log.e(LOGTAG, "Title resource was null: "+prefStringResourceName);
+					return null;
+				}
+			}
+
+
+			long delay = 0;
+			boolean defaultState = false;
+
+			// Interestingly, it does not display this icon, which suits us just fine.
+			int iconDrawable = context.getResources().getIdentifier("quick_settings_emoji", "drawable", ExiXposed.HOOK_PACKAGE_NAME);
+			int prefId = 0;	// Don't think this is used anyway, mgiht screw us up though.
+
+			if (iconDrawable <= 0)
+			{
+				Log.e(LOGTAG, "Quick setting icon drawble was null");
+				return null;
+			}
+
+			Object prefItemInstance;
+			{
+				prefItemInstance = KeyboardClassManager.quickSettingPrefReferenceClass_constructor.newInstance(dyhInstance);
+			}
+
+			Object[] args = new Object[]
+					{
+							prefTitle,
+							iconDrawable,
+							prefId,
+							prefKey,
+							defaultState,
+							delay,
+							hmlInstance,
+							hwcInstance,
+							prefItemInstance
+					};
+
+			newSetting = KeyboardClassManager.quicksettingPrefItemClass_constructor.newInstance(args);
+		}
+		catch ( Throwable ex)
+		{
+			Log.e(LOGTAG, "Failed to create quicksetting item");
+			ex.printStackTrace();
+		}
+
+
+		return newSetting;
+	}
 
 	public static void updateHidePredictionBarAndPadKeyboardTop( View rootView )
 	{

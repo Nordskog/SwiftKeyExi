@@ -3,11 +3,13 @@ package com.mayulive.swiftkeyexi.xposed.selection;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Vibrator;
+import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
+import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.pointerInformation;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
@@ -61,14 +63,21 @@ public class SelectionActions
 		// Pointer-up is handled here rather than in the hotkeypanel though, so no listeners.
 		if (panel != null)
 		{
-			KeyboardInteraction.TextAction textAction = panel.getLastSelectedAction();
-			if (textAction != KeyboardInteraction.TextAction.DEFAULT)
-				handleTextAction(panel.getLastSelectedAction(), true);
+			HotkeyPanel.HotkeyMenuItem item = panel.getLastSelectedItem();
+			if (item != null && item.action != KeyboardInteraction.TextAction.DEFAULT)
+			{
+				handleTextAction(item.action, true, item.text);
+			}
 		}
 	}
 
-	@SuppressLint("MissingPermission")
 	protected static void handleTextAction(KeyboardInteraction.TextAction action, boolean vibrate)
+	{
+		handleTextAction(action, vibrate, null);
+	}
+
+	@SuppressLint("MissingPermission")
+	protected static void handleTextAction(KeyboardInteraction.TextAction action, boolean vibrate, @Nullable String text)
 	{
 		if (action != null)
 		{
@@ -76,11 +85,11 @@ public class SelectionActions
 			if(vibrate)
 			{
 				Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
-				v.vibrate(25);
+				v.vibrate(KeyboardMethods.getVibrationDuration());
 			}
 
 
-			KeyCommons.PerformTextAction( PriorityKeyboardClassManager.getInputConnection(), action);
+			KeyCommons.PerformTextAction( PriorityKeyboardClassManager.getInputConnection(), action, text);
 		}
 	}
 

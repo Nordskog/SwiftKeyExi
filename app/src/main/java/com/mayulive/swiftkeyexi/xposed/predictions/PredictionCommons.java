@@ -111,7 +111,7 @@ public class PredictionCommons
 
 					if (PredictionCommons.mMakeLiteralPrimarySuggestionRequestedLastUpdate )
 						//if (PredictionCommons.mMakeLiteralPrimarySuggestionRequestedLastUpdate ||  PredictionCommons.mLastCandidateResultType == PredictionsClassManager.resultTypeEnum_flow_success )
-						PredictionCommons.makeVerbatimPrimary(mLastInput, candidatesList);
+						PredictionCommons.makeVerbatimPrimary(candidatesList);
 				}
 				else
 				{
@@ -239,6 +239,34 @@ public class PredictionCommons
 		}
 	}
 
+	// Like simpleMakeVerbatimPrimary, and just gives up if there is no verbatim
+	static void makeVerbatimPrimary( List<Object> candidates)
+	{
+		if (!candidates.isEmpty())
+		{
+			Object verbatim = candidates.get(0);
+
+				if ( CandidateManager.isVerbatim(verbatim) )
+				{
+					return;
+				}
+				else if (candidates.size() > 1)
+				{
+					verbatim = candidates.get(1);
+
+					if ( CandidateManager.isVerbatim(verbatim) )
+					{
+						candidates.remove(1);
+						candidates.add(0,verbatim);
+					}
+				}
+		}
+		else
+		{
+			Log.e(LOGTAG, "Tried setting verbatim but list was empty!");
+		}
+	}
+
 	static void makeVerbatimPrimary(String lastInput, List<Object> candidates)
 	{
 		boolean inputValid = lastInput != null && !lastInput.isEmpty();
@@ -253,7 +281,6 @@ public class PredictionCommons
 				if ( CandidateManager.isVerbatim(verbatim) )
 				{
 					//Log.e("###", "Primary is verbatim");
-
 					if (!CandidateManager.hasTrailingSeparator( verbatim ) && inputValid)
 					{
 						//For some reason adding a separator to a verbatim candidate doesn't carry over.
@@ -313,11 +340,36 @@ public class PredictionCommons
 						//here we absolutely do want a space.
 						String trailingSep = " ";
 
+						//Actually, try getting separator of primary
+						try
+						{
+							if (primCan != null)
+							{
+								trailingSep = CandidateManager.getTrailingSeparator(primCan);
+								if (trailingSep == null)
+								{
+									trailingSep = " ";
+								}
+								else
+								{
+									if (DebugSettings.DEBUG_PREDICTIONS)
+									{
+										Log.e(LOGTAG, "Got trailing separator: "+trailingSep);
+									}
+								}
+							}
+
+						}
+						catch ( Throwable ex )
+						{
+
+						}
+
 						CandidateManager.candidate_setTrailingSeparatorMethod.invoke(newCandidate,trailingSep);
 
 						if (DebugSettings.DEBUG_PREDICTIONS)
 						{
-							//Log.e("###", "Creating verbatim can text: \""+lastInput+"\", sep: \""+trailingSep+"\"");
+							Log.e(LOGTAG, "Creating verbatim can text: \""+lastInput+"\", sep: \""+trailingSep+"\"");
 
 						}
 

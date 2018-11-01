@@ -106,7 +106,6 @@ public class Settings
 
 	public static boolean HIDE_PREDICTIONS_BAR = false;
 
-
 	///////////////////////
 	// Settings changed
 	///////////////////////

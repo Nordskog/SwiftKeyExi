@@ -170,7 +170,6 @@ public class SelectionClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "frameHolderFactoryClass", 	PrioritySelectionClassManager.frameHolderFactoryClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegateClass", 	FlowDelegateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegateClass", 	swipeDelegateClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "frameHolderFactoryClass_frameHolderInflaterMethod", 	PrioritySelectionClassManager.frameHolderFactoryClass_frameHolderInflaterMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegate_flowDetectedMethod", 	swipeDelegate_flowDetectedMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegate_flowDetectedMethod",  (FlowDelegate_flowDetectedMethod ));
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegate_DRAG_ENUM",  (FlowDelegate_DRAG_ENUM ));

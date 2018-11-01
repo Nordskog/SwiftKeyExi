@@ -1,7 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.util.WorkTimer;
-import com.mayulive.swiftkeyexi.xposed.emoji.EmojiHookCommons;
 import com.mayulive.swiftkeyexi.xposed.hardwarekeys.HardwareKeyHooks;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionHooks;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
@@ -40,10 +38,12 @@ public class Hooks
 	private static ArrayList<HookWorkFinishedListener> mHookFinishedListeners = new ArrayList<>();
 
 	//Predictions
+
 	public static HookCategory predictionHooks_more = new HookCategory("PredictionHooks More");
 	public static HookCategory predictionHooks_priority = new HookCategory("PredictionHooks Priority");
 	public static HookCategory predictionHooks_base = new HookCategory("PredictionHooks", predictionHooks_more, predictionHooks_priority);
-	public static HookCategory predictionHooks_candidate = new HookCategory("PredictionHooks Candidate", predictionHooks_base);
+	public static HookCategory predictionHooks_candidateGetTextOrigin = new HookCategory("candidateGetTextOrigin");
+	public static HookCategory predictionHooks_candidate = new HookCategory("PredictionHooks Candidate", predictionHooks_base, predictionHooks_candidateGetTextOrigin);
 
 	//Selection
 	public static HookCategory selectionHooks_movedAbruptly = new HookCategory("selectionHooks_movedAbruptly");
@@ -87,20 +87,28 @@ public class Hooks
 	//Hardware keyboard shortcuts and remapping
 	public static HookCategory hardwareKeys_base = new HookCategory("Hardkey SHortcuts base");
 
+	//Hardware keyboard shortcuts and remapping
+	public static HookCategory quickSettings = new HookCategory("quickSettings base");
+
+	//Hardware keyboard shortcuts and remapping
+	public static HookCategory incognito = new HookCategory("incognito base");
+
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
-																						baseHooks_invalidateLayout,
-																						keyHooks_keyDefinition,
-																						emojiHooks_base,
-																						predictionHooks_base,
-																						baseHooks_punctuationSpace,
-																						styleHooks_darklight,
-																						soundHooks_base,
-																						baseHooks_fullscreenMode,
-																						baseHooks_keyHeight,
-																						hardwareKeys_base,
-																						baseHooks_toolbarButton,
-																						baseHooks_hidePredictions
+																								baseHooks_invalidateLayout,
+																								keyHooks_keyDefinition,
+																								emojiHooks_base,
+																								predictionHooks_base,
+																								baseHooks_punctuationSpace,
+																								styleHooks_darklight,
+																								soundHooks_base,
+																								baseHooks_fullscreenMode,
+																								baseHooks_keyHeight,
+																								hardwareKeys_base,
+																								baseHooks_toolbarButton,
+																								baseHooks_hidePredictions,
+																								quickSettings,
+																								incognito
 	);
 
 	//Convenience method for checking requirement and logging on failure

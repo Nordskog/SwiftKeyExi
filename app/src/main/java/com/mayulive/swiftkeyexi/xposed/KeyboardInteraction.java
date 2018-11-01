@@ -5,7 +5,7 @@ import android.os.Build;
 
 import com.mayulive.swiftkeyexi.R;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Created by Roughy on 2/23/2017.
@@ -22,7 +22,8 @@ public class KeyboardInteraction
 		PASTE,
 		SELECT_ALL,
 		GO_TO_END,
-		GO_TO_START;
+		GO_TO_START,
+		INSERT;
 
 		public static String getTextRepresentation(Context context, TextAction action)
 		{
@@ -48,6 +49,8 @@ public class KeyboardInteraction
 						return context.getResources().getString(R.string.textaction_gotoend);
 					case GO_TO_START:
 						return context.getResources().getString(R.string.textaction_gotostart);
+					case INSERT:
+						return context.getResources().getString(R.string.textaction_insert);
 
 					default:
 						return "Null";
@@ -85,6 +88,8 @@ public class KeyboardInteraction
 						return context.getResources().getString(R.string.textaction_short_gotoend);
 					case GO_TO_START:
 						return context.getResources().getString(R.string.textaction_short_gotostart);
+					case INSERT:
+						return context.getResources().getString(R.string.textaction_short_insert);
 
 					default:
 						return "Null";
@@ -100,39 +105,42 @@ public class KeyboardInteraction
 
 		public static TextAction[] getUsableTextActions()
 		{
+			return getUsableTextActions(false);
+		}
+
+		public static TextAction[] getUsableTextActions(boolean includeSpecial)
+		{
+
+			ArrayList<TextAction> values = new ArrayList<>();
 
 			//Supports everything
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
 			{
-				TextAction[] values =
-						{
-								TextAction.UNDO,
-								TextAction.REDO,
-								TextAction.COPY,
-								TextAction.CUT,
-								TextAction.PASTE,
-								TextAction.SELECT_ALL,
-								TextAction.GO_TO_END,
-								TextAction.GO_TO_START
-						};
-				return values;
-			}
-			else
-			{
-				//Supports everything but undo/redo
-				TextAction[] values =
-						{
-								TextAction.COPY,
-								TextAction.CUT,
-								TextAction.PASTE,
-								TextAction.SELECT_ALL,
-								TextAction.GO_TO_END,
-								TextAction.GO_TO_START
-						};
-				return values;
+
+				values.add( TextAction.UNDO);
+				values.add( TextAction.REDO);
 			}
 
+			values.add( TextAction.COPY);
+			values.add( TextAction.CUT);
+			values.add( TextAction.PASTE);
+
+			if (includeSpecial)
+			{
+				values.add( TextAction.INSERT );
+			}
+
+			values.add( TextAction.SELECT_ALL);
+			values.add( TextAction.GO_TO_END);
+			values.add( TextAction.GO_TO_START);
+
+
+
+
+
+			return values.toArray( new TextAction[ values.size() ] );
 		}
+
 	}
 
 

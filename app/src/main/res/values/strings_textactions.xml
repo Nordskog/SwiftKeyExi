@@ -10,6 +10,7 @@
     <string name="textaction_paste">Paste</string>
     <string name="textaction_gotoend">Go to End</string>
     <string name="textaction_gotostart">Go to Start</string>
+    <string name="textaction_insert">Insert</string>
 
     <!-- Short-hand for quick menu -->
     <string name="textaction_short_undo">Undo</string>
@@ -20,5 +21,6 @@
     <string name="textaction_short_paste">Paste</string>
     <string name="textaction_short_gotoend">End</string>
     <string name="textaction_short_gotostart">Start</string>
+    <string name="textaction_short_insert">Insert</string>
 
 </resources>

@@ -13,20 +13,15 @@ import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
-import com.mayulive.xposed.classhunter.profiles.Profile;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -54,6 +49,14 @@ public class CandidateManager
 	protected static Method candidate_setTrailingSeparatorMethod = null;
 	protected static Method candidate_getTrailingSeparatorMethod = null;
 	protected static Method candidate_getTokensMethod = null;
+
+	protected static Method candidate_sourceMetadataMethod = null;
+
+	protected static Class CandidateSourceMetadataClass;	// Actually an interface
+	protected static Method CandidateSourceMetadataClass_textOriginMethod;
+
+	protected static Class TextOriginEnum;
+	protected static Object TextOriginEnum_PREDICTED_BY_EMOJI_FLUENCY_SESSION;
 
 	//May be null
 	protected static Method candidate_getCorrectionSpanReplacementText = null;
@@ -116,6 +119,37 @@ public class CandidateManager
 		return returnString;
 	}
 
+	// Alas, the emoji have teh same origin as other words.
+	// This doesn't work, but kepe around as a reference should we ever need to look up teh rest.
+	public static boolean isPredictedEmoji( Object candidate )
+	{
+		if ( Hooks.predictionHooks_candidateGetTextOrigin.isRequirementsMet() )
+		{
+			try
+			{
+				Object metaData = candidate_sourceMetadataMethod.invoke(candidate);
+				Object textOrigin = CandidateSourceMetadataClass_textOriginMethod.invoke(metaData);
+
+				Log.i(LOGTAG, "TextOrigin:"+textOrigin.toString());
+
+				return (textOrigin == TextOriginEnum_PREDICTED_BY_EMOJI_FLUENCY_SESSION);
+			}
+			catch ( Throwable ex )
+			{
+				Log.e(LOGTAG, "Could not get candidate text origin");
+				ex.printStackTrace();
+			}
+
+			return false;
+
+		}
+		else
+		{
+			// Can't tell, always false.
+			return false;
+		}
+	}
+
 	public static void doAllTheThings(PackageTree param) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException
 	{
 		ClassLoader classLoader = param.getClassLoader();
@@ -128,6 +162,21 @@ public class CandidateManager
 			candidate_setTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "setTrailingSeparator");
 			candidate_getCorrectionSpanReplacementText = ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "getCorrectionSpanReplacementText");
 			candidate_getTokensMethod =  ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "getTokens");
+			candidate_sourceMetadataMethod = ProfileHelpers.firstMethodByName(candidateInterfaceClass.getDeclaredMethods(), "sourceMetadata");
+		}
+
+		CandidateSourceMetadataClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.CandidateSourceMetadata", classLoader);
+		if ( CandidateSourceMetadataClass != null)
+		{
+			CandidateSourceMetadataClass_textOriginMethod = ProfileHelpers.findFirstMethodByName( CandidateSourceMetadataClass.getDeclaredMethods(), "textOrigin" );
+			if (CandidateSourceMetadataClass_textOriginMethod != null)
+				CandidateSourceMetadataClass_textOriginMethod.setAccessible(true);
+		}
+
+		TextOriginEnum =  ClassHunter.loadClass("com.swiftkey.avro.telemetry.sk.android.TextOrigin", classLoader);
+		if (TextOriginEnum != null)
+		{
+			TextOriginEnum_PREDICTED_BY_EMOJI_FLUENCY_SESSION = ProfileHelpers.findEnumByName( (Enum[])TextOriginEnum.getEnumConstants(), "PREDICTED_BY_EMOJI_FLUENCY_SESSION" );
 		}
 
 		fluencyCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.FluencyCandidate", classLoader);
@@ -330,6 +379,12 @@ public class CandidateManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "token_staticConstructor", 	token_staticConstructor );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidate_shouldEllipsizeMethod", 	clipboardCandidate_shouldEllipsizeMethod );
+
+		// Whether we can tell if a candidate is a predicted emoji
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidateGetTextOrigin,	 "candidate_sourceMetadataMethod", 	candidate_sourceMetadataMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidateGetTextOrigin,	 "CandidateSourceMetadataClass_textOriginMethod", 	CandidateSourceMetadataClass_textOriginMethod );
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidateGetTextOrigin,	 "TextOriginEnum_PREDICTED_BY_EMOJI_FLUENCY_SESSION", TextOriginEnum_PREDICTED_BY_EMOJI_FLUENCY_SESSION );
+
 
 	}
 

@@ -23,6 +23,7 @@ import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by Roughy on 9/22/2017.
@@ -33,8 +34,8 @@ public class QuickMenuListAdapter extends RecyclerView.Adapter<QuickMenuListAdap
 
 	List<? extends HotkeyPanel.HotkeyMenuItem> mItems = new ArrayList<>();
 
-	//TODO make this a common resource
-	private static final KeyboardInteraction.TextAction[] mDropdownOptions = KeyboardInteraction.TextAction.getUsableTextActions();
+	// Add the special "Insert" action, which is only valid for the quick menu
+	private static final KeyboardInteraction.TextAction[] mDropdownOptions =  KeyboardInteraction.TextAction.getUsableTextActions(true);
 	private String[] sMenuItems = new String[mDropdownOptions.length];
 
 	private OnHotkeyMenuItemChangedListener mChangedListener = null;

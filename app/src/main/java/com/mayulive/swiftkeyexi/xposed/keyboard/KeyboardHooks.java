@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -30,10 +31,19 @@ import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
+import com.mayulive.xposed.classhunter.ClassHunter;
+import com.mayulive.xposed.classhunter.Modifiers;
+import static com.mayulive.xposed.classhunter.Modifiers.*;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.xposed.classhunter.profiles.ClassItem;
+import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -316,6 +326,8 @@ public class KeyboardHooks
 			{
 				for (SharedPreferences.OnSharedPreferenceChangeListener listener : KeyboardMethods.mSwiftkeyPrefChangedListeners)
 				{
+					//Log.i(LOGTAG, "Pref changed: "+(String)param.args[1]);
+
 					listener.onSharedPreferenceChanged((SharedPreferences)param.args[0], (String)param.args[1]);
 				}
 			}
@@ -426,7 +438,7 @@ public class KeyboardHooks
 					if (contentView != null)
 					{
 
-						FrameLayout toolParent = (FrameLayout) contentView.getParent();
+						ViewGroup toolParent = (ViewGroup) contentView.getParent();
 
 						//Check if we've already done this
 						{
@@ -534,6 +546,112 @@ public class KeyboardHooks
 		});
 	}
 
+	// This hook doesn't have any ... hooks. It just sets a value.
+	// Not going to bother with the class manager.
+	private static void hookLocation(  PackageTree lpparam )
+	{
+		try
+		{
+			Class locClass = ProfileHelpers.loadProfiledClass(KeyboardProfiles._get_LOCATION_MANAGER_CLASS_PROFILE(), lpparam);
+			Class someCollectionClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_COLLECTION_CLASS_USE_BY_LOCATION_PROFILE() ,lpparam);
+
+
+			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
+					Modifiers.STATIC,
+					new ClassItem(Modifiers.THIS),
+					new ClassItem(Modifiers.ARRAY)
+			), someCollectionClass.getDeclaredMethods(), someCollectionClass);
+
+			Field locClass_arrField = ProfileHelpers.findFirstDeclaredFieldWithType( someCollectionClass,  locClass);
+			locClass_arrField.setAccessible(true);
+
+			Object casCollection = someCollectionClassCreateMethod.invoke(null, new Object[]{KeyboardStrings.ALL_COUNTRY_CODES});
+
+			locClass_arrField.set(null, casCollection);
+		}
+		catch ( Throwable ex )
+		{
+			Log.e(LOGTAG, "Failed to add countries to location list");
+			ex.printStackTrace();
+		}
+	}
+
+	private static XC_MethodHook.Unhook hookIncognito(PackageTree lpparam )
+	{
+		return XposedBridge.hookMethod( KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				try
+				{
+					int state = (int)param.args[0];
+
+					// 0 for on, 2 for off. Gets called with 1 all the time for seemingly no reason.
+					if (state == 0)
+					{
+						KeyboardMethods.saveIncogState(true);
+					}
+					else if (state == 2)
+					{
+						KeyboardMethods.saveIncogState(false);
+					}
+				}
+				catch ( Throwable ex )
+				{
+					Hooks.incognito.invalidate(ex, "Failed to intercept incognito state change");
+
+					// Since we don't know what it is anymore, set to false.
+					KeyboardMethods.saveIncogState(false);
+				}
+			}
+		});
+	}
+
+	private static XC_MethodHook.Unhook hookQuickSettings(PackageTree lpparam )
+	{
+
+			return XposedBridge.hookMethod( KeyboardClassManager.quickSettingsClass_createSettingsMethod, new XC_MethodHook()
+			{
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+
+					try
+					{
+						Context context = (Context) param.args[0];
+
+						Object dyhInstance = param.args[1];
+						Object hmlInstance = param.args[2];
+						Object hwcInstance = param.args[3];
+
+						ArrayList itemList = (ArrayList)param.getResult();
+
+						Object vibrateItem = KeyboardMethods.createQuicksettingItem(
+								context,
+								"pref_system_vibration_key",
+								"prefs_system_vibration_title",
+								dyhInstance,
+								hmlInstance,
+								hwcInstance );
+
+						if (vibrateItem != null)
+						{
+							itemList.add(vibrateItem);
+						}
+
+					}
+					catch ( Throwable ex)
+					{
+						Log.e(LOGTAG, "Failed to add quicksetting");
+						ex.printStackTrace();
+					}
+				}
+			});
+
+	}
+
+
 	public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
@@ -542,6 +660,7 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
+
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.add( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
@@ -620,6 +739,10 @@ public class KeyboardHooks
 					Hooks.baseHooks_keyHeight.addAll(  hookKeyHeight() );
 				}
 
+				if (Hooks.quickSettings.isRequirementsMet())
+				{
+					hookQuickSettings(lpparam);
+				}
 
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())
@@ -643,6 +766,8 @@ public class KeyboardHooks
 							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
+
+
 					}
 				});
 
@@ -658,10 +783,22 @@ public class KeyboardHooks
 					@Override
 					public void afterKeyboardOpened()
 					{
+						// I guess this does something
 						if (OverlayCommons.mKeyboardOverlay != null)
 						{
 							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+						}
+
+						// Only called once
+						if ( !KeyboardMethods.mIncogStateLoaded )
+						{
+							KeyboardMethods.mIncogStateLoaded = true;
+
+							if (Hooks.incognito.isRequirementsMet())
+							{
+								KeyboardMethods.loadIncogState();
+							}
 						}
 					}
 
@@ -679,8 +816,17 @@ public class KeyboardHooks
 							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
+
 					}
 				});
+
+				// Doesn't have any hooks, just sets a value.
+				hookLocation(lpparam);
+
+				if (Hooks.incognito.isRequirementsMet())
+				{
+					Hooks.incognito.add( hookIncognito(lpparam) );
+				}
 
 			}
 		}
