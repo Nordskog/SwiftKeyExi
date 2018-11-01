@@ -105,6 +105,6 @@
   <!-- toolbar button -->
   <string name="pref_toolbar_button_title">Кнопка на панели инструментов</string>
   <string name="pref_toolbar_button_summary"> </string>
-  <string name="pref_hide_predictions_title">Убрать прогнозинование</string>
+  <string name="pref_hide_predictions_title">Убрать прогнозирование</string>
   <string name="pref_hide_predictions_summary">Не отображать панель прогнозирования</string>
 </resources>

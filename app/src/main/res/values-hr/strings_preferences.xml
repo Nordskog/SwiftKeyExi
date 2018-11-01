@@ -103,4 +103,8 @@
   <string name="pref_remapped_keys_title">Premapirane tipke</string>
   <string name="pref_remapped_keys_summary">Premapirane hardverske tipke</string>
   <!-- toolbar button -->
+  <string name="pref_toolbar_button_title">Gumb alatne trake</string>
+  <string name="pref_toolbar_button_summary">Prikažite Exi prečac na alatnoj traci</string>
+  <string name="pref_hide_predictions_title">Sakrij predviđanja</string>
+  <string name="pref_hide_predictions_summary">Ne prikazuj traku predviđanja</string>
 </resources>
