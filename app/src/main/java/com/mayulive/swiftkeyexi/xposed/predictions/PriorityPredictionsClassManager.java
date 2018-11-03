@@ -24,6 +24,7 @@ import static com.mayulive.xposed.classhunter.Modifiers.ENUM;
 import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
 import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
 import static com.mayulive.xposed.classhunter.Modifiers.INTERFACE;
+import static com.mayulive.xposed.classhunter.Modifiers.PRIVATE;
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 import static com.mayulive.xposed.classhunter.Modifiers.STATIC;
 
@@ -71,7 +72,7 @@ public class PriorityPredictionsClassManager
 	{
 		PriorityPredictionsClassManager.candidateViewClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_CANDIDATE_VIEW_CLASS_PROFILE(), param );
 
-		PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE(), param );
+			PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE(), param );
 
 		PriorityPredictionsClassManager.buClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_BU_CLASS_PROFILE(), param );
 	}
@@ -108,7 +109,7 @@ public class PriorityPredictionsClassManager
 			//Edit: Aaaaand they changed something. It's okay with most similar though maybe?
 			//Edit2: Nope. Lots of changes later we're back. Can tell the method apart now.
 
-			PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
+			PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(								new MethodProfile
 							(
 									PUBLIC | STATIC | EXACT ,
 									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
@@ -118,17 +119,12 @@ public class PriorityPredictionsClassManager
 									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem(int.class),
-									new ClassItem(int.class),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
 									new ClassItem("" , PUBLIC | FINAL | EXACT ),
 									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem(android.view.View.class),
 									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 									new ClassItem("" , PUBLIC | FINAL | EXACT ),
 									new ClassItem("" , PUBLIC | FINAL | EXACT ),
 									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
@@ -140,9 +136,9 @@ public class PriorityPredictionsClassManager
 							),
 					PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
 
-			PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod = ProfileHelpers.findMostSimilar(		new MethodProfile
+			PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod = ProfileHelpers.findMostSimilar(							new MethodProfile
 							(
-									STATIC | EXACT ,
+									PRIVATE | STATIC | EXACT ,
 									new ClassItem(void.class),
 
 									new ClassItem(android.content.Context.class),

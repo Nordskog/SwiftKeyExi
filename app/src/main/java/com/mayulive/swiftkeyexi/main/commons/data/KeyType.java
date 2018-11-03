@@ -13,6 +13,7 @@ import java.util.Set;
  */
 public enum KeyType
 {
+
 	//There are many other keys in addition to these.
 	//They are weird duplicates (e.g. EmojiSwitchKey)
 	//and things I don't understand at all (e.g ReturnLetterKey).
@@ -30,7 +31,9 @@ public enum KeyType
 	PERIOD,            //PuncKey
 	CLEAR_BUFFER_KEY,    //ClearBufferKey. 清空 key
 	TAB,                //Tab
-	NUMBER;				//There is no number key type, but set it manually for 0-9
+	NUMBER,				//There is no number key type, but set it manually for 0-9
+	COMMA;
+
 
 	private static final Set<String> NUMBER_CHARACTERS = new HashSet<>();
 
@@ -46,6 +49,58 @@ public enum KeyType
 	public static boolean contentIsNumber(String content)
 	{
 		return ( NUMBER_CHARACTERS.contains(content) );
+	}
+
+	public static KeyType getType( int typeIdentifier, String content )
+	{
+
+		switch (typeIdentifier)
+		{
+			case 0xE:
+			case 0xF:
+			case 0x17:
+				return SPACE;
+
+			case 0xC:
+				return SWITCH_LAYOUT;
+			case 0x4:
+				return PERIOD;
+
+			case 0xD:
+			case 0x3:
+				return COMMA;
+
+			case 0x6:
+				return DELETE;
+			case 0x14:
+				return SHIFT;
+
+			case 0x0:
+			case 0x13:
+			{
+				if (KeyType.contentIsNumber( content ))
+				{
+					return NUMBER;
+				}
+				else
+				{
+					return SYMBOL;
+				}
+
+
+			}
+
+
+			case 0x7:			// Probably more of these
+				return ENTER;
+
+			case 0x8:
+				return EMOJI;
+
+		}
+
+		return DEFAULT;
+
 	}
 
 	public static KeyType getType(String tag)

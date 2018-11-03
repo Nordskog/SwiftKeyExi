@@ -9,6 +9,7 @@ import android.graphics.RectF;
 public class KeyDefinition
 {
 	public String content;
+	public String tag = "";
 	public KeyType type;
 	public RectF hitbox = new RectF(0,0,0,0);
 
@@ -48,7 +49,7 @@ public class KeyDefinition
 	@Override
 	public String toString()
 	{
-		return "Type: " + type.toString() + ", Content: " + content;
+		return "Type: " + type.toString() + ", Content: " + content+", tag: "+tag;
 	}
 
 

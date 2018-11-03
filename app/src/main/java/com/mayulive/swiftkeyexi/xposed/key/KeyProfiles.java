@@ -1177,4 +1177,140 @@ public class KeyProfiles
 
 		return newProfile;
 	}
+
+	public static ClassProfile _get_NEW_KEY_INFO_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("hvl");
+		newProfile.setKnownPath("");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem("" , PUBLIC | EXACT ));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+						new ClassItem(java.io.Serializable.class)
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//a
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//b
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//c
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//d
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//e
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//f
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//g
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//h
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//i
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//j
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//k
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//l
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//m
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//n
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//o
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//p
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//q
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//r
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//s
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.lang.String.class)),	//x
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #1: equals
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.Object.class)
+
+								),
+
+						//Method #2: hashCode
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(double.class),
+										new ClassItem(double.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem(double.class),
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(double.class),
+										new ClassItem(double.class),
+										new ClassItem(double.class),
+										new ClassItem(double.class)
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
+
+
+
+
+
+
 }

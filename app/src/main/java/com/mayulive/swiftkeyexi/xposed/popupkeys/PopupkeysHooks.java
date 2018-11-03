@@ -5,6 +5,7 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupKeyItem;
+import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupParentKeyItem;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.PopupKeyItem;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -23,7 +24,6 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 
 
-import static com.mayulive.swiftkeyexi.xposed.key.KeyCommons.sLastSymbolDefined;
 import static com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysClassManager.btSubClass_aField;
 import static com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysClassManager.btSubClass_bField;
 import static com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysClassManager.btSubClass_getProperOrderMethod;
@@ -48,7 +48,11 @@ public class PopupkeysHooks
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
-
+				if ( KeyCommons.mLastTemplateKey == null )
+				{
+					Log.e(LOGTAG, "template key null, skipping popups.");
+					return;
+				}
 
 
 				List<String> listObject = (List<String>)param.getResult();
@@ -73,11 +77,16 @@ public class PopupkeysHooks
 				if (listObject!= null)
 				{
 
+					DB_PopupParentKeyItem newParentKey = PopupkeysCommons.mPopupKeys.get( KeyCommons.mLastTemplateKey.content );
 
+					boolean isLowerCase = true;
+					if (PopupkeysCommons.mLastPopupParentKey != null && PopupkeysCommons.mLastPopupParentKey == newParentKey)
+					{
+						isLowerCase = false;
+					}
 
-					PopupkeysCommons.mLastPopupParentKey = PopupkeysCommons.mPopupKeys.get( KeyCommons.sLastSymbolDefined);
-					boolean isLowerCase = !sLastSymbolDefined.equalsIgnoreCase(PopupkeysCommons.mLastASymbol);
-					PopupkeysCommons.mLastASymbol = KeyCommons.sLastSymbolDefined;
+					PopupkeysCommons.mLastPopupParentKey = newParentKey;
+
 
 					//Some keys have multiple popup keys, but they're added later.
 					//This should only applay to the period key
@@ -85,7 +94,7 @@ public class PopupkeysHooks
 
 					if (DebugSettings.DEBUG_POPUPS)
 					{
-						Log.i(LOGTAG, "Initial popups: "+listObject.toString()+", assuming multi?: "+assumeMulti);
+						Log.i(LOGTAG, "Initial popups: "+listObject.toString()+", assuming multi?: "+assumeMulti+", lower case?: "+isLowerCase);
 					}
 
 
@@ -93,15 +102,15 @@ public class PopupkeysHooks
 					// Remove from multiple popups
 					//////////////////////////////////
 
-					if (KeyCommons.sLastSymbolDefined != null)
+					if (KeyCommons.mLastTemplateKey.content != null)
 					{
 						//Remove any entry from list of keys with multiple popups.
 						//If there are any it will be re-added later
-						PopupkeysCommons.mMultipleKeyPopups.remove( KeyCommons.sLastSymbolDefined );
+						PopupkeysCommons.mMultipleKeyPopups.remove( KeyCommons.mLastTemplateKey.content );
 
 						if (DebugSettings.DEBUG_POPUPS)
 						{
-							Log.i(LOGTAG, "Removing Multi-popup symbol: "+KeyCommons.sLastSymbolDefined +", hash: "+Integer.toHexString( KeyCommons.sLastSymbolDefined.hashCode() ));
+							Log.i(LOGTAG, "Removing Multi-popup symbol: "+KeyCommons.mLastTemplateKey.content +", hash: "+Integer.toHexString(KeyCommons.mLastTemplateKey.content.hashCode() ));
 						}
 					}
 
@@ -146,13 +155,13 @@ public class PopupkeysHooks
 					{
 						if (DebugSettings.DEBUG_POPUPS)
 						{
-							Log.i(LOGTAG, "Adding to multi-popup keys: "+ sLastSymbolDefined);
+							Log.i(LOGTAG, "Adding to multi-popup keys: "+ KeyCommons.mLastTemplateKey.content );
 
-							Log.i(LOGTAG, "Hash is: "+Integer.toHexString(sLastSymbolDefined.hashCode()) ) ;
+							Log.i(LOGTAG, "Hash is: "+Integer.toHexString(KeyCommons.mLastTemplateKey.content.hashCode()) ) ;
 						}
 
 						//Log.i(LOGTAG, "Adding to multi-popup: "+sLastSymbolDefined);
-						PopupkeysCommons.mMultipleKeyPopups.add(sLastSymbolDefined);
+						PopupkeysCommons.mMultipleKeyPopups.add( KeyCommons.mLastTemplateKey.content );
 					}
 					else
 					{
@@ -184,7 +193,18 @@ public class PopupkeysHooks
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
 
-					//Log.e("###", "Button order");
+
+					if (DebugSettings.DEBUG_POPUPS)
+					{
+
+						if ( KeyCommons.mLastTemplateKey != null)
+						{
+							Log.i(LOGTAG, "Popup order key: "+KeyCommons.mLastTemplateKey.content );
+						}
+
+
+					}
+
 					try
 					{
 						if (PopupkeysCommons.mLastPopupParentKey != null)
@@ -220,8 +240,8 @@ public class PopupkeysHooks
 							//is the primary key at its original location.
 
 
-							boolean isUpperCase = !sLastSymbolDefined.equalsIgnoreCase(PopupkeysCommons.mLastOrderSymbol);
-							PopupkeysCommons.mLastOrderSymbol = sLastSymbolDefined;
+							boolean isUpperCase = !KeyCommons.mLastTemplateKey.content.equalsIgnoreCase(PopupkeysCommons.mLastOrderSymbol);
+							PopupkeysCommons.mLastOrderSymbol = KeyCommons.mLastTemplateKey.content;
 
 							//Grab a copy of the primary popup, if we need it.
 							String primaryPopup = outputKeys.get(leftCount);
