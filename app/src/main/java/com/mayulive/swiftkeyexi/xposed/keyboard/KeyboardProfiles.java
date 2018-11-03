@@ -1323,7 +1323,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fhd");
+		newProfile.setFullPath("ewc");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1414,7 +1414,17 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #3: b
+						//Method #3: a
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.util.UUID.class)
+
+								),
+
+						//Method #4: b
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -1424,7 +1434,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #4: b
+						//Method #5: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -1434,7 +1444,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #5: c
+						//Method #6: c
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -1444,7 +1454,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #6: d
+						//Method #7: d
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -1454,7 +1464,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #7: e
+						//Method #8: e
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -1462,7 +1472,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #8: f
+						//Method #9: f
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -1470,7 +1480,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #9: g
+						//Method #10: g
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -1478,7 +1488,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #10: h
+						//Method #11: h
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -1486,7 +1496,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #11: i
+						//Method #12: i
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -1494,7 +1504,15 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #12: a
+						//Method #13: j
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #14: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1502,7 +1520,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #13: a
+						//Method #15: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1513,33 +1531,14 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #14: a
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.location.Location.class)
-
-								),
-
-						//Method #15: a
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.swiftkey.avro.telemetry.sk.android.LocationGpsResultStatus" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
 						//Method #16: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.util.List.class)
+										new ClassItem(int.class),
+										new ClassItem(java.util.UUID.class)
 
 								),
 
@@ -1549,11 +1548,31 @@ public class KeyboardProfiles
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.util.UUID.class)
+										new ClassItem(android.location.Location.class)
 
 								),
 
-						//Method #18: b
+						//Method #18: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.LocationGpsResultStatus" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #19: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #20: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1561,7 +1580,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #19: c
+						//Method #21: c
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1569,7 +1588,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #20: d
+						//Method #22: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1877,7 +1896,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("emy");
+		newProfile.setFullPath("eel");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1924,10 +1943,10 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #1: a
+						//Method #1: b
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PRIVATE | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem(int.class)
@@ -1940,11 +1959,11 @@ public class KeyboardProfiles
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(int.class)
 
 								),
 
-						//Method #3: b
+						//Method #3: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1958,11 +1977,21 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #5: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(boolean.class)
 
 								),
 
-						//Method #5: c
+						//Method #6: c
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1995,7 +2024,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fpr");
+		newProfile.setFullPath("fdk");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -2024,9 +2053,9 @@ public class KeyboardProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.widget.FrameLayout.class)),	//a
-						new FieldItem( FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
-						new FieldItem( FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//c
+						new FieldItem( FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
+						new FieldItem( FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//b
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.widget.FrameLayout.class)),	//c
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.widget.FrameLayout.class)),	//d
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//f

@@ -19,7 +19,7 @@ public class SoundProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("hfr");
+		newProfile.setFullPath("gmr");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -64,6 +64,16 @@ public class SoundProfiles
 						//Method #0: a
 						new MethodProfile
 								(
+										PRIVATE | EXACT ,
+										new ClassItem(float.class),
+
+										new ClassItem(int.class)
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
 										PUBLIC | STATIC | SYNCHRONIZED | SYNCHRONIZED | EXACT ,
 										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
 
@@ -72,7 +82,39 @@ public class SoundProfiles
 
 								),
 
-						//Method #1: a
+						//Method #2: a
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem(float.class),
+										new ClassItem(android.content.Context.class)
+
+								),
+
+						//Method #4: b
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(int[].class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(android.content.Context.class)
+
+								),
+
+						//Method #5: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -83,7 +125,7 @@ public class SoundProfiles
 
 								),
 
-						//Method #2: a
+						//Method #6: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,

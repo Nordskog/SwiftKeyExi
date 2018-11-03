@@ -505,7 +505,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("enu");
+		newProfile.setFullPath("eho");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -852,6 +852,8 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
 										new ClassItem(boolean.class)
 
 								),
@@ -1687,7 +1689,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("ecs");
+		newProfile.setFullPath("dxz");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1736,6 +1738,17 @@ public class PredictionProfiles
 						//Method #0: a
 						new MethodProfile
 								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
 										FINAL | EXACT ,
 										new ClassItem(java.util.List.class),
 
@@ -1746,7 +1759,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #1: a
+						//Method #2: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
