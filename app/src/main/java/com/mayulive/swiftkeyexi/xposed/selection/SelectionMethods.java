@@ -65,7 +65,18 @@ public class SelectionMethods
 			if (enable)
 				connection.beginBatchEdit();
 			else
+			{
 				connection.endBatchEdit();
+
+				// SwiftKey has trouble with start/end being right/left. Swipe gestures execute from wrong location.
+				// Only happens sometimes, so their code just isn't picking it up for some reason.
+				// Swapping the order back and forth once seems to fix it.
+				CursorSelection selection = SelectionState.getInternalSelection( SelectionState.mLastState );
+				setSelectionWithOffset(connection, selection.end, selection.start);
+				setSelectionWithOffset(connection, selection.start, selection.end);
+
+			}
+
 		}
 	}
 

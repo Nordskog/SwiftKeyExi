@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
@@ -96,16 +97,28 @@ public class PriorityKeyboardClassManager
 
 			PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onConfigurationChanged", ( new Class[]{ Configuration.class }) );
 
-			FullKeyboardServiceDelegate_onCreateInputView = PriorityKeyboardClassManager.keyboardServiceClass.getMethod("onCreateInputView", ( Class[] ) null );
 		}
+
 
 		if (FullKeyboardServiceDelegate != null)
 		{
-
-			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findMostSimilar( new MethodProfile(
-					FINAL | EXACT,
+			// 7.1.6.30+
+			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findFirstProfileMatch( new MethodProfile(
+					PRIVATE | EXACT,
 					new ClassItem(View.class)
 			), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
+
+			if ( FullKeyboardServiceDelegate_onCreateInputView == null )
+			{
+				Log.i(LOGTAG, "FullKeyboardServiceDelegate_onCreateInputView 7.1.6.30+ not found, using old profile");
+				// Older. Remove next update.
+				FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findFirstProfileMatch( new MethodProfile(
+						FINAL | EXACT,
+						new ClassItem(View.class)
+				), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
+			}
+
+
 
 		}
 

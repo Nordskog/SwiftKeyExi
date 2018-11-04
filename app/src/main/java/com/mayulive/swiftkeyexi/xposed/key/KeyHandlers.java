@@ -10,8 +10,6 @@ import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
-import java.util.Map;
-
 /**
  * Created by Roughy on 9/9/2017.
  */
@@ -21,21 +19,8 @@ public class KeyHandlers
 
 	private static String LOGTAG = ExiModule.getLogTag(KeyHandlers.class);
 
-	protected static void handleKeyConstructed(Object returnKey, String tag) throws Throwable
+	protected static void handleKeyConstructed(Object returnKey, KeyCommons.TemplateKey template) throws Throwable
 	{
-		//This is the LAST  method that is called during the creation of a key.
-		//Shared variables will be cleared at the end of it.
-		if (DebugSettings.DEBUG_KEYS)
-		{
-			if (KeyCommons.sLastSymbolDefined != null)
-			{
-				Log.i(LOGTAG, "Definition, Last symbols is: "+KeyCommons.sLastSymbolDefined);
-			}
-			else
-			{
-				Log.i(LOGTAG, "Definition, Last symbols is: NULL");
-			}
-		}
 
 		RectF hitbox = KeyCommons.getKeyArea(returnKey);
 
@@ -55,15 +40,17 @@ public class KeyHandlers
 				hitbox.bottom == 0)
 			return;
 
-		KeyType type = KeyType.getType(tag);
 
 		if (DebugSettings.DEBUG_KEYS)
 		{
-			Log.i(LOGTAG, "Key defined. Tag: "+tag);
+			Log.i(LOGTAG, "Key defined. Tag: "+template.tag);
+			Log.i(LOGTAG, "Key defined. Type: "+template.type);
+			Log.i(LOGTAG, "Key defined. Content: "+template.content);
+
 			Log.i(LOGTAG, "Hitbox. Tag: "+hitbox);
 		}
 
-		if (KeyType.SPACE == type)
+		if (KeyType.SPACE == template.type)
 		{
 
 			if (KeyboardMethods.isLayoutWeird())
@@ -104,19 +91,14 @@ public class KeyHandlers
 			}
 		}
 
-		if (KeyCommons.sLastSymbolDefined == null)
-		{
-			KeyCommons.sLastSymbolDefined = "";
-		}
 
 		{
-			//Number keys are tagged as symbols. Check for number content and change to number if true
-			if (KeyType.contentIsNumber(KeyCommons.sLastSymbolDefined))
-			{
-				type = KeyType.NUMBER;
-			}
 
-			KeyDefinition newKey = new KeyDefinition(KeyCommons.sLastSymbolDefined, type, hitbox);
+			KeyDefinition newKey = new KeyDefinition(template.content, template.type, hitbox);
+
+			if (template.tag != null)
+				newKey.tag = template.tag;
+
 			KeyCommons.addKeyDefinition(returnKey, newKey);
 			KeyCommons.mLastKeyDefined = newKey;
 
@@ -126,14 +108,14 @@ public class KeyHandlers
 				KeyCommons.HitboxMap map = KeyCommons.getHitboxMap();
 
 				//Don't bother adding anything but space for weird layouts
-				if (map != null && ( !KeyboardMethods.isLayoutWeird() || type == KeyType.SPACE ) )
+				if (map != null && ( !KeyboardMethods.isLayoutWeird() || template.type == KeyType.SPACE ) )
 				{
 					String key = "";
-					if (KeyCommons.sLastSymbolDefined != null)
-						key = KeyCommons.sLastSymbolDefined;
+					if (template.content != null)
+						key = template.content;
 					if (key.isEmpty())
 					{
-						key = tag+System.identityHashCode(returnKey);
+						key = template.tag+System.identityHashCode(returnKey);
 					}
 
 					map.put(key, newKey);
@@ -141,6 +123,7 @@ public class KeyHandlers
 			}
 		}
 
+		KeyCommons.mLastTemplateKey = null;
 		//With the key created, clear recycled variables
 		//KeyCommons.sLastSymbolDefined = null;
 	}

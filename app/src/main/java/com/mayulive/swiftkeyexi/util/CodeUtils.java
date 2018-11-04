@@ -359,12 +359,18 @@ public class CodeUtils
 		}
 	}
 
-	public static void printFieldValues(Class clazz, Object instance)
+	public static void printFieldValues(Object instance)
 	{
-		Log.i(LOGTAG, "Printing fields for: "+clazz.getName());
+		if (instance == null )
+			return;
+
+
 
 		try
 		{
+			Class clazz = instance.getClass();
+			Log.i(LOGTAG, "Printing fields for: "+clazz.getName());
+
 			Field[] fields = clazz.getDeclaredFields();
 			for (Field field : fields)
 			{

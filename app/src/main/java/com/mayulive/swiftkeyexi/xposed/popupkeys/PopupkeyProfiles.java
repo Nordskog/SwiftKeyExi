@@ -239,7 +239,7 @@ public class PopupkeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("eah");
+		newProfile.setFullPath("dti");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -260,7 +260,7 @@ public class PopupkeyProfiles
 /////////////////////////
 		newProfile.setNestedClasses(new ClassItem[]
 				{
-						new ClassItem("" , PUBLIC | STATIC | EXACT )
+						new ClassItem("" , STATIC | EXACT )
 
 				});
 /////////////////////////
@@ -286,10 +286,8 @@ public class PopupkeyProfiles
 										PRIVATE | STATIC | EXACT ,
 										new ClassItem(float.class),
 
-										new ClassItem(android.graphics.RectF.class),
-										new ClassItem(int.class),
 										new ClassItem(float.class),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
+										new ClassItem(int.class)
 
 								),
 
@@ -297,11 +295,12 @@ public class PopupkeyProfiles
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
-										new ClassItem(int.class),
+										new ClassItem(float.class),
 
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem(int.class),
 										new ClassItem(float.class),
-										new ClassItem(float.class),
-										new ClassItem(float.class)
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -309,13 +308,10 @@ public class PopupkeyProfiles
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
-										new ClassItem(android.graphics.RectF.class),
+										new ClassItem(int.class),
 
 										new ClassItem(float.class),
-										new ClassItem(android.graphics.RectF.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
+										new ClassItem(float.class),
 										new ClassItem(float.class)
 
 								),
@@ -324,7 +320,57 @@ public class PopupkeyProfiles
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | STATIC | EXACT ),
+										new ClassItem(int.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(android.graphics.RectF.class),
+
+										new ClassItem(float.class),
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(float.class)
+
+								),
+
+						//Method #5: a
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+
+										new ClassItem("" , STATIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(float.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(int.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #6: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem("" , STATIC | EXACT ),
 
 										new ClassItem(java.util.List.class),
 										new ClassItem(float.class),
@@ -334,7 +380,17 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #4: b
+						//Method #7: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #8: b
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -346,26 +402,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #5: a
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-
-										new ClassItem("" , PUBLIC | STATIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(android.graphics.RectF.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(float.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #6: a
+						//Method #9: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -377,7 +414,7 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #7: a
+						//Method #10: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -389,7 +426,20 @@ public class PopupkeyProfiles
 
 								),
 
-						//Method #8: a
+						//Method #11: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+
+										new ClassItem(java.util.List.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(float.class)
+
+								),
+
+						//Method #12: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,

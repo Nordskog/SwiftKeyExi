@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
@@ -52,13 +53,13 @@ public class KeyCommons
 	//We can later decide to fire these.
 	private static ArrayList<DelayedKey> mDelayedKeys = new ArrayList<>();
 
-	public static String sLastSymbolDefined = null;
-	public static String sSymboledDefinedOnLastKeyLoop = null;
-
-
 	protected static KeyDefinition mLastKeyDefined = null;
 
-	static String mLastTag = null;			//Last tag defined
+	//static String mLastTag = null;			//Last tag defined
+	//static KeyType mLastTagType = KeyType.DEFAULT;
+	public static TemplateKey mLastTemplateKey = null;
+
+	private static HashMap<Integer, TemplateKey> mKeyTemplates = new HashMap<>();
 
 	////////////
 	//Misc
@@ -445,6 +446,16 @@ public class KeyCommons
 		return null;
 	}
 
+	public static void addTemplateKey( Integer key, TemplateKey template )
+	{
+		mKeyTemplates.put( key, template );
+	}
+
+	public static TemplateKey getTemplateKey( Integer key )
+	{
+		return mKeyTemplates.get( key );
+	}
+
 	public static class DelayedKey
 	{
 		public Object[] arguments;
@@ -470,6 +481,20 @@ public class KeyCommons
 			method.invoke(thiz, arguments);
 		}
 
+	}
+
+	public static class TemplateKey
+	{
+		public KeyType type;
+		public String content;
+		public String tag = "";
+
+		TemplateKey( KeyType type, String stringA)
+		{
+			this.type = type;
+			this.content = stringA;
+
+		}
 	}
 
 }

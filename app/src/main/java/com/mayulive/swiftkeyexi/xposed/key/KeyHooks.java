@@ -5,22 +5,18 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.util.TextUtils;
+
 import com.mayulive.swiftkeyexi.xposed.DebugSettings;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
-import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.Modifiers;
-import com.mayulive.xposed.classhunter.ProfileHelpers;
+
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
-import com.mayulive.xposed.classhunter.profiles.ClassItem;
-import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.lang.reflect.Method;
+
+
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -143,40 +139,52 @@ public class KeyHooks
 	}
 
 
+	public static Set<XC_MethodHook.Unhook> hookKeyTemplateConstructor()
+	{
+		Set<XC_MethodHook.Unhook> returnSet = new HashSet<>();
+
+		returnSet.addAll( XposedBridge.hookAllConstructors(KeyClassManager.newKeyInfoClass, new XC_MethodHook()
+		{
+
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				int typeInt = (int) param.args[0];
+
+				String content = (String) param.args[1];
+
+				KeyType Type = KeyType.getType(typeInt, content);
+
+
+				KeyCommons.TemplateKey template = new KeyCommons.TemplateKey( Type, content );
+				template.tag = Integer.toHexString(typeInt);
+
+
+				KeyCommons.addTemplateKey( System.identityHashCode( param.thisObject ), template );
+
+			}
+		}) );
+
+		return returnSet;
+
+	}
+
 
 	public static Set<XC_MethodHook.Unhook> hookKeyFields(PackageTree param)
 	{
 
 		Set<XC_MethodHook.Unhook> returnSet = new HashSet<>();
 
-
-		returnSet.add( XposedBridge.hookMethod(KeyClassManager.keyRawDefinitionClass_getKeyFieldsMethod, new XC_MethodHook()
+		returnSet.add( XposedBridge.hookMethod(KeyClassManager.keyRawDefinitionClass_newKeyMethod, new XC_MethodHook()
 		{
 
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
-				//Set last tag
-				if (DebugSettings.DEBUG_KEYS)
-					Log.i(LOGTAG, "Got param tag: "+ KeyCommons.mLastTag);
-				KeyCommons.mLastTag = (String)param.args[1];
-
-				//We should only pass through this once for every key.
-				//The Symbol is not actually defined for all keys, and that method is thus not always run.
-				//Null here if symbol has not changed
-				if (KeyCommons.sSymboledDefinedOnLastKeyLoop == KeyCommons.sLastSymbolDefined)
-				{
-					if (DebugSettings.DEBUG_KEYS)
-						Log.i(LOGTAG, "Symbol unchanged, nulling");
-					KeyCommons.sLastSymbolDefined = null;
-				}
-				KeyCommons.sSymboledDefinedOnLastKeyLoop = KeyCommons.sLastSymbolDefined;
-
+				Object templateInstance =  param.args[0];
+				KeyCommons.mLastTemplateKey = KeyCommons.getTemplateKey( System.identityHashCode(templateInstance) );
 			}
 		}) );
-
-
-
 
 		return returnSet;
 	}
@@ -192,17 +200,13 @@ public class KeyHooks
 				try
 				{
 					Object returnKey = param.thisObject;
-					if (returnKey != null && KeyCommons.mLastTag != null)
+					if (KeyCommons.mLastTemplateKey != null)
 					{
 						//Note that this is actually called multiple times for each key,
 						//Once for the parent, and again for all its popups.
 						//This means all the children will have the same content as their parent,
 						//but this shouldn't be a problem.
-						KeyHandlers.handleKeyConstructed(returnKey, KeyCommons.mLastTag);
-					}
-					else if (DebugSettings.DEBUG_KEYS)
-					{
-						Log.i(LOGTAG, "Key?: "+(returnKey!=null)+", tag?: "+(KeyCommons.mLastTag!=null) );
+						KeyHandlers.handleKeyConstructed(returnKey, KeyCommons.mLastTemplateKey);
 					}
 				}
 				catch (Throwable ex)
@@ -211,36 +215,6 @@ public class KeyHooks
 				}
 
 			}
-		});
-	}
-
-	public static XC_MethodHook.Unhook newKeyHook( ) throws NoSuchFieldException
-	{
-		return XposedBridge.hookMethod(KeyClassManager.keyRawDefinitionClass_newKeyMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
-			{
-				try
-				{
-					if (param.getResult() != null)
-					{
-						KeyCommons.sLastSymbolDefined = (String)param.getResult();
-						KeyCommons.sLastSymbolDefined = KeyCommons.sLastSymbolDefined.split(" ")[0];
-						KeyCommons.sLastSymbolDefined = TextUtils.stripZeroWidthJoiner(KeyCommons.sLastSymbolDefined);
-
-						if (DebugSettings.DEBUG_KEYS)
-						{
-							Log.i(LOGTAG, "Key defined. Symbol: "+KeyCommons.sLastSymbolDefined);
-						}
-					}
-				}
-				catch (Throwable ex)
-				{
-					Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in newKeyHook");
-				}
-			}
-
 		});
 	}
 
@@ -254,7 +228,8 @@ public class KeyHooks
 
 			if (Hooks.keyHooks_keyDefinition.isRequirementsMet())
 			{
-				Hooks.keyHooks_keyDefinition.add( newKeyHook() );
+				Hooks.keyHooks_keyDefinition.addAll( hookKeyTemplateConstructor() );
+
 				Hooks.keyHooks_keyDefinition.add( hookOnKeyDown() );
 
 				Hooks.keyHooks_keyDefinition.addAll( hookKeyFields(param));

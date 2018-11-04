@@ -84,6 +84,12 @@ public class KeyboardHooks
 				{
 					KeyboardMethods.mKeyboardRoot = (ViewGroup) param.getResult();
 
+					if ( KeyboardMethods.mKeyboardRoot == null )
+					{
+						Log.e(LOGTAG, "FullKeyboardServiceDelegate_onCreateInputView return value null, hopefully called again later");
+						return;
+					}
+
 					KeyboardMethods.setKeyboardOpacity();
 
 					//If cover is not null, maker sure we have not already added something

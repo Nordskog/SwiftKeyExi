@@ -110,17 +110,24 @@ public class StyleCommons
 			{
 				View parent = (View) OverlayCommons.mKeyboardOverlay.getParent();
 
-				if (StyleCommons.bottomBarId == 0)
+				if ( parent != null)
 				{
-					StyleCommons.bottomBarId = ContextUtils.getHookContext().getResources().getIdentifier("fancy_bottom_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
+					if (StyleCommons.bottomBarId == 0)
+					{
+						StyleCommons.bottomBarId = ContextUtils.getHookContext().getResources().getIdentifier("fancy_bottom_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
+					}
+
+					View bottomBar = parent.findViewById(StyleCommons.bottomBarId);
+
+					if (bottomBar != null)
+					{
+						StyleCommons.setCurrentRaisedBackground(bottomBar.getBackground());
+						StyleCommons.callThemeChangedListeners(StyleCommons.getCurrentRaisedBackground());
+					}
 				}
-
-				View bottomBar = parent.findViewById(StyleCommons.bottomBarId);
-
-				if (bottomBar != null)
+				else
 				{
-					StyleCommons.setCurrentRaisedBackground(bottomBar.getBackground());
-					StyleCommons.callThemeChangedListeners(StyleCommons.getCurrentRaisedBackground());
+					Log.i(LOGTAG, "Root view was null, failed to get bottom bar for style");
 				}
 			}
 		},1);
