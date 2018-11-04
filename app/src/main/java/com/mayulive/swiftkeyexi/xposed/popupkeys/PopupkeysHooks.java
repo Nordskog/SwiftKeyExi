@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.popupkeys;
 
+import android.os.Debug;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -50,7 +51,11 @@ public class PopupkeysHooks
 			{
 				if ( KeyCommons.mLastTemplateKey == null )
 				{
-					Log.e(LOGTAG, "template key null, skipping popups.");
+					if (DebugSettings.DEBUG_POPUPS)
+					{
+						Log.e(LOGTAG, "template key null, skipping popups.");
+					}
+
 					return;
 				}
 
