@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.7.2] - 04-11-2018
+### Fixed
+ - Compatibility targeting 7.1.7.31
+ - Native left-swipe gesture erasing wrong text when used after swipe-selection
+ 
 ## [1.7.0] - 01-11-2018
 ### Fixed
  - Primary candidate missing punctuation immediately after swipe-selecting
