@@ -244,6 +244,9 @@ public class PriorityKeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_AddRulesMethod", PriorityKeyboardClassManager.punctuatorImplClass_AddRulesMethod);
 		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_ClearRulesMethod", PriorityKeyboardClassManager.punctuatorImplClass_ClearRulesMethod);
 
+		//Hide predictions
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_hidePredictions, "toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod", toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod );
+
 
 	}
 
