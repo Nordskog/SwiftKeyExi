@@ -103,8 +103,13 @@
     <com.mayulive.swiftkeyexi.util.view.LineBreakPreference
         android:key="@string/pref_key_sound_key"
         android:title="@string/preferences_key_sound_title"/>
+
     <PreferenceCategory
         android:title="@string/category_pref_misc">
+
+    <com.mayulive.swiftkeyexi.util.view.LineBreakPreference
+        android:key="@string/pref_section_custom_search_key"
+        android:title="@string/pref_section_custom_search_title"/>
 
     <com.mayulive.swiftkeyexi.settings.FloatNumberPickerPreference
         xmlns:app="http://schemas.android.com/apk/res-auto"

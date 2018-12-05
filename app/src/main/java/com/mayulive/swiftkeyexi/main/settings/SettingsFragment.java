@@ -2,6 +2,7 @@ package com.mayulive.swiftkeyexi.main.settings;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
@@ -82,7 +83,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayAboutFragment();
+				displayFragment( new AboutFragment() );
 				return true;
 			}
 		});
@@ -93,7 +94,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayResetDialog();
+				displayFragment( new ResetFragment() );
 				return true;
 			}
 		});
@@ -104,7 +105,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displaySoundDialog();
+				displayFragment( new SoundFragment() );
 				return true;
 			}
 		});
@@ -115,7 +116,18 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayRemappedKeysFragment();
+				displayFragment( new RemappedKeysFragment() );
+				return true;
+			}
+		});
+
+		Preference customSearchPreference = findPreference(this.getContext().getResources().getString( R.string.pref_section_custom_search_key ));
+		customSearchPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				displayFragment( new CustomSearchFragment() );
 				return true;
 			}
 		});
@@ -145,49 +157,15 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
 	}
 
-	private void displayAboutFragment()
+	private void displayFragment(Fragment frag)
 	{
-		AboutFragment nextFrag= new AboutFragment();
-
 		this.getFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
+				.replace(R.id.settings_activity_fragment_container, frag, null)
 				.addToBackStack(null)
 				.commit();
 	}
 
-	private void displayResetDialog()
-	{
-		ResetFragment nextFrag= new ResetFragment();
-
-		this.getFragmentManager().beginTransaction()
-				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
-				.addToBackStack(null)
-				.commit();
-	}
-
-	private void displaySoundDialog()
-	{
-		SoundFragment nextFrag = new SoundFragment();
-
-		this.getFragmentManager().beginTransaction()
-				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
-				.addToBackStack(null)
-				.commit();
-	}
-
-	private void displayRemappedKeysFragment()
-	{
-		RemappedKeysFragment nextFrag = new RemappedKeysFragment();
-
-		this.getFragmentManager().beginTransaction()
-				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-				.replace(R.id.settings_activity_fragment_container, nextFrag, null)
-				.addToBackStack(null)
-				.commit();
-	}
 
 	//Needed for custom prefs to work... ? I don't even
 	@Override

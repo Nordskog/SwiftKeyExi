@@ -4,7 +4,6 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
  * Created by Roughy on 2/15/2017.
  */
 
-import android.util.Log;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -59,6 +58,12 @@ public class KeyboardClassManager
 
 	public static Class quicksettingPrefItemClass;
 	public static Constructor quicksettingPrefItemClass_constructor;
+
+	//////////////////////////////////////////////
+
+	protected static Class searchClass;
+	protected static List<Method> searchClass_bingSearchMethods = new ArrayList<>();
+
 
 
 
@@ -116,6 +121,7 @@ public class KeyboardClassManager
 			}
 		}
 
+		searchClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_SEARCH_CLASS_PROFILE(), param );
 
 	}
 
@@ -160,6 +166,24 @@ public class KeyboardClassManager
 			Constructor[] constructors = quicksettingPrefItemClass.getDeclaredConstructors();
 			if (constructors.length > 0)
 				quicksettingPrefItemClass_constructor = constructors[0];
+		}
+
+		if (searchClass != null)
+		{
+			// There are 3 methods with a very similar pattern.
+			// We only care for 2 of them I think, but we perform a check on the string
+			// to see if it's a search string, so probably fine.
+			// One is for text typed into search box, other is for search suggestions when clicked.
+
+			searchClass_bingSearchMethods = ProfileHelpers.findMostSimilar(  new MethodProfile
+					(
+							new ClassItem(java.lang.String.class),
+
+							new ClassItem(java.lang.String.class),
+							new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+					), searchClass.getDeclaredMethods(), searchClass, 2 );
+
 		}
 
 	}
@@ -223,5 +247,7 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.incognito,	 "incogControllerClass_ChangeIncogStateMethod", 	incogControllerClass_ChangeIncogStateMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.incognito,	 "incogControllerClass_staticInstanceField;", 	incogControllerClass_staticInstanceField );
 
+		//Search
+		Hooks.logSetRequirement( Hooks.search,  "searchClass_bingSearchMethods is empty", !searchClass_bingSearchMethods.isEmpty());
 	}
 }

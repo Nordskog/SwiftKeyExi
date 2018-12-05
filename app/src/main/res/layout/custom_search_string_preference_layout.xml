@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+              android:layout_width="match_parent"
+              android:padding="@dimen/default_padding_side"
+              android:layout_height="wrap_content">
+
+
+    <EditText
+        android:id="@+id/custom_search_string_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/custom_search_string_google"
+            android:text="@string/search_engine_google"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/custom_search_string_duckduckgo"
+            android:text="@string/search_engine_duckduckgo"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/custom_search_string_wiki"
+            android:text="@string/search_engine_wikipedia"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

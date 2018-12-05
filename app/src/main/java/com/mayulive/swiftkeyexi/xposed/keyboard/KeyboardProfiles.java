@@ -2416,6 +2416,192 @@ public class KeyboardProfiles
 		return newProfile;
 	}
 
+	public static ClassProfile get_SEARCH_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("doo");
+		newProfile.setKnownPath("");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
+						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem(java.util.regex.Pattern.class)),	//a
+						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//b
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.util.regex.Pattern.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #5: b
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #6: b
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #7: c
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #8: c
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #9: lambda$M8ZMlU01TGRkC1mE2_C9W4znHYE
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #10: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #11: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
+
+										new ClassItem(java.lang.String.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
 
 
 

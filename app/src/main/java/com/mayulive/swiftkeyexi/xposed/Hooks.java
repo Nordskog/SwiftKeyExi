@@ -93,6 +93,8 @@ public class Hooks
 	//Hardware keyboard shortcuts and remapping
 	public static HookCategory incognito = new HookCategory("incognito base");
 
+	public static HookCategory search = new HookCategory("Search");
+
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
 																								baseHooks_invalidateLayout,
@@ -108,7 +110,8 @@ public class Hooks
 																								baseHooks_toolbarButton,
 																								baseHooks_hidePredictions,
 																								quickSettings,
-																								incognito
+																								incognito,
+																								search
 	);
 
 	//Convenience method for checking requirement and logging on failure
