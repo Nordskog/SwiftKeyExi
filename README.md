@@ -37,6 +37,7 @@ A short list of features:
   * Ability to remove auto-space after punctuation
   * Set keyboard transparency
   * Remap hardware keys
+  * Customizable search
   
 ## Libraries used
 
