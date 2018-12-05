@@ -756,8 +756,11 @@ public class SelectionMethods
 		if (SelectionState.mSwiping)
 		{
 			SelectionState.mSwiping = false;
-			resetCursorPosition();
 			SelectionMethods.inputBatchMode(false);
+
+			// Gets reset if called before finishing batch mode.
+			// Race condition? Only a problem here because it is instant probably.
+			resetCursorPosition();
 		}
 	}
 
