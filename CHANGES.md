@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.8.1] - 05-12-2018
+### Fixed
+ - Compatibility targeting 7.1.9.23
+ - Cursor getting stuck when transitioning from swipe-selection to quick menu
+ - Rare crash caused by missing hook requirement check
+
+### Added
+ - Customizable search
+
+### Changed
+ - Updated emoji ( Android Pie )
+
 ## [1.7.2] - 04-11-2018
 ### Fixed
  - Compatibility targeting 7.1.7.31
