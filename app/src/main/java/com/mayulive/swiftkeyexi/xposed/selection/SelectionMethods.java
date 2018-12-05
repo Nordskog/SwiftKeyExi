@@ -757,6 +757,7 @@ public class SelectionMethods
 		{
 			SelectionState.mSwiping = false;
 			resetCursorPosition();
+			SelectionMethods.inputBatchMode(false);
 		}
 	}
 
