@@ -16,7 +16,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fqy");
+		newProfile.setFullPath("feg");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -62,6 +62,8 @@ public class KeyboardProfiles
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//k
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//l
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//m
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//n
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar.ToolbarButton" , PUBLIC | EXACT )),	//o
 
 				});
 /////////////////////////
@@ -129,7 +131,7 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
 
 										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )
 
@@ -153,7 +155,39 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #9: a
+						//Method #9: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #10: onAttachedToWindow
+						new MethodProfile
+								(
+										PROTECTED | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #11: onDetachedFromWindow
+						new MethodProfile
+								(
+										PROTECTED | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #12: onGlobalLayout
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #13: onModelUpdated
 						new MethodProfile
 								(
 										PUBLIC | FINAL | SYNTHETIC | EXACT ,
@@ -164,45 +198,13 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #10: a
+						//Method #14: onVisibilityChanged
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem(boolean.class)
-
-								),
-
-						//Method #11: b
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #12: onAttachedToWindow
-						new MethodProfile
-								(
-										PROTECTED | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #13: onDetachedFromWindow
-						new MethodProfile
-								(
-										PROTECTED | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #14: onGlobalLayout
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
 
 								),
 
@@ -216,7 +218,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #16: w_
+						//Method #16: v_
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
