@@ -26,6 +26,12 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 		//Swiftkey
 		if ( lpparam.packageName.equals( ExiModule.SWIFTKEY_BETA_PACKAGE_NAME ) || lpparam.packageName.equals( ExiModule.SWIFTKEY_PACKAGE_NAME ) )
 		{
+
+			// When searching in swiftkey, it launches an entirely separate process every single time.
+			// Do don't do any work there, and the hooking process just makes it launch super slowl
+			if (lpparam.processName.contains("ExtendedPanelProcess"))
+				return;
+
 			ExiXposed.setPackage( lpparam.packageName );
 
 			//Some assets as shared between the app and xposed, requirement some management

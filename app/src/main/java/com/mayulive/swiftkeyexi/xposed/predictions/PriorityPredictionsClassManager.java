@@ -55,6 +55,7 @@ public class PriorityPredictionsClassManager
 	public static int candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition = 1;
 	protected static int[] getViewMethod_CandidateViewClassConstructorArgPositions;
 	protected static int getViewMethod_EnumArgPosition;
+	protected static int getViewMethod_FloatArgPosition;
 	protected static int getViewMethod_BooleanArgPosition = 5;
 
 	protected static Object buInstance = null;
@@ -170,6 +171,7 @@ public class PriorityPredictionsClassManager
 		{
 			getViewMethod_CandidateViewClassConstructorArgPositions = ProfileHelpers.findParameterPositions(candidateViewClass_Constructor.getParameterTypes(), PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod.getParameterTypes());
 			getViewMethod_EnumArgPosition = ProfileHelpers.findFirstClassIndex(new ClassItem(Modifiers.ENUM), candidateViewClass_Constructor.getParameterTypes(), null);
+			getViewMethod_FloatArgPosition = ProfileHelpers.findFirstClassIndex(new ClassItem(float.class), candidateViewClass_Constructor.getParameterTypes(), null);
 			getViewMethod_BooleanArgPosition = ProfileHelpers.findFirstClassIndex(new ClassItem(boolean.class), candidateViewClass_Constructor.getParameterTypes(), null);
 		}
 

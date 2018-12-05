@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.settings.CustomSearchStringInputDialog;
 import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
@@ -61,6 +62,9 @@ public class Settings
 	public static boolean DISABLE_FULLSCREEN_KEYBOARD = false;
 
 	public static float KEYBOARD_SIZE_MULTIPLIER = 1;
+
+	public static boolean USE_CUSTOM_SEARCH_STRING = false;
+	public static String CUSTOM_SEARCH_STRING = CustomSearchStringInputDialog.GOOGLE_SEARCH_STRING;
 
 	//public static boolean SPACE_SWIPE_MODIFIER_ENABLED = true;
 
@@ -225,7 +229,7 @@ public class Settings
 				KeyboardMethods.forceKeyboardResize();
 			}
 
-	}
+		}
 
 		//Value is int 0 to 100, convert to 0-1f
 		KEYBOARD_OPACITY = ( (float)prefs.getInt(PreferenceConstants.pref_keyboard_opacity_key, 100) / (float)100  ) ;
@@ -239,6 +243,11 @@ public class Settings
 				changed_HIDE_PREDICTIONS_BAR = true;
 
 			everActivated_HIDE_PREDICTIONS_BAR = everActivated_HIDE_PREDICTIONS_BAR || HIDE_PREDICTIONS_BAR;
+		}
+
+		{
+			USE_CUSTOM_SEARCH_STRING = prefs.getBoolean( PreferenceConstants.pref_use_custom_search_key, false );
+			CUSTOM_SEARCH_STRING = prefs.getString( PreferenceConstants.pref_custom_search_string_key, CustomSearchStringInputDialog.GOOGLE_SEARCH_STRING );
 		}
 
 

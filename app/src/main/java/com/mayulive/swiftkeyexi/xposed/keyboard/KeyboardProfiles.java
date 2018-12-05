@@ -16,7 +16,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fqy");
+		newProfile.setFullPath("feg");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -62,6 +62,8 @@ public class KeyboardProfiles
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//k
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//l
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//m
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//n
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar.ToolbarButton" , PUBLIC | EXACT )),	//o
 
 				});
 /////////////////////////
@@ -129,7 +131,7 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
 
 										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )
 
@@ -153,7 +155,39 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #9: a
+						//Method #9: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #10: onAttachedToWindow
+						new MethodProfile
+								(
+										PROTECTED | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #11: onDetachedFromWindow
+						new MethodProfile
+								(
+										PROTECTED | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #12: onGlobalLayout
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #13: onModelUpdated
 						new MethodProfile
 								(
 										PUBLIC | FINAL | SYNTHETIC | EXACT ,
@@ -164,45 +198,13 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #10: a
+						//Method #14: onVisibilityChanged
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem(boolean.class)
-
-								),
-
-						//Method #11: b
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #12: onAttachedToWindow
-						new MethodProfile
-								(
-										PROTECTED | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #13: onDetachedFromWindow
-						new MethodProfile
-								(
-										PROTECTED | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #14: onGlobalLayout
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
 
 								),
 
@@ -216,7 +218,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #16: w_
+						//Method #16: v_
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2416,6 +2418,192 @@ public class KeyboardProfiles
 		return newProfile;
 	}
 
+	public static ClassProfile get_SEARCH_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("doo");
+		newProfile.setKnownPath("");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
+						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem(java.util.regex.Pattern.class)),	//a
+						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//b
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.util.regex.Pattern.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #5: b
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #6: b
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #7: c
+						new MethodProfile
+								(
+										PRIVATE | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #8: c
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #9: lambda$M8ZMlU01TGRkC1mE2_C9W4znHYE
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #10: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #11: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
+
+										new ClassItem(java.lang.String.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
 
 
 

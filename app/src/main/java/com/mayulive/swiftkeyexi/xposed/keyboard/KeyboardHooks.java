@@ -31,21 +31,20 @@ import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
-import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
-import static com.mayulive.xposed.classhunter.Modifiers.*;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -58,6 +57,8 @@ import de.robv.android.xposed.XposedHelpers;
 public class KeyboardHooks
 {
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardHooks.class);
+
+	private static Pattern BING_SEARCH_TERM_REGEX_PATTENR = Pattern.compile("https:\\/\\/www.bing.com\\/search\\?q=([^&\\s]+)&?" );
 
 	//Keyboard service created
 	public static Set<XC_MethodHook.Unhook> hookServiceCreated() throws NoSuchMethodException
@@ -658,6 +659,59 @@ public class KeyboardHooks
 	}
 
 
+
+	private static Set<XC_MethodHook.Unhook> hookSearchEngine(PackageTree lpparam )
+	{
+		Set<XC_MethodHook.Unhook> hookSet = new HashSet<>();
+
+		for (Method searchMethod : KeyboardClassManager.searchClass_bingSearchMethods)
+		{
+			hookSet.add( XposedBridge.hookMethod( searchMethod, new XC_MethodHook()
+			{
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					if ( Settings.USE_CUSTOM_SEARCH_STRING)
+					{
+						try
+						{
+							String searchString = (String) param.getResult();
+
+							if (searchString.contains( "https://www.bing.com/search?" ))
+							{
+								// We hook two methods. One receives the actual search term.
+								// The other receives a complete bing search string, and makes some modifications to it.
+								// In the latter case we need to extract the search term.
+
+								// Modify!
+								String searchTerm = (String) param.args[0];
+
+								Matcher matcher = BING_SEARCH_TERM_REGEX_PATTENR.matcher(searchTerm);
+
+								if (matcher.find())
+								{
+									param.setResult( Settings.CUSTOM_SEARCH_STRING.replace("$1", matcher.group(1)) );
+								}
+								else
+								{
+									param.setResult( Settings.CUSTOM_SEARCH_STRING.replace("$1", searchTerm) );
+								}
+							}
+						}
+						catch ( Throwable ex )
+						{
+							Hooks.search.invalidate(ex, "Problem in search hook");
+						}
+					}
+				}
+			}));
+		}
+
+		return hookSet;
+
+	}
+
+
 	public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
@@ -739,6 +793,13 @@ public class KeyboardHooks
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
 				Hooks.baseHooks_base.add( hookPrefChanged() );
+
+
+				if ( Hooks.search.isRequirementsMet() )
+				{
+					Hooks.search.addAll( hookSearchEngine(lpparam) );
+				}
+
 
 				if (Hooks.baseHooks_keyHeight.isRequirementsMet())
 				{

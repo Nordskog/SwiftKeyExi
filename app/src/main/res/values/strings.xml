@@ -33,4 +33,10 @@
     <string name="tab_name_swipe">Swipe</string>
     <string name="title_activity_compat_settings">Settings</string>
 
+    <!-- Search engines -->
+    <string name="search_engine_google">Google</string>
+    <string name="search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="search_engine_wikipedia">Wikipedia</string>
+
+
 </resources>

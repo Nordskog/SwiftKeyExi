@@ -34,6 +34,20 @@
     <string name="pref_keyboard_opacity_summary">Make the keyboard transparent</string>
 
 
+    <!-- custom search section -->
+    <string name="pref_section_custom_search_key">pref_section_custom_search</string>
+    <string name="pref_section_custom_search_title">Custom Search</string>
+
+    <!-- use search -->
+    <string name="pref_use_custom_search_key">pref_use_custom_search</string>
+    <string name="pref_use_custom_search_title">Use Custom Search</string>
+    <string name="pref_use_custom_search_summary">Use the customized search string</string>
+
+    <!-- custom search string -->
+    <string name="pref_custom_search_string_title">Custom Search String</string>
+    <string name="pref_custom_search_string_key">pref_custom_search_string</string>
+
+
     <!-- fullscreen keyboard -->
     <string name="pref_disable_fullscreen_key">pref_disable_fullscreen</string>
     <string name="pref_disable_fullscreen_title">Disable Fullscreen</string>

@@ -74,6 +74,11 @@ public class PredictionHandlers
 			candidateViewArgs[PriorityPredictionsClassManager.getViewMethod_EnumArgPosition] = someEnum;
 			if ( PriorityPredictionsClassManager.getViewMethod_BooleanArgPosition != -1)
 				candidateViewArgs[ PriorityPredictionsClassManager.getViewMethod_BooleanArgPosition] = false;	//z ? R.dimen.floating_sequential_candidate_min_width : R.dimen.sequential_candidate_min_width);
+			if ( PriorityPredictionsClassManager.getViewMethod_FloatArgPosition != -1)
+			{
+				// Set when we call the constructor
+				candidateViewArgs[ PriorityPredictionsClassManager.getViewMethod_FloatArgPosition ] = 0;
+			}
 		}
 	}
 
@@ -176,6 +181,17 @@ public class PredictionHandlers
 					{
 						try
 						{
+							if ( PriorityPredictionsClassManager.getViewMethod_FloatArgPosition  != -1 )
+							{
+								// Sets the text size of the textpaint. There is a bunch of fancy logic that I have no idea what does,
+								// but setting it to a quarter the height of the candidate bar seems okay. At 0 all views are the same small size with
+								// the text scaled to fit, and too high of a value and you get cut-off candidates with empty space between them.
+								// It seems to function as a sort of max-width
+								candidateViewArgs[ PriorityPredictionsClassManager.getViewMethod_FloatArgPosition ] = dummyHeader.getMeasuredHeight() / 4f;
+
+								//We also lose the padding for some reason. Setting padding doesn't do anything. Will just have to deal with it. Doesn't look that bad.
+
+							}
 
 							View returnView = (View) PriorityPredictionsClassManager.candidateViewClass_Constructor.newInstance(candidateViewArgs);
 
