@@ -15,7 +15,7 @@ public class StyleProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("hkp");
+		newProfile.setFullPath("hma");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -48,8 +48,9 @@ public class StyleProfiles
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//b
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//c
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//d
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//e
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//d
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//e
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//f
 
 				});
 /////////////////////////
@@ -99,7 +100,7 @@ public class StyleProfiles
 
 								),
 
-						//Method #4: lambda$YVjkumGyk0SDXr4EzniRf0gNgEQ
+						//Method #4: lambda$HfjNqfP1zpO_NVJqhIs8jtS2f9w
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -110,7 +111,7 @@ public class StyleProfiles
 
 								),
 
-						//Method #5: lambda$lBkGy8LOHUrPC1UUMcT0uLn_ZXY
+						//Method #5: lambda$IUSfxjW4oolGH73wEVxHFYl32mM
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,

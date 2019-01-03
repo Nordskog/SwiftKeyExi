@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.8.2] - 03-01-2019
+### Fixed
+ - Compatibility targeting 7.2.1.17 ( only Emoji panel affected )
+
+### Changed
+ - Updated translations ( Croatian & Polish )
+
 ## [1.8.1] - 05-12-2018
 ### Fixed
  - Compatibility targeting 7.1.9.23

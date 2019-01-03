@@ -261,7 +261,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("ioz");
+		newProfile.setFullPath("hsf");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -291,12 +291,13 @@ public class KeyboardProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//a
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//b
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//d
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.res.Resources.class)),	//e
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//f
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//f
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//g
 
 				});
 /////////////////////////
@@ -307,12 +308,35 @@ public class KeyboardProfiles
 						//Method #0: a
 						new MethodProfile
 								(
+										PRIVATE | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.Integer.class),
+
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #1: lambda$CyzjjKh8oASBDpI1PxXMANkeC7U
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.Integer.class),
+
+										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class)
 
 								),
 
-						//Method #1: a
+						//Method #3: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -322,7 +346,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #2: b
+						//Method #4: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -330,7 +354,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #3: b
+						//Method #5: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -340,7 +364,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #4: c
+						//Method #6: c
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -348,7 +372,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #5: d
+						//Method #7: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -356,7 +380,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #6: onSharedPreferenceChanged
+						//Method #8: onSharedPreferenceChanged
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -378,10 +402,11 @@ public class KeyboardProfiles
 						new ConstructorProfile
 								(		PUBLIC | EXACT ,
 
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.content.res.Resources.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.content.res.Resources.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -2026,7 +2051,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fdk");
+		newProfile.setFullPath("fdo");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -2092,21 +2117,23 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #1: a
+						//Method #1: b
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
-						//Method #2: a
+						//Method #2: lambda$OjhQLFSDN7YUV7u9v1K_Ve1EIwY
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(int.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2116,7 +2143,7 @@ public class KeyboardProfiles
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(int.class)
 
 								),
 
@@ -2126,11 +2153,21 @@ public class KeyboardProfiles
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #5: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
 										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
-						//Method #5: c
+						//Method #6: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2138,7 +2175,15 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #6: d
+						//Method #7: c
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #8: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2422,7 +2467,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("doo");
+		newProfile.setFullPath("dog");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -2473,14 +2518,6 @@ public class KeyboardProfiles
 						//Method #1: a
 						new MethodProfile
 								(
-										PRIVATE | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #2: a
-						new MethodProfile
-								(
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem(java.lang.String.class),
 
@@ -2489,7 +2526,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #3: a
+						//Method #2: a
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2500,7 +2537,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #4: a
+						//Method #3: a
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2511,7 +2548,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #5: b
+						//Method #4: b
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2522,7 +2559,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #6: b
+						//Method #5: b
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2533,7 +2570,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #7: c
+						//Method #6: c
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -2544,7 +2581,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #8: c
+						//Method #7: c
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2554,15 +2591,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #9: lambda$M8ZMlU01TGRkC1mE2_C9W4znHYE
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #10: a
+						//Method #8: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2574,7 +2603,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #11: b
+						//Method #9: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
