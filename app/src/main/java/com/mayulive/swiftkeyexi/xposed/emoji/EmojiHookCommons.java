@@ -57,6 +57,7 @@ public class EmojiHookCommons
 	static long mLastUpdateTime = -1;
 	static int mLastPanelIndex = 0;
 
+	// TODO remove in next update, along with all the theme garbage maybe?
 	public static void refreshEmojiTheme()
 	{
 		if (mOuterTabsWrapper != null)
