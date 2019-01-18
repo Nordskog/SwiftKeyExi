@@ -9,6 +9,7 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.DB_HotkeyMenuItem;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
@@ -47,9 +48,6 @@ public class SelectionState
 	//////////////////////////////
 	// KEy down and some states
 	//////////////////////////////
-
-	protected static SwipeOverlay mSwipeOverlay = null;
-
 
 	protected static boolean mSpaceModifierTriggered = false;	//swipe-from-space hotkey down
 	protected static boolean mActionModifierDown = false;		//Modifier (ctrl) down
@@ -172,9 +170,10 @@ public class SelectionState
 
 	 public static int getSwipeOverlayHeight()
 	 {
-		 if (mSwipeOverlay != null)
+	 	// TODO replace this, probably wrong width sometimes.
+		 if (OverlayCommons.mKeyboardOverlay != null)
 		 {
-			 return mSwipeOverlay.getMeasuredHeight();
+			 return OverlayCommons.mKeyboardOverlay.getMeasuredHeight();
 		 }
 
 		 return 0;
