@@ -10,6 +10,7 @@ import android.support.v7.preference.PreferenceManager;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.settings.DualNumberPickerPreferenceFragment;
 import com.mayulive.swiftkeyexi.settings.FloatNumberPickerPreference;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
 import com.mayulive.swiftkeyexi.R;
@@ -181,6 +182,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
 		else if (preference instanceof OpacityPreference)
 		{
 			fragment = OpacityPreferenceFragment.newInstance(preference);
+			fragment.setTargetFragment(this, 0);
+			fragment.show(getFragmentManager(),
+					"android.support.v7.preference.PreferenceFragment.DIALOG");
+		}
+		else if (preference instanceof DualNumberPickerPreferenceFragment.DualNumberPreference)
+		{
+			fragment = DualNumberPickerPreferenceFragment.newInstance( (DualNumberPickerPreferenceFragment.DualNumberPreference) preference);
 			fragment.setTargetFragment(this, 0);
 			fragment.show(getFragmentManager(),
 					"android.support.v7.preference.PreferenceFragment.DIALOG");

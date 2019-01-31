@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -84,6 +85,8 @@ public class KeyboardHooks
 				try
 				{
 					KeyboardMethods.mKeyboardRoot = (ViewGroup) param.getResult();
+
+					KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
 
 					if ( KeyboardMethods.mKeyboardRoot == null )
 					{
@@ -185,6 +188,12 @@ public class KeyboardHooks
 	{
 			return XposedBridge.hookMethod( PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod,  new XC_MethodHook()
 			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
+				}
+
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
@@ -356,10 +365,21 @@ public class KeyboardHooks
 				{
 					try
 					{
-						if ( Settings.KEYBOARD_SIZE_MULTIPLIER != 1f )
+						float multiplier = 1;
+						if ( KeyboardMethods.mDeviceOrientation == Configuration.ORIENTATION_LANDSCAPE)
+						{
+							multiplier = Settings.KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE;
+						}
+						else
+						{
+							multiplier = Settings.KEYBOARD_SIZE_MULTIPLIER;
+						}
+
+
+						if ( multiplier != 1f )
 						{
 							int value = (int) param.getResult();
-							param.setResult((int) (value * Settings.KEYBOARD_SIZE_MULTIPLIER));
+							param.setResult((int) (value * multiplier ));
 						}
 					}
 					catch (Throwable ex)

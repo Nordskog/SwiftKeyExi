@@ -28,6 +28,14 @@
         <attr name="appDefaultValueFloat" format="float" />
     </declare-styleable>
 
+
+    <declare-styleable name="DualNumberPickerPreference">
+        <attr name="titleA" format="string" />
+        <attr name="titleB" format="string" />
+        <attr name="keyA" format="string" />
+        <attr name="keyB" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="MultilineSummaryPreference">
         <attr name="top_summary" format="string" />
         <attr name="bottom_summary" format="string" />

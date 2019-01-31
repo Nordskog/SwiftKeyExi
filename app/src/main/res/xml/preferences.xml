@@ -111,9 +111,14 @@
         android:key="@string/pref_section_custom_search_key"
         android:title="@string/pref_section_custom_search_title"/>
 
-    <com.mayulive.swiftkeyexi.settings.FloatNumberPickerPreference
+        <!-- duplicate key value is ignored, still needed to avoid crash -->
+    <com.mayulive.swiftkeyexi.settings.FloatDualNumberPickerPreference
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:key="@string/pref_keyboard_size_multiplier_key"
+        app:keyA="@string/pref_keyboard_size_multiplier_key"
+        app:keyB="@string/pref_keyboard_size_multiplier_landscape_key"
+        app:titleA="@string/portrait"
+        app:titleB="@string/landscape"
         android:title="@string/pref_keyboard_size_multiplier_title"
         android:summary="@string/pref_keyboard_size_multiplier_summary"
         app:appDefaultValueFloat="1"
