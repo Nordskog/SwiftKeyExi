@@ -14,11 +14,11 @@ android
                         minSdkVersion 21
                         targetSdkVersion 26
                         versionCode 32
-                        versionName "1.8.2"
+                        versionName "1.9.0"
 
                         //About fields
-                        def SWIFTKEY_SUPORTED_VERSION = "7.1.9.24"
-                        def SWIFTKEY_BETA_SUPORTED_VERSION = "7.2.1.17"
+                        def SWIFTKEY_SUPORTED_VERSION = "7.2.1.17"
+                        def SWIFTKEY_BETA_SUPORTED_VERSION = "7.2.2.31"
                         def APP_AUTHOR_NAME = "Roughy"
 
 
