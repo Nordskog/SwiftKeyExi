@@ -1923,7 +1923,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("eel");
+		newProfile.setFullPath("ejw");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1952,8 +1952,8 @@ public class KeyboardProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//a
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//b
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//a
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//b
 						new FieldItem( PRIVATE | STATIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )),	//c
 
 				});
@@ -1970,23 +1970,24 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #1: b
+						//Method #1: a
 						new MethodProfile
 								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(boolean.class),
 
 										new ClassItem(int.class)
 
 								),
 
-						//Method #2: a
+						//Method #2: b
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PRIVATE | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(int.class)
+										new ClassItem(int.class),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -1996,11 +1997,12 @@ public class KeyboardProfiles
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(int.class),
+										new ClassItem(boolean.class)
 
 								),
 
-						//Method #4: b
+						//Method #4: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2014,11 +2016,13 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
-										new ClassItem(boolean.class)
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
-						//Method #6: c
+						//Method #6: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,

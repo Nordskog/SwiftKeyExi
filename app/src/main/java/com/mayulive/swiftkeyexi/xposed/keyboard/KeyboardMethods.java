@@ -195,7 +195,16 @@ public class KeyboardMethods
 			}
 
 			// 0 is on, 2 is off. 1 I have no idea, but it keeps getting set.
-			KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2);
+			if ( KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.getParameterTypes().length < 2 )	// TODO: Legacy. Ditch.
+			{
+				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2);
+			}
+			else
+			{
+				// No idea what the bool does, but it's always true when toggling.
+				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2, true);
+			}
+
 
 		}
 		catch ( Throwable ex )
