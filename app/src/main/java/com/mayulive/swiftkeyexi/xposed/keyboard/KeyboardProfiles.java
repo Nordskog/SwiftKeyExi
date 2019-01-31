@@ -2467,7 +2467,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("dog");
+		newProfile.setFullPath("drv");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -2481,6 +2481,7 @@ public class KeyboardProfiles
 /////////////////////////
 		newProfile.setInterfaces(new ClassItem[]
 				{
+						new ClassItem("" , INTERFACE | ABSTRACT | EXACT )
 
 				});
 /////////////////////////
@@ -2495,9 +2496,8 @@ public class KeyboardProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
-						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem(java.util.regex.Pattern.class)),	//a
-						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//b
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
+						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//a
 
 				});
 /////////////////////////
@@ -2509,89 +2509,24 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class),
 
-										new ClassItem(java.lang.String.class)
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
 						//Method #1: a
 						new MethodProfile
 								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(java.lang.String.class),
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(java.lang.String.class)
 
 								),
 
 						//Method #2: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #3: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(java.util.regex.Pattern.class),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #4: b
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(java.lang.String.class),
-
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #5: b
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #6: c
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(java.lang.String.class),
-
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #7: c
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #8: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2600,16 +2535,6 @@ public class KeyboardProfiles
 										new ClassItem(java.lang.String.class),
 										new ClassItem(int.class),
 										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #9: b
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
-
-										new ClassItem(java.lang.String.class)
 
 								),
 
