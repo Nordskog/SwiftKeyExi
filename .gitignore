@@ -10,6 +10,7 @@
 /.idea/tasks.xml
 /.idea/vcs.xml
 /.idea/workspace.xml
+/.idea/caches
 /ext_assets
 .gen
 .classpath
