@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.9.0] - 01-02-2019
+### Fixed
+ - Compatibility targeting 7.2.2.31 ( Custom search, sticky incognito 
+ - broken thumb layout, empty space next to keyboard on some devices.
+ 
+### Added
+ - Separate keyboard size multipler for landscape/portrait
+ 
+### Changed
+ - Updated translations ( Polish, Russian, Croatian )
+
 ## [1.8.2] - 03-01-2019
 ### Fixed
  - Compatibility targeting 7.2.1.17 ( only Emoji panel affected )
