@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
@@ -28,7 +29,7 @@ public class SelectionClassManager
 
 
 
-	//protected static Class keyboardFrameClass = null;
+	protected static Class keyboardFrameHolderFrameHolderClass = null;
 
 	protected static Class FlowDelegateClass = null;
 	protected static Class swipeDelegateClass = null;
@@ -58,6 +59,11 @@ public class SelectionClassManager
 	////////////
 
 	protected static Object FlowDelegate_DRAG_ENUM = null;
+
+	private static void loadKnownClasses(PackageTree param )
+	{
+		keyboardFrameHolderFrameHolderClass = ClassHunter.loadClass( "com.touchtype.keyboard.view.KeyboardFrameHolderFrame", param.getClassLoader() );
+	}
 
 	public static void loadUnknownClasses(PackageTree param) throws IOException
 	{
@@ -154,6 +160,7 @@ public class SelectionClassManager
 
 	public static void doAllTheThings(PackageTree param) throws IOException, NoSuchFieldException, NoSuchMethodException
 	{
+		loadKnownClasses(param);
 		loadUnknownClasses(param);
 		loadMethods();
 		loadFields();
@@ -167,7 +174,7 @@ public class SelectionClassManager
 	protected static void updateDependencyState()
 	{
 
-		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "frameHolderFactoryClass", 	PrioritySelectionClassManager.frameHolderFactoryClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "keyboardFrameHolderFrameHolderClass", 	keyboardFrameHolderFrameHolderClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "FlowDelegateClass", 	FlowDelegateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegateClass", 	swipeDelegateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.selectionHooks_base,	 "swipeDelegate_flowDetectedMethod", 	swipeDelegate_flowDetectedMethod );

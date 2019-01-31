@@ -94,6 +94,7 @@
     <!-- keyboard size -->
     <string name="pref_keyboard_size_multiplier_title">Mnożnik rozmiaru klawiatury</string>
     <string name="pref_keyboard_size_multiplier_summary">Dostosuj rozmiar klawiatury</string>
+    <!-- Separate key for landscape, primary is portrait -->
     <!-- Swipe selection -->
     <string name="pref_cursor_speed_title">Szybkość kursora</string>
     <string name="pref_cursor_speed_summary">Jak szybko porusza się kursor</string>

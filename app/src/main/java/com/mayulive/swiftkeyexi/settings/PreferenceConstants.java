@@ -86,6 +86,7 @@ public class PreferenceConstants
 	public static final String pref_disable_jumping_cursor_key = "pref_disable_jumping_cursor";
 
 	public static final String pref_keyboard_size_multiplier_key = "pref_keyboard_size_multiplier";
+	public static final String pref_keyboard_size_multiplier_landscape_key = "pref_keyboard_size_multiplier_landscape";
 
 	public static final String pref_swipe_rtl_mode_key = "pref_swipe_rtl_mode";
 

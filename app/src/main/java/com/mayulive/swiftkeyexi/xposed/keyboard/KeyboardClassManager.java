@@ -146,9 +146,10 @@ public class KeyboardClassManager
 		if (incogControllerClass != null)
 		{
 			incogControllerClass_ChangeIncogStateMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
-					Modifiers.STATIC | Modifiers.FINAL,
+					 Modifiers.PUBLIC | Modifiers.FINAL | Modifiers.EXACT,
 					new ClassItem(void.class),
-					new ClassItem(int.class)
+					new ClassItem(int.class),
+					new ClassItem(boolean.class)
 			), incogControllerClass.getDeclaredMethods(), incogControllerClass);
 
 		}

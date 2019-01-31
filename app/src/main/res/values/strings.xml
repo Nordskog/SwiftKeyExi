@@ -18,6 +18,9 @@
     <string name="button_save">Done</string>
     <string name="button_ok">OK</string>
 
+    <string name="portrait">Portrait</string>
+    <string name="landscape">Landscape</string>
+
     <string name="content_description">Content: </string>
     <string name="content_title">Content</string>
     <string name="parent_key_title">Parent Key</string>

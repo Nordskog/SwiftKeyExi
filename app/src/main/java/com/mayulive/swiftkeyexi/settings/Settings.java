@@ -62,6 +62,7 @@ public class Settings
 	public static boolean DISABLE_FULLSCREEN_KEYBOARD = false;
 
 	public static float KEYBOARD_SIZE_MULTIPLIER = 1;
+	public static float KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE = 1;
 
 	public static boolean USE_CUSTOM_SEARCH_STRING = false;
 	public static String CUSTOM_SEARCH_STRING = CustomSearchStringInputDialog.GOOGLE_SEARCH_STRING;
@@ -222,14 +223,17 @@ public class Settings
 		QUICKMENU_TEXT_SIZE_RATIO = prefs.getFloat(PreferenceConstants.pref_hotkey_menu_text_size_key, 0.15f);
 
 		{
-			float existingValue = KEYBOARD_SIZE_MULTIPLIER;
+			float existingValue = KEYBOARD_SIZE_MULTIPLIER + (KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE * 10);
 			KEYBOARD_SIZE_MULTIPLIER =  prefs.getFloat(PreferenceConstants.pref_keyboard_size_multiplier_key, 1f);
-			if (existingValue != KEYBOARD_SIZE_MULTIPLIER)
+			KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE =  prefs.getFloat(PreferenceConstants.pref_keyboard_size_multiplier_landscape_key, 1f);
+
+			if (existingValue != KEYBOARD_SIZE_MULTIPLIER + (KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE * 10) )
 			{
 				KeyboardMethods.forceKeyboardResize();
 			}
 
 		}
+
 
 		//Value is int 0 to 100, convert to 0-1f
 		KEYBOARD_OPACITY = ( (float)prefs.getInt(PreferenceConstants.pref_keyboard_opacity_key, 100) / (float)100  ) ;

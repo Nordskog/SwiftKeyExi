@@ -16,22 +16,7 @@ public class SwipeOverlay extends FrameLayout
 	{
 		super(context);
 
-		this.setOnTouchListener(new OnTouchListener()
-		{
-			@Override
-			public boolean onTouch(View v, MotionEvent event)
-			{
-				try
-				{
-					return SelectionMethods.handleMotionEvent(SwipeOverlay.this, event);
-				}
-				catch (Throwable ex)
-				{
-						Hooks.selectionHooks_base.invalidate(ex, "Something went wrong while intercepting touch event");
-						return false;
-				}
-			}
-		});
+		this.setOnTouchListener( OnTouchListenerStatic );
 	}
 
 	@Override
@@ -40,16 +25,18 @@ public class SwipeOverlay extends FrameLayout
 		//Ignored!
 	}
 
-	private float positionDownX = 0;
-	private float positionDownY = 0;
-
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event)
+	{
+		return onInterceptTouchEventStatic(this, event);
+	}
+
+	public static boolean onInterceptTouchEventStatic(View view,MotionEvent event )
 	{
 		try
 		{
 			if (Hooks.selectionHooks_base.isRequirementsMet())
-				return SelectionMethods.handleMotionEvent(this, event);
+				return SelectionMethods.handleMotionEvent(view, event);
 		}
 		catch (Throwable ex)
 		{
@@ -58,4 +45,21 @@ public class SwipeOverlay extends FrameLayout
 
 		return false;
 	}
+
+	public static OnTouchListener OnTouchListenerStatic = new OnTouchListener()
+	{
+		@Override
+		public boolean onTouch(View v, MotionEvent event)
+		{
+			try
+			{
+				return SelectionMethods.handleMotionEvent(v, event);
+			}
+			catch (Throwable ex)
+			{
+				Hooks.selectionHooks_base.invalidate(ex, "Something went wrong while intercepting touch event");
+				return false;
+			}
+		}
+	};
 }

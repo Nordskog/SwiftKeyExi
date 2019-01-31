@@ -163,9 +163,6 @@ public class Hooks
 
 			PredictionHooks.hookPriority(classTree);
 			handleProgress(timer,"prediction priorty", 0);
-
-			SelectionHooks.hookPriority(classTree);
-			handleProgress(timer,"selection priorty",0);
 		}
 
 		Runnable asyncSetup = new Runnable()

@@ -1,6 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,8 +12,10 @@ import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
+import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
-import com.mayulive.swiftkeyexi.xposed.ExiXposed;
+
+import java.lang.reflect.Method;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -23,63 +25,41 @@ public class SelectionHooks
 	private static String LOGTAG = ExiModule.getLogTag(SelectionHooks.class);
 
 
-	public static XC_MethodHook.Unhook hookViewCreated( )
+	public static XC_MethodHook.Unhook hookFrameHolderTouchIntercept( )
 	{
+
+		// Keeping this guy here because there's platform classes/methods and won't ever change.
+		Method interceptTouchEventMethod = ProfileHelpers.firstMethodByName( ViewGroup.class.getDeclaredMethods(), "onInterceptTouchEvent" );
+
+		return XposedBridge.hookMethod(interceptTouchEventMethod, new XC_MethodHook()
 		{
-			return XposedBridge.hookMethod(PrioritySelectionClassManager.frameHolderFactoryClass_frameHolderInflaterMethod, new XC_MethodHook()
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+
+				try
 				{
-
-					try
+					if ( SelectionClassManager.keyboardFrameHolderFrameHolderClass == param.thisObject.getClass() )
 					{
-						View thiz = (View)param.args[0];
+						boolean result = SwipeOverlay.onInterceptTouchEventStatic( (View)param.thisObject, (MotionEvent)param.args[0] );
 
-						//int targetParentId = thiz.getResources().getIdentifier("keyboard_view", "id", ExiXposed.HOOK_PACKAGE_NAME);
-						int targetId = thiz.getResources().getIdentifier("keyboard_frame_holder", "id", ExiXposed.HOOK_PACKAGE_NAME);
-
-						//We used to refer to the parent by its ID, but someone forgot to assign the ID to the view
-						//when creatin the layout xml for the compact layout. Luckily the frame holder one is still there.
-						View target = thiz.findViewById(targetId);
-						ViewGroup targetParent = (ViewGroup)target.getParent();	//Constraint layout
-
-
-						if (targetParent == null || target == null)
+						if (result)
 						{
-							Log.e(LOGTAG, "Selection overlay failed to get views. Target parent null?: "+(targetParent==null)+"Target null?: "+(target==null) );
+							ViewGroup thiz = (ViewGroup) param.thisObject;
+							thiz.setOnTouchListener( SwipeOverlay.OnTouchListenerStatic );
 						}
-						else
-						{
-							ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-							SelectionState.mSwipeOverlay = new SwipeOverlay(thiz.getContext());
 
-							//Have to insert in same position
-							int pos = targetParent.indexOfChild(target);
-
-							//Have to remove view before messing with layout params
-							targetParent.removeView(target);
-
-							//Steal id
-							SelectionState.mSwipeOverlay.setId( target.getId() );
-							target.setId( View.generateViewId() );
-
-							//Steal layout params
-							SelectionState.mSwipeOverlay.setLayoutParams( target.getLayoutParams() );
-							target.setLayoutParams(params);
-
-							SelectionState.mSwipeOverlay.addView(target);
-							targetParent.addView(SelectionState.mSwipeOverlay, pos);
-						}
-					}
-					catch (Throwable ex)
-					{
-						Hooks.selectionHooks_base.invalidate(ex, "Unexpected problem in Selection View Created hook");
+						param.setResult(result);
 					}
 
 				}
-			});
-		}
+				catch (Throwable ex)
+				{
+					Hooks.selectionHooks_base.invalidate(ex, "Unexpected problem in frame holder touch intercept hook");
+					SelectionState.clearState(0);
+				}
+			}
+		});
 	}
 
 
@@ -214,31 +194,6 @@ public class SelectionHooks
 		}
 	}
 
-
-	public static void hookPriority(final PackageTree param)
-	{
-		try
-		{
-
-			if ( Hooks.selectionHooks_base.isRequirementsMet() )
-			{
-				PrioritySelectionClassManager.doAllTheThings(param);
-
-				if ( Hooks.selectionHooks_base.isRequirementsMet() )
-				{
-					//Selection
-					Hooks.selectionHooks_base.add( hookViewCreated() );
-				}
-			}
-		}
-		catch ( Throwable ex )// | InstantiationException | IllegalAccessException | InvocationTargetException e)
-		{
-			Hooks.selectionHooks_base.invalidate(ex, "Failed to hook");
-		}
-
-	}
-
-
 	public static void hookAll(final PackageTree param)
 	{
 		try
@@ -250,6 +205,10 @@ public class SelectionHooks
 
 				if ( Hooks.selectionHooks_base.isRequirementsMet() )
 				{
+
+					// Hook intercept in all viewgroups, do stuff if frameholder.
+					Hooks.selectionHooks_base.add( hookFrameHolderTouchIntercept() );
+
 					//Disable flow and gestures
 					Hooks.selectionHooks_base.add( hookFlowHandler() );
 					Hooks.selectionHooks_base.add( hookSwipeHandler() );

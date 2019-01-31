@@ -2,11 +2,13 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -73,6 +75,9 @@ public class KeyboardMethods
 	protected static boolean mLayoutIsWeird = false;
 	protected static boolean mLayoutIsExtendedPredictions = false;	//Assume false if we have a hook failure or something
 	protected static boolean mIsSymbols = false;
+
+	// Handle landscape and portrait. Assume portrait if value unknown.
+	protected static int mDeviceOrientation = Configuration.ORIENTATION_PORTRAIT;
 
 	protected static ExiIconView mToolbarButton = null;
 
@@ -190,7 +195,16 @@ public class KeyboardMethods
 			}
 
 			// 0 is on, 2 is off. 1 I have no idea, but it keeps getting set.
-			KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2);
+			if ( KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.getParameterTypes().length < 2 )	// TODO: Legacy. Ditch.
+			{
+				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2);
+			}
+			else
+			{
+				// No idea what the bool does, but it's always true when toggling.
+				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2, true);
+			}
+
 
 		}
 		catch ( Throwable ex )
@@ -329,6 +343,13 @@ public class KeyboardMethods
 		return KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
 						KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
 				false );
+	}
+
+	public static void updateOrientation( Context context )
+	{
+		mDeviceOrientation = context.getResources().getConfiguration().orientation;
+
+		Log.i(LOGTAG, "Orientation now: "+mDeviceOrientation);
 	}
 
 	public static Object createQuicksettingItem( Context context, String prefKey, String prefStringResourceName, Object dyhInstance, Object hmlInstance, Object hwcInstance )
