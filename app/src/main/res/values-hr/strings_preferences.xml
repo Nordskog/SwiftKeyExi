@@ -94,6 +94,7 @@
     <!-- keyboard size -->
     <string name="pref_keyboard_size_multiplier_title">Povećavanje veličine tipkovnice</string>
     <string name="pref_keyboard_size_multiplier_summary">Podešavanje veličine tipkovnice</string>
+    <!-- Separate key for landscape, primary is portrait -->
     <!-- Swipe selection -->
     <string name="pref_cursor_speed_title">Brzina pokazivača</string>
     <string name="pref_cursor_speed_summary">Koliko se brzo kreće pokazivač</string>
