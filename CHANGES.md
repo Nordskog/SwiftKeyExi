@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [1.9.1] - 01-02-2019
+### Fixed
+ - Iterated the the bloody version code.
+ 
 ## [1.9.0] - 01-02-2019
 ### Fixed
  - Compatibility targeting 7.2.2.31 ( Custom search, sticky incognito 
