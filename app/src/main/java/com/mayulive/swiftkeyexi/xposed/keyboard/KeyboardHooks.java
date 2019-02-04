@@ -191,7 +191,10 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-					KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
+					if ( KeyboardMethods.mKeyboardRoot != null)
+					{
+						KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
+					}
 				}
 
 				@Override
