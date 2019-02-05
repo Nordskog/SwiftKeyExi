@@ -52,8 +52,15 @@
             android:summary="@string/pref_gifs_more_sources_summary"
             android:defaultValue="false" />
 
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_gifs_remove_redirect_key"
+            android:title="@string/pref_gifs_remove_redirect_title"
+            android:summary="@string/pref_gifs_remove_redirect_summary"
+            android:defaultValue="true" />
 
-        </PreferenceCategory>
+
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/category_pref_flow_suggestions">

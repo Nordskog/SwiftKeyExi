@@ -4,6 +4,7 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
  * Created by Roughy on 2/15/2017.
  */
 
+import android.net.Uri;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -30,6 +31,10 @@ public class KeyboardClassManager
 
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardClassManager.class);
 
+	/////////////////////////////////////////
+
+	private static Class insertGifClass = null;
+	protected static Method insertGifClass_insertGifMethod = null;
 
 	///////////////////////////////////////
 
@@ -65,8 +70,6 @@ public class KeyboardClassManager
 	protected static List<Method> searchClass_bingSearchMethods = new ArrayList<>();
 
 
-
-
 	public static void loadKnownClasses(PackageTree param)
 	{
 		layoutClass = ClassHunter.loadClass("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout", param.getClassLoader());
@@ -77,6 +80,9 @@ public class KeyboardClassManager
 		KeyHeightClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEY_HEIGHT_CLASS_PROFILE(), param );
 
 		incogControllerClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_INCOG_CONTROL_CLASS_PROFILE(), param );
+
+		insertGifClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_INSERT_GIF_CLASS_PROFILE(), param );
+
 
 		quickSettingsClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_QUICK_SETTINGS_CLASS_PROFILE(), param );
 		{
@@ -187,6 +193,14 @@ public class KeyboardClassManager
 
 		}
 
+		if (insertGifClass != null)
+		{
+			insertGifClass_insertGifMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
+					new ClassItem( void.class ),
+					new ClassItem( Uri.class ),
+					new ClassItem( Uri.class ),
+					new ClassItem( String.class )), insertGifClass.getDeclaredMethods(), insertGifClass );
+		}
 	}
 
 	public static void loadFields()
@@ -250,5 +264,8 @@ public class KeyboardClassManager
 
 		//Search
 		Hooks.logSetRequirement( Hooks.search,  "searchClass_bingSearchMethods is empty", !searchClass_bingSearchMethods.isEmpty());
+
+		//Gif redirect
+		Hooks.logSetRequirementFalseIfNull( Hooks.gifRemoveRedirect, "insertGifClass_insertGifMethod is null", insertGifClass_insertGifMethod );
 	}
 }

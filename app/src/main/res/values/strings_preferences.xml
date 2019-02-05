@@ -62,6 +62,10 @@
     <string name="pref_gifs_more_sources_title">More sources</string>
     <string name="pref_gifs_more_sources_summary">Display GIFs from more sites</string>
 
+    <string name="pref_gifs_remove_redirect_key">pref_gifs_remove_redirect</string>
+    <string name="pref_gifs_remove_redirect_title">Remove Bing redirect</string>
+    <string name="pref_gifs_remove_redirect_summary">Link directly to image</string>
+
     <!-- Force emoji set -->
     <string name="pref_emoji_force_version_key">pref_emoji_force_version</string>
         <string name="pref_emoji_force_version_title">Emoji Version</string>

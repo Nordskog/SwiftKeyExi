@@ -95,6 +95,8 @@ public class Hooks
 
 	public static HookCategory search = new HookCategory("Search");
 
+	public static HookCategory gifRemoveRedirect = new HookCategory("gifRemoveRedirect");
+
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
 																								baseHooks_invalidateLayout,
@@ -111,7 +113,8 @@ public class Hooks
 																								baseHooks_hidePredictions,
 																								quickSettings,
 																								incognito,
-																								search
+																								search,
+																								gifRemoveRedirect
 	);
 
 	//Convenience method for checking requirement and logging on failure

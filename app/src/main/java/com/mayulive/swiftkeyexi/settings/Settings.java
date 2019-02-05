@@ -58,6 +58,7 @@ public class Settings
 
 	public static boolean DISPLAY_NSFW_GIFS = false;
 	public static boolean DISPLAY_GIFS_FROM_MORE_SOURCES = false;
+	public static boolean GIF_REMOVE_REDIRECT = true;
 
 	public static boolean DISABLE_FULLSCREEN_KEYBOARD = false;
 
@@ -150,6 +151,7 @@ public class Settings
 
 		DISPLAY_NSFW_GIFS = prefs.getBoolean(PreferenceConstants.pref_gifs_enable_nsfw_key, false);
 		DISPLAY_GIFS_FROM_MORE_SOURCES = prefs.getBoolean(PreferenceConstants.pref_gifs_more_sources_key, false);
+		GIF_REMOVE_REDIRECT = prefs.getBoolean(PreferenceConstants.pref_gifs_remove_redirect_key, true);
 
 		SWIPE_DIRECTION_ANY = prefs.getBoolean(PreferenceConstants.pref_swipe_direction_any_key, true);
 

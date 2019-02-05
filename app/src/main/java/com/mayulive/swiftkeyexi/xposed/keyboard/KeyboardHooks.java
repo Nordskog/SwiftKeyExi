@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -60,6 +61,8 @@ public class KeyboardHooks
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardHooks.class);
 
 	private static Pattern BING_SEARCH_TERM_REGEX_PATTENR = Pattern.compile("https:\\/\\/www.bing.com\\/search\\?q=([^&\\s]+)&?" );
+
+	private static Pattern BING_GIF_REDIRECT_URL_PATTERN = Pattern.compile("https:\\/\\/.+(?:bing).+rurl=([^&]+)&?" );
 
 	//Keyboard service created
 	public static Set<XC_MethodHook.Unhook> hookServiceCreated() throws NoSuchMethodException
@@ -735,6 +738,54 @@ public class KeyboardHooks
 	}
 
 
+	private static XC_MethodHook.Unhook hookGifIinsert()
+	{
+		return XposedBridge.hookMethod( KeyboardClassManager.insertGifClass_insertGifMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				// Params:
+				// gif content uri (local)
+				// gif url ( bing redirect )
+				// mime type
+
+				if ( Settings.GIF_REMOVE_REDIRECT )
+				{
+					try
+					{
+						Uri imageUri = (Uri) param.args[1];
+
+						Matcher matcher = BING_GIF_REDIRECT_URL_PATTERN.matcher(imageUri.toString());
+
+						if (matcher.find())
+						{
+
+							String escapedHtmlString = matcher.group(1);
+							param.args[1] = Uri.parse( Uri.decode(escapedHtmlString));
+
+							Method superMethod = (Method) param.method;
+							superMethod.setAccessible(true);
+							superMethod.invoke(param.thisObject, param.args);
+							param.setResult( null );
+						}
+					}
+					catch ( Throwable ex )
+					{
+						// Will fallback to standard behavior, so not need to remove the hook.
+						Log.e(LOGTAG, "Problem in remove gif redirect method");
+						ex.printStackTrace();
+						XposedBridge.log(ex);
+					}
+				}
+			}
+		});
+
+
+
+	}
+
+
 	public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
@@ -816,6 +867,13 @@ public class KeyboardHooks
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
 				Hooks.baseHooks_base.add( hookPrefChanged() );
+
+
+				if (Hooks.gifRemoveRedirect.isRequirementsMet())
+				{
+					Hooks.gifRemoveRedirect.add( hookGifIinsert() );
+
+				}
 
 
 				if ( Hooks.search.isRequirementsMet() )

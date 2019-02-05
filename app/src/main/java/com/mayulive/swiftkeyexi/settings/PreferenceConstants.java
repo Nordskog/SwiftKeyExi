@@ -99,4 +99,6 @@ public class PreferenceConstants
 	public static final String pref_use_custom_search_key = "pref_use_custom_search";
 	public static final String pref_custom_search_string_key = "pref_custom_search_string";
 
+	public static final String pref_gifs_remove_redirect_key = "pref_gifs_remove_redirect";
+
 }
