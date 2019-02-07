@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
+import com.mayulive.swiftkeyexi.service.SwiftkeyBroadcastListener;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
@@ -88,6 +89,17 @@ public class KeyboardHooks
 				try
 				{
 					KeyboardMethods.mKeyboardRoot = (ViewGroup) param.getResult();
+
+
+					try
+					{
+						SwiftkeyBroadcastListener.startService( KeyboardMethods.mKeyboardRoot.getContext() );
+					}
+					catch ( Exception ex )
+					{
+						Log.i(LOGTAG, "Problem starting broadcast receiver in swiftkey context");
+						ex.printStackTrace();
+					}
 
 					KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
 
@@ -622,11 +634,11 @@ public class KeyboardHooks
 					int state = (int)param.args[0];
 
 					// 0 for on, 2 for off. Gets called with 1 all the time for seemingly no reason.
-					if (state == 0)
+					if (state == KeyboardMethods.INCOGNITO_ON)
 					{
 						KeyboardMethods.saveIncogState(true);
 					}
-					else if (state == 2)
+					else if (state == KeyboardMethods.INCOGNITO_OFF)
 					{
 						KeyboardMethods.saveIncogState(false);
 					}
@@ -781,9 +793,6 @@ public class KeyboardHooks
 				}
 			}
 		});
-
-
-
 	}
 
 
@@ -939,7 +948,7 @@ public class KeyboardHooks
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
 
-						// Only called once
+						// Only called once to restore after reboot.
 						if ( !KeyboardMethods.mIncogStateLoaded )
 						{
 							KeyboardMethods.mIncogStateLoaded = true;

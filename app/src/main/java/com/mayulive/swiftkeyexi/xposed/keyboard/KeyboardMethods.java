@@ -67,6 +67,12 @@ public class KeyboardMethods
 		STOCK, MODIFIED
 	}
 
+	// Values used by both Swiftkey and us.
+	// Default is made up by us, not used by Swiftkey.
+	public static final int INCOGNITO_ON = 0;
+	public static final int INCOGNITO_OFF = 2;
+	public static final int INCOGNITO_DEFAULT = -1;
+
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardMethods.class);
 
 	protected static Object mKeyboardLoadObject = null;
@@ -171,7 +177,11 @@ public class KeyboardMethods
 		}
 	}
 
-	private static void setIncogState( boolean state )
+	/**
+	 * Note that calling me will also cause incog state to be saved
+	 * @param state
+	 */
+	public static void setIncogState( boolean state )
 	{
 		if ( KeyboardClassManager.incogControllerClass_staticInstanceField == null )
 		{
@@ -197,12 +207,12 @@ public class KeyboardMethods
 			// 0 is on, 2 is off. 1 I have no idea, but it keeps getting set.
 			if ( KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.getParameterTypes().length < 2 )	// TODO: Legacy. Ditch.
 			{
-				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2);
+				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? KeyboardMethods.INCOGNITO_ON : KeyboardMethods.INCOGNITO_OFF );
 			}
 			else
 			{
 				// No idea what the bool does, but it's always true when toggling.
-				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2, true);
+				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? KeyboardMethods.INCOGNITO_ON : KeyboardMethods.INCOGNITO_OFF, true);
 			}
 
 
