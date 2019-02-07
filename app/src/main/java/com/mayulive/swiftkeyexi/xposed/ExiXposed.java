@@ -20,54 +20,12 @@ import java.io.FileWriter;
 
 public class ExiXposed
 {
-	//Prevent some stuff from running until setup completed
-	private static boolean mFinishedLoading = false;
-
 	private static String LOGTAG = ExiModule.getLogTag(ExiXposed.class);
 
 	//Hook globals
 	public static String HOOK_PACKAGE_NAME;
 
 	public static boolean isBeta = false;
-
-	public static int mLoadingProgress = 0;
-
-	public static boolean isFinishedLoading()
-	{
-		return mFinishedLoading;
-	}
-
-	public static void updateLoadingProgress( int progressPercentage)
-	{
-		mLoadingProgress = progressPercentage;
-		OverlayCommons.updateLoadingMessage(progressPercentage);
-	}
-
-	public static int getLoadingProgress()
-	{
-		return mLoadingProgress;
-	}
-
-	public static void notifyFinishedLoading()
-	{
-		if (!mFinishedLoading)
-		{
-			mFinishedLoading = true;
-
-			OverlayCommons.removeLoadingMessage();
-
-			//If it finishes /really/ early we might not be able to obtain it
-			Context context = ContextUtils.getHookContext();
-			if (context != null)
-			{
-				Settings.updateSettingsFromProvider( context );
-			}
-		}
-		else
-		{
-			Log.e(LOGTAG, "Called notifyFinishedLoading() multiple times");
-		}
-	}
 
 	public static String getPrefsPath()
 	{

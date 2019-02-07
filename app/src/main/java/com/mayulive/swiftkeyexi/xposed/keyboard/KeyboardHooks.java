@@ -111,24 +111,6 @@ public class KeyboardHooks
 					cover.setLayoutParams(params);
 					KeyboardMethods.mKeyboardRoot.addView(cover);
 					OverlayCommons.mKeyboardOverlay = cover;
-
-					if (!ExiXposed.isFinishedLoading())
-					{
-						OverlayCommons.displayLoadingMessage();
-					}
-
-					//For some absurd reason, the overlay will refuse to measure any views that are added immediately.
-					//You have to wait 500-1000ms. Any views added before this will never be given a size, and have to be removed and re-added.
-					//Updating the progress now does this as a workaround, so here we throw in a few extra fake progress update to force it to display.
-					//I tried everything. Short of digging into FrameLayout/RelativeLayout (they both behave like this)'s code, this is the least painful solution.
-					Handler handler = new Handler(Looper.getMainLooper());
-					Runnable fakeProgressUpdate = () -> ExiXposed.updateLoadingProgress( ExiXposed.getLoadingProgress() );
-
-					handler.postDelayed( fakeProgressUpdate, 300);
-					handler.postDelayed( fakeProgressUpdate, 500);
-					handler.postDelayed( fakeProgressUpdate, 1000);
-					handler.postDelayed( fakeProgressUpdate, 2000);
-
 				}
 				catch (Throwable ex)
 				{
