@@ -122,6 +122,15 @@ public class KeyboardHooks
 
 	}
 
+	// Turns out this is actually two times, about a second apart.
+	// Require at least a 1 second delay between calls.
+	// Time from end of first call before start of second is 100ms or so, but occasionally 1000ms+;
+	// Require 5000ms gap unless close hook has fired.
+	// Close hook unfortunately always fires once when the keyboard is first opened, so a double-execute is unavoidable there.
+
+	private static long mOnStartInputViewLastCallTime = 0;	// Manually reset to 0 if input closed hook is called.
+	private static boolean mOnStartInputViewSkipAfter = false;	// True if we didn't run before, and should skip after.
+
 	public static XC_MethodHook.Unhook hookKeyboardOpened()
 	{
 		{
@@ -130,39 +139,48 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-
-					//Do not run unless setup has finished
-					if (ExiXposed.isFinishedLoading())
+					if ( System.currentTimeMillis() - mOnStartInputViewLastCallTime > 5000  )
 					{
 						Settings.updateSettingsFromProvider(ContextUtils.getHookContext());
+
+						//Something may trigger the keyboard to close without the user interacting with it,
+						//which would leave our popups visible when it is opened next.
+						OverlayCommons.clearPopups();
+
+						if (!NormalEmojiItem.isAssetsLoaded())
+						{
+							NormalEmojiItem.loadAssets( FontProvider.getFont(ContextUtils.getHookContext(), "NotoEmoji_der_nougat.ttf") );
+						}
+
+						for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
+						{
+							listener.beforeKeyboardOpened();
+						}
 					}
-
-					//Something may trigger the keyboard to close without the user interacting with it,
-					//which would leave our popups visible when it is opened next.
-					OverlayCommons.clearPopups();
-
-					if (!NormalEmojiItem.isAssetsLoaded())
+					else
 					{
-						NormalEmojiItem.loadAssets( FontProvider.getFont(ContextUtils.getHookContext(), "NotoEmoji_der_nougat.ttf") );
+						mOnStartInputViewSkipAfter = true;
 					}
-
-					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
-					{
-						listener.beforeKeyboardOpened();
-					}
-
 				}
 
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
-					if (DebugSettings.DEBUG_HITBOXES)
-						OverlayCommons.displayDebugHithoxes(ContextUtils.getHookContext(), SelectionState.getSwipeOverlayHeight());
-
-					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
+					if ( !mOnStartInputViewSkipAfter )
 					{
-						listener.afterKeyboardOpened();
+						mOnStartInputViewLastCallTime = System.currentTimeMillis();
+
+						if (DebugSettings.DEBUG_HITBOXES)
+							OverlayCommons.displayDebugHithoxes(ContextUtils.getHookContext(), SelectionState.getSwipeOverlayHeight());
+
+						for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
+						{
+							listener.afterKeyboardOpened();
+						}
 					}
+
+					mOnStartInputViewSkipAfter = false;
+
 				}
 
 			});
@@ -263,6 +281,7 @@ public class KeyboardHooks
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
+					mOnStartInputViewLastCallTime = 0;
 					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
 					{
 						listener.beforeKeyboardClosed();
