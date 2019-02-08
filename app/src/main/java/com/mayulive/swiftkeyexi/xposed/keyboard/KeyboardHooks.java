@@ -68,7 +68,7 @@ public class KeyboardHooks
 
 	private static Pattern BING_SEARCH_TERM_REGEX_PATTENR = Pattern.compile("https:\\/\\/www.bing.com\\/search\\?q=([^&\\s]+)&?" );
 
-	private static Pattern BING_GIF_REDIRECT_URL_PATTERN = Pattern.compile("https:\\/\\/.+(?:bing).+rurl=([^&]+)&?" );
+	private static Pattern BING_GIF_REDIRECT_URL_PATTERN = Pattern.compile("https:\\/\\/(?:.+?)?(?:mm.bing\\.net).+rurl=([^&]+)&?" );
 
 	//Keyboard service created
 	public static Set<XC_MethodHook.Unhook> hookServiceCreated() throws NoSuchMethodException
