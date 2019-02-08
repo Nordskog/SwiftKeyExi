@@ -659,51 +659,6 @@ public class KeyboardHooks
 		});
 	}
 
-	private static XC_MethodHook.Unhook hookQuickSettings(PackageTree lpparam )
-	{
-
-			return XposedBridge.hookMethod( KeyboardClassManager.quickSettingsClass_createSettingsMethod, new XC_MethodHook()
-			{
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
-				{
-
-					try
-					{
-						Context context = (Context) param.args[0];
-
-						Object dyhInstance = param.args[1];
-						Object hmlInstance = param.args[2];
-						Object hwcInstance = param.args[3];
-
-						ArrayList itemList = (ArrayList)param.getResult();
-
-						Object vibrateItem = KeyboardMethods.createQuicksettingItem(
-								context,
-								"pref_system_vibration_key",
-								"prefs_system_vibration_title",
-								dyhInstance,
-								hmlInstance,
-								hwcInstance );
-
-						if (vibrateItem != null)
-						{
-							itemList.add(vibrateItem);
-						}
-
-					}
-					catch ( Throwable ex)
-					{
-						Log.e(LOGTAG, "Failed to add quicksetting");
-						ex.printStackTrace();
-					}
-				}
-			});
-
-	}
-
-
-
 	private static Set<XC_MethodHook.Unhook> hookSearchEngine(PackageTree lpparam )
 	{
 		Set<XC_MethodHook.Unhook> hookSet = new HashSet<>();
@@ -990,12 +945,6 @@ public class KeyboardHooks
 				{
 					Hooks.baseHooks_keyHeight.addAll(  hookKeyHeight() );
 				}
-
-				if (Hooks.quickSettings.isRequirementsMet())
-				{
-					hookQuickSettings(lpparam);
-				}
-
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())
 				{

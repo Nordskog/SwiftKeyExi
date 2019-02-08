@@ -63,17 +63,6 @@ public class KeyboardClassManager
 	protected static Method incogControllerClass_ChangeIncogStateMethod;
 	public static Field incogControllerClass_staticInstanceField;
 
-	////////////////////////////////////////////
-
-	public static Class quickSettingsClass;
-	public static Method quickSettingsClass_createSettingsMethod;
-
-	public static Class quickSettingPrefReferenceClass;
-	public static Constructor quickSettingPrefReferenceClass_constructor;
-
-	public static Class quicksettingPrefItemClass;
-	public static Constructor quicksettingPrefItemClass_constructor;
-
 	//////////////////////////////////////////////
 
 	protected static Class searchClass;
@@ -96,49 +85,6 @@ public class KeyboardClassManager
 
 		insertGifClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_INSERT_GIF_CLASS_PROFILE(), param );
 
-
-		quickSettingsClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_QUICK_SETTINGS_CLASS_PROFILE(), param );
-		{
-			if (quickSettingsClass != null)
-			{
-				quickSettingsClass_createSettingsMethod = ProfileHelpers.findMostSimilar( 	new MethodProfile
-						(
-								PRIVATE | STATIC | EXACT ,
-								new ClassItem(java.util.List.class),
-
-								new ClassItem(android.content.Context.class),
-								new ClassItem("" , PUBLIC | FINAL | EXACT ),
-								new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-								new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-								new ClassItem("" , PUBLIC | FINAL | EXACT ),
-								new ClassItem("" , PUBLIC | FINAL | EXACT ),
-								new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-								new ClassItem("" , PUBLIC | FINAL | EXACT ),
-								new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-								new ClassItem("" , PUBLIC | FINAL | EXACT ),
-								new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-
-						), quickSettingsClass.getDeclaredMethods(), quickSettingsClass);
-
-				if (quickSettingsClass_createSettingsMethod != null)
-				{
-					Class[] params =  quickSettingsClass_createSettingsMethod.getParameterTypes();
-
-					// actually longer than this but just a sanity check
-					// If wrong method it will just fail later.
-					if (params.length > 5)
-					{
-						quickSettingPrefReferenceClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_QUICK_SETTINGS_PREF_REFERENCE_CLASS_PROFILE(params[1]), param );
-						quicksettingPrefItemClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_QUICK_SETTINGS_PREF_ITEM_CLASS_PROFILE(), param );
-					}
-
-
-
-
-				}
-			}
-		}
 
 		searchClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_SEARCH_CLASS_PROFILE(), param );
 
@@ -171,21 +117,6 @@ public class KeyboardClassManager
 					new ClassItem(boolean.class)
 			), incogControllerClass.getDeclaredMethods(), incogControllerClass);
 
-		}
-
-
-		if (quickSettingPrefReferenceClass != null)
-		{
-			Constructor[] constructors = quickSettingPrefReferenceClass.getDeclaredConstructors();
-			if (constructors.length > 0)
-				quickSettingPrefReferenceClass_constructor = constructors[0];
-		}
-
-		if (quicksettingPrefItemClass != null)
-		{
-			Constructor[] constructors = quicksettingPrefItemClass.getDeclaredConstructors();
-			if (constructors.length > 0)
-				quicksettingPrefItemClass_constructor = constructors[0];
 		}
 
 		if (searchClass != null)
@@ -280,11 +211,6 @@ public class KeyboardClassManager
 
 		//Keyboard size
 		Hooks.logSetRequirement( Hooks.baseHooks_keyHeight,	 "keyHeightClass_getKeyHeightMethod", 	!keyHeightClass_getKeyHeightMethods.isEmpty() );
-
-		//Quicksettings
-		Hooks.logSetRequirementFalseIfNull( Hooks.quickSettings,	 "quickSettingsClass_createSettingsMethod", 	quickSettingsClass_createSettingsMethod );
-		Hooks.logSetRequirementFalseIfNull( Hooks.quickSettings,	 "quickSettingPrefReferenceClass_constructor", 	quickSettingPrefReferenceClass_constructor );
-		Hooks.logSetRequirementFalseIfNull( Hooks.quickSettings,	 "quicksettingPrefItemClass_constructor", 	quicksettingPrefItemClass_constructor );
 
 		//Incognito
 		Hooks.logSetRequirementFalseIfNull( Hooks.incognito,	 "incogControllerClass_ChangeIncogStateMethod", 	incogControllerClass_ChangeIncogStateMethod );

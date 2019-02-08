@@ -86,9 +86,6 @@ public class Hooks
 	public static HookCategory hardwareKeys_base = new HookCategory("Hardkey SHortcuts base");
 
 	//Hardware keyboard shortcuts and remapping
-	public static HookCategory quickSettings = new HookCategory("quickSettings base");
-
-	//Hardware keyboard shortcuts and remapping
 	public static HookCategory incognito = new HookCategory("incognito base");
 
 	public static HookCategory search = new HookCategory("Search");
@@ -111,7 +108,6 @@ public class Hooks
 																								hardwareKeys_base,
 																								baseHooks_toolbarButton,
 																								baseHooks_hidePredictions,
-																								quickSettings,
 																								incognito,
 																								search,
 																								gifRemoveRedirect,

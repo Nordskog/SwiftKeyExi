@@ -13,10 +13,13 @@ public class SwiftkeyBroadcastListener extends BroadcastReceiver
 {
 	private static String LOGTAG = ExiModule.getLogTag(SwiftkeyBroadcastListener.class);
 
-	public static final String INCOG_ENABLE_INTENT = "com.mayulive.swiftkeyexi.INCOGNITO_ON";
-	public static final String INCOG_DISABLE_INTENT = "com.mayulive.swiftkeyexi.INCOGNITO_OFF";
+	public static final String INCOG_ON_INTENT = "com.mayulive.swiftkeyexi.INCOGNITO_ON";
+	public static final String INCOG_OFF_INTENT = "com.mayulive.swiftkeyexi.INCOGNITO_OFF";
 
 	public static final String SET_THEME_INTENT = "com.mayulive.swiftkeyexi.SET_THEME";
+
+	public static final String USE_SYSTEM_VIBRATE_ON_INTENT = "com.mayulive.swiftkeyexi.USE_SYSTEM_VIBRATE_ON";
+	public static final String USE_SYSTEM_VIBRATE_OFF_INTENT = "com.mayulive.swiftkeyexi.USE_SYSTEM_VIBRATE_OFF";
 
 	public static final String SET_THEME_EXTRA_THEME_HASH = "THEME_HASH";
 
@@ -33,11 +36,11 @@ public class SwiftkeyBroadcastListener extends BroadcastReceiver
 
 				switch( intent.getAction() )
 				{
-					case INCOG_ENABLE_INTENT:
-					case INCOG_DISABLE_INTENT:
+					case INCOG_ON_INTENT:
+					case INCOG_OFF_INTENT:
 					{
 
-						KeyboardMethods.setIncogState( intent.getAction() == INCOG_ENABLE_INTENT );
+						KeyboardMethods.setIncogState( intent.getAction() == INCOG_ON_INTENT);
 						break;
 					}
 
@@ -57,6 +60,13 @@ public class SwiftkeyBroadcastListener extends BroadcastReceiver
 
 					}
 
+					case USE_SYSTEM_VIBRATE_ON_INTENT:
+					case USE_SYSTEM_VIBRATE_OFF_INTENT:
+					{
+						KeyboardMethods.setUseSystemVibrate( intent.getAction() == USE_SYSTEM_VIBRATE_ON_INTENT );
+						break;
+					}
+
 					default:
 					{
 						break;
@@ -74,9 +84,14 @@ public class SwiftkeyBroadcastListener extends BroadcastReceiver
 		{
 			Log.i(LOGTAG, "Starting service");
 
-			IntentFilter filter = new IntentFilter(INCOG_ENABLE_INTENT);
-			filter.addAction(INCOG_DISABLE_INTENT);
-			filter.addAction(SET_THEME_INTENT);
+			IntentFilter filter = new IntentFilter(SET_THEME_INTENT);
+
+			filter.addAction(INCOG_ON_INTENT);
+			filter.addAction(INCOG_OFF_INTENT);
+
+			filter.addAction(USE_SYSTEM_VIBRATE_ON_INTENT);
+			filter.addAction(USE_SYSTEM_VIBRATE_OFF_INTENT);
+
 
 			mService = new SwiftkeyBroadcastListener();
 			context.registerReceiver(mService, filter);
