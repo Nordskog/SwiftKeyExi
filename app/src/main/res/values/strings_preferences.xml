@@ -222,7 +222,7 @@
     <!-- keyboard theme hash, not a pref. -->
     <string name="pref_data_keyboard_theme_last_hash_key">pref_data_keyboard_theme_last_hash</string>
     <string name="pref_data_keyboard_theme_last_hash_title">Keyboard Theme Hash</string>
-    <string name="pref_data_keyboard_theme_last_hash_default_summary">Please toggle a theme</string>
+    <string name="pref_data_keyboard_theme_last_hash_default_summary">Please select a theme</string>
 
 
 </resources>
