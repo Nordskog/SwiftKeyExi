@@ -21,6 +21,8 @@
     <string name="portrait">Portrait</string>
     <string name="landscape">Landscape</string>
 
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+
     <string name="content_description">Content: </string>
     <string name="content_title">Content</string>
     <string name="parent_key_title">Parent Key</string>

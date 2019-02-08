@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import static com.mayulive.xposed.classhunter.Modifiers.*;
 
@@ -30,6 +31,15 @@ public class KeyboardClassManager
 {
 
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardClassManager.class);
+
+
+	///////////////////////////////////////////
+
+	protected static Class themeSetterClass = null;
+	static Method themeSetterClass_setThemeMethod = null;
+
+	static Object themeSetter_dummyCtiInstance = null;
+	static Object themeSetterClass_instance = null;
 
 	/////////////////////////////////////////
 
@@ -77,6 +87,9 @@ public class KeyboardClassManager
 
 	public static void loadUnknownClasses(PackageTree param)
 	{
+
+		themeSetterClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEYBOARD_THEME_SETTER_PROFILE(), param );
+
 		KeyHeightClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEY_HEIGHT_CLASS_PROFILE(), param );
 
 		incogControllerClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_INCOG_CONTROL_CLASS_PROFILE(), param );
@@ -201,6 +214,21 @@ public class KeyboardClassManager
 					new ClassItem( Uri.class ),
 					new ClassItem( String.class )), insertGifClass.getDeclaredMethods(), insertGifClass );
 		}
+
+		if (themeSetterClass != null)
+		{
+
+			KeyboardClassManager.themeSetterClass_setThemeMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
+					Modifiers.FINAL | Modifiers.PUBLIC,
+					new ClassItem(Modifiers.INTERFACE),
+					new ClassItem( String.class ),
+					new ClassItem( boolean.class ),
+					new ClassItem( Modifiers.INTERFACE ),
+					new ClassItem(Executor.class)
+
+			), themeSetterClass.getDeclaredMethods(), themeSetterClass );
+
+		}
 	}
 
 	public static void loadFields()
@@ -267,5 +295,8 @@ public class KeyboardClassManager
 
 		//Gif redirect
 		Hooks.logSetRequirementFalseIfNull( Hooks.gifRemoveRedirect, "insertGifClass_insertGifMethod is null", insertGifClass_insertGifMethod );
+
+		//Theme set
+		Hooks.logSetRequirementFalseIfNull( Hooks.themeSet, "themeSetterClass_setThemeMethod is null", themeSetterClass_setThemeMethod );
 	}
 }

@@ -1,15 +1,20 @@
 package com.mayulive.swiftkeyexi.main.settings;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
+import com.mayulive.swiftkeyexi.service.SwiftkeyBroadcastListener;
 import com.mayulive.swiftkeyexi.settings.DualNumberPickerPreferenceFragment;
 import com.mayulive.swiftkeyexi.settings.FloatNumberPickerPreference;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreference;
@@ -17,6 +22,7 @@ import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.settings.NumberPickerPreferenceFragment;
 import com.mayulive.swiftkeyexi.settings.OpacityPreference;
 import com.mayulive.swiftkeyexi.settings.OpacityPreferenceFragment;
+import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 
 /**
@@ -129,6 +135,27 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			public boolean onPreferenceClick(Preference preference)
 			{
 				displayFragment( new CustomSearchFragment() );
+				return true;
+			}
+		});
+
+		Preference themeHashPreference = findPreference(this.getContext().getResources().getString( R.string.pref_data_keyboard_theme_last_hash_key ));
+		themeHashPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				String hash = SettingsCommons.getSharedPreferences(preference.getContext()).getString( PreferenceConstants.pref_data_keyboard_theme_last_hash_key, "");
+				hash = SwiftkeyBroadcastListener.SET_THEME_EXTRA_THEME_HASH + ":" + hash;
+
+				ClipboardManager clipboard = (ClipboardManager)
+						preference.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+				ClipData clip = ClipData.newPlainText("Theme hash", hash);
+
+				clipboard.setPrimaryClip(clip);
+
+				Toast.makeText( preference.getContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+
 				return true;
 			}
 		});

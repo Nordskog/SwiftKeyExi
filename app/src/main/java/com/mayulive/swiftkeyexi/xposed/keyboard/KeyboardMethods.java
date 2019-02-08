@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 
 public class KeyboardMethods
@@ -61,6 +63,8 @@ public class KeyboardMethods
 			}
 		}
 	}
+
+
 
 	public enum PunctuationRuleMode
 	{
@@ -587,5 +591,53 @@ public class KeyboardMethods
 
 		mLastKeyboardOpacity = Settings.KEYBOARD_OPACITY;
 
+	}
+
+	public static void setThemeByHash(String themeHash)
+	{
+		if ( KeyboardClassManager.themeSetter_dummyCtiInstance == null )
+		{
+			Log.e(LOGTAG, "themeSetter_dummyCtiInstance was null, not setting theme");
+			return;
+		}
+
+		if ( KeyboardClassManager.themeSetter_dummyCtiInstance == null )
+		{
+			Log.e(LOGTAG, "themeSetterClass_instance was null, not setting theme");
+			return;
+		}
+
+		if ( KeyboardClassManager.themeSetterClass_setThemeMethod == null )
+		{
+			Log.e(LOGTAG, "themeSetterClass_setThemeMethod was null, not setting theme");
+			return;
+		}
+
+		Object[] args = new Object[4];
+
+		args[0] = themeHash;
+		args[1] = true;	// No idea what this does but should be true.
+		args[2] = KeyboardClassManager.themeSetter_dummyCtiInstance;	// Proxy of interface that does nothing
+		args[3] = new ThemeExecutor();	// Callback that does nothing
+
+
+		try
+		{
+			KeyboardClassManager.themeSetterClass_setThemeMethod.invoke(KeyboardClassManager.themeSetterClass_instance, args);
+		}
+		catch ( Exception ex )
+		{
+			Log.e(LOGTAG, "Failed to call set theme method");
+			ex.printStackTrace();
+		}
+	}
+
+	private static class ThemeExecutor implements Executor
+	{
+		@Override
+		public void execute(@NonNull Runnable command)
+		{
+			// Doesn't need to do anything, used by Theme Setter.
+		}
 	}
 }

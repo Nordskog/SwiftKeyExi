@@ -14,6 +14,7 @@
     <string name="category_pref_keys">Keys</string>
     <string name="category_pref_audio">Audio</string>
     <string name="category_pref_gifs">Gifs</string>
+    <string name="category_pref_data">Data</string>
 
     <!-- App Theme -->
     <string name="pref_app_theme_key">pref_app_theme</string>
@@ -217,6 +218,11 @@
     <string name="pref_hide_predictions_key">pref_hide_predictions</string>
     <string name="pref_hide_predictions_title">Hide predictions</string>
     <string name="pref_hide_predictions_summary">Do not display the predictions bar</string>
+
+    <!-- keyboard theme hash, not a pref. -->
+    <string name="pref_data_keyboard_theme_last_hash_key">pref_data_keyboard_theme_last_hash</string>
+    <string name="pref_data_keyboard_theme_last_hash_title">Keyboard Theme Hash</string>
+    <string name="pref_data_keyboard_theme_last_hash_default_summary">Please toggle a theme</string>
 
 
 </resources>

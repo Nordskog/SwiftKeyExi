@@ -101,4 +101,11 @@ public class PreferenceConstants
 
 	public static final String pref_gifs_remove_redirect_key = "pref_gifs_remove_redirect";
 
+
+	/////////////////////////////////////////////
+	// Not prefs. but used to store other stuff
+	/////////////////////////////////////////////
+
+	public static final String pref_data_keyboard_theme_last_hash_key = "pref_data_keyboard_theme_last_hash";
+
 }

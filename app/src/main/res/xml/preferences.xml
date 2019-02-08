@@ -226,6 +226,20 @@
         android:key="@string/pref_about_key"
         android:title="@string/pref_about_title"/>
 
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_pref_data">
+
+        <com.mayulive.swiftkeyexi.util.view.PreferenceShowSummary
+            android:key="@string/pref_data_keyboard_theme_last_hash_key"
+            android:title="@string/pref_data_keyboard_theme_last_hash_title"
+            android:defaultValue="@string/pref_data_keyboard_theme_last_hash_default_summary"
+            android:icon="@drawable/ic_clipboard_icon"
+
+            />
+
     </PreferenceCategory>
 
     </PreferenceScreen>

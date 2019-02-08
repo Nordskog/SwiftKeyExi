@@ -11,9 +11,14 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 public class SwiftkeyBroadcastListener extends BroadcastReceiver
 {
+	private static String LOGTAG = ExiModule.getLogTag(SwiftkeyBroadcastListener.class);
+
 	public static final String INCOG_ENABLE_INTENT = "com.mayulive.swiftkeyexi.INCOGNITO_ON";
 	public static final String INCOG_DISABLE_INTENT = "com.mayulive.swiftkeyexi.INCOGNITO_OFF";
-	private static String LOGTAG = ExiModule.getLogTag(SwiftkeyBroadcastListener.class);
+
+	public static final String SET_THEME_INTENT = "com.mayulive.swiftkeyexi.SET_THEME";
+
+	public static final String SET_THEME_EXTRA_THEME_HASH = "THEME_HASH";
 
 	private static SwiftkeyBroadcastListener mService;
 
@@ -36,6 +41,22 @@ public class SwiftkeyBroadcastListener extends BroadcastReceiver
 						break;
 					}
 
+					case SET_THEME_INTENT:
+					{
+						String hash = intent.getStringExtra(SET_THEME_EXTRA_THEME_HASH);
+						if (hash != null)
+						{
+							KeyboardMethods.setThemeByHash(hash);
+						}
+						else
+						{
+							Log.e(LOGTAG, "Set theme intent received but hash was null");
+						}
+
+						break;
+
+					}
+
 					default:
 					{
 						break;
@@ -55,6 +76,7 @@ public class SwiftkeyBroadcastListener extends BroadcastReceiver
 
 			IntentFilter filter = new IntentFilter(INCOG_ENABLE_INTENT);
 			filter.addAction(INCOG_DISABLE_INTENT);
+			filter.addAction(SET_THEME_INTENT);
 
 			mService = new SwiftkeyBroadcastListener();
 			context.registerReceiver(mService, filter);

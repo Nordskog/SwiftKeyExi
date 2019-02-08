@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
+import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,7 +20,9 @@ import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
+import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.service.SwiftkeyBroadcastListener;
+import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
@@ -42,10 +44,13 @@ import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -751,6 +756,90 @@ public class KeyboardHooks
 	}
 
 
+	private static Set<XC_MethodHook.Unhook> hookSetTheme(PackageTree lpparam )
+	{
+		HashSet<XC_MethodHook.Unhook> hookSet = new HashSet<>();
+
+		try
+		{
+			// Create interface implementation first, in case it fails.
+			Class ctiInterfaceClass = KeyboardClassManager.themeSetterClass_setThemeMethod.getParameterTypes()[2];
+
+			if (ctiInterfaceClass.isInterface())
+			{
+
+				////////////////////////////////////////////////////
+				// Dummy callback interface. Doesn't do anything.
+				////////////////////////////////////////////////////
+
+				KeyboardClassManager.themeSetter_dummyCtiInstance = Proxy.newProxyInstance(lpparam.getClassLoader(), new Class[]{ctiInterfaceClass}, new InvocationHandler()
+				{
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
+					{
+						// This doesn't need to do anything.
+						return null;
+					}
+				});
+
+
+				////////////////////////////////////////////////////
+				// Hook to get ref to instance
+				////////////////////////////////////////////////////
+
+				hookSet.addAll( XposedBridge.hookAllConstructors( KeyboardClassManager.themeSetterClass, new XC_MethodHook()
+				{
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable
+					{
+						Log.i(LOGTAG, "Got theme loader instance");
+						KeyboardClassManager.themeSetterClass_instance = param.thisObject;
+					}
+				}));
+
+
+				////////////////////////////////////////////////////
+				// Hook to get last theme configured
+				////////////////////////////////////////////////////
+
+				hookSet.add( XposedBridge.hookMethod( KeyboardClassManager.themeSetterClass_setThemeMethod, new XC_MethodHook()
+				{
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable
+					{
+						try
+						{
+							String themeHash = (String) param.args[0];
+							Log.i(LOGTAG, " Theme set called: "+themeHash);
+							SharedPreferencesProvider.setPreference( ContextUtils.getHookContext(), PreferenceConstants.pref_data_keyboard_theme_last_hash_key, themeHash);
+						}
+						catch ( Exception ex )
+						{
+							Log.e(LOGTAG, "Problem intercepting theme set");
+						}
+
+					}
+				}));
+
+			}
+			else
+			{
+				Log.e(LOGTAG, "cti interface for theme setter was not an interface");
+			}
+
+		}
+		catch ( Exception ex )
+		{
+			Log.i(LOGTAG, "set theme hooking problem");
+			ex.printStackTrace();
+		}
+
+		return hookSet;
+
+	}
+
+
+
 	private static XC_MethodHook.Unhook hookGifIinsert()
 	{
 		return XposedBridge.hookMethod( KeyboardClassManager.insertGifClass_insertGifMethod, new XC_MethodHook()
@@ -876,13 +965,18 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
+
 				Hooks.baseHooks_base.add( hookPrefChanged() );
 
 
 				if (Hooks.gifRemoveRedirect.isRequirementsMet())
 				{
 					Hooks.gifRemoveRedirect.add( hookGifIinsert() );
+				}
 
+				if (Hooks.themeSet.isRequirementsMet())
+				{
+					Hooks.themeSet.addAll( hookSetTheme(lpparam) );
 				}
 
 
