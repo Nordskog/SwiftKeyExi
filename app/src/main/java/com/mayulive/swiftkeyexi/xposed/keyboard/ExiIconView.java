@@ -5,12 +5,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+
+import com.mayulive.swiftkeyexi.ExiModule;
 
 public class ExiIconView extends View
 {
+	private static String LOGTAG = ExiModule.getLogTag(ExiIconView.class);
 
 	Path[] mPaths = new Path[6];
 	Paint mPaint;
@@ -46,7 +51,13 @@ public class ExiIconView extends View
 	{
 		mColor = color;
 		mPaint.setColor(mColor);
-		this.invalidate();
+
+		// Occasioanlly get's called off the main thread
+		if (Looper.getMainLooper().equals( Looper.myLooper() ))
+		{
+			this.invalidate();
+		}
+
 	}
 
 	protected void onSizeChanged(int w, int h, int oldw, int oldh)

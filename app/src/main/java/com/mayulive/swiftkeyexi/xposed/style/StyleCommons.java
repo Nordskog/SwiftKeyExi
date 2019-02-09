@@ -36,8 +36,6 @@ public class StyleCommons
 	public static int TOOLBAR_LIGHT_SEARCH_TEXT_COLOR_RESOURCE = -1;
 	public static int TOOLBAR_DARK_SEARCH_TEXT_COLOR_RESOURCE = -1;
 
-	private static Drawable mRaisedBackground = null;
-	static int bottomBarId = 0;
 	protected static int mTheme = -1;
 
 	public static int getCurrentTheme()
@@ -98,53 +96,6 @@ public class StyleCommons
 		return textView;
 	}
 
-	//Call after theme change or emoji panel created
-	public static void updateRaisedBackground()
-	{
-		//Update raised background drawable. Call on a delay because the view probably hasn't been updated yet.
-		Handler handler = new Handler(Looper.getMainLooper());
-		handler.postDelayed(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				View parent = (View) OverlayCommons.mKeyboardOverlay.getParent();
-
-				if ( parent != null)
-				{
-					if (StyleCommons.bottomBarId == 0)
-					{
-						StyleCommons.bottomBarId = ContextUtils.getHookContext().getResources().getIdentifier("fancy_bottom_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
-					}
-
-					View bottomBar = parent.findViewById(StyleCommons.bottomBarId);
-
-					if (bottomBar != null)
-					{
-						StyleCommons.setCurrentRaisedBackground(bottomBar.getBackground());
-						StyleCommons.callThemeChangedListeners(StyleCommons.getCurrentRaisedBackground());
-					}
-				}
-				else
-				{
-					Log.i(LOGTAG, "Root view was null, failed to get bottom bar for style");
-				}
-			}
-		},1);
-
-	}
-
-
-	public static void setCurrentRaisedBackground(Drawable bg)
-	{
-		mRaisedBackground = bg;
-	}
-
-	public static Drawable getCurrentRaisedBackground()
-	{
-		return mRaisedBackground;
-	}
-
 	public static void addThemeChangedListener(ThemeChangedListener listener)
 	{
 		mThemeChangedListeners.add(listener);
@@ -159,18 +110,8 @@ public class StyleCommons
 		}
 	}
 
-	protected static void callThemeChangedListeners(Drawable raisedBackground)
-	{
-		for (ThemeChangedListener listener : mThemeChangedListeners)
-		{
-			if (listener != null)
-				listener.raisedBackgroundChanged(raisedBackground);
-		}
-	}
-
 	public interface ThemeChangedListener
 	{
 		void themeChanged(int newTheme);
-		void raisedBackgroundChanged(Drawable bg);
 	}
 }

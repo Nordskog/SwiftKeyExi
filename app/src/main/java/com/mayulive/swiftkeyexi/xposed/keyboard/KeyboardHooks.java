@@ -877,11 +877,6 @@ public class KeyboardHooks
 							KeyboardMethods.updateToolbarButtonColor(newTheme);
 						}
 
-						@Override
-						public void raisedBackgroundChanged(Drawable bg)
-						{
-
-						}
 					});
 
 				}

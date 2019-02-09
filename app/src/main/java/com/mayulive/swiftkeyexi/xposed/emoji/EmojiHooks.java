@@ -224,7 +224,6 @@ public class EmojiHooks
 								tabParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
 								EmojiHookCommons.mOuterTabsWrapper.setLayoutParams( tabParams );
 
-								EmojiHookCommons.refreshEmojiTheme( );
 
 								//We are in relative layout, and the actualy pager needs to be placed below the tablayout
 								EmojiHookCommons.mOuterTabsWrapper.setId( View.generateViewId() );
@@ -262,8 +261,6 @@ public class EmojiHooks
 									emojiBackView.setLayoutParams(backParams);
 								}
 
-								//Update the toolbar background
-								StyleCommons.updateRaisedBackground();
 
 							}
 							else	// Keep this in next update
@@ -280,7 +277,6 @@ public class EmojiHooks
 								////////////////
 
 								RelativeLayout.LayoutParams pagerParams = (RelativeLayout.LayoutParams) pagerView.getLayoutParams();
-								EmojiHookCommons.refreshEmojiTheme( );
 
 								//We are in relative layout, and the actualy pager needs to be placed below the tablayout
 								if ( EmojiHookCommons.mOuterTabsWrapper != null)
@@ -619,20 +615,6 @@ public class EmojiHooks
 					}
 				});
 
-				StyleCommons.addThemeChangedListener(new StyleCommons.ThemeChangedListener()
-				{
-					@Override
-					public void themeChanged(int newTheme)
-					{
-						//EmojiHookCommons.refreshEmojiTheme();
-					}
-
-					@Override
-					public void raisedBackgroundChanged(Drawable bg)
-					{
-						EmojiHookCommons.refreshEmojiTheme();
-					}
-				});
 			}
 
 			try

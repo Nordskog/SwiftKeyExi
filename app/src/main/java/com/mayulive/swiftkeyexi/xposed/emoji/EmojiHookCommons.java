@@ -57,15 +57,6 @@ public class EmojiHookCommons
 	static long mLastUpdateTime = -1;
 	static int mLastPanelIndex = 0;
 
-	// TODO remove in next update, along with all the theme garbage maybe?
-	public static void refreshEmojiTheme()
-	{
-		if (mOuterTabsWrapper != null)
-		{
-			mOuterTabsWrapper.setBackground( StyleCommons.getCurrentRaisedBackground() );
-		}
-	}
-
 	//Will usually use panel style rather than item style
 	@SuppressLint("MissingPermission")
 	public static void handleEmojiClick(DB_EmojiItem item, int style, boolean sourceIsRecentView)
