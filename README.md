@@ -30,6 +30,14 @@ A short list of features:
   * Panels are fully customizable (Icon, position, emoji, row count)
   * Supports importing from file (line-break delimited)
   * Configurable font size
+* Gifs
+  * Remove Bing url redirect
+  * Gifs from more sources
+  * Disable safe-search
+* Intents ( Used via tasker )
+  * Set theme
+  * Toggle incognito mode
+  * Toggle vibrate
 * Other
   * Remove empty space next to suggestions
   * Prevent period key from triggering on tap
