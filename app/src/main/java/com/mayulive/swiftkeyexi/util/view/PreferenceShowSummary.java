@@ -1,13 +1,11 @@
 package com.mayulive.swiftkeyexi.util.view;
 
 import android.content.Context;
-import android.support.v7.preference.ListPreference;
+import android.content.res.TypedArray;
 import android.support.v7.preference.Preference;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.main.settings.SoundFragment;
 
 /**
  * Created by Roughy on 1/4/2017.
@@ -17,6 +15,8 @@ public class PreferenceShowSummary extends Preference
 {
 
 	private static String LOGTAG = ExiModule.getLogTag(PreferenceShowSummary.class);
+
+	private String mDefault;
 
 	public PreferenceShowSummary(Context context, AttributeSet attrs)
 	{
@@ -44,10 +44,21 @@ public class PreferenceShowSummary extends Preference
 		});
 	}
 
+	/**
+	 *
+	 * Don't forget to override me with the correct object type
+	 */
+	@Override
+	protected Object onGetDefaultValue(TypedArray a, int index)
+	{
+		mDefault = a.getString(index);
+		return mDefault;
+	}
+
 	@Override
 	public CharSequence getSummary()
 	{
-		return this.getPersistedString("...");
+		return this.getPersistedString(mDefault != null ? mDefault : "..." );
 	}
 
 }
