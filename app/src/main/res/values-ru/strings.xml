@@ -14,6 +14,9 @@
     <string name="button_done">Готово</string>
     <string name="button_save">Готово</string>
     <string name="button_ok">OK</string>
+    <string name="portrait">Портретная ориентация</string>
+    <string name="landscape">Альбомная ориентация</string>
+    <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="content_description">Содержание:</string>
     <string name="content_title">Cодержание</string>
     <string name="parent_key_title">Основная клавиша</string>

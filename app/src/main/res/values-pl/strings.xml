@@ -14,6 +14,9 @@
     <string name="button_done">Gotowe</string>
     <string name="button_save">Gotowe</string>
     <string name="button_ok">OK</string>
+    <string name="portrait">Pionowo</string>
+    <string name="landscape">Poziomo</string>
+    <string name="copied_to_clipboard">Skopiowano do schowka</string>
     <string name="content_description">Zawartość: </string>
     <string name="content_title">Zawartość</string>
     <string name="parent_key_title">Klawisz nadrzędny</string>
