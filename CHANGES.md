@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [2.0.3] - 12-02-2019
+### Fixed
+ - Shift key not working when used with EDxPosed
+ - Swipe selection cursor jumping when moving near line breaks
+ 
+### Added
+ - Intent to set theme, incognito, and vibrate via tasker
+ - Option to remove Bing url redirect from gifs
+ 
+### Changed
+ - Updated translations ( Polish, Russian )
+ - Remove vibrate quick pref ( moved to intent )
+
 ## [1.9.1] - 01-02-2019
 ### Fixed
  - Iterated the the bloody version code.
