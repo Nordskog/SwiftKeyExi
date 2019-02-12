@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -26,10 +27,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 
 public class KeyboardMethods
 {
+
+
 	public static void inputText(String text)
 	{
 		inputText(text, null);
@@ -62,10 +66,18 @@ public class KeyboardMethods
 		}
 	}
 
+
+
 	public enum PunctuationRuleMode
 	{
 		STOCK, MODIFIED
 	}
+
+	// Values used by both Swiftkey and us.
+	// Default is made up by us, not used by Swiftkey.
+	public static final int INCOGNITO_ON = 0;
+	public static final int INCOGNITO_OFF = 2;
+	public static final int INCOGNITO_DEFAULT = -1;
 
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardMethods.class);
 
@@ -171,7 +183,11 @@ public class KeyboardMethods
 		}
 	}
 
-	private static void setIncogState( boolean state )
+	/**
+	 * Note that calling me will also cause incog state to be saved
+	 * @param state
+	 */
+	public static void setIncogState( boolean state )
 	{
 		if ( KeyboardClassManager.incogControllerClass_staticInstanceField == null )
 		{
@@ -197,12 +213,12 @@ public class KeyboardMethods
 			// 0 is on, 2 is off. 1 I have no idea, but it keeps getting set.
 			if ( KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.getParameterTypes().length < 2 )	// TODO: Legacy. Ditch.
 			{
-				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2);
+				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? KeyboardMethods.INCOGNITO_ON : KeyboardMethods.INCOGNITO_OFF );
 			}
 			else
 			{
 				// No idea what the bool does, but it's always true when toggling.
-				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? 0 : 2, true);
+				KeyboardClassManager.incogControllerClass_ChangeIncogStateMethod.invoke(instance, state ? KeyboardMethods.INCOGNITO_ON : KeyboardMethods.INCOGNITO_OFF, true);
 			}
 
 
@@ -243,6 +259,21 @@ public class KeyboardMethods
 	public static boolean isLayoutSymbols()
 	{
 		return mIsSymbols;
+	}
+
+	public static void setUseSystemVibrate( boolean use )
+	{
+		try
+		{
+			SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor( ContextUtils.getHookContext(), ExiXposed.getPrefsPath() );
+			editor.putBoolean("pref_system_vibration_key", use);
+			editor.apply();
+		}
+		catch ( Exception ex )
+		{
+			Log.i(LOGTAG, "Problem setting use system vibrate setting");
+			ex.printStackTrace();
+		}
 	}
 
 	public static void forceKeyboardResize()
@@ -350,71 +381,6 @@ public class KeyboardMethods
 		mDeviceOrientation = context.getResources().getConfiguration().orientation;
 
 		Log.i(LOGTAG, "Orientation now: "+mDeviceOrientation);
-	}
-
-	public static Object createQuicksettingItem( Context context, String prefKey, String prefStringResourceName, Object dyhInstance, Object hmlInstance, Object hwcInstance )
-	{
-
-		Object newSetting = null;
-
-		try
-		{
-			String prefTitle;
-			{
-				int titleResourceId = context.getResources().getIdentifier(prefStringResourceName, "string", ExiXposed.HOOK_PACKAGE_NAME);
-				if (titleResourceId > 0)
-				{
-					prefTitle = context.getString(titleResourceId);
-				}
-				else
-				{
-					Log.e(LOGTAG, "Title resource was null: "+prefStringResourceName);
-					return null;
-				}
-			}
-
-
-			long delay = 0;
-			boolean defaultState = false;
-
-			// Interestingly, it does not display this icon, which suits us just fine.
-			int iconDrawable = context.getResources().getIdentifier("quick_settings_emoji", "drawable", ExiXposed.HOOK_PACKAGE_NAME);
-			int prefId = 0;	// Don't think this is used anyway, mgiht screw us up though.
-
-			if (iconDrawable <= 0)
-			{
-				Log.e(LOGTAG, "Quick setting icon drawble was null");
-				return null;
-			}
-
-			Object prefItemInstance;
-			{
-				prefItemInstance = KeyboardClassManager.quickSettingPrefReferenceClass_constructor.newInstance(dyhInstance);
-			}
-
-			Object[] args = new Object[]
-					{
-							prefTitle,
-							iconDrawable,
-							prefId,
-							prefKey,
-							defaultState,
-							delay,
-							hmlInstance,
-							hwcInstance,
-							prefItemInstance
-					};
-
-			newSetting = KeyboardClassManager.quicksettingPrefItemClass_constructor.newInstance(args);
-		}
-		catch ( Throwable ex)
-		{
-			Log.e(LOGTAG, "Failed to create quicksetting item");
-			ex.printStackTrace();
-		}
-
-
-		return newSetting;
 	}
 
 	public static void updateHidePredictionBarAndPadKeyboardTop( View rootView )
@@ -577,5 +543,53 @@ public class KeyboardMethods
 
 		mLastKeyboardOpacity = Settings.KEYBOARD_OPACITY;
 
+	}
+
+	public static void setThemeByHash(String themeHash)
+	{
+		if ( KeyboardClassManager.themeSetter_dummyCtiInstance == null )
+		{
+			Log.e(LOGTAG, "themeSetter_dummyCtiInstance was null, not setting theme");
+			return;
+		}
+
+		if ( KeyboardClassManager.themeSetter_dummyCtiInstance == null )
+		{
+			Log.e(LOGTAG, "themeSetterClass_instance was null, not setting theme");
+			return;
+		}
+
+		if ( KeyboardClassManager.themeSetterClass_setThemeMethod == null )
+		{
+			Log.e(LOGTAG, "themeSetterClass_setThemeMethod was null, not setting theme");
+			return;
+		}
+
+		Object[] args = new Object[4];
+
+		args[0] = themeHash;
+		args[1] = true;	// No idea what this does but should be true.
+		args[2] = KeyboardClassManager.themeSetter_dummyCtiInstance;	// Proxy of interface that does nothing
+		args[3] = new ThemeExecutor();	// Callback that does nothing
+
+
+		try
+		{
+			KeyboardClassManager.themeSetterClass_setThemeMethod.invoke(KeyboardClassManager.themeSetterClass_instance, args);
+		}
+		catch ( Exception ex )
+		{
+			Log.e(LOGTAG, "Failed to call set theme method");
+			ex.printStackTrace();
+		}
+	}
+
+	private static class ThemeExecutor implements Executor
+	{
+		@Override
+		public void execute(@NonNull Runnable command)
+		{
+			// Doesn't need to do anything, used by Theme Setter.
+		}
 	}
 }

@@ -52,8 +52,15 @@
             android:summary="@string/pref_gifs_more_sources_summary"
             android:defaultValue="false" />
 
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_gifs_remove_redirect_key"
+            android:title="@string/pref_gifs_remove_redirect_title"
+            android:summary="@string/pref_gifs_remove_redirect_summary"
+            android:defaultValue="true" />
 
-        </PreferenceCategory>
+
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/category_pref_flow_suggestions">
@@ -218,6 +225,20 @@
     <Preference
         android:key="@string/pref_about_key"
         android:title="@string/pref_about_title"/>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_pref_data">
+
+        <com.mayulive.swiftkeyexi.util.view.PreferenceShowSummary
+            android:key="@string/pref_data_keyboard_theme_last_hash_key"
+            android:title="@string/pref_data_keyboard_theme_last_hash_title"
+            android:defaultValue="@string/pref_data_keyboard_theme_last_hash_default_summary"
+            android:icon="@drawable/ic_clipboard_icon"
+
+            />
 
     </PreferenceCategory>
 

@@ -62,16 +62,23 @@ public class KeyHooks
 					{
 						KeyCommons.callKeyDownListeners(key);
 
-						//If we will ever be swiping for from the shift key, we have to delay it triggering
-						//until pointer_up and we're sure we're not going to enter swipe.
-						//This is also technically necessary when swiping from anywhere, but it is unlikely the user
-						//will swipe from shift.
-						if ( key.is(KeyType.SHIFT) && ( Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey() || Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() ) )
+						// Normally when we invoke the original method, the hook is not called.
+						// with EdXposed, it is, for some reason. Probably only because we call it from outside of the hook.
+						// Check time since last processed and skip delaying key if it was very very recent.
+						if ( System.currentTimeMillis() - KeyCommons.mDelayedKeysLastProcessed > 25 )
 						{
-							KeyCommons.DelayedKey delayedKey = new KeyCommons.DelayedKey( param.args, thiz, (Method)param.method, 2000 );
-							KeyCommons.addDelayedKey(delayedKey);
-							param.setResult(null);
+							//If we will ever be swiping for from the shift key, we have to delay it triggering
+							//until pointer_up and we're sure we're not going to enter swipe.
+							//This is also technically necessary when swiping from anywhere, but it is unlikely the user
+							//will swipe from shift.
+							if ( key.is(KeyType.SHIFT) && ( Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey() || Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() ) )
+							{
+								KeyCommons.DelayedKey delayedKey = new KeyCommons.DelayedKey( param.args, thiz, (Method)param.method, 2000 );
+								KeyCommons.addDelayedKey(delayedKey);
+								param.setResult(null);
+							}
 						}
+
 					}
 
 				}

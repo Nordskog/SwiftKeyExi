@@ -74,13 +74,11 @@ public class EmojiHooks
 							//These are the two views we want to replace.
 							int pagerID = thiz.getResources().getIdentifier("emoji_pager", "id", ExiXposed.HOOK_PACKAGE_NAME);
 							int titlesID = thiz.getResources().getIdentifier("emoji_tabs", "id", ExiXposed.HOOK_PACKAGE_NAME);
-							int emojiBackId = thiz.getResources().getIdentifier("emoji_back", "id", ExiXposed.HOOK_PACKAGE_NAME);
 
 							int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
 
 							View pagerView = thiz.findViewById(pagerID);
 							View titlesView = thiz.findViewById(titlesID);
-							View emojiBackView = thiz.findViewById(emojiBackId);
 
 							LinearLayout emojiTopBarView = (LinearLayout) thiz.findViewById(emojiTopBarID);
 
@@ -205,68 +203,6 @@ public class EmojiHooks
 							}
 
 
-
-							// 7.1.9.24 (stable) and before back button is a direct child of thiz relative
-							// TODO Remove in next update.
-							if (emojiBackView.getParent() == thiz )
-							{
-								RelativeLayout.LayoutParams pagerParams = (RelativeLayout.LayoutParams) pagerView.getLayoutParams();
-								RelativeLayout.LayoutParams tabParams = (RelativeLayout.LayoutParams) titlesView.getLayoutParams();
-
-								//Centering a tablayout is very difficult.
-								//It needs to be wrapped in a wrap_content parent,
-								//which agains is wrapped in a fill_parent ... parent.
-								//The width/height params probably od nothing, I think the existing params have
-								//a weight set. This is why we use match_parent for all the children.
-								EmojiHookCommons.mOuterTabsWrapper = new FrameLayout(context);
-								tabParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-								tabParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-								tabParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-								EmojiHookCommons.mOuterTabsWrapper.setLayoutParams( tabParams );
-
-								EmojiHookCommons.refreshEmojiTheme( );
-
-								//We are in relative layout, and the actualy pager needs to be placed below the tablayout
-								EmojiHookCommons.mOuterTabsWrapper.setId( View.generateViewId() );
-								pagerParams.removeRule( RelativeLayout.BELOW );
-								pagerParams.addRule(RelativeLayout.BELOW, EmojiHookCommons.mOuterTabsWrapper.getId());
-								EmojiHookCommons.mEmojiPanelPager.setLayoutParams( pagerParams );
-
-								//Next we need an inner wrapper that wrap_content's the tablayout while being centered.
-								FrameLayout InnerTabsWrapper = new FrameLayout(context);
-								FrameLayout.LayoutParams innerWrapperParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-								innerWrapperParams.gravity = Gravity.CENTER_HORIZONTAL;
-								EmojiHookCommons.mOuterTabsWrapper.addView(InnerTabsWrapper, innerWrapperParams);
-
-
-
-								//We can then add the actual tablayout to the inner wrapper
-								FrameLayout.LayoutParams innerTabsParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-								innerTabsParams.gravity = Gravity.CENTER_HORIZONTAL;
-								InnerTabsWrapper.addView( EmojiHookCommons.mEmojiPanelTabs, innerTabsParams );
-
-
-
-								//And finally add the views
-
-								thiz.addView(EmojiHookCommons.mEmojiPanelPager,0);
-								thiz.addView(EmojiHookCommons.mOuterTabsWrapper,0);
-
-								//Tbe back button added in 6.7.28 doesn't fill its parent vertically properly
-								//after we've messed around with it. It is contained in the main relativelayout
-								if (emojiBackView != null)
-								{
-									RelativeLayout.LayoutParams backParams = (RelativeLayout.LayoutParams)emojiBackView.getLayoutParams();
-									backParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-									backParams.addRule(RelativeLayout.ALIGN_BOTTOM, EmojiHookCommons.mOuterTabsWrapper.getId());
-									emojiBackView.setLayoutParams(backParams);
-								}
-
-								//Update the toolbar background
-								StyleCommons.updateRaisedBackground();
-
-							}
-							else	// Keep this in next update
 							{
 								/////////////
 								// Tabs
@@ -280,7 +216,6 @@ public class EmojiHooks
 								////////////////
 
 								RelativeLayout.LayoutParams pagerParams = (RelativeLayout.LayoutParams) pagerView.getLayoutParams();
-								EmojiHookCommons.refreshEmojiTheme( );
 
 								//We are in relative layout, and the actualy pager needs to be placed below the tablayout
 								if ( EmojiHookCommons.mOuterTabsWrapper != null)
@@ -619,20 +554,6 @@ public class EmojiHooks
 					}
 				});
 
-				StyleCommons.addThemeChangedListener(new StyleCommons.ThemeChangedListener()
-				{
-					@Override
-					public void themeChanged(int newTheme)
-					{
-						//EmojiHookCommons.refreshEmojiTheme();
-					}
-
-					@Override
-					public void raisedBackgroundChanged(Drawable bg)
-					{
-						EmojiHookCommons.refreshEmojiTheme();
-					}
-				});
 			}
 
 			try

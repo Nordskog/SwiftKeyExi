@@ -45,10 +45,6 @@ public class OverlayCommons
 
 	private static KeyboardOverlay mDebugOverlay = null;
 
-	//Due to nonsense we often have two overlay views, once of which does nothing.
-	//Easier to keep track of multiple here than to try and fix that.
-	private static TextView mLoadingWarning = null;
-
 
 	public static void setPopupDimensions(float textSize, int paddingX, int paddingY)
 	{
@@ -258,73 +254,6 @@ public class OverlayCommons
 		int horizontalOffset = inWindow[0];
 
 		displayHotkeyMenu(spacebarMargin, width, height, xCenter, items, horizontalOffset, verticalOffset);
-	}
-
-	public static void displayLoadingMessage()
-	{
-		if (mKeyboardOverlay == null)
-		{
-			Log.e(LOGTAG, "Strange, overlay was null");
-			return;
-		}
-
-		mLoadingWarning = new TextView(ContextUtils.getHookContext() );
-
-		int width = ViewGroup.LayoutParams.MATCH_PARENT;
-		//Usually enough to cover the keyboard
-		int height = ViewTools.getScrenSize()[1];
-		int margin = (int)(height * 0.4f);
-		height = (int)(height * 0.6f);
-
-		mLoadingWarning.setTextSize( 30 );
-		mLoadingWarning.setBackgroundColor(Color.BLACK );
-		mLoadingWarning.setAlpha(0.75f);
-		mLoadingWarning.setGravity(Gravity.CENTER);
-		mLoadingWarning.setTextColor(Color.WHITE);
-		mLoadingWarning.setClickable(true);
-
-
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams( width, height);
-		params.topMargin = margin;
-
-		//Not going to risk trying to talk to content from here
-		String percentage = String.valueOf( ExiXposed.getLoadingProgress() );
-		mLoadingWarning.setText( "Exi loading\n"+percentage+"%");
-		mLoadingWarning.setLayoutParams(params);
-
-
-		mKeyboardOverlay.addView(mLoadingWarning);
-	}
-
-	public static void updateLoadingMessage(int progressPercentage)
-	{
-		String percentage = String.valueOf(progressPercentage);
-
-		if (mLoadingWarning != null)
-		{
-			//Why are we doing this nonense?
-			//For some reason, if you add a view to the overlay too early,
-			//it will never be measured as anything but 0,0.
-			//The overlay itself is immediately measured to full-scren,
-			//but it tells any and all children that they don't exist for a while.
-			//Request-layout does nothing, view has to be removed completely.
-			//I give up. There is no god.
-
-			mKeyboardOverlay.removeView(mLoadingWarning);
-			mLoadingWarning.setText( "Exi loading\n"+percentage+"%");
-			mKeyboardOverlay.addView(mLoadingWarning);
-		}
-	}
-
-
-	public static void removeLoadingMessage()
-	{
-		if (mKeyboardOverlay != null)
-		{
-			mKeyboardOverlay.removeAllViews();
-		}
-
-		mLoadingWarning = null;
 	}
 
 	//Full-screen coordinates

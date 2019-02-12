@@ -118,12 +118,27 @@ public class SelectionMethods
 	}
 
 	//Set selection using the previous values.
-	private static boolean finalizeSelection()
+	protected static boolean finalizeSelection()
 	{
 		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
 		if (connection != null)
 		{
 
+			CursorSelection selection = SelectionState.getInternalSelection( SelectionState.mLastState );
+			return setSelectionWithOffset ( connection, selection.start, selection.end );
+		}
+
+		return false;
+	}
+
+	// Update selection from inputconnection and...set it again.
+	// Necessary if last move before batch end was caused by key.
+	protected static boolean updateAndFinalizeSelection()
+	{
+		InputConnection connection = PriorityKeyboardClassManager.getInputConnection();
+		if (connection != null)
+		{
+			SelectionState.updateSelection();
 			CursorSelection selection = SelectionState.getInternalSelection( SelectionState.mLastState );
 			return setSelectionWithOffset ( connection, selection.start, selection.end );
 		}

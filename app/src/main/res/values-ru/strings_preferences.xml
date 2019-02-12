@@ -10,6 +10,7 @@
     <string name="category_pref_keys">Клавиши</string>
     <string name="category_pref_audio">Аудио</string>
     <string name="category_pref_gifs">GIF-файлы</string>
+    <string name="category_pref_data">Данные</string>
     <!-- App Theme -->
     <string name="pref_app_theme_title">Тема приложения</string>
     <string name="pref_app_theme_summary">Внешний вид приложения</string>
@@ -36,6 +37,8 @@
     <string name="pref_gifs_enable_nsfw_summary">Отображать NSFW GIF-файлы</string>
     <string name="pref_gifs_more_sources_title">Дополнительные источники</string>
     <string name="pref_gifs_more_sources_summary">Отображать GIF-файлы из дополнительных источников</string>
+    <string name="pref_gifs_remove_redirect_title">Убрать перенаправление на адрес Bing</string>
+    <string name="pref_gifs_remove_redirect_summary">Прямая ссылка на изображение</string>
     <!-- Force emoji set -->
     <string name="pref_emoji_force_version_title">Версия Эмодзи</string>
     <string name="pref_emoji_force_version_summary">Использовать Эмодзи из других версий Андроида</string>
@@ -115,4 +118,7 @@
     <string name="pref_toolbar_button_summary"></string>
     <string name="pref_hide_predictions_title">Убрать прогнозирование</string>
     <string name="pref_hide_predictions_summary">Не отображать панель прогнозирования</string>
+    <!-- keyboard theme hash, not a pref. -->
+    <string name="pref_data_keyboard_theme_last_hash_title">Хэш темы клавиатуры</string>
+    <string name="pref_data_keyboard_theme_last_hash_default_summary">Пожалуйста, выберите тему</string>
 </resources>

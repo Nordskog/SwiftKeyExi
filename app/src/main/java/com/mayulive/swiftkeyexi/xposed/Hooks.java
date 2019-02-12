@@ -34,8 +34,6 @@ import java.util.ArrayList;
 public class Hooks
 {
 	private static String LOGTAG = ExiModule.getLogTag(Hooks.class);
-	private static Handler handler = new Handler(Looper.getMainLooper());
-	private static ArrayList<HookWorkFinishedListener> mHookFinishedListeners = new ArrayList<>();
 
 	//Predictions
 
@@ -88,12 +86,13 @@ public class Hooks
 	public static HookCategory hardwareKeys_base = new HookCategory("Hardkey SHortcuts base");
 
 	//Hardware keyboard shortcuts and remapping
-	public static HookCategory quickSettings = new HookCategory("quickSettings base");
-
-	//Hardware keyboard shortcuts and remapping
 	public static HookCategory incognito = new HookCategory("incognito base");
 
 	public static HookCategory search = new HookCategory("Search");
+
+	public static HookCategory gifRemoveRedirect = new HookCategory("gifRemoveRedirect");
+
+	public static HookCategory themeSet = new HookCategory("themeSet");
 
 	//Base, unhook everything.
 	public static HookCategory baseHooks_base = new HookCategory("KeyboardHooks base", 	baseHooks_layoutChange,
@@ -109,9 +108,10 @@ public class Hooks
 																								hardwareKeys_base,
 																								baseHooks_toolbarButton,
 																								baseHooks_hidePredictions,
-																								quickSettings,
 																								incognito,
-																								search
+																								search,
+																								gifRemoveRedirect,
+																								themeSet
 	);
 
 	//Convenience method for checking requirement and logging on failure
@@ -136,14 +136,6 @@ public class Hooks
 	public static void handleProgress(WorkTimer timer, String thing, final int progressPercentage)
 	{
 		Log.i(LOGTAG,"Elapsed for "+thing+": "+(timer.getElapsedAndReset() / 1000f) +" seconds" );
-		handler.post(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				ExiXposed.updateLoadingProgress(progressPercentage);
-			}
-		});
 	}
 
 	public static void hookAll(PackageTree classTree)
@@ -171,7 +163,7 @@ public class Hooks
 			public void run()
 			{
 
-				Log.i(LOGTAG, "Beginning async setup");
+				Log.i(LOGTAG, "Beginning secondary setup");
 
 				//If this fails we are screwed
 				KeyboardHooks.HookAll(classTree);
@@ -268,18 +260,7 @@ public class Hooks
 					});
 				}
 
-
-				handler.post(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						callOnWorkFinishedListeners();
-						ExiXposed.notifyFinishedLoading();
-					}
-				});
-
-				Log.i(LOGTAG, "Finished async setup");
+				Log.i(LOGTAG, "Finished secondary setup");
 				Log.i(LOGTAG, "Total time elapsed: "+(timer.getTotal() / 1000f)+" seconds");
 
 			}
@@ -311,23 +292,5 @@ public class Hooks
 				}
 			}
 		});
-	}
-
-	public interface HookWorkFinishedListener
-	{
-		void onHookWorkFinished();
-	}
-
-	public static void addOnWorkFinishedListener( HookWorkFinishedListener listener )
-	{
-		mHookFinishedListeners.add(listener);
-	}
-
-	public static void callOnWorkFinishedListeners()
-	{
-		for (HookWorkFinishedListener listener : mHookFinishedListeners)
-		{
-			listener.onHookWorkFinished();
-		}
 	}
 }

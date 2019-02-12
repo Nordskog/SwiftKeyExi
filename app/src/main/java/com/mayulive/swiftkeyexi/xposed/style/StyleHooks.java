@@ -62,13 +62,6 @@ public class StyleHooks
 							StyleCommons.callThemeChangedListeners(newValue);
 						}
 
-
-						if (OverlayCommons.mKeyboardOverlay != null)
-						{
-							StyleCommons.updateRaisedBackground();
-
-						}
-
 					}
 				}
 				catch (Throwable ex)

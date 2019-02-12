@@ -192,6 +192,7 @@ public class KeyCommons
 
 	protected static boolean mDelayNextKey = false;
 	protected static long mDelayNextKey_RequestTime = 0;
+	protected static long mDelayedKeysLastProcessed = 0;
 
 	public static void addDelayedKey( DelayedKey key)
 	{
@@ -200,8 +201,12 @@ public class KeyCommons
 	
 	public static void processDelayedKeys()
 	{
+		mDelayedKeysLastProcessed = System.currentTimeMillis();
+
 		for (DelayedKey key : mDelayedKeys)
 		{
+
+
 			try
 			{
 				key.execute();

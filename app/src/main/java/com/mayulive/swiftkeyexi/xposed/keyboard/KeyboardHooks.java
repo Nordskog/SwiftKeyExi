@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Looper;
+import android.net.Uri;
+import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -19,6 +20,9 @@ import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
+import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
+import com.mayulive.swiftkeyexi.service.SwiftkeyBroadcastListener;
+import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
@@ -40,10 +44,13 @@ import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,6 +67,8 @@ public class KeyboardHooks
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardHooks.class);
 
 	private static Pattern BING_SEARCH_TERM_REGEX_PATTENR = Pattern.compile("https:\\/\\/www.bing.com\\/search\\?q=([^&\\s]+)&?" );
+
+	private static Pattern BING_GIF_REDIRECT_URL_PATTERN = Pattern.compile("https:\\/\\/(?:.+?)?(?:mm.bing\\.net).+rurl=([^&]+)&?" );
 
 	//Keyboard service created
 	public static Set<XC_MethodHook.Unhook> hookServiceCreated() throws NoSuchMethodException
@@ -86,6 +95,17 @@ public class KeyboardHooks
 				{
 					KeyboardMethods.mKeyboardRoot = (ViewGroup) param.getResult();
 
+
+					try
+					{
+						SwiftkeyBroadcastListener.startService( KeyboardMethods.mKeyboardRoot.getContext() );
+					}
+					catch ( Exception ex )
+					{
+						Log.i(LOGTAG, "Problem starting broadcast receiver in swiftkey context");
+						ex.printStackTrace();
+					}
+
 					KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
 
 					if ( KeyboardMethods.mKeyboardRoot == null )
@@ -108,24 +128,6 @@ public class KeyboardHooks
 					cover.setLayoutParams(params);
 					KeyboardMethods.mKeyboardRoot.addView(cover);
 					OverlayCommons.mKeyboardOverlay = cover;
-
-					if (!ExiXposed.isFinishedLoading())
-					{
-						OverlayCommons.displayLoadingMessage();
-					}
-
-					//For some absurd reason, the overlay will refuse to measure any views that are added immediately.
-					//You have to wait 500-1000ms. Any views added before this will never be given a size, and have to be removed and re-added.
-					//Updating the progress now does this as a workaround, so here we throw in a few extra fake progress update to force it to display.
-					//I tried everything. Short of digging into FrameLayout/RelativeLayout (they both behave like this)'s code, this is the least painful solution.
-					Handler handler = new Handler(Looper.getMainLooper());
-					Runnable fakeProgressUpdate = () -> ExiXposed.updateLoadingProgress( ExiXposed.getLoadingProgress() );
-
-					handler.postDelayed( fakeProgressUpdate, 300);
-					handler.postDelayed( fakeProgressUpdate, 500);
-					handler.postDelayed( fakeProgressUpdate, 1000);
-					handler.postDelayed( fakeProgressUpdate, 2000);
-
 				}
 				catch (Throwable ex)
 				{
@@ -137,6 +139,8 @@ public class KeyboardHooks
 
 	}
 
+	// Turns out this is actually called twice, about a second apart.
+
 	public static XC_MethodHook.Unhook hookKeyboardOpened()
 	{
 		{
@@ -146,11 +150,7 @@ public class KeyboardHooks
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
 
-					//Do not run unless setup has finished
-					if (ExiXposed.isFinishedLoading())
-					{
-						Settings.updateSettingsFromProvider(ContextUtils.getHookContext());
-					}
+					Settings.updateSettingsFromProvider(ContextUtils.getHookContext());
 
 					//Something may trigger the keyboard to close without the user interacting with it,
 					//which would leave our popups visible when it is opened next.
@@ -191,7 +191,10 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-					KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
+					if ( KeyboardMethods.mKeyboardRoot != null)
+					{
+						KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
+					}
 				}
 
 				@Override
@@ -615,11 +618,11 @@ public class KeyboardHooks
 					int state = (int)param.args[0];
 
 					// 0 for on, 2 for off. Gets called with 1 all the time for seemingly no reason.
-					if (state == 0)
+					if (state == KeyboardMethods.INCOGNITO_ON)
 					{
 						KeyboardMethods.saveIncogState(true);
 					}
-					else if (state == 2)
+					else if (state == KeyboardMethods.INCOGNITO_OFF)
 					{
 						KeyboardMethods.saveIncogState(false);
 					}
@@ -634,51 +637,6 @@ public class KeyboardHooks
 			}
 		});
 	}
-
-	private static XC_MethodHook.Unhook hookQuickSettings(PackageTree lpparam )
-	{
-
-			return XposedBridge.hookMethod( KeyboardClassManager.quickSettingsClass_createSettingsMethod, new XC_MethodHook()
-			{
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
-				{
-
-					try
-					{
-						Context context = (Context) param.args[0];
-
-						Object dyhInstance = param.args[1];
-						Object hmlInstance = param.args[2];
-						Object hwcInstance = param.args[3];
-
-						ArrayList itemList = (ArrayList)param.getResult();
-
-						Object vibrateItem = KeyboardMethods.createQuicksettingItem(
-								context,
-								"pref_system_vibration_key",
-								"prefs_system_vibration_title",
-								dyhInstance,
-								hmlInstance,
-								hwcInstance );
-
-						if (vibrateItem != null)
-						{
-							itemList.add(vibrateItem);
-						}
-
-					}
-					catch ( Throwable ex)
-					{
-						Log.e(LOGTAG, "Failed to add quicksetting");
-						ex.printStackTrace();
-					}
-				}
-			});
-
-	}
-
-
 
 	private static Set<XC_MethodHook.Unhook> hookSearchEngine(PackageTree lpparam )
 	{
@@ -732,6 +690,135 @@ public class KeyboardHooks
 	}
 
 
+	private static Set<XC_MethodHook.Unhook> hookSetTheme(PackageTree lpparam )
+	{
+		HashSet<XC_MethodHook.Unhook> hookSet = new HashSet<>();
+
+		try
+		{
+			// Create interface implementation first, in case it fails.
+			Class ctiInterfaceClass = KeyboardClassManager.themeSetterClass_setThemeMethod.getParameterTypes()[2];
+
+			if (ctiInterfaceClass.isInterface())
+			{
+
+				////////////////////////////////////////////////////
+				// Dummy callback interface. Doesn't do anything.
+				////////////////////////////////////////////////////
+
+				KeyboardClassManager.themeSetter_dummyCtiInstance = Proxy.newProxyInstance(lpparam.getClassLoader(), new Class[]{ctiInterfaceClass}, new InvocationHandler()
+				{
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
+					{
+						// This doesn't need to do anything.
+						return null;
+					}
+				});
+
+
+				////////////////////////////////////////////////////
+				// Hook to get ref to instance
+				////////////////////////////////////////////////////
+
+				hookSet.addAll( XposedBridge.hookAllConstructors( KeyboardClassManager.themeSetterClass, new XC_MethodHook()
+				{
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable
+					{
+						Log.i(LOGTAG, "Got theme loader instance");
+						KeyboardClassManager.themeSetterClass_instance = param.thisObject;
+					}
+				}));
+
+
+				////////////////////////////////////////////////////
+				// Hook to get last theme configured
+				////////////////////////////////////////////////////
+
+				hookSet.add( XposedBridge.hookMethod( KeyboardClassManager.themeSetterClass_setThemeMethod, new XC_MethodHook()
+				{
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable
+					{
+						try
+						{
+							String themeHash = (String) param.args[0];
+							Log.i(LOGTAG, " Theme set called: "+themeHash);
+							SharedPreferencesProvider.setPreference( ContextUtils.getHookContext(), PreferenceConstants.pref_data_keyboard_theme_last_hash_key, themeHash);
+						}
+						catch ( Exception ex )
+						{
+							Log.e(LOGTAG, "Problem intercepting theme set");
+						}
+
+					}
+				}));
+
+			}
+			else
+			{
+				Log.e(LOGTAG, "cti interface for theme setter was not an interface");
+			}
+
+		}
+		catch ( Exception ex )
+		{
+			Log.i(LOGTAG, "set theme hooking problem");
+			ex.printStackTrace();
+		}
+
+		return hookSet;
+
+	}
+
+
+
+	private static XC_MethodHook.Unhook hookGifIinsert()
+	{
+		return XposedBridge.hookMethod( KeyboardClassManager.insertGifClass_insertGifMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				// Params:
+				// gif content uri (local)
+				// gif url ( bing redirect )
+				// mime type
+
+				if ( Settings.GIF_REMOVE_REDIRECT )
+				{
+					try
+					{
+						Uri imageUri = (Uri) param.args[1];
+
+						Matcher matcher = BING_GIF_REDIRECT_URL_PATTERN.matcher(imageUri.toString());
+
+						if (matcher.find())
+						{
+
+							String escapedHtmlString = matcher.group(1);
+							param.args[1] = Uri.parse( Uri.decode(escapedHtmlString));
+
+							Method superMethod = (Method) param.method;
+							superMethod.setAccessible(true);
+							superMethod.invoke(param.thisObject, param.args);
+							param.setResult( null );
+						}
+					}
+					catch ( Throwable ex )
+					{
+						// Will fallback to standard behavior, so not need to remove the hook.
+						Log.e(LOGTAG, "Problem in remove gif redirect method");
+						ex.printStackTrace();
+						XposedBridge.log(ex);
+					}
+				}
+			}
+		});
+	}
+
+
 	public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
@@ -769,11 +856,6 @@ public class KeyboardHooks
 							KeyboardMethods.updateToolbarButtonColor(newTheme);
 						}
 
-						@Override
-						public void raisedBackgroundChanged(Drawable bg)
-						{
-
-						}
 					});
 
 				}
@@ -812,7 +894,19 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
+
 				Hooks.baseHooks_base.add( hookPrefChanged() );
+
+
+				if (Hooks.gifRemoveRedirect.isRequirementsMet())
+				{
+					Hooks.gifRemoveRedirect.add( hookGifIinsert() );
+				}
+
+				if (Hooks.themeSet.isRequirementsMet())
+				{
+					Hooks.themeSet.addAll( hookSetTheme(lpparam) );
+				}
 
 
 				if ( Hooks.search.isRequirementsMet() )
@@ -825,12 +919,6 @@ public class KeyboardHooks
 				{
 					Hooks.baseHooks_keyHeight.addAll(  hookKeyHeight() );
 				}
-
-				if (Hooks.quickSettings.isRequirementsMet())
-				{
-					hookQuickSettings(lpparam);
-				}
-
 
 				if (Hooks.baseHooks_layoutChange.isRequirementsMet())
 				{
@@ -877,7 +965,7 @@ public class KeyboardHooks
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
 						}
 
-						// Only called once
+						// Only called once to restore after reboot.
 						if ( !KeyboardMethods.mIncogStateLoaded )
 						{
 							KeyboardMethods.mIncogStateLoaded = true;

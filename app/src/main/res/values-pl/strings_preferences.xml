@@ -10,6 +10,7 @@
     <string name="category_pref_keys">Klawisze</string>
     <string name="category_pref_audio">Dźwięk</string>
     <string name="category_pref_gifs">Animacje</string>
+    <string name="category_pref_data">Dane</string>
     <!-- App Theme -->
     <string name="pref_app_theme_title">Motyw aplikacji</string>
     <string name="pref_app_theme_summary">Wygląd aplikacji</string>
@@ -36,6 +37,8 @@
     <string name="pref_gifs_enable_nsfw_summary">Wyświetlaj animacje NSFW</string>
     <string name="pref_gifs_more_sources_title">Więcej źródeł</string>
     <string name="pref_gifs_more_sources_summary">Wyświetlaj animacje z innych stron</string>
+    <string name="pref_gifs_remove_redirect_title">Usuń przekierowanie Bing</string>
+    <string name="pref_gifs_remove_redirect_summary">Połącz bezpośrednio z obrazem</string>
     <!-- Force emoji set -->
     <string name="pref_emoji_force_version_title">Wersja Emotikon</string>
     <string name="pref_emoji_force_version_summary">Użyj Emotikon z różnych wersji Androida</string>
@@ -115,4 +118,7 @@
     <string name="pref_toolbar_button_summary">Wyświetlanie skrótów Exi w pasku narzędzi</string>
     <string name="pref_hide_predictions_title">Ukryj podpowiedzi</string>
     <string name="pref_hide_predictions_summary">Nie wyświetlaj paska podpowiedzi</string>
+    <!-- keyboard theme hash, not a pref. -->
+    <string name="pref_data_keyboard_theme_last_hash_title">Identyfikator motywu</string>
+    <string name="pref_data_keyboard_theme_last_hash_default_summary">Proszę wybrać motyw</string>
 </resources>

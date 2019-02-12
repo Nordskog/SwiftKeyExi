@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.selection;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
@@ -476,6 +477,14 @@ public class SelectionState
 	{
 		if (mSwiping)
 		{
+			if ( mLastSelectionChangeWasFallback )
+			{
+				// When the last movement was caused by a key press ( setSelectionFallback ),
+				// it is undone when we end batch mode. Fix by getting updated selection from
+				// inputconnection and setting it again.
+				SelectionMethods.updateAndFinalizeSelection();
+			}
+
 			SelectionMethods.inputBatchMode(false);
 		}
 
