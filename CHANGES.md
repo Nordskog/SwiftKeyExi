@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [2.0.4] - 16-02-2019
+### Fixed
+ - Compatibility ( targeting 7.2.3.24, hide predictions )
+
 ## [2.0.3] - 12-02-2019
 ### Fixed
  - Shift key not working when used with EDxPosed
