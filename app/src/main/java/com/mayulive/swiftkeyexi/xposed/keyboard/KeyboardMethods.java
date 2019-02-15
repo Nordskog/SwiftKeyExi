@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
+import android.widget.FrameLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.SharedTheme;
@@ -385,15 +386,12 @@ public class KeyboardMethods
 
 	public static void updateHidePredictionBarAndPadKeyboardTop( View rootView )
 	{
-
-
 		//Once activated even once, we have to do all this work to make sure visibility is restored.
 		//It's a lot of work though, so we want to avoid doing it if the option has never been enabled.
 		if ( !Settings.everActivated_HIDE_PREDICTIONS_BAR)
 		{
 			return;
 		}
-
 
 		//This is called from a lot of places where things might have changed.
 		//Make sure the hook is event active.
@@ -404,10 +402,7 @@ public class KeyboardMethods
 
 		try
 		{
-
 			int candidatesId = rootView.getContext().getResources().getIdentifier("ribbon_model_tracking_frame", "id", ExiXposed.HOOK_PACKAGE_NAME);
-			int keyboardId = rootView.getContext().getResources().getIdentifier("keyboard_frame_holder", "id", ExiXposed.HOOK_PACKAGE_NAME);
-
 			{
 				ViewGroup targetView = rootView.findViewById(candidatesId);
 				if (targetView != null)
@@ -422,42 +417,6 @@ public class KeyboardMethods
 					}
 				}
 			}
-
-
-			{
-				ViewGroup targetView = rootView.findViewById(keyboardId);
-				if (targetView != null)
-				{
-
-					//With the predictions bar removed, the open-toolbar button ends superimposed ontop of the keyboard.
-					//We add a bit of padding ontop of the keyboard input section for it to live in.
-					//In another hook we crop and resize the button so that it matches this.
-
-					if (Settings.HIDE_PREDICTIONS_BAR)
-					{
-						targetView.setPadding(
-								0,
-								(int) DimenUtils.calculatePixelFromDp(targetView.getContext(), 18),
-								0,
-								0);
-					}
-					else
-					{
-						if (targetView.getPaddingTop() != 0)
-						{
-							targetView.setPadding(
-									0,
-									0,
-									0,
-									0 );
-						}
-					}
-
-				}
-
-			}
-
-
 		}
 		catch ( Throwable ex)
 		{
