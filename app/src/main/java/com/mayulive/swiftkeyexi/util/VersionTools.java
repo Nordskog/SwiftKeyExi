@@ -18,4 +18,10 @@ public class VersionTools
 		return(Build.VERSION.SDK_INT >= 24);
 	}
 
+	public static boolean isPieOrGreater()
+	{
+		return(Build.VERSION.SDK_INT >= 28);
+	}
+
+
 }
