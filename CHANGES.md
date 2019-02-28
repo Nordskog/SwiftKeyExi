@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+
+## [2.1.0] - 28-02-2019
+### Fixed
+ - Swiftkey crashing a few times before working when using EdXposed ( maybe )
+
+### Added
+ - Option to only enable remapped hardware keys when keyboard is open
+ 
+### Changed
+ - Translations updated ( Russian, Brazillian-Portugese )
+
 ## [2.0.4] - 16-02-2019
 ### Fixed
  - Compatibility ( targeting 7.2.3.24, hide predictions )
