@@ -30,7 +30,7 @@ public class InputHooks
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
-				if (InputMethods.mKeysRemapped)
+				if (InputMethods.mKeysRemapped && InputMethods.mKeyRemappingAllowed)
 				{
 					try
 					{

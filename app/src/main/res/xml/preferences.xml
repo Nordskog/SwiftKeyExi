@@ -204,6 +204,12 @@
         android:title="@string/pref_remapped_keys_title"
         android:summary="@string/pref_remapped_keys_summary" />
 
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_hardware_remap_only_in_keyboard_key"
+        android:title="@string/pref_hardware_remap_only_in_keyboard_title"
+        android:summary="@string/pref_hardware_remap_only_in_keyboard_summary"
+        android:defaultValue="false" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -224,5 +224,10 @@
     <string name="pref_data_keyboard_theme_last_hash_title">Keyboard Theme Hash</string>
     <string name="pref_data_keyboard_theme_last_hash_default_summary">Please select a theme</string>
 
+    <!-- Only remap hardware keys if keyboard open -->
+    <string name="pref_hardware_remap_only_in_keyboard_key">pref_hardware_remap_only_in_keyboard</string>
+    <string name="pref_hardware_remap_only_in_keyboard_title">Remap only in keyboard</string>
+    <string name="pref_hardware_remap_only_in_keyboard_summary">Only remap keys when keyboard is opened</string>
+
 
 </resources>

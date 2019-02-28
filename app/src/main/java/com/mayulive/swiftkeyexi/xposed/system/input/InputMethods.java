@@ -53,6 +53,9 @@ public class InputMethods
 	//If any keys have been remapped
 	protected static boolean mKeysRemapped = false;
 
+	// Will be toggled via intent when only remap in keyboard is enabled.
+	public static boolean mKeyRemappingAllowed = true;
+
 	static
 	{
 		//////////////

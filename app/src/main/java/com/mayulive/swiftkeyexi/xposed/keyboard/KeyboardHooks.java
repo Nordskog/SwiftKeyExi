@@ -36,6 +36,7 @@ import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
+import com.mayulive.swiftkeyexi.xposed.system.SystemIntentService;
 import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -149,8 +150,12 @@ public class KeyboardHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
+					KeyboardMethods.mKeyboardOpen = true;
 
-					Settings.updateSettingsFromProvider(ContextUtils.getHookContext());
+					Context context = ContextUtils.getHookContext();
+
+					SystemIntentService.sendKeyboardStateUpdatedBroadcast( context, true );
+					Settings.updateSettingsFromProvider(context);
 
 					//Something may trigger the keyboard to close without the user interacting with it,
 					//which would leave our popups visible when it is opened next.
@@ -278,6 +283,11 @@ public class KeyboardHooks
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
+					KeyboardMethods.mKeyboardOpen = false;
+
+					Context context = ContextUtils.getHookContext();
+					SystemIntentService.sendKeyboardStateUpdatedBroadcast(context, false);
+
 					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
 					{
 						listener.beforeKeyboardClosed();
