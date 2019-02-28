@@ -10,6 +10,7 @@
     <string name="textaction_paste">Colar</string>
     <string name="textaction_gotoend">Ir para o Final</string>
     <string name="textaction_gotostart">Ir para o Começo</string>
+    <string name="textaction_insert">Inserir</string>
     <!-- Short-hand for quick menu -->
     <string name="textaction_short_undo">Desfazer</string>
     <string name="textaction_short_redo">Refazer</string>
@@ -19,4 +20,5 @@
     <string name="textaction_short_paste">Colar</string>
     <string name="textaction_short_gotoend">Fim</string>
     <string name="textaction_short_gotostart">Início</string>
+    <string name="textaction_short_insert">Inserir</string>
 </resources>

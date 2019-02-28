@@ -80,6 +80,8 @@ public class Settings
 	public static float SWIPE_CURSOR_UNITS = 50;
 	public static float SWIPE_THRESHOLD = 50;
 
+	public static boolean HARDWARE_KEY_REMAP_ONLY_IN_KEYBOARD = false;
+
 	//Time last changed on config app
 	public static long LAST_DICTIONARY_UPDATE = 0;
 	public static long LAST_EMOJI_UPDATE = 0;
@@ -157,6 +159,7 @@ public class Settings
 
 		DISABLE_FULLSCREEN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_disable_fullscreen_key, false);
 
+		HARDWARE_KEY_REMAP_ONLY_IN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_hardware_remap_only_in_keyboard_key, false);
 
 
 		SWIPE_RTL_MODE_ENABLED = prefs.getBoolean(PreferenceConstants.pref_swipe_rtl_mode_key, true);
@@ -303,6 +306,12 @@ public class Settings
 		}
 	}
 
+	public static void updateSettingsFromProviderSync( Context context )
+	{
+		SharedPreferences sharedPrefs = SharedPreferencesProvider.getSharedPreferences(context);
+		loadSettings(sharedPrefs);
+	}
+
 	//Loading from provider is slow
 	public static void updateSettingsFromProvider(final Context context)
 	{
@@ -313,8 +322,7 @@ public class Settings
 			{
 				try
 				{
-					SharedPreferences sharedPrefs = SharedPreferencesProvider.getSharedPreferences(context);
-					loadSettings(sharedPrefs);
+					updateSettingsFromProviderSync(context);
 					Handler handler = new Handler(Looper.getMainLooper());
 					handler.post(new Runnable()
 					{

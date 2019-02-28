@@ -121,4 +121,5 @@
     <!-- keyboard theme hash, not a pref. -->
     <string name="pref_data_keyboard_theme_last_hash_title">Хэш темы клавиатуры</string>
     <string name="pref_data_keyboard_theme_last_hash_default_summary">Пожалуйста, выберите тему</string>
+    <!-- Only remap hardware keys if keyboard open -->
 </resources>

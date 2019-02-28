@@ -101,6 +101,8 @@ public class PreferenceConstants
 
 	public static final String pref_gifs_remove_redirect_key = "pref_gifs_remove_redirect";
 
+	public static final String pref_hardware_remap_only_in_keyboard_key = "pref_hardware_remap_only_in_keyboard";
+
 
 	/////////////////////////////////////////////
 	// Not prefs. but used to store other stuff

@@ -83,12 +83,12 @@
 
     <!-- Key Definitions. Keys are only used to identify menu items  -->
     <string name="pref_additional_shift_keys_key">pref_additional_shift_keys</string>
-        <string name="pref_additional_shift_keys_title">Shift Keys</string>
-        <string name="pref_additional_shift_keys_summary">Add Shift Keys</string>
+        <string name="pref_additional_shift_keys_title">Shift Keys for Swipe</string>
+        <string name="pref_additional_shift_keys_summary">Add keys that will act as Shift for triggering swipe</string>
 
     <string name="pref_additional_delete_keys_key">pref_additional_delete_keys</string>
-        <string name="pref_additional_delete_keys_title">Delete Keys</string>
-        <string name="pref_additional_delete_keys_summary">Add Delete Keys</string>
+        <string name="pref_additional_delete_keys_title">Delete Keys for Swipe</string>
+        <string name="pref_additional_delete_keys_summary">Add keys that will act as Delete for triggering swipe</string>
 
     <string name="pref_additional_symbol_keys_key">pref_additional_symbol_keys</string>
         <string name="pref_additional_symbol_keys_title">Modifier Keys</string>
@@ -223,6 +223,11 @@
     <string name="pref_data_keyboard_theme_last_hash_key">pref_data_keyboard_theme_last_hash</string>
     <string name="pref_data_keyboard_theme_last_hash_title">Keyboard Theme Hash</string>
     <string name="pref_data_keyboard_theme_last_hash_default_summary">Please select a theme</string>
+
+    <!-- Only remap hardware keys if keyboard open -->
+    <string name="pref_hardware_remap_only_in_keyboard_key">pref_hardware_remap_only_in_keyboard</string>
+    <string name="pref_hardware_remap_only_in_keyboard_title">Remap only in keyboard</string>
+    <string name="pref_hardware_remap_only_in_keyboard_summary">Only remap keys when keyboard is open</string>
 
 
 </resources>

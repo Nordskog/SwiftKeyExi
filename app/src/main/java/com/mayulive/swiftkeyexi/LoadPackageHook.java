@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.shared.SharedStyles;
+import com.mayulive.swiftkeyexi.util.VersionTools;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.AndroidHooks;
@@ -46,6 +47,15 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 							", Module version: "+BuildConfig.VERSION_NAME);
 
 			PackageTree classTree = new PackageTree(lpparam.appInfo.sourceDir, lpparam.classLoader);
+
+			if ( VersionTools.isPieOrGreater() )
+			{
+				System.gc();
+				XposedBridge.log(LOGTAG+", Waiting for 5 seconds after gc because Pie");
+				Log.i(LOGTAG, "Waiting for 5 seconds after gc because Pie");
+				Thread.sleep(5000 );
+			}
+
 
 			ProfileCache.setSaveLocation(lpparam.appInfo.dataDir+"/files/EXI_CLASS_CACHE_"+ ExiXposed.HOOK_PACKAGE_NAME);
 

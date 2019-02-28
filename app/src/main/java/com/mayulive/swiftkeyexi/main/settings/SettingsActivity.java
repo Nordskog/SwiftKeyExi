@@ -12,6 +12,7 @@ import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.main.Theme;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+import com.mayulive.swiftkeyexi.xposed.system.SystemIntentService;
 
 /**
  * Created by Roughy on 3/9/2017.
@@ -59,6 +60,11 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 		if (key.equals(PreferenceConstants.pref_emoji_force_version_key))
 		{
 			ExiModule.update(getContext(), mDbWrap);
+		}
+
+		if (key.equals( PreferenceConstants.pref_hardware_remap_only_in_keyboard_key ))
+		{
+			SystemIntentService.sendRemapOnlyInKeyboardChangedBroadcast(this, sharedPreferences.getBoolean( PreferenceConstants.pref_hardware_remap_only_in_keyboard_key, false ) );
 		}
 	}
 

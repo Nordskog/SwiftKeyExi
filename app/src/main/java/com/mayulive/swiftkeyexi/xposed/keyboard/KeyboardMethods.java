@@ -105,6 +105,8 @@ public class KeyboardMethods
 	// Only loaded once on first keyboard load.
 	protected static boolean mIncogStateLoaded = false;
 
+	public static boolean mKeyboardOpen = false;
+
 
 	static protected Set<String> mExtendedPredictionsLayouts = new HashSet<>();
 	static
