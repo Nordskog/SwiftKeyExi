@@ -121,4 +121,5 @@
     <!-- keyboard theme hash, not a pref. -->
     <string name="pref_data_keyboard_theme_last_hash_title">Identyfikator motywu</string>
     <string name="pref_data_keyboard_theme_last_hash_default_summary">Proszę wybrać motyw</string>
+    <!-- Only remap hardware keys if keyboard open -->
 </resources>

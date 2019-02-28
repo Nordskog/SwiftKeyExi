@@ -10,6 +10,7 @@
     <string name="category_pref_keys">Teclas</string>
     <string name="category_pref_audio">Áudio</string>
     <string name="category_pref_gifs">GIFs</string>
+    <string name="category_pref_data">Dados</string>
     <!-- App Theme -->
     <string name="pref_app_theme_title">Tema do App</string>
     <string name="pref_app_theme_summary">Aparência do App</string>
@@ -22,8 +23,12 @@
     <string name="pref_keyboard_opacity_title">Opacidade do teclado</string>
     <string name="pref_keyboard_opacity_summary">Deixar o teclado transparente</string>
     <!-- custom search section -->
+    <string name="pref_section_custom_search_title">Busca Personalizada</string>
     <!-- use search -->
+    <string name="pref_use_custom_search_title">Usar Busca Personalizada</string>
+    <string name="pref_use_custom_search_summary">Usar texto de pesquisa personalizado</string>
     <!-- custom search string -->
+    <string name="pref_custom_search_string_title">Texto de Busca Personalizado</string>
     <!-- fullscreen keyboard -->
     <string name="pref_disable_fullscreen_title">Desabilitar Tela Cheia</string>
     <string name="pref_disable_fullscreen_summary">Prevenir que o teclado entre em modo de tela cheia</string>
@@ -32,6 +37,8 @@
     <string name="pref_gifs_enable_nsfw_summary">Exibir GIFs impróprios</string>
     <string name="pref_gifs_more_sources_title">Mais fontes</string>
     <string name="pref_gifs_more_sources_summary">Exibir GIFs de mais sites</string>
+    <string name="pref_gifs_remove_redirect_title">Remover redirecionamento do Bing</string>
+    <string name="pref_gifs_remove_redirect_summary">Vincular diretamente para a imagem</string>
     <!-- Force emoji set -->
     <string name="pref_emoji_force_version_title">Versão de Emoji</string>
     <string name="pref_emoji_force_version_summary">Usar Emoji de versão diferente do Android</string>
@@ -111,4 +118,8 @@
     <string name="pref_toolbar_button_summary">Exibir atalho do Exi na barra de ferramentas</string>
     <string name="pref_hide_predictions_title">Ocultar as previsões</string>
     <string name="pref_hide_predictions_summary">Não exibir a barra de previsões</string>
+    <!-- keyboard theme hash, not a pref. -->
+    <string name="pref_data_keyboard_theme_last_hash_title">Hash do Tema de Teclado</string>
+    <string name="pref_data_keyboard_theme_last_hash_default_summary">Por favor, selecione um tema</string>
+    <!-- Only remap hardware keys if keyboard open -->
 </resources>
