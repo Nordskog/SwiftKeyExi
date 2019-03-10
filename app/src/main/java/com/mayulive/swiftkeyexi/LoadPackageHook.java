@@ -48,15 +48,6 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 
 			PackageTree classTree = new PackageTree(lpparam.appInfo.sourceDir, lpparam.classLoader);
 
-			if ( VersionTools.isPieOrGreater() )
-			{
-				System.gc();
-				XposedBridge.log(LOGTAG+", Waiting for 5 seconds after gc because Pie");
-				Log.i(LOGTAG, "Waiting for 5 seconds after gc because Pie");
-				Thread.sleep(5000 );
-			}
-
-
 			ProfileCache.setSaveLocation(lpparam.appInfo.dataDir+"/files/EXI_CLASS_CACHE_"+ ExiXposed.HOOK_PACKAGE_NAME);
 
 			//Automatically reset class cache on update of module or swiftkey
