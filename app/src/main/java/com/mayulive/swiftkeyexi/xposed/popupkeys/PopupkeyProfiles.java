@@ -15,42 +15,42 @@ public class PopupkeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fcm");
+		newProfile.setFullPath("-$$Lambda$ezt$7UcBplaNkfHj9Ogr2-C38gi_CzE");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
 		newProfile.setMaxDepth(0);
-		newProfile.setModifiers(FINAL );
+		newProfile.setModifiers(PUBLIC | FINAL | SYNTHETIC );
 
 		newProfile.setTypeParamCount(0);
 		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
-		/////////////////////////
-		//Interfaces
-		/////////////////////////
+/////////////////////////
+//Interfaces
+/////////////////////////
 		newProfile.setInterfaces(new ClassItem[]
 				{
 						new ClassItem(java.lang.Runnable.class)
 
 				});
-		/////////////////////////
-		//Nested Classes
-		/////////////////////////
+/////////////////////////
+//Nested Classes
+/////////////////////////
 		newProfile.setNestedClasses(new ClassItem[]
 				{
 
 				});
-		/////////////////////////
-		//Declared fields
-		/////////////////////////
+/////////////////////////
+//Declared fields
+/////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( FINAL | SYNTHETIC | EXACT , 	new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )),	//a
-						new FieldItem( FINAL | SYNTHETIC | EXACT , 	new ClassItem(containerClass)),	//b
+						new FieldItem( PRIVATE | FINAL | SYNTHETIC | EXACT , 	new ClassItem(containerClass)),	//f$0
+						new FieldItem( PRIVATE | FINAL | SYNTHETIC | EXACT , 	new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )),	//f$1
 
 				});
-		/////////////////////////
-		//Declared Methods
-		/////////////////////////
+/////////////////////////
+//Declared Methods
+/////////////////////////
 		newProfile.setDeclaredMethods(new MethodProfile[]
 				{
 						//Method #0: run
@@ -63,14 +63,14 @@ public class PopupkeyProfiles
 
 
 				});
-		/////////////////////////
-		//Declared Constructors
-		/////////////////////////
+/////////////////////////
+//Declared Constructors
+/////////////////////////
 		newProfile.setDeclaredConstructors(new ConstructorProfile[]
 				{
 						//Constructor #0
 						new ConstructorProfile
-								(		EXACT ,
+								(		PUBLIC | SYNTHETIC | EXACT ,
 
 										new ClassItem(containerClass),
 										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
