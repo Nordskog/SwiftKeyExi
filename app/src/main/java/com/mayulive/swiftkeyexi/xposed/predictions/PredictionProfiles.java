@@ -344,7 +344,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("ehm");
+		newProfile.setFullPath("ehp");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -377,14 +377,12 @@ public class PredictionProfiles
 						new FieldItem( PROTECTED | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//e
 						new FieldItem( PROTECTED | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//f
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//g
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(int.class)),	//h
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.text.TextPaint.class)),	//i
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.graphics.Rect.class)),	//j
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(boolean.class)),	//k
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//l
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//m
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem(float.class)),	//n
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//o
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.text.TextPaint.class)),	//h
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.graphics.Rect.class)),	//i
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(boolean.class)),	//j
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//k
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//l
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//m
 
 				});
 /////////////////////////
@@ -392,13 +390,11 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredMethods(new MethodProfile[]
 				{
-						//Method #0: a
+						//Method #0: b
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+										new ClassItem(void.class)
 
 								),
 
@@ -447,7 +443,17 @@ public class PredictionProfiles
 
 								),
 
-						//Method #6: setShortcutText
+						//Method #6: setMeasuredTextSize
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(float.class)
+
+								),
+
+						//Method #7: setShortcutText
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -457,7 +463,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #7: setStyleId
+						//Method #8: setStyleId
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -467,7 +473,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #8: v_
+						//Method #9: t_
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -491,7 +497,8 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem(boolean.class),
+										new ClassItem(float.class)
 
 								),
 
@@ -1689,7 +1696,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("dxz");
+		newProfile.setFullPath("eeb");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1717,12 +1724,12 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.FluencyServiceProxy" , PUBLIC | EXACT )),	//a
-						new FieldItem( FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//b
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.concurrent.Executor.class)),	//c
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.concurrent.Executor.class)),	//a
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.FluencyServiceProxy" , PUBLIC | EXACT )),	//b
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//c
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//d
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//e
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.FluencyProfilerWrapper" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//f
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.FluencyProfilerWrapper" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//f
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.util.concurrent.Future.class)),	//g
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//h
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(boolean.class)),	//i
@@ -1738,6 +1745,47 @@ public class PredictionProfiles
 						//Method #0: a
 						new MethodProfile
 								(
+										PRIVATE | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | STATIC | EXACT ),
+										new ClassItem(java.util.Set.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(java.util.Set.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
+
+								),
+
+						//Method #1: lambda$Fq6zRB2I1RP-mSck_uqkPXX-f_E
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | STATIC | EXACT ),
+										new ClassItem(java.util.Set.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(java.util.Set.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.Predictor" , PUBLIC | EXACT )
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
@@ -1746,7 +1794,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #1: a
+						//Method #3: a
 						new MethodProfile
 								(
 										FINAL | EXACT ,
@@ -1759,7 +1807,26 @@ public class PredictionProfiles
 
 								),
 
-						//Method #2: a
+						//Method #4: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | STATIC | EXACT ),
+										new ClassItem(java.util.Set.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(java.util.Set.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #5: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,

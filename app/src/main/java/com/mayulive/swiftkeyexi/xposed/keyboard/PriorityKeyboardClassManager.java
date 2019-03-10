@@ -102,24 +102,10 @@ public class PriorityKeyboardClassManager
 
 		if (FullKeyboardServiceDelegate != null)
 		{
-			// 7.1.6.30+
 			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findFirstProfileMatch( new MethodProfile(
 					PRIVATE | EXACT,
 					new ClassItem(View.class)
 			), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
-
-			if ( FullKeyboardServiceDelegate_onCreateInputView == null )
-			{
-				Log.i(LOGTAG, "FullKeyboardServiceDelegate_onCreateInputView 7.1.6.30+ not found, using old profile");
-				// Older. Remove next update.
-				FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findFirstProfileMatch( new MethodProfile(
-						FINAL | EXACT,
-						new ClassItem(View.class)
-				), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
-			}
-
-
-
 		}
 
 		if (PriorityKeyboardClassManager.punctuatorImplClass != null)
