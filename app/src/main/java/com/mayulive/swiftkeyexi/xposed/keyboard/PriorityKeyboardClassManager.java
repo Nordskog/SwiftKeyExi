@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyProfiles;
 import com.mayulive.xposed.classhunter.ClassHunter;
@@ -133,55 +134,62 @@ public class PriorityKeyboardClassManager
 
 			PriorityKeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod = ProfileHelpers.findFirstMethodByName(PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), "onSharedPreferenceChanged");
 
-			PriorityKeyboardClassManager.keyboardLoader_loadMethod = ProfileHelpers.findMostSimilar(
+			{
+				MethodProfile profile = new MethodProfile
+				(
+						PRIVATE | EXACT ,
+						new ClassItem("" , PUBLIC | ABSTRACT | ARRAY | EXACT ),
 
-					new MethodProfile
-							(
-									PRIVATE | EXACT ,
-									new ClassItem("" , PUBLIC | ABSTRACT | ARRAY | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | ARRAY | EXACT ),
+						new ClassItem("" , PUBLIC | STATIC | EXACT ),
+						new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+						new ClassItem(int[].class),
+						new ClassItem("" , PUBLIC | FINAL | EXACT )
 
-									new ClassItem("" , PUBLIC | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | ARRAY | EXACT ),
-									new ClassItem("" , PUBLIC | STATIC | EXACT ),
-									new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-									new ClassItem(int[].class),
-									new ClassItem("" , PUBLIC | FINAL | EXACT )
+				);
 
-							),
+				PriorityKeyboardClassManager.keyboardLoader_loadMethod = ProfileHelpers.findMostSimilar(
+						profile, PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
 
-					PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
+				DebugTools.logIfProfileMismatch(  keyboardLoader_loadMethod, keyboardLoaderClass, profile, "keyboardLoader_loadMethod");
+			}
+
+
 		}
 
 		if (toolbarFrameClass != null)
 		{
+			MethodProfile profile = new MethodProfile
+			(
+					PRIVATE | Modifiers.EXACT,
+					new ClassItem( void.class ),
+					new ClassItem( boolean.class )
+			);
+
 			toolbarFrameClass_inflateMethod = ProfileHelpers.findMostSimilar(
+					profile, toolbarFrameClass.getDeclaredMethods(), toolbarFrameClass);
 
-					new MethodProfile
-							(
-									PRIVATE | Modifiers.EXACT,
-									new ClassItem( void.class ),
-									new ClassItem( boolean.class )
-							),
-
-					toolbarFrameClass.getDeclaredMethods(), toolbarFrameClass);
+			DebugTools.logIfProfileMismatch(  toolbarFrameClass_inflateMethod, toolbarFrameClass, profile, "toolbarFrameClass_inflateMethod");
 
 		}
 
 		if (toolbarOpenButtonOverlayViewClass != null)
 		{
+			MethodProfile profile = new MethodProfile
+			(
+					PUBLIC | FINAL | SYNTHETIC | EXACT ,
+					new ClassItem(void.class),
+
+					new ClassItem(java.lang.Object.class),
+					new ClassItem(int.class)
+
+			);
+
 			toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = ProfileHelpers.findMostSimilar(
+					profile, PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass.getDeclaredMethods(), PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass);
 
-					new MethodProfile
-							(
-									PUBLIC | FINAL | SYNTHETIC | EXACT ,
-									new ClassItem(void.class),
-
-									new ClassItem(java.lang.Object.class),
-									new ClassItem(int.class)
-
-							),
-
-					PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass.getDeclaredMethods(), PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass);
+			DebugTools.logIfProfileMismatch(  toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod, toolbarOpenButtonOverlayViewClass, profile, "toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod");
 		}
 
 	}

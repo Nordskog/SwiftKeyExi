@@ -591,12 +591,21 @@ public class KeyboardHooks
 			Class locClass = ProfileHelpers.loadProfiledClass(KeyboardProfiles._get_LOCATION_MANAGER_CLASS_PROFILE(), lpparam);
 			Class someCollectionClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_COLLECTION_CLASS_USE_BY_LOCATION_PROFILE() ,lpparam);
 
+			if (someCollectionClass == null)
+				return;
 
-			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
+			MethodProfile profile = new MethodProfile(
 					Modifiers.STATIC,
 					new ClassItem(Modifiers.THIS),
 					new ClassItem(Modifiers.ARRAY)
-			), someCollectionClass.getDeclaredMethods(), someCollectionClass);
+			);
+
+			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( profile, someCollectionClass.getDeclaredMethods(), someCollectionClass);
+
+			DebugTools.logIfProfileMismatch(  someCollectionClassCreateMethod, someCollectionClass, profile, "someCollectionClassCreateMethod");
+
+
+
 
 			Field locClass_arrField = ProfileHelpers.findFirstDeclaredFieldWithType( someCollectionClass,  locClass);
 			locClass_arrField.setAccessible(true);
