@@ -138,13 +138,13 @@ public class PriorityKeyboardClassManager
 				MethodProfile profile = new MethodProfile
 				(
 						PRIVATE | EXACT ,
-						new ClassItem("" , PUBLIC | ABSTRACT | ARRAY | EXACT ),
+						new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
 
 						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | ARRAY | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
 						new ClassItem("" , PUBLIC | STATIC | EXACT ),
 						new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-						new ClassItem(int[].class),
+						new ClassItem(int.class),
 						new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 				);
