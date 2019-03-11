@@ -122,4 +122,6 @@
     <string name="pref_data_keyboard_theme_last_hash_title">Identyfikator motywu</string>
     <string name="pref_data_keyboard_theme_last_hash_default_summary">Proszę wybrać motyw</string>
     <!-- Only remap hardware keys if keyboard open -->
+    <string name="pref_hardware_remap_only_in_keyboard_title">Mapowanie klawiszy</string>
+    <string name="pref_hardware_remap_only_in_keyboard_summary">Mapuj klawisze, gdy klawiatura aktywna</string>
 </resources>

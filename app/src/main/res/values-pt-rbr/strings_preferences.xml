@@ -122,4 +122,6 @@
     <string name="pref_data_keyboard_theme_last_hash_title">Hash do Tema de Teclado</string>
     <string name="pref_data_keyboard_theme_last_hash_default_summary">Por favor, selecione um tema</string>
     <!-- Only remap hardware keys if keyboard open -->
+    <string name="pref_hardware_remap_only_in_keyboard_title">Remapear apenas no teclado</string>
+    <string name="pref_hardware_remap_only_in_keyboard_summary">Só remapear teclas quando o teclado estiver aberto</string>
 </resources>
