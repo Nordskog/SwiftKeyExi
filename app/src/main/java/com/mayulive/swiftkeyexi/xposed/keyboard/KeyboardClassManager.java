@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
@@ -17,7 +18,6 @@ import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -45,6 +45,8 @@ public class KeyboardClassManager
 
 	private static Class insertGifClass = null;
 	protected static Method insertGifClass_insertGifMethod = null;
+
+	public static Class insertGifTextClass = null;
 
 	///////////////////////////////////////
 
@@ -84,7 +86,7 @@ public class KeyboardClassManager
 		incogControllerClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_INCOG_CONTROL_CLASS_PROFILE(), param );
 
 		insertGifClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_INSERT_GIF_CLASS_PROFILE(), param );
-
+		insertGifTextClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_INSERT_GIF_TEXT_CLASS_RPFOILE(), param );
 
 		searchClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_SEARCH_CLASS_PROFILE(), param );
 
@@ -110,12 +112,17 @@ public class KeyboardClassManager
 
 		if (incogControllerClass != null)
 		{
-			incogControllerClass_ChangeIncogStateMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
-					 Modifiers.PUBLIC | Modifiers.FINAL | Modifiers.EXACT,
+			MethodProfile profile = new MethodProfile
+			(
+				Modifiers.PUBLIC | Modifiers.FINAL | Modifiers.EXACT,
 					new ClassItem(void.class),
 					new ClassItem(int.class),
 					new ClassItem(boolean.class)
-			), incogControllerClass.getDeclaredMethods(), incogControllerClass);
+			);
+
+			incogControllerClass_ChangeIncogStateMethod = ProfileHelpers.findMostSimilar( profile, incogControllerClass.getDeclaredMethods(), incogControllerClass);
+
+			DebugTools.logIfProfileMismatch(incogControllerClass_ChangeIncogStateMethod, incogControllerClass, profile, "incogControllerClass_ChangeIncogStateMethod");
 
 		}
 
@@ -126,38 +133,51 @@ public class KeyboardClassManager
 			// to see if it's a search string, so probably fine.
 			// One is for text typed into search box, other is for search suggestions when clicked.
 
-			searchClass_bingSearchMethods = ProfileHelpers.findMostSimilar(  new MethodProfile
-					(
-							new ClassItem(java.lang.String.class),
+			MethodProfile profile = new MethodProfile
+			(
+					new ClassItem(java.lang.String.class),
 
-							new ClassItem(java.lang.String.class),
-							new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+					new ClassItem(java.lang.String.class),
+					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
-					), searchClass.getDeclaredMethods(), searchClass, 2 );
+			);
+
+			searchClass_bingSearchMethods = ProfileHelpers.findMostSimilar(  profile, searchClass.getDeclaredMethods(), searchClass, 2 );
 
 		}
 
 		if (insertGifClass != null)
 		{
-			insertGifClass_insertGifMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
-					new ClassItem( void.class ),
-					new ClassItem( Uri.class ),
-					new ClassItem( Uri.class ),
-					new ClassItem( String.class )), insertGifClass.getDeclaredMethods(), insertGifClass );
+			MethodProfile profile = new MethodProfile
+			(
+				new ClassItem( void.class ),
+				new ClassItem( Uri.class ),
+				new ClassItem( Uri.class ),
+				new ClassItem( String.class )
+			);
+
+
+			insertGifClass_insertGifMethod = ProfileHelpers.findMostSimilar( profile, insertGifClass.getDeclaredMethods(), insertGifClass);
+
+			DebugTools.logIfProfileMismatch(insertGifClass_insertGifMethod, insertGifClass, profile, "insertGifClass_insertGifMethod");
+
 		}
 
 		if (themeSetterClass != null)
 		{
 
-			KeyboardClassManager.themeSetterClass_setThemeMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
+			MethodProfile profile =  new MethodProfile
+			(
 					Modifiers.FINAL | Modifiers.PUBLIC,
 					new ClassItem(Modifiers.INTERFACE),
 					new ClassItem( String.class ),
 					new ClassItem( boolean.class ),
 					new ClassItem( Modifiers.INTERFACE ),
 					new ClassItem(Executor.class)
+			);
 
-			), themeSetterClass.getDeclaredMethods(), themeSetterClass );
+			KeyboardClassManager.themeSetterClass_setThemeMethod = ProfileHelpers.findMostSimilar( profile, themeSetterClass.getDeclaredMethods(), themeSetterClass );
+			DebugTools.logIfProfileMismatch(  themeSetterClass_setThemeMethod, themeSetterClass, profile, "themeSetterClass_setThemeMethod");
 
 		}
 	}

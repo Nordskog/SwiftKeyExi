@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewParent;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
@@ -14,7 +12,7 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryWordItem;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import java.lang.ref.WeakReference;
@@ -101,7 +99,7 @@ public class PredictionCommons
 				{
 					String mLastInput = CandidateManager.getSubrequestA(candidatesList.get(0));
 
-					if (DebugSettings.DEBUG_PREDICTIONS)
+					if (DebugTools.DEBUG_PREDICTIONS)
 					{
 						//Chinese 9-pin uses first letter of key hit
 						Log.i(LOGTAG, "Prediction meta: "+mLastInput);
@@ -115,7 +113,7 @@ public class PredictionCommons
 				}
 				else
 				{
-					if (DebugSettings.DEBUG_PREDICTIONS)
+					if (DebugTools.DEBUG_PREDICTIONS)
 					{
 						Log.i(LOGTAG, "Candidates list null or empty");
 					}
@@ -352,7 +350,7 @@ public class PredictionCommons
 								}
 								else
 								{
-									if (DebugSettings.DEBUG_PREDICTIONS)
+									if (DebugTools.DEBUG_PREDICTIONS)
 									{
 										Log.e(LOGTAG, "Got trailing separator: "+trailingSep);
 									}
@@ -367,7 +365,7 @@ public class PredictionCommons
 
 						CandidateManager.candidate_setTrailingSeparatorMethod.invoke(newCandidate,trailingSep);
 
-						if (DebugSettings.DEBUG_PREDICTIONS)
+						if (DebugTools.DEBUG_PREDICTIONS)
 						{
 							Log.e(LOGTAG, "Creating verbatim can text: \""+lastInput+"\", sep: \""+trailingSep+"\"");
 
@@ -509,7 +507,7 @@ public class PredictionCommons
 				if ( (shortcut == null || shortcut.get_items().isEmpty()) )
 				{
 
-					if (DebugSettings.DEBUG_PREDICTIONS)
+					if (DebugTools.DEBUG_PREDICTIONS)
 					{
 						Log.i(LOGTAG,"No shortcuts from input, checking flow and suggestions");
 					}
@@ -520,7 +518,7 @@ public class PredictionCommons
 														|| Settings.FLOW_SUGGESTIONS_ENABLED;
 
 
-					if (DebugSettings.DEBUG_PREDICTIONS)
+					if (DebugTools.DEBUG_PREDICTIONS)
 					{
 						Log.i(LOGTAG,"Flow allowed: "+predictionAllowedIfFlow);
 						Log.i(LOGTAG,"Predictions enabled allowed: "+ Settings.PREDICTION_SUGGESTIONS_ENABLED);
@@ -548,7 +546,7 @@ public class PredictionCommons
 				if ( shortcut != null &&  !shortcut.get_items().isEmpty() )
 				{
 
-					if (DebugSettings.DEBUG_PREDICTIONS)
+					if (DebugTools.DEBUG_PREDICTIONS)
 					{
 						Log.i(LOGTAG,"Inserting main shortcuts");
 					}

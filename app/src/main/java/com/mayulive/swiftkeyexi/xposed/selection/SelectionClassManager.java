@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
@@ -86,15 +87,17 @@ public class SelectionClassManager
 		{
 			//Catches another method I don't quite remember what does, but it's ... probably fine.
 			//It is possible to tell them apart if need be.
-			//FlowDelegate_flowDetectedMethods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, FlowDelegateClass.getDeclaredMethods());
 
-			FlowDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-							(
-									PRIVATE,
-									new ClassItem(boolean.class),
-									new ClassItem( ENUM)
-							),
-					FlowDelegateClass.getDeclaredMethods(), FlowDelegateClass);
+			MethodProfile profile = new MethodProfile
+			(
+					PRIVATE,
+					new ClassItem(boolean.class),
+					new ClassItem( ENUM)
+			);
+
+			FlowDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar( profile, FlowDelegateClass.getDeclaredMethods(), FlowDelegateClass);
+			DebugTools.logIfProfileMismatch(  FlowDelegate_flowDetectedMethod, FlowDelegateClass, profile, "FlowDelegate_flowDetectedMethod");
+
 
 			if (FlowDelegate_flowDetectedMethod != null)
 			{
@@ -112,15 +115,19 @@ public class SelectionClassManager
 
 		if (swipeDelegateClass != null)
 		{
-			swipeDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-							(
-									PUBLIC | FINAL | EXACT ,
-									new ClassItem(boolean.class),
+			MethodProfile profile = new MethodProfile
+			(
+					PUBLIC | FINAL | EXACT ,
+					new ClassItem(boolean.class),
 
-									new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+					new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
-							),
-					swipeDelegateClass.getDeclaredMethods(), swipeDelegateClass);
+			);
+
+			swipeDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar(
+					profile, swipeDelegateClass.getDeclaredMethods(), swipeDelegateClass);
+
+			DebugTools.logIfProfileMismatch(  swipeDelegate_flowDetectedMethod, swipeDelegateClass, profile, "swipeDelegate_flowDetectedMethod");
 		}
 
 
@@ -131,16 +138,20 @@ public class SelectionClassManager
 			if ( SelectionChangedInputEventClass != null)
 			{
 
-				SelectionChangedInputEventClass_hasMovedAbruptlyMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-								(
-										PUBLIC | FINAL | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
+				MethodProfile profile = new MethodProfile
+				(
+						PUBLIC | FINAL | SYNTHETIC | EXACT ,
+						new ClassItem(void.class),
 
-										new ClassItem(SelectionChangedMethodArgumentClass),
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )	//I am castable to selectionChangedInfoClass
+						new ClassItem(SelectionChangedMethodArgumentClass),
+						new ClassItem("" , PUBLIC | ABSTRACT | EXACT )	//I am castable to selectionChangedInfoClass
 
-								),
-						SelectionChangedInputEventClass.getDeclaredMethods(), SelectionChangedInputEventClass);
+				);
+
+				SelectionChangedInputEventClass_hasMovedAbruptlyMethod = ProfileHelpers.findMostSimilar(
+						profile, SelectionChangedInputEventClass.getDeclaredMethods(), SelectionChangedInputEventClass);
+
+				DebugTools.logIfProfileMismatch(  SelectionChangedInputEventClass_hasMovedAbruptlyMethod, SelectionChangedInputEventClass, profile, "SelectionChangedInputEventClass_hasMovedAbruptlyMethod");
 			}
 		}
 		catch (Exception ex)

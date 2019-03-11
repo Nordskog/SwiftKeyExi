@@ -3,11 +3,9 @@ package com.mayulive.swiftkeyexi.xposed.popupkeys;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupParentKeyItem;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.PopupKeyItem;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 import java.util.List;
 
@@ -41,14 +39,14 @@ public class PopupkeysMethods
 
 							if (isLowerCase)
 							{
-								if (DebugSettings.DEBUG_POPUPS)
+								if (DebugTools.DEBUG_POPUPS)
 									Log.i(LOGTAG, "Adding popup: "+  PopupkeysCommons.validatePopupString(item.get_popupLower(), "x") );
 
 								listObject.add( PopupkeysCommons.validatePopupString(item.get_popupLower(), "x") );
 							}
 							else
 							{
-								if (DebugSettings.DEBUG_POPUPS)
+								if (DebugTools.DEBUG_POPUPS)
 									Log.i(LOGTAG, "Adding popup: "+ PopupkeysCommons.validatePopupString(item.get_popupUpper(), item.get_popupLower().toUpperCase()));
 
 								listObject.add(  PopupkeysCommons.validatePopupString(item.get_popupUpper(), item.get_popupLower().toUpperCase())  );
@@ -59,7 +57,7 @@ public class PopupkeysMethods
 					{
 						for (int i = 0; i < PopupkeysCommons.mLastPopupParentKey.get_items().size(); i++)
 						{
-							if (DebugSettings.DEBUG_POPUPS)
+							if (DebugTools.DEBUG_POPUPS)
 							{
 								Log.i(LOGTAG, "Adding popup: "+  (isLowerCase ? PopupkeysCommons.LOWER_CASE_KEY : PopupkeysCommons.UPPER_CASE_KEY ) + i );
 							}
@@ -73,7 +71,7 @@ public class PopupkeysMethods
 				}
 			}
 		}
-		else if (DebugSettings.DEBUG_POPUPS)
+		else if (DebugTools.DEBUG_POPUPS)
 		{
 			Log.i(LOGTAG, "Popup modify requirements not met, or not last symbol");
 		}

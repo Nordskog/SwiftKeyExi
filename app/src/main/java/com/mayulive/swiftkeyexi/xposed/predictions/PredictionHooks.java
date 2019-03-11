@@ -9,7 +9,7 @@ import java.util.Set;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
@@ -66,7 +66,7 @@ public class PredictionHooks
 
 				PredictionCommons.mLastCandidateResultType = param.args[PredictionClassManager.UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition];
 
-				if (DebugSettings.DEBUG_PREDICTIONS)
+				if (DebugTools.DEBUG_PREDICTIONS)
 				{
 					Log.i(LOGTAG, "Top candidate hook called");
 				}

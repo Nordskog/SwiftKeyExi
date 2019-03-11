@@ -6,6 +6,7 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryWordItem;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
@@ -226,14 +227,18 @@ public class CandidateManager
 
 		if (tokenClass != null)
 		{
-			token_staticConstructor = ProfileHelpers.findMostSimilar(new MethodProfile
-							(
-									Modifiers.PUBLIC | Modifiers.STATIC | Modifiers.EXACT ,
-									new ClassItem( Modifiers.THIS  ),
 
-									new ClassItem(java.lang.String.class)
-							),
-					tokenClass.getDeclaredMethods(), tokenClass);
+			MethodProfile profile = new MethodProfile
+			(
+					Modifiers.PUBLIC | Modifiers.STATIC | Modifiers.EXACT ,
+					new ClassItem( Modifiers.THIS  ),
+
+					new ClassItem(java.lang.String.class)
+			);
+
+			token_staticConstructor = ProfileHelpers.findMostSimilar(profile, tokenClass.getDeclaredMethods(), tokenClass);
+
+			DebugTools.logIfProfileMismatch(  token_staticConstructor, tokenClass, profile, "token_staticConstructor");
 		}
 	}
 

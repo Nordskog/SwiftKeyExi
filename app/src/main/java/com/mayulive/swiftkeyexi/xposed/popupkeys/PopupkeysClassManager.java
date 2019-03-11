@@ -8,6 +8,7 @@ import java.util.List;
 
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 
@@ -113,17 +114,23 @@ public class PopupkeysClassManager
 	{
 
 
-		addLongPressCharacters_A_Method = ProfileHelpers.findMostSimilar(new MethodProfile
-				(
-						EXACT,
-						new ClassItem(List.class),
+		{
+			MethodProfile profile = new MethodProfile
+			(
+					new ClassItem(List.class),
 
-						new ClassItem(List.class),
-						new ClassItem(CharSequence.class),
-						new ClassItem(boolean.class),
-						new ClassItem(boolean.class)
-				),
-				keyConfigureClass.getDeclaredMethods(), keyConfigureClass);
+					new ClassItem(List.class),
+					new ClassItem(CharSequence.class),
+					new ClassItem(boolean.class),
+					new ClassItem(boolean.class)
+			);
+
+			addLongPressCharacters_A_Method = ProfileHelpers.findMostSimilar(
+					profile, keyConfigureClass.getDeclaredMethods(), keyConfigureClass);
+
+			DebugTools.logIfProfileMismatch(  addLongPressCharacters_A_Method, keyConfigureClass, profile, "addLongPressCharacters_A_Method");
+		}
+
 
 
 		extraKeyPopupRunnableRunMethod = XposedHelpers.findMethodExact(extraKeyPopupRunnableClass, "run");

@@ -3,6 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.predictions;
 import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
@@ -83,18 +84,21 @@ public class PriorityPredictionsClassManager
 
 		if (buClass != null)
 		{
-			buClass_submitCandidateMethod =  ProfileHelpers.findMostSimilar(		new MethodProfile
-							(
-									PUBLIC | ABSTRACT | EXACT ,
-									new ClassItem(void.class),
+			MethodProfile profile = new MethodProfile
+			(
+					PUBLIC | ABSTRACT | EXACT ,
+					new ClassItem(void.class),
 
-									new ClassItem("" , PUBLIC | EXACT ),
-									new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-									new ClassItem(int.class)
+					new ClassItem("" , PUBLIC | EXACT ),
+					new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+					new ClassItem(int.class)
 
-							),
-					buClass.getDeclaredMethods(), buClass);
+			);
+
+			buClass_submitCandidateMethod =  ProfileHelpers.findMostSimilar( profile, buClass.getDeclaredMethods(), buClass);
+			DebugTools.logIfProfileMismatch(  buClass_submitCandidateMethod, buClass, profile, "buClass_submitCandidateMethod");
+
 
 			hpeClass = buClass_submitCandidateMethod.getParameterTypes()[0];	//Some class we need as first param
 			hpeClass_constructor = hpeClass.getConstructors()[0];	//No arguments
@@ -110,48 +114,63 @@ public class PriorityPredictionsClassManager
 			//Edit: Aaaaand they changed something. It's okay with most similar though maybe?
 			//Edit2: Nope. Lots of changes later we're back. Can tell the method apart now.
 
-			PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(								new MethodProfile
-							(
-									PUBLIC | STATIC | EXACT ,
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+			{
+				MethodProfile profile = new MethodProfile
+				(
+						PUBLIC | STATIC | EXACT ,
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-									new ClassItem(android.content.Context.class),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem(android.view.View.class),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
+						new ClassItem(android.content.Context.class),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem(android.view.View.class),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
 
-							),
-					PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
+				);
 
-			PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod = ProfileHelpers.findMostSimilar(							new MethodProfile
-							(
-									PRIVATE | STATIC | EXACT ,
-									new ClassItem(void.class),
+				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(	profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
 
-									new ClassItem(android.content.Context.class),
-									new ClassItem(android.widget.LinearLayout.class),
-									new ClassItem(android.view.View.class),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT )
+				DebugTools.logIfProfileMismatch(  candidatesViewFactory_getViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_getViewMethod");
 
-							),
-					PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
+			}
+
+			{
+
+				MethodProfile profile = new MethodProfile
+				(
+						PRIVATE | STATIC | EXACT ,
+						new ClassItem(void.class),
+
+						new ClassItem(android.content.Context.class),
+						new ClassItem(android.widget.LinearLayout.class),
+						new ClassItem(android.view.View.class),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT )
+
+				);
+
+				PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod = ProfileHelpers.findMostSimilar(
+						profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
+				DebugTools.logIfProfileMismatch(  candidatesViewFactory_ReturnWrapperClass_GetViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_ReturnWrapperClass_GetViewMethod");
+
+			}
+
+
 
 
 
@@ -177,24 +196,28 @@ public class PriorityPredictionsClassManager
 
 		if (PriorityPredictionsClassManager.keyboardFrameClass != null)
 		{
-			PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod = ProfileHelpers.findMostSimilar(	new MethodProfile
-							(
-									PUBLIC | FINAL | EXACT ,
-									new ClassItem(void.class),
+			MethodProfile profile = new MethodProfile
+			(
+					PUBLIC | FINAL | EXACT ,
+					new ClassItem(void.class),
 
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT )
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | EXACT )
 
-							),
-					PriorityPredictionsClassManager.keyboardFrameClass.getDeclaredMethods(), PriorityPredictionsClassManager.keyboardFrameClass);
+			);
+
+			PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod = ProfileHelpers.findMostSimilar(
+					profile, PriorityPredictionsClassManager.keyboardFrameClass.getDeclaredMethods(), PriorityPredictionsClassManager.keyboardFrameClass);
+
+			DebugTools.logIfProfileMismatch(  keyboardFrameClass_setBuMethod, keyboardFrameClass, profile, "keyboardFrameClass_setBuMethod");
 		}
 
 	}

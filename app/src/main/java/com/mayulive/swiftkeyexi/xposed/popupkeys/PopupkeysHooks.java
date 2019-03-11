@@ -1,25 +1,19 @@
 package com.mayulive.swiftkeyexi.xposed.popupkeys;
 
-import android.os.Debug;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupKeyItem;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupParentKeyItem;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.PopupKeyItem;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
-import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -51,7 +45,7 @@ public class PopupkeysHooks
 			{
 				if ( KeyCommons.mLastTemplateKey == null )
 				{
-					if (DebugSettings.DEBUG_POPUPS)
+					if (DebugTools.DEBUG_POPUPS)
 					{
 						Log.e(LOGTAG, "template key null, skipping popups.");
 					}
@@ -72,7 +66,7 @@ public class PopupkeysHooks
 					//with the same popups for upper and lower case,
 					//they share the same list. I currently cannot change this.
 					//We do want to avoid adding the same popups twice though.
-					if (DebugSettings.DEBUG_POPUPS)
+					if (DebugTools.DEBUG_POPUPS)
 					{
 						Log.i(LOGTAG, "Duplicate list, skipping");
 					}
@@ -97,7 +91,7 @@ public class PopupkeysHooks
 					//This should only applay to the period key
 					boolean assumeMulti = false;
 
-					if (DebugSettings.DEBUG_POPUPS)
+					if (DebugTools.DEBUG_POPUPS)
 					{
 						Log.i(LOGTAG, "Initial popups: "+listObject.toString()+", assuming multi?: "+assumeMulti+", lower case?: "+isLowerCase);
 					}
@@ -113,7 +107,7 @@ public class PopupkeysHooks
 						//If there are any it will be re-added later
 						PopupkeysCommons.mMultipleKeyPopups.remove( KeyCommons.mLastTemplateKey.content );
 
-						if (DebugSettings.DEBUG_POPUPS)
+						if (DebugTools.DEBUG_POPUPS)
 						{
 							Log.i(LOGTAG, "Removing Multi-popup symbol: "+KeyCommons.mLastTemplateKey.content +", hash: "+Integer.toHexString(KeyCommons.mLastTemplateKey.content.hashCode() ));
 						}
@@ -141,13 +135,13 @@ public class PopupkeysHooks
 					}
 					else
 					{
-						if (DebugSettings.DEBUG_POPUPS)
+						if (DebugTools.DEBUG_POPUPS)
 						{
 							Log.i(LOGTAG, "Skipping insert because last popup parent key null");
 						}
 					}
 
-					if (DebugSettings.DEBUG_POPUPS)
+					if (DebugTools.DEBUG_POPUPS)
 					{
 						Log.i(LOGTAG, "Initial insert: "+listObject.toString());
 					}
@@ -158,7 +152,7 @@ public class PopupkeysHooks
 
 					if (listObject.size() > 1 || assumeMulti)
 					{
-						if (DebugSettings.DEBUG_POPUPS)
+						if (DebugTools.DEBUG_POPUPS)
 						{
 							Log.i(LOGTAG, "Adding to multi-popup keys: "+ KeyCommons.mLastTemplateKey.content );
 
@@ -170,13 +164,13 @@ public class PopupkeysHooks
 					}
 					else
 					{
-						if (DebugSettings.DEBUG_POPUPS)
+						if (DebugTools.DEBUG_POPUPS)
 							Log.i(LOGTAG, "Not adding to multi-popup keys");
 					}
 				}
 				else
 				{
-					if (DebugSettings.DEBUG_POPUPS)
+					if (DebugTools.DEBUG_POPUPS)
 						Log.i(LOGTAG, "List null");
 				}
 
@@ -199,7 +193,7 @@ public class PopupkeysHooks
 				{
 
 
-					if (DebugSettings.DEBUG_POPUPS)
+					if (DebugTools.DEBUG_POPUPS)
 					{
 
 						if ( KeyCommons.mLastTemplateKey != null)
@@ -220,7 +214,7 @@ public class PopupkeysHooks
 							outputKeys.addAll( (List<String>) btSubClass_aField.get(btSubClassInstance) );
 							int leftCount = (int) btSubClass_bField.get(btSubClassInstance);
 
-							if (DebugSettings.DEBUG_POPUPS)
+							if (DebugTools.DEBUG_POPUPS)
 							{
 
 								Log.i(LOGTAG, "Order input: "+outputKeys);
@@ -313,7 +307,7 @@ public class PopupkeysHooks
 
 							}
 
-							if (DebugSettings.DEBUG_POPUPS)
+							if (DebugTools.DEBUG_POPUPS)
 							{
 								Log.i(LOGTAG, "Dummy removed: "+outputKeys);
 							}
@@ -367,7 +361,7 @@ public class PopupkeysHooks
 
 							///////////////////////
 
-							if (DebugSettings.DEBUG_POPUPS)
+							if (DebugTools.DEBUG_POPUPS)
 								Log.i(LOGTAG, "Output: "+outputKeys.toString());
 
 							btSubClass_aField.set(btSubClassInstance, outputKeys);

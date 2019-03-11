@@ -12,6 +12,7 @@ import java.util.concurrent.Future;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
@@ -139,17 +140,22 @@ public class PredictionClassManager
 
 		if (UpdateCandidateTaskClass != null)
 		{
-			UpdateCandidateTaskClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(			new MethodProfile
-					(
-							FINAL | EXACT ,
-							new ClassItem(java.util.List.class),
+			MethodProfile profile = new MethodProfile
+			(
+					FINAL | EXACT ,
+					new ClassItem(java.util.List.class),
 
-							new ClassItem("" , PUBLIC | EXACT ),
-							new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-							new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-							new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+					new ClassItem("" , PUBLIC | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
-					), UpdateCandidateTaskClass.getDeclaredMethods(), UpdateCandidateTaskClass);
+			);
+
+			UpdateCandidateTaskClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(
+					profile, UpdateCandidateTaskClass.getDeclaredMethods(), UpdateCandidateTaskClass);
+
+			DebugTools.logIfProfileMismatch(  UpdateCandidateTaskClass_getTopCandidateMethod, UpdateCandidateTaskClass, profile, "UpdateCandidateTaskClass_getTopCandidateMethod");
 
 			if (UpdateCandidateTaskClass_getTopCandidateMethod != null && resultTypeEnum != null)
 			{
@@ -161,19 +167,23 @@ public class PredictionClassManager
 		if (handleCandidateClass != null)
 		{
 
-			handleCandidateClass_candidateSelectedMethod = ProfileHelpers.findMostSimilar(new MethodProfile
-							(
-									PUBLIC | FINAL | EXACT ,
-									new ClassItem(void.class),
+			MethodProfile profile = new MethodProfile
+			(
+					PUBLIC | FINAL | EXACT ,
+					new ClassItem(void.class),
 
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-									new ClassItem(int.class)
+					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+					new ClassItem(int.class)
 
-							),
-					handleCandidateClass.getDeclaredMethods(), handleCandidateClass);
+			);
+
+			handleCandidateClass_candidateSelectedMethod = ProfileHelpers.findMostSimilar(
+					profile, handleCandidateClass.getDeclaredMethods(), handleCandidateClass);
+
+			DebugTools.logIfProfileMismatch(  handleCandidateClass_candidateSelectedMethod, handleCandidateClass, profile, "handleCandidateClass_candidateSelectedMethod");
 
 			if (handleCandidateClass_candidateSelectedMethod != null)
 			{

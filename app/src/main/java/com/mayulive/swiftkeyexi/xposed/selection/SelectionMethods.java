@@ -12,7 +12,7 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -1270,7 +1270,7 @@ public class SelectionMethods
 
 	public static boolean handleLongPress()
 	{
-		if (DebugSettings.DEBUG_KEYS)
+		if (DebugTools.DEBUG_KEYS)
 		{
 			Log.i(LOGTAG, "Long press triggered!");
 		}

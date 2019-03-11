@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.shared.SharedStyles;
-import com.mayulive.swiftkeyexi.util.VersionTools;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.AndroidHooks;
@@ -48,15 +48,6 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 
 			PackageTree classTree = new PackageTree(lpparam.appInfo.sourceDir, lpparam.classLoader);
 
-			if ( VersionTools.isPieOrGreater() )
-			{
-				System.gc();
-				XposedBridge.log(LOGTAG+", Waiting for 5 seconds after gc because Pie");
-				Log.i(LOGTAG, "Waiting for 5 seconds after gc because Pie");
-				Thread.sleep(5000 );
-			}
-
-
 			ProfileCache.setSaveLocation(lpparam.appInfo.dataDir+"/files/EXI_CLASS_CACHE_"+ ExiXposed.HOOK_PACKAGE_NAME);
 
 			//Automatically reset class cache on update of module or swiftkey
@@ -68,6 +59,8 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 			Hooks.hookAll(classTree);
 
 			ProfileCache.saveCache();
+
+			DebugTools.logIfCachedProfileMismatch();
 
 			XposedBridge.log(LOGTAG+", "+"Finished priority work in"+lpparam.packageName);
 			Log.i(LOGTAG, "Finished priority work in "+ExiXposed.HOOK_PACKAGE_NAME);

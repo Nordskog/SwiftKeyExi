@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.sound;
 
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -39,7 +40,7 @@ public class SoundClassManager
 
 		if (keySoundClass != null)
 		{
-			keySoundClass_playSoundMethod = ProfileHelpers.findMostSimilar(new MethodProfile
+			MethodProfile profile = new MethodProfile
 			(
 					PUBLIC | FINAL | EXACT ,
 					new ClassItem(void.class),
@@ -47,7 +48,10 @@ public class SoundClassManager
 					new ClassItem(int.class),
 					new ClassItem(android.content.Context.class)
 
-			), keySoundClass.getDeclaredMethods(), keySoundClass);
+			);
+
+			keySoundClass_playSoundMethod = ProfileHelpers.findMostSimilar(profile, keySoundClass.getDeclaredMethods(), keySoundClass);
+			DebugTools.logIfProfileMismatch(  keySoundClass_playSoundMethod, keySoundClass, profile, "keySoundClass_playSoundMethod");
 
 		}
 	}

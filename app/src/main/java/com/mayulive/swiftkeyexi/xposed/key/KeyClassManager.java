@@ -6,6 +6,7 @@ package com.mayulive.swiftkeyexi.xposed.key;
 
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
@@ -99,17 +100,21 @@ public class KeyClassManager
 		if (keyRawDefinitionClass != null)
 		{
 
-			keyRawDefinitionClass_newKeyMethod  = ProfileHelpers.findMostSimilar(new MethodProfile
-							(
-									PUBLIC | STATIC | EXACT ,
-									new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
 
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | FINAL | EXACT ),
-									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+			MethodProfile profile = new MethodProfile
+			(
+					PUBLIC | STATIC | EXACT ,
+					new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
 
-							),
-					keyRawDefinitionClass.getDeclaredMethods(), keyRawDefinitionClass);
+					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+			);
+
+			keyRawDefinitionClass_newKeyMethod  = ProfileHelpers.findMostSimilar(profile, keyRawDefinitionClass.getDeclaredMethods(), keyRawDefinitionClass);
+
+			DebugTools.logIfProfileMismatch(keyRawDefinitionClass_newKeyMethod, keyRawDefinitionClass, profile, "keyRawDefinitionClass");
 
 		}
 

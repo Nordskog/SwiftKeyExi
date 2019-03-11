@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.1.3] - 11-03-2019
+### Fixed
+ - Compatibility targeting 7.2.4.22 ( swipe/popup key issue )
+ - Bing redirect not being removed when gif inserted as link text instead of content
+
+### Added
+ - Debug output when class/method profiles do not match exactly ( logcat )
+ 
+### Changed
+ - Translations updated ( Russian, Brazillian-Portugese, Polish )
+ - Removed attempted EdXposed GC crash fix
+
 ## [2.1.0] - 28-02-2019
 ### Fixed
  - Swiftkey crashing a few times before working when using EdXposed ( maybe )

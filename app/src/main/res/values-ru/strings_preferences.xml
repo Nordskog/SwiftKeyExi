@@ -122,4 +122,6 @@
     <string name="pref_data_keyboard_theme_last_hash_title">Хэш темы клавиатуры</string>
     <string name="pref_data_keyboard_theme_last_hash_default_summary">Пожалуйста, выберите тему</string>
     <!-- Only remap hardware keys if keyboard open -->
+    <string name="pref_hardware_remap_only_in_keyboard_title">Переназначение клавиш только в клавиатуре</string>
+    <string name="pref_hardware_remap_only_in_keyboard_summary">Переназначить аппаратные клавиши только при открытой клавиатуре</string>
 </resources>

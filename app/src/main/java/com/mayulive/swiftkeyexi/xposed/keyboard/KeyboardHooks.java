@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.preference.Preference;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -26,7 +23,7 @@ import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
@@ -44,14 +41,13 @@ import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -176,7 +172,7 @@ public class KeyboardHooks
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
-					if (DebugSettings.DEBUG_HITBOXES)
+					if (DebugTools.DEBUG_HITBOXES)
 						OverlayCommons.displayDebugHithoxes(ContextUtils.getHookContext(), SelectionState.getSwipeOverlayHeight());
 
 					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
@@ -595,12 +591,21 @@ public class KeyboardHooks
 			Class locClass = ProfileHelpers.loadProfiledClass(KeyboardProfiles._get_LOCATION_MANAGER_CLASS_PROFILE(), lpparam);
 			Class someCollectionClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_COLLECTION_CLASS_USE_BY_LOCATION_PROFILE() ,lpparam);
 
+			if (someCollectionClass == null)
+				return;
 
-			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( new MethodProfile(
+			MethodProfile profile = new MethodProfile(
 					Modifiers.STATIC,
 					new ClassItem(Modifiers.THIS),
 					new ClassItem(Modifiers.ARRAY)
-			), someCollectionClass.getDeclaredMethods(), someCollectionClass);
+			);
+
+			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( profile, someCollectionClass.getDeclaredMethods(), someCollectionClass);
+
+			DebugTools.logIfProfileMismatch(  someCollectionClassCreateMethod, someCollectionClass, profile, "someCollectionClassCreateMethod");
+
+
+
 
 			Field locClass_arrField = ProfileHelpers.findFirstDeclaredFieldWithType( someCollectionClass,  locClass);
 			locClass_arrField.setAccessible(true);
@@ -784,9 +789,54 @@ public class KeyboardHooks
 
 
 
-	private static XC_MethodHook.Unhook hookGifIinsert()
+	private static Set<XC_MethodHook.Unhook> hookGifIinsert()
 	{
-		return XposedBridge.hookMethod( KeyboardClassManager.insertGifClass_insertGifMethod, new XC_MethodHook()
+
+		HashSet<XC_MethodHook.Unhook> returnSet = new HashSet<>();
+
+		if ( KeyboardClassManager.insertGifTextClass != null )
+		{
+			returnSet.addAll( XposedBridge.hookAllConstructors( KeyboardClassManager.insertGifTextClass, new XC_MethodHook()
+			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					// Params:
+					// I have no idea
+					// url string
+
+					if ( Settings.GIF_REMOVE_REDIRECT )
+					{
+						try
+						{
+							String imageUri = (String) param.args[1];
+
+							Matcher matcher = BING_GIF_REDIRECT_URL_PATTERN.matcher(imageUri);
+
+							if (matcher.find())
+							{
+
+								// Original url is escaped, so decode it after matching.
+								String escapedHtmlString = matcher.group(1);
+								escapedHtmlString = Uri.decode(escapedHtmlString);
+
+								// Turns out you can just edit the args, no need to call method yourself.
+								param.args[1] = escapedHtmlString;
+							}
+						}
+						catch ( Throwable ex )
+						{
+							// Will fallback to standard behavior, so not need to remove the hook.
+							Log.e(LOGTAG, "Problem in remove gif text redirect method");
+							ex.printStackTrace();
+							XposedBridge.log(ex);
+						}
+					}
+				}
+			}));
+		}
+
+		returnSet.add( XposedBridge.hookMethod( KeyboardClassManager.insertGifClass_insertGifMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -808,12 +858,9 @@ public class KeyboardHooks
 						{
 
 							String escapedHtmlString = matcher.group(1);
-							param.args[1] = Uri.parse( Uri.decode(escapedHtmlString));
 
-							Method superMethod = (Method) param.method;
-							superMethod.setAccessible(true);
-							superMethod.invoke(param.thisObject, param.args);
-							param.setResult( null );
+							// Turns out you can just edit the args, no need to call method yourself.
+							param.args[1] = Uri.parse( Uri.decode(escapedHtmlString));
 						}
 					}
 					catch ( Throwable ex )
@@ -825,7 +872,9 @@ public class KeyboardHooks
 					}
 				}
 			}
-		});
+		}));
+
+		return returnSet;
 	}
 
 
@@ -837,7 +886,6 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
-
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.add( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
@@ -910,7 +958,7 @@ public class KeyboardHooks
 
 				if (Hooks.gifRemoveRedirect.isRequirementsMet())
 				{
-					Hooks.gifRemoveRedirect.add( hookGifIinsert() );
+					Hooks.gifRemoveRedirect.addAll( hookGifIinsert() );
 				}
 
 				if (Hooks.themeSet.isRequirementsMet())
