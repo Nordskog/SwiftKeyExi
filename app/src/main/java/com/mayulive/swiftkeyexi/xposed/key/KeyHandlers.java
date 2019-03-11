@@ -6,7 +6,7 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
@@ -41,7 +41,7 @@ public class KeyHandlers
 			return;
 
 
-		if (DebugSettings.DEBUG_KEYS)
+		if (DebugTools.DEBUG_KEYS)
 		{
 			Log.i(LOGTAG, "Key defined. Tag: "+template.tag);
 			Log.i(LOGTAG, "Key defined. Type: "+template.type);

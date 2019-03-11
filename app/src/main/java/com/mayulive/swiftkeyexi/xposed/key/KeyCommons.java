@@ -6,7 +6,7 @@ import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
@@ -134,7 +134,7 @@ public class KeyCommons
 			mKeyDefinitions.remove(removedPointer);
 		}
 
-		if (DebugSettings.DEBUG_KEYS)
+		if (DebugTools.DEBUG_KEYS)
 		{
 			Log.i(LOGTAG, "size: "+keyStack.size());
 		}
@@ -143,7 +143,7 @@ public class KeyCommons
 
 	public static void addKeyDefinition(Object swiftkeyKey, KeyDefinition key)
 	{
-		if (DebugSettings.DEBUG_KEYS)
+		if (DebugTools.DEBUG_KEYS)
 		{
 			Log.i(LOGTAG, "Adding key: "+key.toString());
 		}

@@ -18,11 +18,10 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import java.lang.ref.WeakReference;
-import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -340,21 +339,21 @@ public class PredictionHandlers
 		//For some reason, the verbatrim candidate is in the ... verbatim position instead after inserting a flow shortcut.
 		//Must be missing a verbatim-mode flag somewhere. This shifts it back to where it should be, hopefully without messing anything up.
 
-		if (DebugSettings.DEBUG_PREDICTIONS)
+		if (DebugTools.DEBUG_PREDICTIONS)
 		{
 			Log.i(LOGTAG, "UpdateHook, last result is: "+PredictionCommons.mLastCandidateResultType);
 		}
 
 		if ( Settings.FLOW_SUGGESTIONS_ENABLED && PredictionCommons.mLastCandidateResultType == PredictionClassManager.resultTypeEnum_flow_success)
 		{
-			if (DebugSettings.DEBUG_PREDICTIONS)
+			if (DebugTools.DEBUG_PREDICTIONS)
 			{
 				Log.i(LOGTAG, "Last result was flow success, making verbatim primary");
 			}
 
 			PredictionCommons.simpleMakeVerbatimPrimary(candidatesList);
 
-			if (DebugSettings.DEBUG_PREDICTIONS)
+			if (DebugTools.DEBUG_PREDICTIONS)
 			{
 				Log.i(LOGTAG, "First item is now: "+candidatesList.get(0));
 			}
@@ -381,7 +380,7 @@ public class PredictionHandlers
 
 		if (!Settings.FLOW_SUGGESTIONS_ENABLED)
 		{
-			if (DebugSettings.DEBUG_PREDICTIONS)
+			if (DebugTools.DEBUG_PREDICTIONS)
 			{
 				Log.i(LOGTAG, "Flow suggestions not enabled, not doing anything in get top candidate.");
 			}
@@ -404,7 +403,7 @@ public class PredictionHandlers
 		{
 			//Log.e("###", "Existing top is: "+candidatesList.get(0));
 
-			if (DebugSettings.DEBUG_PREDICTIONS)
+			if (DebugTools.DEBUG_PREDICTIONS)
 			{
 
 				Log.i(LOGTAG, "Get top candidate, existing top is: "+candidatesList.get(0).toString());
@@ -422,7 +421,7 @@ public class PredictionHandlers
 			}
 			else
 			{
-				if (DebugSettings.DEBUG_PREDICTIONS)
+				if (DebugTools.DEBUG_PREDICTIONS)
 				{
 					Log.i(LOGTAG, "Returning top with flow shortcut insert");
 				}
@@ -440,7 +439,7 @@ public class PredictionHandlers
 				}
 
 				{
-					if (DebugSettings.DEBUG_PREDICTIONS)
+					if (DebugTools.DEBUG_PREDICTIONS)
 					{
 						Log.i(LOGTAG, "Input candidate was: "+candidate.toString()+", trying to replace.");
 					}
@@ -462,7 +461,7 @@ public class PredictionHandlers
 							param.setResult(insertedCandidate);
 						}
 
-						if (DebugSettings.DEBUG_PREDICTIONS)
+						if (DebugTools.DEBUG_PREDICTIONS)
 						{
 							Log.i(LOGTAG, "Successfully replaced with "+insertedCandidate.toString());
 						}

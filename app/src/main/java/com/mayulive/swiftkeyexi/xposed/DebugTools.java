@@ -1,6 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed;
 
-public class DebugSettings
+public class DebugTools
 {
 
 	public static boolean DEBUG_PREDICTIONS = false;

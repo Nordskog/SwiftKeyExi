@@ -6,7 +6,7 @@ import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.settings.Settings;
 
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
@@ -46,7 +46,7 @@ public class KeyHooks
 					Object thiz = param.thisObject;
 					KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
 
-					if (DebugSettings.DEBUG_KEYS)
+					if (DebugTools.DEBUG_KEYS)
 					{
 						Log.i(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" )+", pointer: "+System.identityHashCode(thiz));
 					}

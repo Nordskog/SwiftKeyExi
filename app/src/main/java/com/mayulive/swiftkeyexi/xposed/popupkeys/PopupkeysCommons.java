@@ -3,8 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.popupkeys;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupKeyItem;
-import com.mayulive.swiftkeyexi.xposed.DebugSettings;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupParentKeyItem;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
@@ -64,7 +63,7 @@ public class PopupkeysCommons
 		if (Hooks.popupHooks_read.isRequirementsMet())
 		{
 			boolean value = mMultipleKeyPopups.contains(key);
-			if (DebugSettings.DEBUG_POPUPS)
+			if (DebugTools.DEBUG_POPUPS)
 			{
 				Log.i(LOGTAG, "Check multiple popup. Key: "+key+", has multiple?: "+value);
 				Log.i(LOGTAG, "Hash was: "+Integer.toHexString(key.hashCode())+", also contains:" ) ;
@@ -73,7 +72,7 @@ public class PopupkeysCommons
 		}
 		else
 		{
-			if (DebugSettings.DEBUG_POPUPS)
+			if (DebugTools.DEBUG_POPUPS)
 			{
 				Log.i(LOGTAG, "Checking for multiple popup, but popup read hook not active. Returning true.");
 			}
