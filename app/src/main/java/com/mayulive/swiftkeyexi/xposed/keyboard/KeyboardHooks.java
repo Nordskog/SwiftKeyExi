@@ -811,9 +811,6 @@ public class KeyboardHooks
 						{
 							String imageUri = (String) param.args[1];
 
-
-							Log.i(LOGTAG, "imageUri: "+imageUri.toString());
-
 							Matcher matcher = BING_GIF_REDIRECT_URL_PATTERN.matcher(imageUri);
 
 							if (matcher.find())
@@ -823,12 +820,8 @@ public class KeyboardHooks
 								String escapedHtmlString = matcher.group(1);
 								escapedHtmlString = Uri.decode(escapedHtmlString);
 
+								// Turns out you can just edit the args, no need to call method yourself.
 								param.args[1] = escapedHtmlString;
-
-								Constructor superMethod = (Constructor) param.method;
-								superMethod.setAccessible(true);
-								Object instance = superMethod.newInstance( param.args );
-								param.setResult( instance );
 							}
 						}
 						catch ( Throwable ex )
@@ -865,12 +858,9 @@ public class KeyboardHooks
 						{
 
 							String escapedHtmlString = matcher.group(1);
-							param.args[1] = Uri.parse( Uri.decode(escapedHtmlString));
 
-							Method superMethod = (Method) param.method;
-							superMethod.setAccessible(true);
-							superMethod.invoke(param.thisObject, param.args);
-							param.setResult( null );
+							// Turns out you can just edit the args, no need to call method yourself.
+							param.args[1] = Uri.parse( Uri.decode(escapedHtmlString));
 						}
 					}
 					catch ( Throwable ex )
