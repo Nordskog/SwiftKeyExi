@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.shared.SharedStyles;
-import com.mayulive.swiftkeyexi.util.VersionTools;
+import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.AndroidHooks;
@@ -59,6 +59,8 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 			Hooks.hookAll(classTree);
 
 			ProfileCache.saveCache();
+
+			DebugTools.logIfCachedProfileMismatch();
 
 			XposedBridge.log(LOGTAG+", "+"Finished priority work in"+lpparam.packageName);
 			Log.i(LOGTAG, "Finished priority work in "+ExiXposed.HOOK_PACKAGE_NAME);
