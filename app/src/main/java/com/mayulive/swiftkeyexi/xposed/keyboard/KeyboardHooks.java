@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.preference.Preference;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -44,6 +41,7 @@ import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -784,9 +782,61 @@ public class KeyboardHooks
 
 
 
-	private static XC_MethodHook.Unhook hookGifIinsert()
+	private static Set<XC_MethodHook.Unhook> hookGifIinsert()
 	{
-		return XposedBridge.hookMethod( KeyboardClassManager.insertGifClass_insertGifMethod, new XC_MethodHook()
+
+		HashSet<XC_MethodHook.Unhook> returnSet = new HashSet<>();
+
+		if ( KeyboardClassManager.insertGifTextClass != null )
+		{
+			returnSet.addAll( XposedBridge.hookAllConstructors( KeyboardClassManager.insertGifTextClass, new XC_MethodHook()
+			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					// Params:
+					// I have no idea
+					// url string
+
+					if ( Settings.GIF_REMOVE_REDIRECT )
+					{
+						try
+						{
+							String imageUri = (String) param.args[1];
+
+
+							Log.i(LOGTAG, "imageUri: "+imageUri.toString());
+
+							Matcher matcher = BING_GIF_REDIRECT_URL_PATTERN.matcher(imageUri);
+
+							if (matcher.find())
+							{
+
+								// Original url is escaped, so decode it after matching.
+								String escapedHtmlString = matcher.group(1);
+								escapedHtmlString = Uri.decode(escapedHtmlString);
+
+								param.args[1] = escapedHtmlString;
+
+								Constructor superMethod = (Constructor) param.method;
+								superMethod.setAccessible(true);
+								Object instance = superMethod.newInstance( param.args );
+								param.setResult( instance );
+							}
+						}
+						catch ( Throwable ex )
+						{
+							// Will fallback to standard behavior, so not need to remove the hook.
+							Log.e(LOGTAG, "Problem in remove gif text redirect method");
+							ex.printStackTrace();
+							XposedBridge.log(ex);
+						}
+					}
+				}
+			}));
+		}
+
+		returnSet.add( XposedBridge.hookMethod( KeyboardClassManager.insertGifClass_insertGifMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -825,7 +875,9 @@ public class KeyboardHooks
 					}
 				}
 			}
-		});
+		}));
+
+		return returnSet;
 	}
 
 
@@ -837,7 +889,6 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
-
 				Hooks.baseHooks_base.addAll( hookServiceCreated() );
 				Hooks.baseHooks_base.add( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
@@ -910,7 +961,7 @@ public class KeyboardHooks
 
 				if (Hooks.gifRemoveRedirect.isRequirementsMet())
 				{
-					Hooks.gifRemoveRedirect.add( hookGifIinsert() );
+					Hooks.gifRemoveRedirect.addAll( hookGifIinsert() );
 				}
 
 				if (Hooks.themeSet.isRequirementsMet())

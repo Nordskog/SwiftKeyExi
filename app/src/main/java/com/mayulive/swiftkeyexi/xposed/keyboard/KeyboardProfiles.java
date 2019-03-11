@@ -4820,4 +4820,227 @@ public class KeyboardProfiles
 	}
 
 
+
+
+
+
+	public static ClassProfile get_INSERT_GIF_TEXT_CLASS_RPFOILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("epv");
+		newProfile.setKnownPath("");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem("" , PUBLIC | ABSTRACT | EXACT ));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Public fields
+/////////////////////////
+		newProfile.setPublicFields(new FieldItem[]
+				{
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//a
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//c
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//a
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//c
+
+				});
+/////////////////////////
+//Public Methods
+/////////////////////////
+		newProfile.setPublicMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #2: b
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
+
+								),
+
+						//Method #3: c
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #4: d
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #5: equals
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.Object.class)
+
+								),
+
+						//Method #6: getClass
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.Class.class)
+
+								),
+
+						//Method #7: hashCode
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #8: notify
+						new MethodProfile
+								(
+										PUBLIC | FINAL | NATIVE | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #9: notifyAll
+						new MethodProfile
+								(
+										PUBLIC | FINAL | NATIVE | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #10: toString
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #11: wait
+						new MethodProfile
+								(
+										PUBLIC | FINAL | NATIVE | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #12: wait
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(long.class)
+
+								),
+
+						//Method #13: wait
+						new MethodProfile
+								(
+										PUBLIC | FINAL | NATIVE | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(long.class),
+										new ClassItem(int.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #1: toString
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
+
+
 }

@@ -17,7 +17,6 @@ import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -45,6 +44,8 @@ public class KeyboardClassManager
 
 	private static Class insertGifClass = null;
 	protected static Method insertGifClass_insertGifMethod = null;
+
+	public static Class insertGifTextClass = null;
 
 	///////////////////////////////////////
 
@@ -84,7 +85,7 @@ public class KeyboardClassManager
 		incogControllerClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_INCOG_CONTROL_CLASS_PROFILE(), param );
 
 		insertGifClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_INSERT_GIF_CLASS_PROFILE(), param );
-
+		insertGifTextClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_INSERT_GIF_TEXT_CLASS_RPFOILE(), param );
 
 		searchClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_SEARCH_CLASS_PROFILE(), param );
 
