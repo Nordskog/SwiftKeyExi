@@ -2163,7 +2163,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fbu");
+		newProfile.setFullPath("edu");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -2206,13 +2206,13 @@ public class KeyboardProfiles
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//j
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//k
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//l
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//m
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//m
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//n
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(android.content.IntentFilter.class)),	//o
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//p
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.util.UUID.class)),	//q
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(android.location.Location.class)),	//r
-						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//a
+						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.google.common.collect.ImmutableSet" , PUBLIC | ABSTRACT | EXACT )),	//a
 
 				});
 /////////////////////////
@@ -2223,6 +2223,17 @@ public class KeyboardProfiles
 						//Method #0: a
 						new MethodProfile
 								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(android.net.wifi.ScanResult.class),
+										new ClassItem(android.net.wifi.ScanResult.class)
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
 										STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(android.content.Context.class),
 
@@ -2230,7 +2241,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #1: a
+						//Method #2: a
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2243,7 +2254,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #2: a
+						//Method #3: a
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -2254,7 +2265,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #3: a
+						//Method #4: a
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -2264,7 +2275,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #4: b
+						//Method #5: b
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -2274,17 +2285,17 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #5: b
+						//Method #6: b
 						new MethodProfile
 								(
-										PRIVATE | EXACT ,
+										PRIVATE | STATIC | EXACT ,
 										new ClassItem(java.lang.String.class),
 
 										new ClassItem(java.util.List.class)
 
 								),
 
-						//Method #6: c
+						//Method #7: c
 						new MethodProfile
 								(
 										STATIC | SYNTHETIC | EXACT ,
@@ -2294,7 +2305,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #7: c
+						//Method #8: c
 						new MethodProfile
 								(
 										PRIVATE | SYNTHETIC | EXACT ,
@@ -2304,7 +2315,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #8: d
+						//Method #9: d
 						new MethodProfile
 								(
 										PRIVATE | SYNTHETIC | EXACT ,
@@ -2314,7 +2325,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #9: e
+						//Method #10: e
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2322,7 +2333,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #10: f
+						//Method #11: f
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2330,7 +2341,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #11: g
+						//Method #12: g
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -2338,7 +2349,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #12: h
+						//Method #13: h
 						new MethodProfile
 								(
 										PRIVATE | SYNTHETIC | EXACT ,
@@ -2346,7 +2357,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #13: i
+						//Method #14: i
 						new MethodProfile
 								(
 										PRIVATE | SYNTHETIC | EXACT ,
@@ -2354,7 +2365,17 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #14: lambda$MxVsGmy-zYkK3vc6k2r5li6CYik
+						//Method #15: lambda$RRR-i-tog12fLWub1PCH3jBp3tQ
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #16: lambda$SCypdTlNDFoiUUX_mogfFZEB7SE
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2365,17 +2386,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #15: lambda$iMQr1UIiuVm6X9tYJzehUFRp1bY
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )
-
-								),
-
-						//Method #16: lambda$mDspTzpMu4VTiPtcgS_fz6NnfBM
+						//Method #17: lambda$_pDAIXGHFCY6NX8HWmTIrPSkb8U
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2386,7 +2397,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #17: lambda$uXXZ7xyjk1HJ8f7TTJTsVXPbwTc
+						//Method #18: lambda$sOAQmnCqJblziLiwmLqpumYRq1g
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2396,7 +2407,18 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #18: a
+						//Method #19: lambda$uifN2kw8ovMkvIKJp-8J3L3zEVI
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(android.net.wifi.ScanResult.class),
+										new ClassItem(android.net.wifi.ScanResult.class)
+
+								),
+
+						//Method #20: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2404,7 +2426,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #19: a
+						//Method #21: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2415,7 +2437,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #20: a
+						//Method #22: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2426,7 +2448,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #21: a
+						//Method #23: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2436,7 +2458,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #22: a
+						//Method #24: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2446,7 +2468,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #23: a
+						//Method #25: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2456,7 +2478,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #24: b
+						//Method #26: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2464,7 +2486,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #25: c
+						//Method #27: c
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2472,7 +2494,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #26: d
+						//Method #28: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2500,7 +2522,7 @@ public class KeyboardProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem(android.content.IntentFilter.class),
 										new ClassItem(java.util.concurrent.ExecutorService.class),
@@ -2513,267 +2535,6 @@ public class KeyboardProfiles
 
 		return newProfile;
 	}
-
-	protected static ClassProfile _get_COLLECTION_CLASS_USE_BY_LOCATION_PROFILE()
-	{
-		ClassProfile newProfile = new ClassProfile();
-
-		newProfile.setFullPath("cas");
-		newProfile.setKnownPath("");
-
-		newProfile.setMinDepth(0);
-		newProfile.setMaxDepth(0);
-		newProfile.setModifiers(PUBLIC | ABSTRACT );
-
-		newProfile.setTypeParamCount(1);
-		newProfile.setSuperClass(	new ClassItem("" , PUBLIC | ABSTRACT | EXACT ));
-/////////////////////////
-//Interfaces
-/////////////////////////
-		newProfile.setInterfaces(new ClassItem[]
-				{
-						new ClassItem(java.util.Set.class)
-
-				});
-/////////////////////////
-//Nested Classes
-/////////////////////////
-		newProfile.setNestedClasses(new ClassItem[]
-				{
-						new ClassItem("" , PUBLIC | STATIC | EXACT )
-
-				});
-/////////////////////////
-//Declared fields
-/////////////////////////
-		newProfile.setDeclaredFields(new FieldItem[]
-				{
-
-				});
-/////////////////////////
-//Declared Methods
-/////////////////////////
-		newProfile.setDeclaredMethods(new MethodProfile[]
-				{
-						//Method #0: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(int.class),
-
-										new ClassItem(int.class)
-
-								),
-
-						//Method #1: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(int.class),
-										new ClassItem(java.lang.Object[].class)
-
-								),
-
-						//Method #2: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.lang.Iterable.class)
-
-								),
-
-						//Method #3: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class)
-
-								),
-
-						//Method #4: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class)
-
-								),
-
-						//Method #5: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class)
-
-								),
-
-						//Method #6: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class)
-
-								),
-
-						//Method #7: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | VARARGS | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(java.lang.Object[].class)
-
-								),
-
-						//Method #8: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.util.Collection.class)
-
-								),
-
-						//Method #9: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.lang.Object[].class)
-
-								),
-
-						//Method #10: b
-						new MethodProfile
-								(
-										PRIVATE | STATIC | VARARGS | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(int.class),
-										new ClassItem(java.lang.Object[].class)
-
-								),
-
-						//Method #11: b
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
-
-										new ClassItem(java.lang.Object.class)
-
-								),
-
-						//Method #12: g
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT )
-
-								),
-
-						//Method #13: h
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | STATIC | EXACT )
-
-								),
-
-						//Method #14: b
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
-
-								),
-
-						//Method #15: equals
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(java.lang.Object.class)
-
-								),
-
-						//Method #16: hashCode
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(int.class)
-
-								),
-
-						//Method #17: i_
-						new MethodProfile
-								(
-										EXACT ,
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #18: iterator
-						new MethodProfile
-								(
-										PUBLIC | SYNTHETIC | EXACT ,
-										new ClassItem(java.util.Iterator.class)
-
-								),
-
-
-				});
-/////////////////////////
-//Declared Constructors
-/////////////////////////
-		newProfile.setDeclaredConstructors(new ConstructorProfile[]
-				{
-						//Constructor #0
-						new ConstructorProfile
-								(		EXACT ,
-
-										new ClassItem[0]
-
-								),
-
-
-				});
-
-		return newProfile;
-	}
-
-
-
 
 
 	public static ClassProfile _get_INCOG_CONTROL_CLASS_PROFILE()
