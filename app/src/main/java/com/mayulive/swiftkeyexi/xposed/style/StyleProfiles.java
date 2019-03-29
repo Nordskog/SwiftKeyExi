@@ -15,7 +15,7 @@ public class StyleProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("hma");
+		newProfile.setFullPath("gic");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -45,12 +45,12 @@ public class StyleProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
+						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//b
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//c
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//d
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int.class)),	//d
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//e
-						new FieldItem( PRIVATE | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//f
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//f
 
 				});
 /////////////////////////
@@ -100,7 +100,7 @@ public class StyleProfiles
 
 								),
 
-						//Method #4: lambda$HfjNqfP1zpO_NVJqhIs8jtS2f9w
+						//Method #4: lambda$iuDZe4LMjgQ77f4K6_cwKGMXtRE
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -111,7 +111,7 @@ public class StyleProfiles
 
 								),
 
-						//Method #5: lambda$IUSfxjW4oolGH73wEVxHFYl32mM
+						//Method #5: lambda$n6f8dG_vV4nhGvBHvQ4qoWM6DOg
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -273,7 +273,7 @@ public class StyleProfiles
 						new ConstructorProfile
 								(		PUBLIC | EXACT ,
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),

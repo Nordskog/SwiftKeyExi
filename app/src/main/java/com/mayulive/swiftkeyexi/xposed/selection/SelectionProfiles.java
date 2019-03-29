@@ -20,7 +20,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("egl");
+		newProfile.setFullPath("dpr");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -67,6 +67,82 @@ public class SelectionProfiles
 						//Method #0: a
 						new MethodProfile
 								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(android.view.inputmethod.CompletionInfo.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #5: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #6: a
+						new MethodProfile
+								(
 										PRIVATE | EXACT ,
 										new ClassItem(boolean.class),
 
@@ -74,7 +150,19 @@ public class SelectionProfiles
 
 								),
 
-						//Method #1: a
+						//Method #7: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #8: a
 						new MethodProfile
 								(
 										PRIVATE | STATIC | SYNTHETIC | EXACT ,
@@ -89,17 +177,205 @@ public class SelectionProfiles
 
 								),
 
-						//Method #2: b
+						//Method #9: a
 						new MethodProfile
 								(
-										PRIVATE | EXACT ,
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
-						//Method #3: i
+						//Method #10: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #11: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #12: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #13: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #14: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #15: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #16: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #17: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #18: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #19: a
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #20: b
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #21: b
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #22: c
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #23: c
+						new MethodProfile
+								(
+										PRIVATE | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #24: i
 						new MethodProfile
 								(
 										PRIVATE | EXACT ,
@@ -107,7 +383,293 @@ public class SelectionProfiles
 
 								),
 
-						//Method #4: lambda$JMiHsDcoSEQLZqqh4pdLaQVEPAY
+						//Method #25: lambda$1nzn8aCmIUafXykbse5qP1Kh4vA
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #26: lambda$4hGmifufUBYsNV1MBir6cDSDS5w
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #27: lambda$CDt006G0rSeGpsJeZNK-h84svlw
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #28: lambda$CxQo31-XnvARn824pIafIMtdWp8
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #29: lambda$M5Rzc6C7B9q3Qs_cdkjECGWD5Xk
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #30: lambda$N-KSVEkk87RlVNm2grPzjgCCxiA
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #31: lambda$TiVLrjbat2qSDTVWq1IXg0uqOMM
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #32: lambda$W9QQR3q2eP5Q040YtDG7z5yDOUI
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #33: lambda$WY8kIPXK13jVDywLIOmZz5tM9BI
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #34: lambda$Y4OquE4-GNmeIZWttm3NJANXUmU
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #35: lambda$ZI9O_83NzRaGbVTe3EuOVmlymTo
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(android.view.inputmethod.CompletionInfo.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #36: lambda$_keyrDidnrhRMDE2x9FFJGItjrc
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #37: lambda$_lqkGXwMOBR3GKpUjTtq5ZKlBhQ
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #38: lambda$dctjoxNYFC6zQQqIZgIDOpqCw2A
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #39: lambda$ec_8eDaJTZpLd2900FmMTLlQwQY
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #40: lambda$l0sXu_xd57ZxxZ7DmsDE7AziMZg
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #41: lambda$o6te2eAdIHrf47VHpb8N33X6oe0
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #42: lambda$oJFrvs6bltM7zbHa5vyEyK3EV4A
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #43: lambda$sJ_bEnesOnUkqVtS3vtBghC-xug
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #44: lambda$uPUd-iOeYnlBYxxqcWTv0P_sPwA
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #45: lambda$ujRf7_kqzVsTSDDO-VbELfBV8_Y
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #46: lambda$wwBDyIxwBqXMoWYh6LRs82zry9Y
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #47: lambda$xxLXopPxcXSyKOAT1vJbVIrDeog
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -122,7 +684,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #5: a
+						//Method #48: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -132,7 +694,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #6: a
+						//Method #49: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -140,7 +702,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #7: a
+						//Method #50: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -151,7 +713,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #8: a
+						//Method #51: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -161,7 +723,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #9: a
+						//Method #52: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -171,7 +733,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #10: a
+						//Method #53: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -182,7 +744,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #11: a
+						//Method #54: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -192,7 +754,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #12: a
+						//Method #55: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -206,7 +768,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #13: a
+						//Method #56: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -218,7 +780,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #14: a
+						//Method #57: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -231,7 +793,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #15: a
+						//Method #58: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -241,7 +803,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #16: a
+						//Method #59: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -252,7 +814,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #17: a
+						//Method #60: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -266,7 +828,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #18: a
+						//Method #61: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -277,7 +839,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #19: a
+						//Method #62: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -288,7 +850,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #20: a
+						//Method #63: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -301,7 +863,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #21: a
+						//Method #64: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -309,23 +871,11 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
-						//Method #22: a
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #23: a
+						//Method #65: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -337,7 +887,19 @@ public class SelectionProfiles
 
 								),
 
-						//Method #24: a
+						//Method #66: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
+
+								),
+
+						//Method #67: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -352,7 +914,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #25: a
+						//Method #68: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -367,7 +929,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #26: a
+						//Method #69: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -381,7 +943,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #27: a
+						//Method #70: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -392,7 +954,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #28: a
+						//Method #71: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -405,18 +967,18 @@ public class SelectionProfiles
 
 								),
 
-						//Method #29: a
+						//Method #72: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(boolean.class),
 
 										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
-						//Method #30: a
+						//Method #73: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -427,7 +989,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #31: b
+						//Method #74: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -437,7 +999,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #32: b
+						//Method #75: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -445,7 +1007,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #33: b
+						//Method #76: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -456,7 +1018,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #34: b
+						//Method #77: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -467,7 +1029,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #35: c
+						//Method #78: c
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -475,7 +1037,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #36: c
+						//Method #79: c
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -486,7 +1048,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #37: c
+						//Method #80: c
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -497,7 +1059,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #38: d
+						//Method #81: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -505,7 +1067,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #39: e
+						//Method #82: e
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -513,7 +1075,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #40: f
+						//Method #83: f
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -521,7 +1083,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #41: g
+						//Method #84: g
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -529,7 +1091,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #42: h
+						//Method #85: h
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
