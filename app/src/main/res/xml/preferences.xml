@@ -224,9 +224,10 @@
             android:defaultValue="DARK"
             />
 
+
     <Preference
-        android:key="@string/pref_reset_key"
-        android:title="@string/pref_reset_title"/>
+        android:key="@string/pref_backup_and_restore_key"
+        android:title="@string/pref_backup_and_restore_title"/>
 
     <Preference
         android:key="@string/pref_about_key"

@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="pref_reset_title">Restore Defaults</string>
 
-<string name="pref_reset_key">pref_reset</string>
 
-<string name="pref_emoji_reset_key">pref_emoji_reset</string>
-<string name="pref_keys_reset_key">pref_keys_reset_emoji</string>
-<string name="pref_hotkeys_reset_key">pref_hotkeys_reset</string>
-<string name="pref_quickmenu_reset_key">pref_quickmenu_reset</string>
+    <!-- backup & restore -->
 
-<string name="pref_emoji_reset_warning">Are you sure you want to restore the default emoji?</string>
-<string name="pref_hotkeys_reset_warning">Are you sure you want to restore the default hotkeys?</string>
-<string name="pref_keys_reset_warning">Are you sure you want to restore the default shift, delete, and modifier keys?</string>
-<string name="pref_quickmenu_reset_warning">Are you sure you want to restore the default Quick-Menu configuration?</string>
+    <string name="pref_backup_and_restore_key">pref_backup_and_restore</string>
+    <string name="pref_backup_and_restore_title">Backup \&amp; Restore</string>
+
+
+
+    <!-- Restore defaults -->
+
+
+    <string name="pref_reset_title">Restore Defaults</string>
+    <string name="pref_reset_key">pref_reset</string>
+
+    <string name="pref_emoji_reset_key">pref_emoji_reset</string>
+    <string name="pref_keys_reset_key">pref_keys_reset_emoji</string>
+    <string name="pref_hotkeys_reset_key">pref_hotkeys_reset</string>
+    <string name="pref_quickmenu_reset_key">pref_quickmenu_reset</string>
+
+    <string name="pref_emoji_reset_warning">Are you sure you want to restore the default emoji?</string>
+    <string name="pref_hotkeys_reset_warning">Are you sure you want to restore the default hotkeys?</string>
+    <string name="pref_keys_reset_warning">Are you sure you want to restore the default shift, delete, and modifier keys?</string>
+    <string name="pref_quickmenu_reset_warning">Are you sure you want to restore the default Quick-Menu configuration?</string>
+
+    <!-- Import & export -->
+
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+
+    <string name="backup_save_to_file">Save to file</string>
+    <string name="backup_share">Share</string>
+
+    <string name="pref_category_title_backup">Backup</string>
+    <string name="pref_category_title_defaults">Defaults</string>
+
+    <string name="backup_to_zip">Backup to ZIP archive</string>
+    <string name="restore_from_zip">Restore from ZIP archive</string>
+
+    <string name="pref_restore_from_zip_key">pref_restore_from_zip</string>
+    <string name="pref_backup_to_zip_key">pref_backup_to_zip</string>
+
+    <string name="toast_backup_success">Backup complete</string>
+    <string name="toast_backup_fail">Backup failed, check logcat</string>
+
+    <string name="toast_restore_success">Restore complete</string>
+    <string name="toast_restore_fail">Restore failed, check logcat</string>
+
+    <string name="restore_backup_warning">Are you sure you want to restore this backup?</string>
+
+
+
 </resources>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_gravity="center"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <LinearLayout
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                app:srcCompat="@drawable/ic_save_to_file_icon"
+                android:scaleType="fitCenter"
+                android:id="@+id/backup_to_file_button"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/large_button_width"
+                android:layout_height="@dimen/large_button_width"/>
+
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_gravity="center"
+                android:text="@string/backup_save_to_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/popup_margin"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                app:srcCompat="@drawable/ic_share_icon"
+                android:scaleType="fitCenter"
+                android:id="@+id/backup_share_button"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/large_button_width"
+                android:layout_height="@dimen/large_button_width"/>
+
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_gravity="center"
+                android:text="@string/backup_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

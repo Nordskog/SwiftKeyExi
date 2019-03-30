@@ -31,6 +31,17 @@ public class DatabaseHolder
 		return mDbWrap;
 	}
 
+	public static void close(Context context)
+	{
+		if (mDbHandler == null)
+			return;
+
+		DatabaseHandler handler = getHolder(context);
+		handler.close();
+
+		mDbHandler = null;
+		mDbWrap = null;
+	}
 
 	private static void initHandler(Context context)
 	{

@@ -10,19 +10,15 @@ import android.os.Binder;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.database.DatabaseHolder;
+import com.mayulive.swiftkeyexi.database.DatabaseWrapper;
 import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.database.WrappedProvider;
 
 
 public class Provider extends ContentProvider
 {
-	//DatabaseHandler mDbHandler = null;
-	WrappedDatabase mDbWrap = null;
-
 	public static final String PROVIDER_DATABASE_PATH = "database";
 	public static final Uri PROVIDER_DATABASE_URI = Uri.parse("content://"+ ExiModule.PACKAGE+".database/"+PROVIDER_DATABASE_PATH);
-
-
 
     // Creates a UriMatcher object.
     private static final UriMatcher mDatabaseUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -36,8 +32,6 @@ public class Provider extends ContentProvider
 	@Override
 	public boolean onCreate() 
 	{
-		mDbWrap = DatabaseHolder.getWrapped(this.getContext());
-
 		//Turns out these aren't necessary. Without any permissions defined pretty much anyone can access it, Apparently.
 		//Guess you need to handle access permissions yourself somehow.
 		//this.getContext().grantUriPermission("com.touchtype.swiftkey.beta", EmojiPanelEntry.CONTENT_URI, Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -56,7 +50,9 @@ public class Provider extends ContentProvider
 		{
 			case 0:
 			{
-				return mDbWrap.query(uri.getLastPathSegment(),
+				DatabaseWrapper dbWrap = DatabaseHolder.getWrapped(this.getContext());
+
+				return dbWrap.query(uri.getLastPathSegment(),
 						null,
 						selection,
 						selectionArgs,
@@ -90,7 +86,9 @@ public class Provider extends ContentProvider
 		if ( !ProviderSecurity.isAllowed( this.getContext(), Binder.getCallingUid() ) )
 			return null;
 
-		long newId = mDbWrap.insert(uri.getLastPathSegment(), null, values);
+		DatabaseWrapper dbWrap = DatabaseHolder.getWrapped(this.getContext());
+
+		long newId = dbWrap.insert(uri.getLastPathSegment(), null, values);
 		return uri.buildUpon().appendPath(String.valueOf( newId ) ).build();
 	}
 
@@ -100,7 +98,9 @@ public class Provider extends ContentProvider
 		if ( !ProviderSecurity.isAllowed( this.getContext(), Binder.getCallingUid() ) )
 			return -1;
 
-		return mDbWrap.delete(uri.getLastPathSegment(),selection,selectionArgs);
+		DatabaseWrapper dbWrap = DatabaseHolder.getWrapped(this.getContext());
+
+		return dbWrap.delete(uri.getLastPathSegment(),selection,selectionArgs);
 	}
 
 	@Override
@@ -109,7 +109,9 @@ public class Provider extends ContentProvider
 		if ( !ProviderSecurity.isAllowed( this.getContext(), Binder.getCallingUid() ) )
 			return -1;
 
-		return mDbWrap.update(uri.getLastPathSegment(), values, selection,selectionArgs);
+		DatabaseWrapper dbWrap = DatabaseHolder.getWrapped(this.getContext());
+
+		return dbWrap.update(uri.getLastPathSegment(), values, selection,selectionArgs);
 	}
 
 	public static WrappedProvider getWrapped(Context context)
