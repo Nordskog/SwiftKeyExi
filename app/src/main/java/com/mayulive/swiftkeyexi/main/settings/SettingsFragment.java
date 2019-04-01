@@ -90,18 +90,18 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayFragment( new AboutFragment() );
+				SettingsActivity.displayFragment( SettingsFragment.this.getFragmentManager(),  new AboutFragment() );
 				return true;
 			}
 		});
 
-		Preference resetPreference = findPreference(this.getContext().getResources().getString( R.string.pref_reset_key ));
+		Preference resetPreference = findPreference(this.getContext().getResources().getString( R.string.pref_backup_and_restore_key ));
 		resetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
 		{
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayFragment( new ResetFragment() );
+				SettingsActivity.displayFragment( SettingsFragment.this.getFragmentManager(),  new BackupAndRestoreFragment() );
 				return true;
 			}
 		});
@@ -112,7 +112,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayFragment( new SoundFragment() );
+				SettingsActivity.displayFragment( SettingsFragment.this.getFragmentManager(), new SoundFragment() );
 				return true;
 			}
 		});
@@ -123,7 +123,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayFragment( new RemappedKeysFragment() );
+				SettingsActivity.displayFragment( SettingsFragment.this.getFragmentManager(),  new RemappedKeysFragment() );
 				return true;
 			}
 		});
@@ -134,7 +134,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				displayFragment( new CustomSearchFragment() );
+				SettingsActivity.displayFragment( SettingsFragment.this.getFragmentManager(), new CustomSearchFragment() );
 				return true;
 			}
 		});
@@ -183,15 +183,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
 				.addToBackStack(null)
 				.commit();
 
-	}
-
-	private void displayFragment(Fragment frag)
-	{
-		this.getFragmentManager().beginTransaction()
-				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,  android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-				.replace(R.id.settings_activity_fragment_container, frag, null)
-				.addToBackStack(null)
-				.commit();
 	}
 
 

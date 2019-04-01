@@ -34,6 +34,7 @@ import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 import com.mayulive.swiftkeyexi.xposed.system.SystemIntentService;
+import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -589,10 +590,14 @@ public class KeyboardHooks
 		try
 		{
 			Class locClass = ProfileHelpers.loadProfiledClass(KeyboardProfiles._get_LOCATION_MANAGER_CLASS_PROFILE(), lpparam);
-			Class someCollectionClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_COLLECTION_CLASS_USE_BY_LOCATION_PROFILE() ,lpparam);
+			Class someCollectionClass = ClassHunter.loadClass( "com.google.common.collect.ImmutableSet", lpparam.getClassLoader() );
 
 			if (someCollectionClass == null)
+			{
+				Log.e(LOGTAG, "Location someCollectionClass null");
 				return;
+			}
+
 
 			MethodProfile profile = new MethodProfile(
 					Modifiers.STATIC,

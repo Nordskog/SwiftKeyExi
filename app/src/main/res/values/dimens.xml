@@ -52,6 +52,8 @@
 
     <dimen name="column_width_config_height">200dp</dimen>
 
+    <dimen name="large_button_width">100dp</dimen>
+
 
 
 

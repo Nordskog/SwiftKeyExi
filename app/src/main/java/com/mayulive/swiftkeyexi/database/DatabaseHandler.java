@@ -44,7 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		mDb = getWritableDatabase();
 	}
 	
-	public void closeDataBase()
+	protected void closeDataBase()
 	{
 		mDb.close();
 		mDb = null;

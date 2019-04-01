@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                   android:title="@string/preferences_about_title"
+                   android:key="customPrefKey">
+
+
+    <PreferenceCategory
+        android:title="@string/pref_category_title_backup"
+        >
+
+        <Preference
+            android:key="@string/pref_backup_to_zip_key"
+            android:title="@string/backup_to_zip"/>
+
+        <Preference
+            android:key="@string/pref_restore_from_zip_key"
+            android:title="@string/restore_from_zip"/>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_title_defaults"
+        >
+
+    </PreferenceCategory>
+    <Preference
+        android:key="@string/pref_reset_key"
+        android:title="@string/pref_reset_title"/>
+
+
+
+</PreferenceScreen>
