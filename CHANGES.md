@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+
+## [2.2.0] - 01-04-2019
+### Fixed
+ - Compatibility targeting 7.2.7.16 ( location feature unlock)
+
+### Added
+ -  Settings Backup & Restore
+
 ## [2.1.3] - 11-03-2019
 ### Fixed
  - Compatibility targeting 7.2.4.22 ( swipe/popup key issue )
