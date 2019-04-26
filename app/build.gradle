@@ -7,18 +7,17 @@ apply from: 'keystore/signing.gradle'
 android
         {
             compileSdkVersion 26
-            buildToolsVersion "26.0.2"
             defaultConfig
                     {
                         applicationId 'com.mayulive.swiftkeyexi'
                         minSdkVersion 21
                         targetSdkVersion 26
-                        versionCode 44
-                        versionName "2.2.0"
+                        versionCode 45
+                        versionName "2.2.1"
 
                         //About fields
-                        def SWIFTKEY_SUPORTED_VERSION = "7.2.6.28"
-                        def SWIFTKEY_BETA_SUPORTED_VERSION = "7.2.7.16"
+                        def SWIFTKEY_SUPORTED_VERSION = "7.2.8.25"
+                        def SWIFTKEY_BETA_SUPORTED_VERSION = "7.2.9.36"
                         def APP_AUTHOR_NAME = "Roughy"
 
 
@@ -105,17 +104,17 @@ repositories
 
 dependencies
         {
-            provided 'de.robv.android.xposed:api:82:sources'
-            compile('com.github.QuadFlask:colorpicker:0.0.13') {
+            compileOnly 'de.robv.android.xposed:api:82:sources'
+            implementation('com.github.QuadFlask:colorpicker:0.0.13') {
                 exclude group: 'com.android.support'
             }
-            compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-            compile "com.android.support:support-v13:$rootProject.supportLibraryVersion"
-            compile "com.android.support:design:$rootProject.supportLibraryVersion"
-            compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-            compile "com.android.support:preference-v14:$rootProject.supportLibraryVersion"
-            compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-            compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
-            compile 'com.mayulive.xposed.classhunter:classhunter:1.2.0'
-            provided 'de.robv.android.xposed:api:82'
+            implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+            implementation "com.android.support:support-v13:$rootProject.supportLibraryVersion"
+            implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+            implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+            implementation "com.android.support:preference-v14:$rootProject.supportLibraryVersion"
+            implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+            implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+            implementation 'com.mayulive.xposed.classhunter:classhunter:1.2.0'
+            compileOnly 'de.robv.android.xposed:api:82'
         }

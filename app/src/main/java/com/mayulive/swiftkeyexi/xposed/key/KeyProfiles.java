@@ -33,7 +33,7 @@ public class KeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("eoz");
+		newProfile.setFullPath("dwe");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -54,7 +54,7 @@ public class KeyProfiles
 /////////////////////////
 		newProfile.setNestedClasses(new ClassItem[]
 				{
-						new ClassItem("" , PUBLIC | STATIC | EXACT ),
+						new ClassItem("" , STATIC | EXACT ),
 						new ClassItem("" , PUBLIC | STATIC | EXACT )
 
 				});
@@ -76,17 +76,17 @@ public class KeyProfiles
 						new FieldItem( FINAL | EXACT , 	new ClassItem(android.graphics.RectF.class)),	//k
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//l
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//m
-						new FieldItem( FINAL | EXACT , 	new ClassItem(boolean.class)),	//n
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//n
 						new FieldItem( FINAL | EXACT , 	new ClassItem(boolean.class)),	//o
-						new FieldItem( FINAL | EXACT , 	new ClassItem(int.class)),	//p
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(int.class)),	//p
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//s
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//t
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//u
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//v
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//w
 						new FieldItem( PRIVATE | FINAL | EXACT , 	new ClassItem(java.lang.Integer.class)),	//x
-						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//q
-						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//r
+						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Splitter" , PUBLIC | FINAL | EXACT )),	//q
+						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem("com.google.common.collect.ImmutableMap" , PUBLIC | ABSTRACT | EXACT )),	//r
 
 				});
 /////////////////////////
@@ -98,9 +98,9 @@ public class KeyProfiles
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | STATIC | EXACT ),
+										new ClassItem("" , STATIC | EXACT ),
 
-										new ClassItem(android.util.TypedValue.class)
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -118,10 +118,9 @@ public class KeyProfiles
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
 
-										new ClassItem(android.content.res.TypedArray.class),
-										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -131,24 +130,12 @@ public class KeyProfiles
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
 
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #4: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
-
 										new ClassItem(java.lang.String.class),
 										new ClassItem(java.lang.String.class)
 
 								),
 
-						//Method #5: a
+						//Method #4: a
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -158,28 +145,58 @@ public class KeyProfiles
 
 								),
 
-						//Method #6: a
+						//Method #5: a
 						new MethodProfile
 								(
-										PUBLIC | STATIC | EXACT ,
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #6: b
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #7: b
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
 										new ClassItem(java.lang.String.class),
 
 										new ClassItem(java.lang.String.class)
 
 								),
 
-						//Method #7: a
+						//Method #8: c
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
-										new ClassItem(void.class),
+										new ClassItem(float.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.util.List.class)
 
 								),
 
-						//Method #8: b
+						//Method #9: d
+						new MethodProfile
+								(
+										PRIVATE | STATIC | EXACT ,
+										new ClassItem(float.class),
+
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #10: e
 						new MethodProfile
 								(
 										PRIVATE | STATIC | EXACT ,
@@ -189,47 +206,17 @@ public class KeyProfiles
 
 								),
 
-						//Method #9: b
+						//Method #11: lambda$4xx23sAaRIfQ72ICtHj8q81GM3M
 						new MethodProfile
 								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | STATIC | EXACT ),
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.String.class),
 
 										new ClassItem(java.lang.String.class)
 
 								),
 
-						//Method #10: c
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(float.class),
-
-										new ClassItem(java.util.List.class)
-
-								),
-
-						//Method #11: d
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(float.class),
-
-										new ClassItem(java.util.List.class)
-
-								),
-
-						//Method #12: e
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(int.class),
-
-										new ClassItem(java.util.List.class)
-
-								),
-
-						//Method #13: a
+						//Method #12: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -239,7 +226,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #14: b
+						//Method #13: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -247,7 +234,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #15: c
+						//Method #14: c
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -255,7 +242,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #16: d
+						//Method #15: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -263,15 +250,15 @@ public class KeyProfiles
 
 								),
 
-						//Method #17: e
+						//Method #16: e
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
-						//Method #18: equals
+						//Method #17: equals
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -281,7 +268,31 @@ public class KeyProfiles
 
 								),
 
-						//Method #19: f
+						//Method #18: f
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #19: g
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #20: h
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #21: hashCode
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -289,7 +300,31 @@ public class KeyProfiles
 
 								),
 
-						//Method #20: hashCode
+						//Method #22: i
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.Float.class)
+
+								),
+
+						//Method #23: j
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #24: k
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #25: l
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -297,7 +332,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #21: toString
+						//Method #26: toString
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
