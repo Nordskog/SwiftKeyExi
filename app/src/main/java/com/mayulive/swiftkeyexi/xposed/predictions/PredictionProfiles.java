@@ -110,7 +110,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fbu");
+		newProfile.setFullPath("fbj");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -186,7 +186,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
@@ -220,7 +219,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
 
@@ -244,12 +242,11 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -332,7 +329,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #9: lambda$ERmxT3yLs4IHcLtQKLwSOVQ6kqo
+						//Method #9: lambda$94GJCUWrfeFIwnojEL6WZ1MUAWg
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -352,7 +349,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #10: lambda$HQAB0rr_ckzgdDutmFLeRcrOGUM
+						//Method #10: lambda$fLRMo9S-qeKgQM_PUiIapUuWXyY
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -373,7 +370,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )

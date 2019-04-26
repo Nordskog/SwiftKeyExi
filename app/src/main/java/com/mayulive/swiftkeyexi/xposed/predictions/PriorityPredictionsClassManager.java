@@ -132,12 +132,11 @@ public class PriorityPredictionsClassManager
 						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | FINAL | EXACT ),
 						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | FINAL | EXACT ),
 						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
+						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 				);
 
