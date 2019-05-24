@@ -68,8 +68,6 @@ public class CandidateManager
 	//Takes text, shortcut, list of token(text), sburequest
 	protected static Constructor clipboardCandidate_Constructor = null;
 
-	protected static Method clipboardCandidate_shouldEllipsizeMethod = null;
-
 	protected static Method token_staticConstructor = null;
 
 	protected static Map<Integer, SelectedShortcut> mSelectedShortcutMap = new HashMap<>();
@@ -222,7 +220,6 @@ public class CandidateManager
 		if (clipboardCandidateClass != null)
 		{
 			clipboardCandidate_Constructor = clipboardCandidateClass.getDeclaredConstructors()[0];	//Only has a single constructor
-			clipboardCandidate_shouldEllipsizeMethod = ProfileHelpers.findFirstMethodByName(clipboardCandidateClass.getDeclaredMethods(), "shouldEllipsize");
 		}
 
 		if (tokenClass != null)
@@ -382,8 +379,6 @@ public class CandidateManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidateClass", 	clipboardCandidateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidate_Constructor", 	clipboardCandidate_Constructor );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "token_staticConstructor", 	token_staticConstructor );
-
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidate_shouldEllipsizeMethod", 	clipboardCandidate_shouldEllipsizeMethod );
 
 		// Whether we can tell if a candidate is a predicted emoji
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidateGetTextOrigin,	 "candidate_sourceMetadataMethod", 	candidate_sourceMetadataMethod );

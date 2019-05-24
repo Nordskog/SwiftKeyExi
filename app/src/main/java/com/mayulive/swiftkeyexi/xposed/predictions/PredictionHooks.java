@@ -277,34 +277,6 @@ public class PredictionHooks
 		return returnHooks;
 	}
 
-
-	public static XC_MethodHook.Unhook hookClipboardCandidateEllipsize( )
-	{
-
-		return XposedBridge.hookMethod(CandidateManager.clipboardCandidate_shouldEllipsizeMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-			{
-				try
-				{
-					//Have shouldEllipsize return false if one of our inserted candidates.
-					CandidateManager.SelectedShortcut selectedShortcut = CandidateManager.getSelectedShortcut(param.thisObject);
-					if (selectedShortcut != null)
-					{
-						param.setResult(false);
-					}
-				}
-				catch (Throwable ex)
-				{
-					Hooks.predictionHooks_base.invalidate(ex, "Unexpected problem in Candidate Selected hook");
-				}
-
-			}
-		});
-
-	}
-
 	public static boolean hookPriority(final PackageTree param)
 	{
 		try
@@ -342,7 +314,6 @@ public class PredictionHooks
 			{
 				Hooks.predictionHooks_base.addAll( hookCandidatesUpdated(param) );
 				Hooks.predictionHooks_base.addAll( hookCandidateSelected() );
-				Hooks.predictionHooks_base.add( hookClipboardCandidateEllipsize() );
 			}
 
 			if (Hooks.predictionHooks_priority.isRequirementsMet())
