@@ -264,496 +264,426 @@ public class KeyboardStrings
 	//referring to Predictions and such.
 	//As of writing we just remove the INS_LANG_SPECIFIC_SPACE action from a rule pertaining to punctuation.
 
-	public static final String PUNCTUATION_STOCK_RULES =
-			"{\n"+
-					"    \"version\" : 2,\n"+
-					"    \"lang\" : \"default\",\n"+
-					"    \"punctuationRules\" : [\n"+
-					"        {\n"+
-					"            \"contextRules\": [\n"+
-					"                {\n"+
-					"                    \"ContextRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"(?i)\\\\b(www|http|ftp)$\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [\n"+
-					"                            \"INS_FOCUS\",\n"+
-					"                            \"DUMB_MODE\"\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                }\n"+
-					"            ]\n"+
-					"        },\n"+
-					"        {\n"+
-					"            \"charRules\": [\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"@\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [\n"+
-					"                            \"INS_FOCUS\",\n"+
-					"                            \"DUMB_MODE\"\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                },\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"_\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [\n"+
-					"                            \"BACKSPACE\",\n"+
-					"                            \"INS_FOCUS\"\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                },\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"…\",\n"+
-					"                            \"”\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [\n"+
-					"                            \"BACKSPACE\",\n"+
-					"                            \"INS_FOCUS\",\n"+
-					"                            \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                },\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"-\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [],\n"+
-					"                        \"contextRules\": [\n"+
-					"                            {\n"+
-					"                                \"ContextRule\": {\n"+
-					"                                    \"id\": [\n"+
-					"                                        \" $\"\n"+
-					"                                    ],\n"+
-					"                                    \"actions\": [\n"+
-					"                                        \"INS_FOCUS\",\n"+
-					"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                                    ]\n"+
-					"                                }\n"+
-					"                            }\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                },\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \":\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [],\n"+
-					"                        \"contextRules\": [\n"+
-					"                            {\n"+
-					"                                \"ContextRule\": {\n"+
-					"                                    \"id\": [\n"+
-					"                                        \"(?i)(file|ftp|http|https) $\"\n"+
-					"                                    ],\n"+
-					"                                    \"actions\": [\n"+
-					"                                        \"BACKSPACE\",\n"+
-					"                                        \"INS_FOCUS\",\n"+
-					"                                        \"DUMB_MODE\"\n"+
-					"                                    ]\n"+
-					"                                }\n"+
-					"                            }\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                },\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \".\",\n"+
-					"                            \",\",\n"+
-					"                            \"!\",\n"+
-					"                            \"?\",\n"+
-					"                            \"}\",\n"+
-					"                            \"]\",\n"+
-					"                            \")\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [\n"+
-					"                            \"BACKSPACE\",\n"+
-					"                            \"INS_PREDICTION\",\n"+
-					"                            \"INS_FOCUS\",\n"+
-					"                            \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                        ],\n"+
-					"                        \"contextRules\": [\n"+
-					"                            {\n"+
-					"                                \"CatRule\": {\n"+
-					"                                    \"id\": [\n"+
-					"                                      \"P*\"\n"+
-					"                                    ],\n"+
-					"                                    \"actions\": [\n"+
-					"                                        \"BACKSPACE\",\n"+
-					"                                        \"INS_FOCUS\",\n"+
-					"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                                    ]\n"+
-					"                                }\n"+
-					"                            },\n"+
-					"                            {\n"+
-					"                                \"ContextRule\": {\n"+
-					"                                    \"id\": [\n"+
-					"                                        \" $\",\n"+
-					"                                        \"\\u200B$\"\n"+
-					"                                    ],\n"+
-					"                                    \"actions\": [\n"+
-					"                                        \"BACKSPACE\",\n"+
-					"                                        \"INS_FOCUS\",\n"+
-					"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                                    ]\n"+
-					"                                }\n"+
-					"                            }\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                },\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"\\\"\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [],\n"+
-					"                        \"contextRules\": [\n"+
-					"                            {\n"+
-					"                                \"PairRule\": {\n"+
-					"                                    \"id\": [\n"+
-					"                                        \"\\\"\"\n"+
-					"                                    ],\n"+
-					"                                    \"state\": \"CLOSE\",\n"+
-					"                                    \"actions\": [\n"+
-					"                                        \"BACKSPACE\",\n"+
-					"                                        \"INS_FOCUS\",\n"+
-					"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                                    ]\n"+
-					"                                }\n"+
-					"                            }\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                },\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"'\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [],\n"+
-					"                        \"contextRules\": [\n"+
-					"                            {\n"+
-					"                                \"PairRule\": {\n"+
-					"                                    \"id\": [\n"+
-					"                                        \"'\"\n"+
-					"                                    ],\n"+
-					"                                    \"state\": \"CLOSE\",\n"+
-					"                                    \"actions\": [\n"+
-					"                                        \"BACKSPACE\",\n"+
-					"                                        \"INS_FOCUS\",\n"+
-					"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                                    ]\n"+
-					"                                }\n"+
-					"                            }\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                },\n"+
-					"                {\n"+
-					"                    \"CharRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"&\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [],\n"+
-					"                        \"contextRules\": [\n"+
-					"                            {\n"+
-					"                                \"ContextRule\": {\n"+
-					"                                    \"id\": [\n"+
-					"                                        \" $\"\n"+
-					"                                    ],\n"+
-					"                                    \"actions\": [\n"+
-					"                                        \"INS_FOCUS\",\n"+
-					"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                                    ]\n"+
-					"                                }\n"+
-					"                            }\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                }\n"+
-					"            ]\n"+
-					"        },\n"+
-					"        {\n"+
-					"            \"catRules\": [\n"+
-					"                {\n"+
-					"                    \"CatRule\": {\n"+
-					"                        \"id\": [\n"+
-					"                            \"Pe\",\n"+
-					"                            \"Pf\"\n"+
-					"                        ],\n"+
-					"                        \"actions\": [\n"+
-					"                            \"BACKSPACE\",\n"+
-					"                            \"INS_FOCUS\",\n"+
-					"                            \"INS_LANG_SPECIFIC_SPACE\"\n"+
-					"                        ]\n"+
-					"                    }\n"+
-					"                }\n"+
-					"            ]\n"+
-					"        }\n"+
-					"    ],\n"+
-					"    \"defaultSpace\":\" \",\n"+
-					"    \"encodingSeparator\":\" \",\n"+
-					"    \"spacingRules\": [\n"+
-					"        {\"term1\":\"\",\"term2\":\"-\",\"space\":\"\"}, {\"term1\":\"-\",\"term2\":\"\",\"space\":\"\"},\n"+
-					"        {\"term1\":\"\",\"term2\":\"@\",\"space\":\"\"}, {\"term1\":\"@\",\"term2\":\"\",\"space\":\"\"},\n"+
-					"        {\"term1\":\"\",\"term2\":\"_\",\"space\":\"\"}, {\"term1\":\"_\",\"term2\":\"\",\"space\":\"\"},\n"+
-					"        {\"term1\":\"\",\"term2\":\"'\",\"space\":\"\"}, {\"term1\":\"'\",\"term2\":\"\",\"space\":\"\"},\n"+
-					"        {\"term1\":\"\",\"term2\":\"'s\",\"space\":\"\"}\n"+
-					"    ],\n"+
-					"    \"sentenceSeparators\": [\".\", \"!\", \"?\"]\n"+
-					"}\n";
+	public static String getPunctuationRules( boolean noSpaceAfterPunctuation, boolean noRemoveSpaceBeforePunctuation)
+	{
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("{\n");
+		builder.append("    \"version\" : 2,\n");
+		builder.append("    \"lang\" : \"default\",\n");
+		builder.append("    \"punctuationRules\" : [\n");
+		builder.append("        {\n");
+		builder.append("            \"contextRules\": [\n");
+		builder.append("                {\n");
+		builder.append("                    \"ContextRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"(?i)\\\\b(www|http|ftp)$\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [\n");
+		builder.append("                            \"INS_FOCUS\",\n");
+		builder.append("                            \"DUMB_MODE\"\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                }\n");
+		builder.append("            ]\n");
+		builder.append("        },\n");
+		builder.append("        {\n");
+		builder.append("            \"charRules\": [\n");
+
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"\\uE1EA\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [\n");
+		builder.append("                            \"INS_PREDICTION\",\n");
+		builder.append("                            \"INS_LANG_SPECIFIC_SPACE\"\n");
 
 
-	public static final String PUNCTUATION_MODIFIED_RULES =
-	"{\n"+
-		"    \"version\" : 2,\n"+
-		"    \"lang\" : \"default\",\n"+
-		"    \"punctuationRules\" : [\n"+
-		"        {\n"+
-		"            \"contextRules\": [\n"+
-		"                {\n"+
-		"                    \"ContextRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"(?i)\\\\b(www|http|ftp)$\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [\n"+
-		"                            \"INS_FOCUS\",\n"+
-		"                            \"DUMB_MODE\"\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                }\n"+
-		"            ]\n"+
-		"        },\n"+
-		"        {\n"+
-		"            \"charRules\": [\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"@\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [\n"+
-		"                            \"INS_FOCUS\",\n"+
-		"                            \"DUMB_MODE\"\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                },\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"_\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [\n"+
-		"                            \"BACKSPACE\",\n"+
-		"                            \"INS_FOCUS\"\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                },\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"…\",\n"+
-		"                            \"”\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [\n"+
-		"                            \"BACKSPACE\",\n"+
-		"                            \"INS_FOCUS\"\n"+
-	/*	"                            \"INS_LANG_SPECIFIC_SPACE\"\n"+ 			*/
-		"                        ]\n"+
-		"                    }\n"+
-		"                },\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"-\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [],\n"+
-		"                        \"contextRules\": [\n"+
-		"                            {\n"+
-		"                                \"ContextRule\": {\n"+
-		"                                    \"id\": [\n"+
-		"                                        \" $\"\n"+
-		"                                    ],\n"+
-		"                                    \"actions\": [\n"+
-		"                                        \"INS_FOCUS\"\n"+
-	/*	"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+ */
-		"                                    ]\n"+
-		"                                }\n"+
-		"                            }\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                },\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \":\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [],\n"+
-		"                        \"contextRules\": [\n"+
-		"                            {\n"+
-		"                                \"ContextRule\": {\n"+
-		"                                    \"id\": [\n"+
-		"                                        \"(?i)(file|ftp|http|https) $\"\n"+
-		"                                    ],\n"+
-		"                                    \"actions\": [\n"+
-		"                                        \"BACKSPACE\",\n"+
-		"                                        \"INS_FOCUS\",\n"+
-		"                                        \"DUMB_MODE\"\n"+
-		"                                    ]\n"+
-		"                                }\n"+
-		"                            }\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                },\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \".\",\n"+
-		"                            \",\",\n"+
-		"                            \"!\",\n"+
-		"                            \"?\",\n"+
-		"                            \"}\",\n"+
-		"                            \"]\",\n"+
-		"                            \")\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [\n"+
-		"                            \"BACKSPACE\",\n"+
-		"                            \"INS_PREDICTION\",\n"+
-		"                            \"INS_FOCUS\"\n"+
-	//	"                            \"INS_LANG_SPECIFIC_SPACE\"\n"+	//Space inserted after char
-		"                        ],\n"+
-		"                        \"contextRules\": [\n"+
-		"                            {\n"+
-		"                                \"CatRule\": {\n"+
-		"                                    \"id\": [\n"+
-		"                                      \"P*\"\n"+
-		"                                    ],\n"+
-		"                                    \"actions\": [\n"+
-		"                                        \"BACKSPACE\",\n"+
-		"                                        \"INS_FOCUS\"\n"+
-	/*	"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+	*/	//This and below,
-		"                                    ]\n"+										//Space inserted after character repeated twice
-		"                                }\n"+
-		"                            },\n"+
-		"                            {\n"+
-		"                                \"ContextRule\": {\n"+
-		"                                    \"id\": [\n"+
-		"                                        \" $\",\n"+
-		"                                        \"\\u200B$\"\n"+
-		"                                    ],\n"+
-		"                                    \"actions\": [\n"+
-		"                                        \"BACKSPACE\",\n"+
-		"                                        \"INS_FOCUS\"\n"+
-	/*	"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+	*/
-		"                                    ]\n"+
-		"                                }\n"+
-		"                            }\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                },\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"\\\"\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [],\n"+
-		"                        \"contextRules\": [\n"+
-		"                            {\n"+
-		"                                \"PairRule\": {\n"+
-		"                                    \"id\": [\n"+
-		"                                        \"\\\"\"\n"+
-		"                                    ],\n"+
-		"                                    \"state\": \"CLOSE\",\n"+
-		"                                    \"actions\": [\n"+
-		"                                        \"BACKSPACE\",\n"+
-		"                                        \"INS_FOCUS\",\n"+
-		"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+
-		"                                    ]\n"+
-		"                                }\n"+
-		"                            }\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                },\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"'\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [],\n"+
-		"                        \"contextRules\": [\n"+
-		"                            {\n"+
-		"                                \"PairRule\": {\n"+
-		"                                    \"id\": [\n"+
-		"                                        \"'\"\n"+
-		"                                    ],\n"+
-		"                                    \"state\": \"CLOSE\",\n"+
-		"                                    \"actions\": [\n"+
-		"                                        \"BACKSPACE\",\n"+
-		"                                        \"INS_FOCUS\"\n"+
-	/*	"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+  	*/
-		"                                    ]\n"+
-		"                                }\n"+
-		"                            }\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                },\n"+
-		"                {\n"+
-		"                    \"CharRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"&\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [],\n"+
-		"                        \"contextRules\": [\n"+
-		"                            {\n"+
-		"                                \"ContextRule\": {\n"+
-		"                                    \"id\": [\n"+
-		"                                        \" $\"\n"+
-		"                                    ],\n"+
-		"                                    \"actions\": [\n"+
-		"                                        \"INS_FOCUS\"\n"+
-	/*	"                                        \"INS_LANG_SPECIFIC_SPACE\"\n"+ */
-		"                                    ]\n"+
-		"                                }\n"+
-		"                            }\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                }\n"+
-		"            ]\n"+
-		"        },\n"+
-		"        {\n"+
-		"            \"catRules\": [\n"+
-		"                {\n"+
-		"                    \"CatRule\": {\n"+
-		"                        \"id\": [\n"+
-		"                            \"Pe\",\n"+
-		"                            \"Pf\"\n"+
-		"                        ],\n"+
-		"                        \"actions\": [\n"+
-		"                            \"BACKSPACE\",\n"+
-		"                            \"INS_FOCUS\",\n"+
-		"                            \"INS_LANG_SPECIFIC_SPACE\"\n"+
-		"                        ]\n"+
-		"                    }\n"+
-		"                }\n"+
-		"            ]\n"+
-		"        }\n"+
-		"    ],\n"+
-		"    \"defaultSpace\":\" \",\n"+
-		"    \"encodingSeparator\":\" \",\n"+
-		"    \"spacingRules\": [\n"+
-		"        {\"term1\":\"\",\"term2\":\"-\",\"space\":\"\"}, {\"term1\":\"-\",\"term2\":\"\",\"space\":\"\"},\n"+
-		"        {\"term1\":\"\",\"term2\":\"@\",\"space\":\"\"}, {\"term1\":\"@\",\"term2\":\"\",\"space\":\"\"},\n"+
-		"        {\"term1\":\"\",\"term2\":\"_\",\"space\":\"\"}, {\"term1\":\"_\",\"term2\":\"\",\"space\":\"\"},\n"+
-		"        {\"term1\":\"\",\"term2\":\"'\",\"space\":\"\"}, {\"term1\":\"'\",\"term2\":\"\",\"space\":\"\"},\n"+
-		"        {\"term1\":\"\",\"term2\":\"'s\",\"space\":\"\"}\n"+
-		"    ],\n"+
-		"    \"sentenceSeparators\": [\".\", \"!\", \"?\"]\n"+
-		"}\n";
+		builder.append("                        ],\n");
+		builder.append("                        \"PredictionRules\": [\n");
+		builder.append("                            {\n");
+		builder.append("                                \"PredictionRule\": {\n");
+		builder.append("                                    \"id\": [\n");
+		builder.append("                                        \".\",\n");
+		builder.append("                                        \",\",\n");
+		builder.append("                                        \"!\",\n");
+		builder.append("                                        \"?\"\n");
+		builder.append("                                    ],\n");
+		builder.append("                                    \"actions\": [\n");
+		builder.append("                                        \"BACKSPACE\",\n");
+
+		if (noSpaceAfterPunctuation)
+		{
+			builder.append("                                        \"INS_PREDICTION\"\n");
+		}
+		else
+		{
+			builder.append("                                        \"INS_PREDICTION\",\n");
+			builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
+		}
 
 
+		builder.append("                                    ]\n");
+		builder.append("                                }\n");
+		builder.append("                            }\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"@\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [\n");
+		builder.append("                            \"INS_FOCUS\",\n");
+		builder.append("                            \"DUMB_MODE\"\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"…\",\n");
+		builder.append("                            \"”\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [\n");
+		builder.append("                            \"BACKSPACE\",\n");
+
+
+		if (noSpaceAfterPunctuation)
+		{
+			builder.append("                            \"INS_FOCUS\"\n");
+		}
+		else
+		{
+			builder.append("                            \"INS_FOCUS\",\n");
+			builder.append("                            \"INS_LANG_SPECIFIC_SPACE\"\n");
+		}
+
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"-\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [],\n");
+		builder.append("                        \"contextRules\": [\n");
+		builder.append("                            {\n");
+		builder.append("                                \"ContextRule\": {\n");
+		builder.append("                                    \"id\": [\n");
+		builder.append("                                        \" $\"\n");
+		builder.append("                                    ],\n");
+		builder.append("                                    \"actions\": [\n");
+
+		if (noSpaceAfterPunctuation)
+		{
+			builder.append("                                        \"INS_FOCUS\"\n");
+		}
+		else
+		{
+			builder.append("                                        \"INS_FOCUS\",\n");
+			builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
+		}
+
+		builder.append("                                    ]\n");
+		builder.append("                                }\n");
+		builder.append("                            }\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \":\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [],\n");
+		builder.append("                        \"contextRules\": [\n");
+		builder.append("                            {\n");
+		builder.append("                                \"ContextRule\": {\n");
+		builder.append("                                    \"id\": [\n");
+		builder.append("                                        \"(?i)(file|ftp|http|https) $\"\n");
+		builder.append("                                    ],\n");
+		builder.append("                                    \"actions\": [\n");
+		builder.append("                                        \"BACKSPACE\",\n");
+		builder.append("                                        \"INS_FOCUS\",\n");
+		builder.append("                                        \"DUMB_MODE\"\n");
+		builder.append("                                    ]\n");
+		builder.append("                                }\n");
+		builder.append("                            }\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+
+
+
+
+
+
+
+
+
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \".\",\n");
+		builder.append("                            \",\",\n");
+		builder.append("                            \"!\",\n");
+		builder.append("                            \"?\",\n");
+		builder.append("                            \"}\",\n");
+		builder.append("                            \"]\",\n");
+		builder.append("                            \")\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [\n");		// Default
+		builder.append("                            \"BACKSPACE\",\n");
+		builder.append("                            \"INS_PREDICTION\",\n");
+
+		if (noSpaceAfterPunctuation)
+		{
+			builder.append("                            \"INS_FOCUS\"\n");
+		}
+		else
+		{
+			builder.append("                            \"INS_FOCUS\",\n");
+			builder.append("                            \"INS_LANG_SPECIFIC_SPACE\"\n");
+		}
+
+
+		builder.append("                        ],\n");
+		builder.append("                        \"contextRules\": [\n");
+		builder.append("                            {\n");						// After prediction
+		builder.append("                                \"CatRule\": {\n");
+		builder.append("                                    \"id\": [\n");
+		builder.append("                                      \"P*\"\n");
+		builder.append("                                    ],\n");
+		builder.append("                                    \"actions\": [\n");
+
+
+		if (!noRemoveSpaceBeforePunctuation)
+		{
+			builder.append("                                        \"BACKSPACE\",\n");
+		}
+
+
+		if (noSpaceAfterPunctuation)
+		{
+			builder.append("                                        \"INS_FOCUS\"\n");
+		}
+		else
+		{
+			builder.append("                                        \"INS_FOCUS\",\n");
+			builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
+		}
+
+
+		builder.append("                                    ]\n");
+		builder.append("                                }\n");
+
+
+		builder.append("                            },\n");
+		builder.append("                            {\n");						// after space?
+		builder.append("                                \"ContextRule\": {\n");
+		builder.append("                                    \"id\": [\n");
+		builder.append("                                        \" $\",\n");
+		builder.append("                                        \"\\u200B$\"\n");
+		builder.append("                                    ],\n");
+		builder.append("                                    \"actions\": [\n");
+
+		if (!noRemoveSpaceBeforePunctuation)
+		{
+			builder.append("                                        \"BACKSPACE\",\n");
+		}
+
+
+
+		if (noSpaceAfterPunctuation)
+		{
+			builder.append("                                        \"INS_FOCUS\"\n");
+		}
+		else
+		{
+			builder.append("                                        \"INS_FOCUS\",\n");
+			builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
+		}
+
+		builder.append("                                    ]\n");
+		builder.append("                                }\n");
+		builder.append("                            }\n");
+
+
+
+
+
+
+
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+
+
+
+
+
+
+
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"\\\"\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [],\n");
+		builder.append("                        \"contextRules\": [\n");
+		builder.append("                            {\n");
+		builder.append("                                \"PairRule\": {\n");
+		builder.append("                                    \"id\": [\n");
+		builder.append("                                        \"\\\"\"\n");
+		builder.append("                                    ],\n");
+		builder.append("                                    \"state\": \"CLOSE\",\n");
+		builder.append("                                    \"actions\": [\n");
+		builder.append("                                        \"BACKSPACE\",\n");
+		builder.append("                                        \"INS_PREDICTION\",\n");
+
+		if (noSpaceAfterPunctuation)
+		{
+			builder.append("                                        \"INS_FOCUS\"\n");
+		}
+		else
+		{
+			builder.append("                                        \"INS_FOCUS\",\n");
+			builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
+		}
+
+		builder.append("                                    ],\n");
+		builder.append("                                    \"contextRules\": [\n");
+		builder.append("                                        {\n");
+		builder.append("                                            \"CatRule\": {\n");
+		builder.append("                                                \"id\": [\n");
+		builder.append("                                                    \"P*\"\n");
+		builder.append("                                                ],\n");
+		builder.append("                                                \"actions\": [\n");
+		builder.append("                                                    \"BACKSPACE\",\n");
+		builder.append("                                                    \"INS_FOCUS\",\n");
+		builder.append("                                                    \"INS_LANG_SPECIFIC_SPACE\"\n");
+		builder.append("                                                ]\n");
+		builder.append("                                            }\n");
+		builder.append("                                        },\n");
+		builder.append("                                        {\n");
+		builder.append("                                            \"ContextRule\": {\n");
+		builder.append("                                                \"id\": [\n");
+		builder.append("                                                    \" $\",\n");
+		builder.append("                                                    \"\\u200B$\"\n");
+		builder.append("                                                ],\n");
+		builder.append("                                                \"actions\": [\n");
+		builder.append("                                                    \"BACKSPACE\",\n");
+		builder.append("                                                    \"INS_FOCUS\",\n");
+		builder.append("                                                    \"INS_LANG_SPECIFIC_SPACE\"\n");
+		builder.append("                                                ]\n");
+		builder.append("                                            }\n");
+		builder.append("                                        }\n");
+		builder.append("                                    ]\n");
+		builder.append("                                }\n");
+		builder.append("                            }\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"'\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [],\n");
+		builder.append("                        \"contextRules\": [\n");
+		builder.append("                            {\n");
+		builder.append("                                \"PairRule\": {\n");
+		builder.append("                                    \"id\": [\n");
+		builder.append("                                        \"'\"\n");
+		builder.append("                                    ],\n");
+		builder.append("                                    \"state\": \"CLOSE\",\n");
+		builder.append("                                    \"actions\": [\n");
+		builder.append("                                        \"BACKSPACE\",\n");
+		builder.append("                                        \"INS_FOCUS\",\n");
+		builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
+		builder.append("                                    ]\n");
+		builder.append("                                }\n");
+		builder.append("                            }\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"&\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [],\n");
+		builder.append("                        \"contextRules\": [\n");
+		builder.append("                            {\n");
+		builder.append("                                \"ContextRule\": {\n");
+		builder.append("                                    \"id\": [\n");
+		builder.append("                                        \" $\"\n");
+		builder.append("                                    ],\n");
+		builder.append("                                    \"actions\": [\n");
+		builder.append("                                        \"INS_FOCUS\",\n");
+		builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
+		builder.append("                                    ]\n");
+		builder.append("                                }\n");
+		builder.append("                            }\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                },\n");
+		builder.append("                {\n");
+		builder.append("                    \"CharRule\": {\n");
+		builder.append("                         \"_comment\": [\n");
+		builder.append("                            \"U+2019\",\n");
+		builder.append("                            \"We want to keep the RIGHT SINGLE QUOTATION MARK\",\n");
+		builder.append("                            \"from adding a space (like other Pf do)\",\n");
+		builder.append("                            \"cf LP-881\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"’\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [\n");
+		builder.append("                            \"INS_FOCUS\"\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                }\n");
+		builder.append("            ]\n");
+		builder.append("        },\n");
+		builder.append("        {\n");
+		builder.append("            \"catRules\": [\n");
+		builder.append("                {\n");
+		builder.append("                    \"CatRule\": {\n");
+		builder.append("                        \"id\": [\n");
+		builder.append("                            \"Pe\",\n");
+		builder.append("                            \"Pf\"\n");
+		builder.append("                        ],\n");
+		builder.append("                        \"actions\": [\n");
+		builder.append("                            \"BACKSPACE\",\n");
+		builder.append("                            \"INS_FOCUS\",\n");
+		builder.append("                            \"INS_LANG_SPECIFIC_SPACE\"\n");
+		builder.append("                        ]\n");
+		builder.append("                    }\n");
+		builder.append("                }\n");
+		builder.append("            ]\n");
+		builder.append("        }\n");
+		builder.append("    ],\n");
+		builder.append("    \"defaultSpace\":\" \",\n");
+		builder.append("    \"encodingSeparator\":\" \",\n");
+		builder.append("    \"spacingRules\": [\n");
+		builder.append("        {\"term1\":\"\",\"term2\":\"-\",\"space\":\"\"}, {\"term1\":\"-\",\"term2\":\"\",\"space\":\"\"},\n");
+		builder.append("        {\"term1\":\"\",\"term2\":\"@\",\"space\":\"\"}, {\"term1\":\"@\",\"term2\":\"\",\"space\":\"\"},\n");
+		builder.append("        {\"term1\":\"\",\"term2\":\"_\",\"space\":\"\"}, {\"term1\":\"_\",\"term2\":\"\",\"space\":\"\"},\n");
+		builder.append("        {\"term1\":\"\",\"term2\":\"'\",\"space\":\"\"}, {\"term1\":\"'\",\"term2\":\"\",\"space\":\"\"},\n");
+		builder.append("        {\"term1\":\"\",\"term2\":\"'s\",\"space\":\"\"}\n");
+		builder.append("    ],\n");
+		builder.append("    \"sentenceSeparators\": [\".\", \"!\", \"?\"],\n");
+		builder.append("    \"wordSeparators\" : [\"-\"]\n");
+		builder.append("}\n");
+
+		return builder.toString();
+
+
+	}
 }

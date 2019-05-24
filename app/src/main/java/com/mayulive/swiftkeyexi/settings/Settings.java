@@ -100,7 +100,7 @@ public class Settings
 	public static float QUICKMENU_TEXT_SIZE_RATIO = 0.15f;
 
 	public static boolean DISABLE_PUNCTUATION_AUTO_SPACE = false;
-
+	public static boolean DISABLE_PUNCTUATION_SPACE_REMOVAL = false;
 
 	//Set to true if any setting that requires a realod of the keyboard is changed
 	public static boolean request_KEYBOARD_RELOAD = false;
@@ -142,6 +142,7 @@ public class Settings
 		PREDICTION_SUGGESTIONS_ENABLED = prefs.getBoolean(PreferenceConstants.pref_prediction_suggestions_key, true);
 
 		DISABLE_PUNCTUATION_AUTO_SPACE = prefs.getBoolean(PreferenceConstants.pref_disable_punctuation_autospace_key, false);
+		DISABLE_PUNCTUATION_SPACE_REMOVAL = prefs.getBoolean(PreferenceConstants.pref_disable_punctuation_space_removal_key, false);
 
 		DISABLE_SWIPE_AUTO_CORRECT = prefs.getBoolean(PreferenceConstants.pref_disable_auto_correct_on_cursor_move_key, true);
 

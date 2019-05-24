@@ -140,6 +140,12 @@
         android:defaultValue="false" />
 
     <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+        android:key="@string/pref_disable_punctuation_space_removal_key"
+        android:title="@string/pref_disable_punctuation_space_removal_title"
+        android:summary="@string/pref_disable_punctuation_space_removal_summary"
+        android:defaultValue="false" />
+
+    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_disable_period_click_key"
         android:title="@string/pref_disable_period_click_title"
         android:summary="@string/pref_disable_period_click_summary"
