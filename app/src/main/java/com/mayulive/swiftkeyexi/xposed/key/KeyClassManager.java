@@ -108,13 +108,14 @@ public class KeyClassManager
 
 					new ClassItem("" , PUBLIC | FINAL | EXACT ),
 					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem(java.util.Locale.class),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 			);
 
 			keyRawDefinitionClass_newKeyMethod  = ProfileHelpers.findMostSimilar(profile, keyRawDefinitionClass.getDeclaredMethods(), keyRawDefinitionClass);
 
-			DebugTools.logIfProfileMismatch(keyRawDefinitionClass_newKeyMethod, keyRawDefinitionClass, profile, "keyRawDefinitionClass");
+			DebugTools.logIfProfileMismatch(keyRawDefinitionClass_newKeyMethod, keyRawDefinitionClass, profile, "keyRawDefinitionClass_newKeyMethod");
 
 		}
 
