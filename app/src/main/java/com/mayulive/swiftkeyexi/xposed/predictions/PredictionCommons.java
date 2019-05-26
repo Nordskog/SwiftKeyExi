@@ -50,6 +50,9 @@ public class PredictionCommons
 	protected static long mTimeOfLastInsertException = -1;
 	protected static int mInsertExceptionCount = 0;
 
+	protected static Object mLastSelectedCandidateBarCandiate;
+	protected static Object mLastSelectedCandidateBarCandidateWrapped;
+
 	public static void setSuggestionsPaddingVisibility(boolean visible)
 	{
 		if ( mSuggestionsPadding[0] != null && mSuggestionsPadding[1] != null )
@@ -258,144 +261,6 @@ public class PredictionCommons
 						candidates.add(0,verbatim);
 					}
 				}
-		}
-		else
-		{
-			Log.e(LOGTAG, "Tried setting verbatim but list was empty!");
-		}
-	}
-
-	static void makeVerbatimPrimary(String lastInput, List<Object> candidates)
-	{
-		boolean inputValid = lastInput != null && !lastInput.isEmpty();
-
-		if (!candidates.isEmpty())
-		{
-			Object verbatim = candidates.get(0);
-			//if ( !CandidateManager.isVerbatim(verbatim) )
-			{
-
-				//If the primary candidate is verbatim, just check if it's got a proper separator
-				if ( CandidateManager.isVerbatim(verbatim) )
-				{
-					//Log.e("###", "Primary is verbatim");
-					if (!CandidateManager.hasTrailingSeparator( verbatim ) && inputValid)
-					{
-						//For some reason adding a separator to a verbatim candidate doesn't carry over.
-						//Have to completely replace it.
-						candidates.remove(0);
-						verbatim = null;
-						//Log.e("###", "But no separator");
-					}
-				}
-				else if (candidates.size() > 1)
-				{
-					verbatim = candidates.get(1);
-
-					if ( CandidateManager.isVerbatim(verbatim) )
-					{
-						//Log.e("###", "Secondary is verbatim");
-
-						candidates.remove(1);
-
-						if (CandidateManager.hasTrailingSeparator( verbatim ) || !inputValid)
-						{
-							candidates.add(0,verbatim);
-						}
-						else
-						{
-							//Log.e("###", "But no separator");
-							verbatim = null;
-						}
-
-					}
-					else
-						verbatim = null;
-				}
-				else
-					verbatim = null;
-
-
-				if (verbatim == null && inputValid )
-				{
-					//Log.e("###", "No verbatim found, inserting raw");
-
-					//No verbatrim in either position!
-					//Create a new candidate instead
-					Object primCan  = candidates.get(0);
-
-					//Only normal shortcuts, this will be a raw candidate through-and-through.
-					//No mapping shenanigans going on down the line
-
-					Object newCandidate = CandidateManager.getClipboardCandidate(primCan, lastInput, lastInput);
-
-					try
-					{
-						//Sometimes there isn't one! Think maybe when swiftkey thinks
-						//you might be trying to capitalize the character ?
-						//This makes me doubt if I should ever trust swiftkey's separator value
-						//Whatever they define is probably fine for most other cases though, but
-						//here we absolutely do want a space.
-						String trailingSep = " ";
-
-						//Actually, try getting separator of primary
-						try
-						{
-							if (primCan != null)
-							{
-								trailingSep = CandidateManager.getTrailingSeparator(primCan);
-								if (trailingSep == null)
-								{
-									trailingSep = " ";
-								}
-								else
-								{
-									if (DebugTools.DEBUG_PREDICTIONS)
-									{
-										Log.e(LOGTAG, "Got trailing separator: "+trailingSep);
-									}
-								}
-							}
-
-						}
-						catch ( Throwable ex )
-						{
-
-						}
-
-						CandidateManager.candidate_setTrailingSeparatorMethod.invoke(newCandidate,trailingSep);
-
-						if (DebugTools.DEBUG_PREDICTIONS)
-						{
-							Log.e(LOGTAG, "Creating verbatim can text: \""+lastInput+"\", sep: \""+trailingSep+"\"");
-
-						}
-
-						candidates.add(0, newCandidate);
-					}
-					catch (Exception ex )
-					{
-						Log.e(LOGTAG, "Failed to set trailing separator");
-					}
-				}
-				else
-				{
-					if (verbatim == null)
-					{
-						//Log.e("###", "Verbatim not found, but no lastInput.");
-					}
-					else
-					{
-						/*
-						String trailingSep = "";
-						try {	trailingSep = (String)CandidateManager.candidate_getTrailingSeparatorMethod.invoke(verbatim); }
-						catch (Exception ex) { }
-						*/
-
-						//Log.e("###", "Verbatim is now: "+verbatim+", sep: \""+trailingSep+"\"");
-					}
-				}
-			}
 		}
 		else
 		{

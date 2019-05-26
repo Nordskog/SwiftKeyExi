@@ -993,9 +993,7 @@ public class KeyboardHooks
 					@Override
 					public void OnSettingsUpdated()
 					{
-						KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
-										KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
-								false );
+						KeyboardMethods.loadPunctuationRules();
 
 						KeyboardMethods.setKeyboardOpacity();
 

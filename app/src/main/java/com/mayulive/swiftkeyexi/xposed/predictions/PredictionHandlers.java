@@ -41,6 +41,32 @@ public class PredictionHandlers
 	{
 		Object candidate = param.args[PredictionClassManager.handleCandidateClass_CandidateSelectedMethod_CandidateArgPosition];
 
+		if (Settings.DISABLE_PREDICTION_AUTO_SPACE)
+		{
+			// Keep track of candidates selected via the candidate bar so we can remove their spaces, if enabled.
+			Object candidateSource = param.args[PredictionClassManager.handleCandidateClass_CandidateSelectedMethod_sourceTypeEnumArgPosition];
+
+			if ( candidateSource == PredictionClassManager.candidateSourceTypeEnum_candidate_bar )
+			{
+				PredictionCommons.mLastSelectedCandidateBarCandidateWrapped = null;	// Always reset
+				PredictionCommons.mLastSelectedCandidateBarCandiate = candidate;
+
+				// When a variant candidate ( multi-race emoji ) passes through, what is actually used later is the wrapped fluency candidate.
+				if ( CandidateManager.isVariant(candidate) )
+				{
+					PredictionCommons.mLastSelectedCandidateBarCandidateWrapped = CandidateManager.getVariantWrapped(candidate);
+				}
+			}
+			else
+			{
+				// They certainly don't reuse candidate objects but let's make sure.
+				PredictionCommons.mLastSelectedCandidateBarCandiate = null;
+				PredictionCommons.mLastSelectedCandidateBarCandidateWrapped = null;	// Always reset
+			}
+
+		}
+
+
 		//Check if inserted shortcut
 		CandidateManager.SelectedShortcut selectedShortcut = CandidateManager.getSelectedShortcut(candidate);
 		if (selectedShortcut != null)

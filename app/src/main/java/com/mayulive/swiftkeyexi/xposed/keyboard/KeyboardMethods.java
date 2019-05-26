@@ -9,16 +9,13 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
-import android.widget.FrameLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
-import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 
@@ -71,7 +68,28 @@ public class KeyboardMethods
 
 	public enum PunctuationRuleMode
 	{
-		STOCK, MODIFIED
+		STOCK(0x0),
+		NO_PUNCTUATION_AUTO_SPACE(0x1),
+		NO_SPACE_REMOVAL(0x2);
+
+		int mask = 0;
+
+		PunctuationRuleMode( int mask)
+		{
+			this.mask = mask;
+		}
+
+		public static int getMask( boolean noAutoSpace, boolean noSpaceRemoval )
+		{
+			return  (noAutoSpace ? NO_PUNCTUATION_AUTO_SPACE.mask : 0x0) |
+					(noSpaceRemoval ? NO_SPACE_REMOVAL.mask : 0x0);
+		}
+
+		public boolean checkMask(int otherMask)
+		{
+			return (otherMask & this.mask) == this.mask;
+		}
+
 	}
 
 	// Values used by both Swiftkey and us.
@@ -94,7 +112,7 @@ public class KeyboardMethods
 
 	protected static ExiIconView mToolbarButton = null;
 
-	protected static PunctuationRuleMode mActivePunctuationMode = PunctuationRuleMode.STOCK;
+	protected static int mActivePunctuationMode = PunctuationRuleMode.STOCK.mask;
 
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
 	protected static ArrayList<SharedPreferences.OnSharedPreferenceChangeListener> mSwiftkeyPrefChangedListeners = new ArrayList<>();
@@ -372,13 +390,6 @@ public class KeyboardMethods
 	}
 
 
-	public static boolean loadPunctuationRules()
-	{
-		return KeyboardMethods.loadPunctuationRules( Settings.DISABLE_PUNCTUATION_AUTO_SPACE ?
-						KeyboardMethods.PunctuationRuleMode.MODIFIED : KeyboardMethods.PunctuationRuleMode.STOCK,
-				false );
-	}
-
 	public static void updateOrientation( Context context )
 	{
 		mDeviceOrientation = context.getResources().getConfiguration().orientation;
@@ -428,10 +439,12 @@ public class KeyboardMethods
 
 	}
 
-	public static boolean loadPunctuationRules(PunctuationRuleMode mode, boolean force)
+	public static boolean loadPunctuationRules()
 	{
+		int newMode = PunctuationRuleMode.getMask( Settings.DISABLE_PUNCTUATION_AUTO_SPACE, Settings.DISABLE_PUNCTUATION_SPACE_REMOVAL );
+
 		//Don't bother changing if mode already matches
-		if (mode != mActivePunctuationMode || force)
+		if ( newMode != mActivePunctuationMode )
 		{
 
 			//PunctuatorImpl instance must be present
@@ -440,7 +453,7 @@ public class KeyboardMethods
 
 				//Do not update active mode if we were unable to set it
 				//In that scenario we will also be calling this method when we set the instance
-				mActivePunctuationMode = mode;
+				mActivePunctuationMode = newMode;
 
 				try
 				{
@@ -448,19 +461,11 @@ public class KeyboardMethods
 
 					Object[] args = new Object[1];
 
-					switch(mActivePunctuationMode)
-					{
-						case STOCK:
-						{
-							args[0] = new ByteArrayInputStream( KeyboardStrings.PUNCTUATION_STOCK_RULES.getBytes(StandardCharsets.UTF_8.name()));
-							break;
-						}
-						case MODIFIED:
-						{
-							args[0] = new ByteArrayInputStream( KeyboardStrings.PUNCTUATION_MODIFIED_RULES.getBytes(StandardCharsets.UTF_8.name()));
-							break;
-						}
-					}
+					args[0] = new ByteArrayInputStream(
+									KeyboardStrings.getPunctuationRules(
+											PunctuationRuleMode.NO_PUNCTUATION_AUTO_SPACE.checkMask(mActivePunctuationMode),
+											PunctuationRuleMode.NO_SPACE_REMOVAL.checkMask(mActivePunctuationMode))
+									.getBytes(StandardCharsets.UTF_8.name()));
 
 					PriorityKeyboardClassManager.punctuatorImplClass_AddRulesMethod.invoke(PriorityKeyboardClassManager.punctuatorImplInstance, args);
 

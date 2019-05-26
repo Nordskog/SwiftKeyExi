@@ -10,6 +10,7 @@
     <string name="category_pref_emoji_panel">Emoji Panel</string>
     <string name="category_pref_flow_suggestions">Flow &amp; Predictions </string>
     <string name="category_pref_misc">Misc</string>
+    <string name="category_pref_punctuation">Punctuation</string>
     <string name="category_pref_app">App</string>
     <string name="category_pref_keys">Keys</string>
     <string name="category_pref_audio">Audio</string>
@@ -131,8 +132,18 @@
 
 
     <string name="pref_disable_punctuation_autospace_key">pref_disable_punctuation_autospace</string>
-    <string name="pref_disable_punctuation_autospace_title">No punctuation auto-space</string>
+    <string name="pref_disable_punctuation_autospace_title">Disable punctuation auto-space</string>
     <string name="pref_disable_punctuation_autospace_summary">Space will not be inserted after punctuation</string>
+
+    <string name="pref_disable_punctuation_space_removal_key">pref_disable_punctuation_space_removal</string>
+    <string name="pref_disable_punctuation_space_removal_title">Disable punctuation space removal</string>
+    <string name="pref_disable_punctuation_space_removal_summary">Punctuation will not remove preceding space</string>
+
+    <string name="pref_disable_prediction_autospace_key">pref_disable_prediction_autospace</string>
+    <string name="pref_disable_prediction_autospace_title">Disable prediction auto-space</string>
+    <string name="pref_disable_prediction_autospace_summary">Space will not be inserted after predictions</string>
+
+
 
     <string name="pref_dictionary_toggle_key">pref_dictionary_toggle</string>
         <string name="pref_dictionary_toggle_title">Dictionary</string>

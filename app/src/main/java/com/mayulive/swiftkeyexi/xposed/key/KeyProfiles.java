@@ -33,7 +33,7 @@ public class KeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("dwe");
+		newProfile.setFullPath("dwk");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -120,6 +120,7 @@ public class KeyProfiles
 
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem(java.util.Locale.class),
 										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
@@ -206,7 +207,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #11: lambda$4xx23sAaRIfQ72ICtHj8q81GM3M
+						//Method #11: lambda$bgny9dYHVo_FKdiS_2NEBb8rgk8
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,

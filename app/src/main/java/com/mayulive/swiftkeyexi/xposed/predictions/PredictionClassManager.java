@@ -28,56 +28,26 @@ public class PredictionClassManager
 
 	//All the classes we'll be using will be loaded here and shared
 		
-	
-	/////////////
-	//Known classes
-	/////////////
-
-
-	/////////////
-	//Unknown classes
-	/////////////
-
 
 	protected static Class updateCandidateDisplayClass;
 
 	protected static Class UpdateCandidateTaskClass;
-
-	protected static Class resultTypeEnum;
-	protected static Class CandidateSourceTypeEnum;
-
-
-	protected static Class handleCandidateClass;
-
-
-	///////////
-	//Fields
-	///////////
-
 	protected static Field UpdateCandidateTaskClass_FutureField ;
-
-
-
-	///////////
-	//Methods
-	///////////
 
 	protected static Method UpdateCandidateTaskClass_getTopCandidateMethod;
 
 
+	protected static Class handleCandidateClass;
 	protected static Method handleCandidateClass_candidateSelectedMethod;
 
 
-	//////////
-	//Instances
-	////////////
-
+	protected static Class resultTypeEnum;
 	protected static Object resultTypeEnum_flow;
 	protected static Object resultTypeEnum_flow_success;
 	protected static Object resultTypeEnum_flow_liftoff;
 
 
-
+	protected static Class CandidateSourceTypeEnum;
 	protected static Object candidateSourceTypeEnum_candidate_bar;
 
 	/////////////
@@ -85,6 +55,8 @@ public class PredictionClassManager
 	///////////
 
 	protected static int handleCandidateClass_CandidateSelectedMethod_CandidateArgPosition = 2;
+
+	protected static int handleCandidateClass_CandidateSelectedMethod_sourceTypeEnumArgPosition= 3;
 
 	protected static int updateCandidateDisplayClass_constructor_listArgPosition = 1;
 	protected static int updateCandidateDisplayClass_constructor_lastCandidateResultTypeArgPosition = 2;
@@ -192,6 +164,13 @@ public class PredictionClassManager
 							new ClassItem(null, "com.touchtype_fluency.service.candidates.Candidate"),
 							handleCandidateClass_candidateSelectedMethod.getParameterTypes(),
 							null
+						);
+
+				handleCandidateClass_CandidateSelectedMethod_sourceTypeEnumArgPosition = ProfileHelpers.findFirstClassIndex
+						(
+								new ClassItem(CandidateSourceTypeEnum),
+								handleCandidateClass_candidateSelectedMethod.getParameterTypes(),
+								null
 						);
 			}
 		}

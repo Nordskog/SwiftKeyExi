@@ -35,23 +35,48 @@ import java.util.Map;
 public class CandidateManager
 {
 
-	private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
+private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 
-	protected static Class verbatimCandidate = null;
 	protected static Class candidateInterfaceClass = null;
+	protected static Method candidate_getCorrectionSpanReplacementText = null;
+	protected static Method candidate_sourceMetadataMethod = null;
+
 
 	protected static Class fluencyCandidateClass = null;
+	protected static Method fluencyCandidate_getTrailingSeparatorMethod = null;
+
+	protected static Class contextPromotedFluencyCandidateClass = null;
+	protected static Method contextPromotedFluencyCandidate_getTrailingSeparatorMethod = null;
+
+	protected static Class rawTextCandidateClass = null;
+	protected static Method rawTextCandidateClass_getTrailingSeparatorMethod = null;
+
 	protected static Class clipboardCandidateClass = null;
+	protected static Constructor clipboardCandidate_Constructor = null;
+	protected static Method clipboardCandidateClass_getTrailingSeparatorMethod = null;
+
+
 	protected static Class subCandidateClass = null;
+	protected static Field subCandidateClass_inputStringField = null;
+
 
 	protected static Class tokenClass = null;
+
 
 	protected static Method candidate_getSubRequestMethod = null;
 	protected static Method candidate_setTrailingSeparatorMethod = null;
 	protected static Method candidate_getTrailingSeparatorMethod = null;
 	protected static Method candidate_getTokensMethod = null;
 
-	protected static Method candidate_sourceMetadataMethod = null;
+
+	protected static Class verbatimCandidate = null;
+	protected static Method verbatimCandidate_getTrailingSeparatorMethod = null;
+
+	protected static Class variantCandidateClass = null;
+	protected static Method variantCandidateClass_getWrappedMethod = null;
+
+	protected static Class emailAddressCandidateClass = null;
+	protected static Method emailAddressCandidateClass_getTrailingSeparatorMethod = null;
 
 	protected static Class CandidateSourceMetadataClass;	// Actually an interface
 	protected static Method CandidateSourceMetadataClass_textOriginMethod;
@@ -59,16 +84,6 @@ public class CandidateManager
 	protected static Class TextOriginEnum;
 	protected static Object TextOriginEnum_PREDICTED_BY_EMOJI_FLUENCY_SESSION;
 
-	//May be null
-	protected static Method candidate_getCorrectionSpanReplacementText = null;
-
-	//protected static Method subCandidateClass_inputStringMethod = null;
-	protected static Field subCandidateClass_inputStringField = null;
-
-	//Takes text, shortcut, list of token(text), sburequest
-	protected static Constructor clipboardCandidate_Constructor = null;
-
-	protected static Method clipboardCandidate_shouldEllipsizeMethod = null;
 
 	protected static Method token_staticConstructor = null;
 
@@ -182,14 +197,29 @@ public class CandidateManager
 
 		fluencyCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.FluencyCandidate", classLoader);
 
+		if (fluencyCandidateClass != null)
+		{
+			fluencyCandidate_getTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(fluencyCandidateClass.getDeclaredMethods(), "getTrailingSeparator");
+		}
+
 		/////////////
 
 		verbatimCandidate = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.VerbatimCandidate", classLoader);
+
+		if (verbatimCandidate != null)
+		{
+			verbatimCandidate_getTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(verbatimCandidate.getDeclaredMethods(), "getTrailingSeparator");
+		}
 
 
 		///////////////
 
 		clipboardCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.ClipboardCandidate", classLoader);
+
+		if (clipboardCandidateClass != null)
+		{
+			clipboardCandidateClass_getTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(verbatimCandidate.getDeclaredMethods(), "getTrailingSeparator");
+		}
 
 		/////////////
 
@@ -203,7 +233,51 @@ public class CandidateManager
 			Log.i(LOGTAG, "get tokens was null");
 		}
 
+		//////////////
 
+
+		emailAddressCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.EmailAddressCandidate", classLoader);
+
+		if (emailAddressCandidateClass != null)
+		{
+			emailAddressCandidateClass_getTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(emailAddressCandidateClass.getDeclaredMethods(), "getTrailingSeparator");
+		}
+
+
+		///////////
+
+		contextPromotedFluencyCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.ContextPromotedFluencyCandidate", classLoader);
+
+		if (contextPromotedFluencyCandidateClass != null)
+		{
+			contextPromotedFluencyCandidate_getTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(contextPromotedFluencyCandidateClass.getDeclaredMethods(), "getTrailingSeparator");
+		}
+
+		///////////
+
+		rawTextCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.RawTextCandidate", classLoader);
+
+		if (rawTextCandidateClass != null)
+		{
+			rawTextCandidateClass_getTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(rawTextCandidateClass.getDeclaredMethods(), "getTrailingSeparator");
+		}
+
+		///////////
+
+		variantCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.VariantCandidate", classLoader);
+
+		if (variantCandidateClass != null)
+		{
+			variantCandidateClass_getWrappedMethod = ProfileHelpers.firstMethodByName(variantCandidateClass.getDeclaredMethods(), "getWrapped");
+			if (variantCandidateClass_getWrappedMethod != null)
+			{
+				variantCandidateClass_getWrappedMethod.setAccessible(true);
+			}
+			else
+			{
+				Log.e(LOGTAG, "variantCandidateClass_getWrappedMethod null");
+			}
+		}
 
 		///////////
 
@@ -222,7 +296,6 @@ public class CandidateManager
 		if (clipboardCandidateClass != null)
 		{
 			clipboardCandidate_Constructor = clipboardCandidateClass.getDeclaredConstructors()[0];	//Only has a single constructor
-			clipboardCandidate_shouldEllipsizeMethod = ProfileHelpers.findFirstMethodByName(clipboardCandidateClass.getDeclaredMethods(), "shouldEllipsize");
 		}
 
 		if (tokenClass != null)
@@ -306,7 +379,7 @@ public class CandidateManager
 		}
 		catch( Exception ex)
 		{
-			Log.e(LOGTAG, "Failed to create RawTextCandidate");
+			Log.e(LOGTAG, "Failed to create ClipboardCandidate");
 			ex.printStackTrace();
 
 			return candidate;
@@ -325,7 +398,6 @@ public class CandidateManager
 		{
 			Object subrequest = candidate_getSubRequestMethod.invoke(candidate);
 			return (String) subCandidateClass_inputStringField.get(subrequest);
-			//return (String) subCandidateClass_inputStringMethod.invoke(subrequest);
 		}
 		catch (IllegalAccessException | InvocationTargetException e)
 		{
@@ -364,6 +436,36 @@ public class CandidateManager
 		return candidate.getClass() == verbatimCandidate;
 	}
 
+	public static boolean isVariant(Object candidate)
+	{
+		if (candidate == null)
+			return false;
+		return candidate.getClass() == variantCandidateClass;
+	}
+
+	public static Object getVariantWrapped(Object candidate)
+	{
+		if (candidate == null)
+			return false;
+
+		if ( variantCandidateClass_getWrappedMethod == null )
+			return false;
+
+		Object wrappedCandidate = null;
+
+		try
+		{
+			wrappedCandidate = variantCandidateClass_getWrappedMethod.invoke(candidate);
+		}
+		catch ( Exception ex )
+		{
+			Log.e(LOGTAG, "Problem getting variant wrapped candidate");
+			ex.printStackTrace();
+		}
+
+		return wrappedCandidate;
+	}
+
 
 	protected static void updateDependencyState()
 	{
@@ -382,8 +484,6 @@ public class CandidateManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidateClass", 	clipboardCandidateClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidate_Constructor", 	clipboardCandidate_Constructor );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "token_staticConstructor", 	token_staticConstructor );
-
-		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidate,	 "clipboardCandidate_shouldEllipsizeMethod", 	clipboardCandidate_shouldEllipsizeMethod );
 
 		// Whether we can tell if a candidate is a predicted emoji
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidateGetTextOrigin,	 "candidate_sourceMetadataMethod", 	candidate_sourceMetadataMethod );
