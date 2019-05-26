@@ -3,8 +3,10 @@ All notable changes to this project will be documented in this file.
 Dates are in the format dd/mm/yyyy
 
 ## [2.2.2] - 26-05-2019
-### Changed
- - Compatibility targeting 7.3.1.17 ( Nothing was broken )
+### Fixed
+ - Compatibility targeting 7.3.1.17 ( Fixing anything prediction related )
+
+### Added
  - Option to disable auto-removal of space before punctuation.
  - Option to disable auto-space when inserting predicitons
 
