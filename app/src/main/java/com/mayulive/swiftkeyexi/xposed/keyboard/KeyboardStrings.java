@@ -264,7 +264,7 @@ public class KeyboardStrings
 	//referring to Predictions and such.
 	//As of writing we just remove the INS_LANG_SPECIFIC_SPACE action from a rule pertaining to punctuation.
 
-	public static String getPunctuationRules( boolean noSpaceAfterPunctuation, boolean noRemoveSpaceBeforePunctuation)
+	public static String getPunctuationRules( boolean noSpaceAfterPunctuation, boolean noRemoveSpaceBeforePunctuation )
 	{
 		StringBuilder builder = new StringBuilder();
 

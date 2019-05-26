@@ -62,6 +62,7 @@ public class PreferenceConstants
 	public static final String pref_old_flow_behavior_key = "pref_old_flow_behavior";
 	public static final String pref_disable_period_click_key = "pref_disable_period_click";
 	public static final String pref_disable_punctuation_autospace_key = "pref_disable_punctuation_autospace";
+	public static final String pref_disable_prediction_autospace_key = "pref_disable_prediction_autospace";
 
 	public static final String pref_disable_punctuation_space_removal_key = "pref_disable_punctuation_space_removal";
 

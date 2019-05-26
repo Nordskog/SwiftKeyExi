@@ -15,6 +15,7 @@ import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
+import android.gesture.Prediction;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -277,6 +278,53 @@ public class PredictionHooks
 		return returnHooks;
 	}
 
+
+
+	//Depends on ExiCandidate
+	public static Set<XC_MethodHook.Unhook> hookFluencyTrailingSeperator( )
+	{
+		Set<XC_MethodHook.Unhook> returnHooks = new HashSet<>();
+		{
+			Method[] methods = new Method[]{ 	CandidateManager.verbatimCandidate_getTrailingSeparatorMethod,
+												CandidateManager.fluencyCandidate_getTrailingSeparatorMethod,
+												CandidateManager.clipboardCandidateClass_getTrailingSeparatorMethod,
+												CandidateManager.emailAddressCandidateClass_getTrailingSeparatorMethod,
+												CandidateManager.contextPromotedFluencyCandidate_getTrailingSeparatorMethod,
+												CandidateManager.rawTextCandidateClass_getTrailingSeparatorMethod
+
+			};
+
+			for (Method method : methods)
+			{
+				if (method != null)
+				{
+					returnHooks.add( XposedBridge.hookMethod( method, new XC_MethodHook()
+					{
+						@Override
+						protected void afterHookedMethod(MethodHookParam param) throws Throwable
+						{
+							if (Settings.DISABLE_PREDICTION_AUTO_SPACE)
+							{
+								// If enabled, do not add space after adding prediction from candidate bar
+								if ( param.thisObject == PredictionCommons.mLastSelectedCandidateBarCandiate || param.thisObject == PredictionCommons.mLastSelectedCandidateBarCandidateWrapped)
+								{
+									param.setResult("");
+								}
+							}
+						}
+					}));
+				}
+				else
+				{
+					Log.e(LOGTAG, "Missing getTrailingSeparator method, not hooking");
+				}
+			}
+
+		}
+
+		return returnHooks;
+	}
+
 	public static boolean hookPriority(final PackageTree param)
 	{
 		try
@@ -319,6 +367,8 @@ public class PredictionHooks
 			if (Hooks.predictionHooks_priority.isRequirementsMet())
 			{
 				Hooks.predictionHooks_priority.addAll( hookCandidateSelected() );
+				Hooks.predictionHooks_base.addAll( hookFluencyTrailingSeperator() );
+
 			}
 
 			Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()

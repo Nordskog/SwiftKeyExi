@@ -111,6 +111,40 @@
         android:key="@string/pref_key_sound_key"
         android:title="@string/preferences_key_sound_title"/>
 
+
+    <PreferenceCategory
+        android:title="@string/category_pref_punctuation">
+
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_disable_punctuation_autospace_key"
+            android:title="@string/pref_disable_punctuation_autospace_title"
+            android:summary="@string/pref_disable_punctuation_autospace_summary"
+            android:defaultValue="false" />
+
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_disable_prediction_autospace_key"
+            android:title="@string/pref_disable_prediction_autospace_title"
+            android:summary="@string/pref_disable_prediction_autospace_summary"
+            android:defaultValue="false" />
+
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_disable_punctuation_space_removal_key"
+            android:title="@string/pref_disable_punctuation_space_removal_title"
+            android:summary="@string/pref_disable_punctuation_space_removal_summary"
+            android:defaultValue="false" />
+
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_disable_period_click_key"
+            android:title="@string/pref_disable_period_click_title"
+            android:summary="@string/pref_disable_period_click_summary"
+            android:defaultValue="false" />
+
+
+
+    </PreferenceCategory>
+
+
+
     <PreferenceCategory
         android:title="@string/category_pref_misc">
 
@@ -132,24 +166,6 @@
         app:minFloat="0.3"
         app:maxFloat="3"
         />
-
-    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
-        android:key="@string/pref_disable_punctuation_autospace_key"
-        android:title="@string/pref_disable_punctuation_autospace_title"
-        android:summary="@string/pref_disable_punctuation_autospace_summary"
-        android:defaultValue="false" />
-
-    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
-        android:key="@string/pref_disable_punctuation_space_removal_key"
-        android:title="@string/pref_disable_punctuation_space_removal_title"
-        android:summary="@string/pref_disable_punctuation_space_removal_summary"
-        android:defaultValue="false" />
-
-    <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
-        android:key="@string/pref_disable_period_click_key"
-        android:title="@string/pref_disable_period_click_title"
-        android:summary="@string/pref_disable_period_click_summary"
-        android:defaultValue="false" />
 
     <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_disable_jumping_cursor_key"

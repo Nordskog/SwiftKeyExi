@@ -50,6 +50,9 @@ public class PredictionCommons
 	protected static long mTimeOfLastInsertException = -1;
 	protected static int mInsertExceptionCount = 0;
 
+	protected static Object mLastSelectedCandidateBarCandiate;
+	protected static Object mLastSelectedCandidateBarCandidateWrapped;
+
 	public static void setSuggestionsPaddingVisibility(boolean visible)
 	{
 		if ( mSuggestionsPadding[0] != null && mSuggestionsPadding[1] != null )

@@ -69,7 +69,7 @@ public class KeyboardMethods
 	public enum PunctuationRuleMode
 	{
 		STOCK(0x0),
-		NO_AUTO_SPACE(0x1),
+		NO_PUNCTUATION_AUTO_SPACE(0x1),
 		NO_SPACE_REMOVAL(0x2);
 
 		int mask = 0;
@@ -81,7 +81,8 @@ public class KeyboardMethods
 
 		public static int getMask( boolean noAutoSpace, boolean noSpaceRemoval )
 		{
-			return (noAutoSpace ? NO_AUTO_SPACE.mask : 0x0) | (noSpaceRemoval ? NO_SPACE_REMOVAL.mask : 0x0);
+			return  (noAutoSpace ? NO_PUNCTUATION_AUTO_SPACE.mask : 0x0) |
+					(noSpaceRemoval ? NO_SPACE_REMOVAL.mask : 0x0);
 		}
 
 		public boolean checkMask(int otherMask)
@@ -462,7 +463,7 @@ public class KeyboardMethods
 
 					args[0] = new ByteArrayInputStream(
 									KeyboardStrings.getPunctuationRules(
-											PunctuationRuleMode.NO_AUTO_SPACE.checkMask(mActivePunctuationMode),
+											PunctuationRuleMode.NO_PUNCTUATION_AUTO_SPACE.checkMask(mActivePunctuationMode),
 											PunctuationRuleMode.NO_SPACE_REMOVAL.checkMask(mActivePunctuationMode))
 									.getBytes(StandardCharsets.UTF_8.name()));
 
