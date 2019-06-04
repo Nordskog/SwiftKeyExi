@@ -6,6 +6,7 @@
     <string name="category_pref_emoji_panel">Панель Эмодзи</string>
     <string name="category_pref_flow_suggestions">Режим Flow и предложенные слова</string>
     <string name="category_pref_misc">Разное</string>
+    <string name="category_pref_punctuation">Знаки препинания</string>
     <string name="category_pref_app">Приложение</string>
     <string name="category_pref_keys">Клавиши</string>
     <string name="category_pref_audio">Аудио</string>
@@ -74,8 +75,12 @@
     <string name="pref_disable_auto_correct_on_cursor_move_summary">Вставить пробел по клавише Пробел вместо подстановки основного предложенного слова при перемещении курсора по тексту</string>
     <string name="pref_remove_suggestion_padding_title">Поле выбора слов</string>
     <string name="pref_remove_suggestion_padding_summary">Расширить поле выбора предложенных слов. Окно выбора заполнит экран по ширине</string>
-    <string name="pref_disable_punctuation_autospace_title">Расстановка пробелов</string>
-    <string name="pref_disable_punctuation_autospace_summary">Отключить автоматическую расстановку пробелов после знаков препинания</string>
+    <string name="pref_disable_punctuation_autospace_title">Отключить автоматическую расстановку пробелов после знаков препинания</string>
+    <string name="pref_disable_punctuation_autospace_summary">После ввода знака препинания пробел не вставляется</string>
+    <string name="pref_disable_punctuation_space_removal_title">Отключить удаление пробелов перед знаками препинания</string>
+    <string name="pref_disable_punctuation_space_removal_summary">Перед знаком препинания пробел не удаляется</string>
+    <string name="pref_disable_prediction_autospace_title">Отключить автоматическую расстановку пробелов после спрогнозированных слов</string>
+    <string name="pref_disable_prediction_autospace_summary">После спрогнозированного слова пробел не вставляется</string>
     <string name="pref_dictionary_toggle_title">Словарь</string>
     <string name="pref_dictionary_toggle_summary">Переключить ярлыки пользовательских словарей</string>
     <!-- Swipe behavior -->
@@ -116,7 +121,7 @@
     <!-- toolbar button -->
     <string name="pref_toolbar_button_title">Кнопка на панели инструментов</string>
     <string name="pref_toolbar_button_summary"></string>
-    <string name="pref_hide_predictions_title">Убрать прогнозирование</string>
+    <string name="pref_hide_predictions_title">Скрыть панель прогнозирования</string>
     <string name="pref_hide_predictions_summary">Не отображать панель прогнозирования</string>
     <!-- keyboard theme hash, not a pref. -->
     <string name="pref_data_keyboard_theme_last_hash_title">Хэш темы клавиатуры</string>
