@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.2.3] - 05-06-2019
+### Fixed
+ - Long prediction shortcuts being ellipsized
+ - No punctuation autospace sometimes not applying to ampersand (&)
+ 
+### Changed
+ - Updated translations ( Russian )
+
 ## [2.2.2] - 26-05-2019
 ### Fixed
  - Compatibility targeting 7.3.1.17 ( Fixing anything prediction related )
