@@ -612,27 +612,32 @@ public class KeyboardStrings
 		builder.append("                        ]\n");
 		builder.append("                    }\n");
 		builder.append("                },\n");
-		builder.append("                {\n");
-		builder.append("                    \"CharRule\": {\n");
-		builder.append("                        \"id\": [\n");
-		builder.append("                            \"&\"\n");
-		builder.append("                        ],\n");
-		builder.append("                        \"actions\": [],\n");
-		builder.append("                        \"contextRules\": [\n");
-		builder.append("                            {\n");
-		builder.append("                                \"ContextRule\": {\n");
-		builder.append("                                    \"id\": [\n");
-		builder.append("                                        \" $\"\n");
-		builder.append("                                    ],\n");
-		builder.append("                                    \"actions\": [\n");
-		builder.append("                                        \"INS_FOCUS\",\n");
-		builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
-		builder.append("                                    ]\n");
-		builder.append("                                }\n");
-		builder.append("                            }\n");
-		builder.append("                        ]\n");
-		builder.append("                    }\n");
-		builder.append("                },\n");
+
+		if (!noSpaceAfterPunctuation)
+		{
+			builder.append("                {\n");
+			builder.append("                    \"CharRule\": {\n");
+			builder.append("                        \"id\": [\n");
+			builder.append("                            \"&\"\n");
+			builder.append("                        ],\n");
+			builder.append("                        \"actions\": [],\n");
+			builder.append("                        \"contextRules\": [\n");
+			builder.append("                            {\n");
+			builder.append("                                \"ContextRule\": {\n");
+			builder.append("                                    \"id\": [\n");
+			builder.append("                                        \" $\"\n");
+			builder.append("                                    ],\n");
+			builder.append("                                    \"actions\": [\n");
+			builder.append("                                        \"INS_FOCUS\",\n");
+			builder.append("                                        \"INS_LANG_SPECIFIC_SPACE\"\n");
+			builder.append("                                    ]\n");
+			builder.append("                                }\n");
+			builder.append("                            }\n");
+			builder.append("                        ]\n");
+			builder.append("                    }\n");
+			builder.append("                },\n");
+		}
+
 		builder.append("                {\n");
 		builder.append("                    \"CharRule\": {\n");
 		builder.append("                         \"_comment\": [\n");

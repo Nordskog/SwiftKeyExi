@@ -37,7 +37,9 @@ public class Hooks
 
 	//Predictions
 
-	public static HookCategory predictionHooks_more = new HookCategory("PredictionHooks More");
+	public static HookCategory predictionHooks_EllipsizeMailAddress = new HookCategory("predictionHooks_EllipsizeMailAddress ellipsize");
+	public static HookCategory predictionHooks_Ellipsize = new HookCategory("PredictionHooks ellipsize", predictionHooks_EllipsizeMailAddress);
+	public static HookCategory predictionHooks_more = new HookCategory("PredictionHooks More", predictionHooks_Ellipsize);
 	public static HookCategory predictionHooks_priority = new HookCategory("PredictionHooks Priority");
 	public static HookCategory predictionHooks_base = new HookCategory("PredictionHooks", predictionHooks_more, predictionHooks_priority);
 	public static HookCategory predictionHooks_candidateGetTextOrigin = new HookCategory("candidateGetTextOrigin");

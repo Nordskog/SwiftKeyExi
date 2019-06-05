@@ -77,6 +77,7 @@ private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 
 	protected static Class emailAddressCandidateClass = null;
 	protected static Method emailAddressCandidateClass_getTrailingSeparatorMethod = null;
+	protected static Constructor emailAddressCandidateClass_constructor = null;
 
 	protected static Class CandidateSourceMetadataClass;	// Actually an interface
 	protected static Method CandidateSourceMetadataClass_textOriginMethod;
@@ -241,8 +242,30 @@ private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 		if (emailAddressCandidateClass != null)
 		{
 			emailAddressCandidateClass_getTrailingSeparatorMethod = ProfileHelpers.firstMethodByName(emailAddressCandidateClass.getDeclaredMethods(), "getTrailingSeparator");
-		}
+			{
+				Constructor[] constructors = emailAddressCandidateClass.getDeclaredConstructors();
+				if (constructors.length > 0)
+				{
+					Constructor constructor = constructors[0];
 
+					Class<?>[] parameters = constructor.getParameterTypes();
+
+					if (parameters.length == 2)
+					{
+						if ( parameters[0] == CandidateManager.candidateInterfaceClass && parameters[1] == String.class )
+						{
+							emailAddressCandidateClass_constructor = constructor;
+						}
+						else
+							Log.e(LOGTAG, "emailAddressCandidateClass: constructor param mismatch "+constructor.toString());
+					}
+					else
+						Log.e(LOGTAG, "emailAddressCandidateClass: constructor param length not 2: "+constructor.toString());
+				}
+				else
+					Log.e(LOGTAG, "emailAddressCandidateClass: constructor array empty");
+			}
+		}
 
 		///////////
 
@@ -490,7 +513,7 @@ private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidateGetTextOrigin,	 "CandidateSourceMetadataClass_textOriginMethod", 	CandidateSourceMetadataClass_textOriginMethod );
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_candidateGetTextOrigin,	 "TextOriginEnum_PREDICTED_BY_EMOJI_FLUENCY_SESSION", TextOriginEnum_PREDICTED_BY_EMOJI_FLUENCY_SESSION );
 
-
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_EllipsizeMailAddress,	 "token_staticConstructor", 	emailAddressCandidateClass_constructor );
 	}
 
 }

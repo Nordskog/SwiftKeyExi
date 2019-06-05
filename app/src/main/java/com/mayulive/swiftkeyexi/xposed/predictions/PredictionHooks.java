@@ -278,6 +278,62 @@ public class PredictionHooks
 		return returnHooks;
 	}
 
+	//Depends on ExiCandidate
+	public static XC_MethodHook.Unhook hookEllipsize( )
+	{
+
+		return XposedBridge.hookMethod(PredictionClassManager.ellipsizeCheckerClass_shouldEllipsizeMethod, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+
+				try
+				{
+					Object candidate = PredictionClassManager.ellipsizeCheckerClass_candidateField.get(param.thisObject);
+
+					//Have shouldEllipsize return false if one of our inserted candidates.
+					CandidateManager.SelectedShortcut selectedShortcut = CandidateManager.getSelectedShortcut(candidate);
+					if (selectedShortcut != null)
+					{
+						param.setResult(false);
+					}
+				}
+				catch (Throwable ex)
+				{
+					Hooks.predictionHooks_Ellipsize.invalidate(ex, "Unexpected problem in set ellipsize hook");
+				}
+
+			}
+		});
+	}
+
+	// Email address candidates use a completely differnet system, and tend to be really long.
+	public static XC_MethodHook.Unhook hookEmailCandidateEllipsize( )
+	{
+		return XposedBridge.hookMethod( CandidateManager.emailAddressCandidateClass_constructor , new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				if (Settings.MORE_SUGGESTIONS_ENABLED)
+				{
+					try
+					{
+						String actualText = CandidateManager.getCandidateText(param.args[0]);
+						if (actualText != null && !actualText.isEmpty())
+						{
+							param.args[1] = actualText;
+						}
+					}
+					catch (Throwable ex)
+					{
+						Hooks.predictionHooks_EllipsizeMailAddress.invalidate(ex, "Unexpected problem in email set ellipsize hook");
+					}
+				}
+			}
+		});
+	}
 
 
 	//Depends on ExiCandidate
@@ -368,7 +424,16 @@ public class PredictionHooks
 			{
 				Hooks.predictionHooks_priority.addAll( hookCandidateSelected() );
 				Hooks.predictionHooks_base.addAll( hookFluencyTrailingSeperator() );
+			}
 
+			if ( Hooks.predictionHooks_Ellipsize.isRequirementsMet() )
+			{
+				Hooks.predictionHooks_Ellipsize.add(hookEllipsize());
+			}
+
+			if ( Hooks.predictionHooks_EllipsizeMailAddress.isRequirementsMet())
+			{
+				Hooks.predictionHooks_EllipsizeMailAddress.add(hookEmailCandidateEllipsize());
 			}
 
 			Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()

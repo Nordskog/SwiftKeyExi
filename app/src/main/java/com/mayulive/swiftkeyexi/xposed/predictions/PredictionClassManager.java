@@ -1,7 +1,5 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -50,6 +48,10 @@ public class PredictionClassManager
 	protected static Class CandidateSourceTypeEnum;
 	protected static Object candidateSourceTypeEnum_candidate_bar;
 
+	protected static Class ellipsizeCheckerClass;
+	protected static Method ellipsizeCheckerClass_shouldEllipsizeMethod;
+	protected static Field ellipsizeCheckerClass_candidateField;
+
 	/////////////
 	//Misc
 	///////////
@@ -79,6 +81,7 @@ public class PredictionClassManager
 
 		CandidateSourceTypeEnum = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_CANDIDATE_SOURCE_TYPE_ENUN_PROFILE(), param );
 
+		ellipsizeCheckerClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_ELIPSIZE_CHECKER_CLASS_PROFILE(), param );
 
 		if (updateCandidateDisplayClass != null)
 		{
@@ -175,6 +178,26 @@ public class PredictionClassManager
 			}
 		}
 
+		if ( ellipsizeCheckerClass != null)
+		{
+			List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType( boolean.class, ellipsizeCheckerClass.getDeclaredMethods() );
+			if (!methods.isEmpty())
+			{
+				// First returning bool.
+				// Should have no params
+				Method method = methods.get(0);
+
+				if ( method.getParameterTypes().length == 0 )
+				{
+					ellipsizeCheckerClass_shouldEllipsizeMethod = method;
+				}
+			}
+
+			ellipsizeCheckerClass_candidateField = ProfileHelpers.findFirstDeclaredFieldWithType( CandidateManager.candidateInterfaceClass,  ellipsizeCheckerClass);
+			if (ellipsizeCheckerClass_candidateField != null)
+				ellipsizeCheckerClass_candidateField.setAccessible(true);
+		}
+
 
 
 	}
@@ -222,6 +245,9 @@ public class PredictionClassManager
 		//Priority update
 		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_priority,	 "handleCandidateClass_candidateSelectedMethod", handleCandidateClass_candidateSelectedMethod);
 
+		//elipsize
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_Ellipsize,	 "ellipsizeCheckerClass_shouldEllipsizeMethod", ellipsizeCheckerClass_shouldEllipsizeMethod);
+		Hooks.logSetRequirementFalseIfNull( Hooks.predictionHooks_Ellipsize,	 "ellipsizeCheckerClass_candidateField", ellipsizeCheckerClass_candidateField);
 	}
 	
 
