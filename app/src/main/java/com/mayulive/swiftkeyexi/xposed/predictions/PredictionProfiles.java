@@ -1915,6 +1915,256 @@ public class PredictionProfiles
 	}
 
 
+	public static ClassProfile get_ELIPSIZE_CHECKER_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("dzt");
+		newProfile.setKnownPath("");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem("" , PUBLIC | EXACT ));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(float.class)),	//b
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.graphics.RectF.class)),	//c
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//d
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
+						new FieldItem( PRIVATE | EXACT , 	new ClassItem(int[].class)),	//j
+						new FieldItem( STATIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate.Visitor" , PUBLIC | STATIC | ABSTRACT | EXACT )),	//a
+						new FieldItem( PRIVATE | STATIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate.Visitor" , PUBLIC | STATIC | ABSTRACT | EXACT )),	//f
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.RectF.class),
+
+										new ClassItem(float.class)
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | THIS | EXACT )
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | THIS | EXACT ),
+
+										new ClassItem(float.class),
+										new ClassItem(float.class)
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem("" , PUBLIC | EXACT ),
+
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #5: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #6: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #7: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | BRIDGE | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #8: b
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #9: c
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #10: d
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #11: e
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(int[].class)
+
+								),
+
+						//Method #12: equals
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.Object.class)
+
+								),
+
+						//Method #13: f
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #14: g
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.Object.class)
+
+								),
+
+						//Method #15: h
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(android.graphics.RectF.class)
+
+								),
+
+						//Method #16: hashCode
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(int.class)
+
+								),
+
+						//Method #17: i
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		EXACT ,
+
+										new ClassItem(float.class)
+
+								),
+
+						//Constructor #1
+						new ConstructorProfile
+								(		EXACT ,
+
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem(float.class)
+
+								),
+
+						//Constructor #2
+						new ConstructorProfile
+								(		PRIVATE | EXACT ,
+
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem(float.class),
+										new ClassItem(int[].class)
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
+
+
 }
 
 
