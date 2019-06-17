@@ -761,8 +761,11 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		{
 			if (mIconPickModePosition != -1)
 			{
+				String icon = item.get_text();
+				icon = icon.replace("\uFE0F", "");
+
 				//showChangePanelIconDialog(mIconPickModeTarget, item.getContainer().getText());
-				showPanelInfoWidget(mIconPickModeTarget, mIconPickModePosition, item.get_text());
+				showPanelInfoWidget(mIconPickModeTarget, mIconPickModePosition, icon);
 			}
 
 			mIconPickMode = false;
