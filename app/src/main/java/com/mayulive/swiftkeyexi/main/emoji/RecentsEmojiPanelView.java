@@ -18,7 +18,6 @@ import com.mayulive.swiftkeyexi.main.emoji.data.EmojiModifiers;
 import com.mayulive.swiftkeyexi.util.view.DistributedLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Roughy on 7/7/2017.
@@ -151,11 +150,6 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 	///////////
 
 	//Recents doesn't need these
-	@Override public void addMark(String emojiString){}
-	@Override public void subtractMark(String emojiString){}
-	@Override public void unmarkAll(){}
-	@Override public void markAll(){}
-	@Override public void markInput(List<DB_EmojiItem> items){}
 	@Override public void setColumnWidth(int itemWidth){}
 	@Override public int getColumnWidth(){ return 0; }
 
@@ -245,9 +239,9 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 	}
 
 	@Override
-	public void setPanelItem(DB_EmojiPanelItem item)
+	public NormalEmojiPanelView.EmojiUsedCounter getUsedCounter()
 	{
-		mItem = item;
+		return null;
 	}
 
 	@Override
@@ -255,4 +249,34 @@ public class RecentsEmojiPanelView extends ScrollView implements EmojiPanelView
 	{
 		return mItem;
 	}
+
+	////////////////////////////////////////////////
+	// Only used by normal views. All no-op here
+	//////////////////////////////////////////////////
+
+	@Override
+	public void notifyCompanionItemsChanged()
+	{
+		// No-op
+	}
+
+	@Override
+	public void setCompanions(EmojiPanelView companion, View garbageDropTarget )
+	{
+		// No-op
+	}
+
+	@Override
+	public void receiveDrop(float x, float y, DB_EmojiItem item)
+	{
+		// No-op
+	}
+
+	@Override
+	public void setOnDragEventListener(OnDragEventListener listener)
+	{
+		// No-op
+	}
+
+
 }

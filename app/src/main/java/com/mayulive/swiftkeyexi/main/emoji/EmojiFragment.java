@@ -24,6 +24,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -60,6 +62,10 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 	View mRootView = null;
 
+	EmojiGarbageView mEmojiDropGarbage;
+
+	EmojiDropIndicator mKeyboardDragCover;
+
 	EmojiPanelPagerAdapter mKeyboardPagerAdapter = null;
 	FixedViewPager mKeyboardPager = null;
 
@@ -77,6 +83,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 	EmojiPanelInfoView mDictionaryInfoView;
 	EmojiPanelInfoView mKeyboardInfoView;
+
 
 	boolean mIconPickMode = false;
 	EmojiPanelType mIconPickModeTarget = DEFAULT;
@@ -127,7 +134,11 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 				{
 					//Sort by last change time descending
 					Collections.sort( panel.get_items(), (a, b) -> (int)( b.get_last_change() - a.get_last_change() ) );
-					break;
+				}
+				else if ( panel.get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+				{
+					//Sort by last change time ascending. Reusing for general order.
+					Collections.sort( panel.get_items(), (a, b) -> (int)( a.get_last_change() - b.get_last_change() ) );
 				}
 			}
 		}
@@ -174,10 +185,17 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 		mRootView = inflater.inflate(R.layout.emoji_fragment_layout, container, false);
 
+		mEmojiDropGarbage = mRootView.findViewById( R.id.emoji_garbage_window );
+
+		mKeyboardDragCover = mRootView.findViewById( R.id.emoji_keyboard_drag_cover );
+
 		setupPanels(EmojiPanelType.KEYBOARD);
 		setupPanels(EmojiPanelType.DICTIONARY);
 
 		setupMenu();
+
+		// Needs to happen after adapters have spit out the views, so wait a bit.
+		new Handler(Looper.getMainLooper()).post( () -> setupCurrentPanelCompanions() );
 
 		return mRootView;
 	}
@@ -186,6 +204,103 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 	///////////////
 	//Setup
 	///////////////
+
+	private void setupCurrentPanelCompanions()
+	{
+		if (!panelsValid())
+			return;
+
+		EmojiPanelView dictionary = getCurrentPanel(EmojiPanelType.DICTIONARY);
+		EmojiPanelView keyboard = getCurrentPanel(EmojiPanelType.KEYBOARD);
+
+		// Is no-op if not compatible.
+		dictionary.setCompanions( keyboard, mEmojiDropGarbage);
+		keyboard.setCompanions(dictionary, mEmojiDropGarbage);
+
+		dictionary.setOnDragEventListener( new EmojiPanelView.OnDragEventListener()
+		{
+			@Override
+			public void onDragStarted()
+			{
+
+
+				if (dictionary.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+				{
+					mEmojiDropGarbage.setVisible(true);
+				}
+
+
+				if (keyboard.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+				{
+					mKeyboardDragCover.set( EmojiDropIndicator.CoverType.CAN_DROP, true, false );
+				}
+				else
+				{
+					mKeyboardDragCover.set( EmojiDropIndicator.CoverType.CANNOT_DROP, true, false );
+				}
+			}
+
+			@Override
+			public void onDragEnded()
+			{
+				mEmojiDropGarbage.setVisible(false);
+				mKeyboardDragCover.setVisible( false );
+			}
+
+			@Override
+			public void onCompanionHover(boolean entered)
+			{
+				mKeyboardDragCover.setActivated( entered );
+			}
+
+			@Override
+			public void onGarbageHover(boolean entered)
+			{
+				mEmojiDropGarbage.setActivated(entered);
+			}
+
+		});
+
+
+
+
+		keyboard.setOnDragEventListener( new EmojiPanelView.OnDragEventListener()
+		{
+			@Override
+			public void onDragStarted()
+			{
+				if (keyboard.getPanelItem().get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+				{
+					mEmojiDropGarbage.setVisible(true);
+				}
+				else
+				{
+					mEmojiDropGarbage.setVisible(false);
+				}
+
+
+			}
+
+			@Override
+			public void onDragEnded()
+			{
+				mEmojiDropGarbage.setVisible(false);
+			}
+
+			@Override
+			public void onCompanionHover(boolean entered)
+			{
+				// no-op
+			}
+
+			@Override
+			public void onGarbageHover(boolean entered)
+			{
+				mEmojiDropGarbage.setActivated(entered);
+			}
+
+		});
+	}
 
 	private void setupPanels(final EmojiPanelType type)
 	{
@@ -201,7 +316,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			mKeyboardPager = (FixedViewPager) mRootView.findViewById(R.id.keyboardPanelTabs);
 			mKeyboardTabIndicator = (EmojiPanelTabLayout) mRootView.findViewById(R.id.keyboardPanelTabsTitles);
 
-			mKeyboardPagerAdapter = new EmojiPanelPagerAdapter(mKeyboardPanels);
+			mKeyboardPagerAdapter = new EmojiPanelPagerAdapter(mKeyboardPanels, type, true);
 
 			pagerAdapter = mKeyboardPagerAdapter;
 			pager = mKeyboardPager;
@@ -213,7 +328,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			mDictionaryPager = (FixedViewPager) mRootView.findViewById(R.id.dictionaryPanelTabs);
 			mDictionaryTabIndicator = (EmojiPanelTabLayout) mRootView.findViewById(R.id.dictionaryPanelTabsTitles);
 
-			mDictionaryPagerAdapter = new EmojiPanelPagerAdapter(mDictionaryPanels);
+			mDictionaryPagerAdapter = new EmojiPanelPagerAdapter(mDictionaryPanels, type, true);
 
 			pagerAdapter = mDictionaryPagerAdapter;
 			pager = mDictionaryPager;
@@ -266,14 +381,11 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
 			}
-
 			@Override
+
 			public void onPageSelected(int position)
 			{
-				if (panelsValid())
-				{
-					getCurrentPanel(EmojiPanelType.DICTIONARY).markInput(getCurrentPanel(EmojiPanelType.KEYBOARD).getPanelItem().get_items());
-				}
+				setupCurrentPanelCompanions();
 			}
 
 			@Override
@@ -282,22 +394,6 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			}
 		});
 
-
-		//Not sure if this is still necessary
-		if (type == EmojiPanelType.KEYBOARD)
-		{
-			pagerAdapter.setOnPrimaryViewChangedListener(new EmojiPanelPagerAdapter.OnPrimaryViewChangedListener()
-			{
-				@Override
-				public void onPrimaryViewChanged(EmojiPanelView view, int position)
-				{
-					if (panelsValid())
-					{
-						getCurrentPanel(EmojiPanelType.DICTIONARY).markInput(getCurrentPanel(EmojiPanelType.KEYBOARD).getPanelItem().get_items());
-					}
-				}
-			});
-		}
 	}
 
 	private void setupMenu()
@@ -469,7 +565,6 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 							deletePanel(panelType);
 							if (panelType == EmojiPanelType.KEYBOARD && panelValid(EmojiPanelType.DICTIONARY))
 							{
-								getCurrentPanel(EmojiPanelType.DICTIONARY).unmarkAll();
 								setLastUpdateTime();
 							}
 						}
@@ -502,7 +597,6 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 							getCurrentPanel(panelType).clear();
 							if (panelType == EmojiPanelType.KEYBOARD && panelValid(EmojiPanelType.DICTIONARY))
 							{
-								getCurrentPanel(EmojiPanelType.DICTIONARY).unmarkAll();
 								setLastUpdateTime();
 							}
 						}
@@ -593,18 +687,10 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			if ( sourcePanelView.getPanelItem().get_source().isEditable() )
 			{
 				sourcePanelView.removeItem(position);
-
-				if (sourcePanelType == EmojiPanelType.KEYBOARD)
-				{
-					if ( panelValid(EmojiPanelType.DICTIONARY) )
-					{
-						getCurrentPanel(EmojiPanelType.DICTIONARY).subtractMark(item.get_text());
-					}
-				}
 			}
 			else
 			{
-				displayUneditableWarning();
+				EmojiDialogCommons.displayUneditableWarning(this.getContext());
 			}
 
 			setLastUpdateTime();
@@ -656,14 +742,12 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 
 						if (currentKeyboardPanelView.getPanelItem().get_source().isEditable())
 						{
-							sourcePanelView.addMark(item.get_text());
-
 							currentKeyboardPanelView.addItem(new DB_EmojiItem( item ) );
 							currentKeyboardPanelView.scrollToEnd();
 						}
 						else
 						{
-							displayUneditableWarning();
+							EmojiDialogCommons.displayUneditableWarning(this.getContext());
 						}
 					}
 
@@ -951,8 +1035,6 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			int destionationSize = destionationPanel.getPanelItem().get_items().size();
 
 			destionationPanel.addAll( sourcePanel.getPanelItem().get_items() );
-			sourcePanel.markAll();
-
 			//If the destionation panel was empty, let's also copy the icon, and width
 			if (destionationSize == 0)
 			{
@@ -1170,16 +1252,6 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		{
 			super.onActivityResult(requestCode, resultCode, resultData);
 		}
-	}
-
-	private void displayUneditableWarning()
-	{
-		AlertDialog dialog = new AlertDialog.Builder(this.getContext())
-				.setTitle(R.string.emoji_uneditable_title)
-				.setMessage(R.string.emoji_uneditable_message)
-				.setPositiveButton(R.string.button_ok, null)
-				.create();
-		dialog.show();
 	}
 
 	@Override

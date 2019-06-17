@@ -15,6 +15,7 @@ import com.mayulive.swiftkeyexi.database.TableList;
 import com.mayulive.swiftkeyexi.util.view.FixedTabLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.media.CamcorderProfile.get;
 
@@ -24,8 +25,7 @@ import static android.media.CamcorderProfile.get;
 
 public class EmojiPanelPagerAdapter extends PagerAdapter
 {
-
-	ArrayList<DB_EmojiPanelItem> mItems = null;
+	List<DB_EmojiPanelItem> mItems = null;
 
 	private EmojiPanelView.OnEmojiItemClickListener mItemClickListener = null;
 
@@ -35,9 +35,14 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 
 	boolean mProvidePageTitles = true;
 
-	public EmojiPanelPagerAdapter(TableList<DB_EmojiPanelItem> mKeyboardPanels)
+	boolean mConfigMode = false;
+	EmojiFragment.EmojiPanelType mType;
+
+	public EmojiPanelPagerAdapter(List<DB_EmojiPanelItem> mKeyboardPanels, EmojiFragment.EmojiPanelType type, boolean configMode)
 	{
 		mItems = mKeyboardPanels;
+		mConfigMode = configMode;
+		mType = type;
 	}
 
 	@Override
@@ -68,10 +73,6 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 		return mCurrentView;
 	}
 
-	public EmojiPanelPagerAdapter(ArrayList<DB_EmojiPanelItem> items)
-	{
-		mItems = items;
-	}
 
 
 	@Override
@@ -101,13 +102,15 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 				@Override
 				public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 				{
-					mItemClickListener.onClick( item, view,newPanel, mItems.get(panelPosition), position);
+					if (mItemClickListener != null)
+						mItemClickListener.onClick( item, view,newPanel, mItems.get(panelPosition), position);
 				}
 
 				@Override
 				public void onLongPress(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 				{
-					mItemClickListener.onLongPress(item, view, newPanel, panelItem, position);
+					if (mItemClickListener != null)
+						mItemClickListener.onLongPress(item, view, newPanel, panelItem, position);
 				}
 			});
 
@@ -117,11 +120,15 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 		else
 		{
 			final NormalEmojiPanelView newPanel;
+
 			//newPanel = new NormalEmojiPanelView(container.getContext());
 			newPanel = NormalEmojiPanelView.getWithScrollbars(container.getContext());
-			newPanel.init( panelItem, container.getMeasuredWidth(), panelItem.get_column_width());
-
-
+			newPanel.init(
+					panelItem,
+					container.getMeasuredWidth(),
+					panelItem.get_column_width(),
+					mConfigMode && panelItem.get_source() == EmojiPanelItem.PANEL_SOURCE.USER,
+					mConfigMode && mType == EmojiFragment.EmojiPanelType.DICTIONARY );
 
 			//I have no idea what I'm doing with these settings
 			newPanel.setHasFixedSize(true);
@@ -129,27 +136,23 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 			//newPanel.setDrawingCacheEnabled(true);
 			//newPanel.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-			newPanel.getAdapter().setOnItemClickListener(new emojiPanelAdapter.OnEmojiHolderClickListener()
+			newPanel.setOnEmojiItemClickedListener(new EmojiPanelView.OnEmojiItemClickListener()
 			{
 				@Override
-				public void onClick(emojiPanelAdapter.EmojiItemHolder item, int position)
+				public void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 				{
-
 					if (mItemClickListener != null)
-					{
-						mItemClickListener.onClick( mItems.get(panelPosition).get_items().get(position), item.itemView, newPanel, mItems.get(panelPosition), position);
-					}
+						mItemClickListener.onClick( item, view,newPanel, mItems.get(panelPosition), position);
 				}
 
 				@Override
-				public void onLongPress(emojiPanelAdapter.EmojiItemHolder item, int position)
+				public void onLongPress(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position)
 				{
 					if (mItemClickListener != null)
-					{
-						mItemClickListener.onLongPress(mItems.get(panelPosition).get_items().get(position), item.itemView, newPanel, panelItem, position);
-					}
+						mItemClickListener.onLongPress(item, view, newPanel, panelItem, position);
 				}
 			});
+
 
 			container.addView(newPanel);
 			return newPanel;

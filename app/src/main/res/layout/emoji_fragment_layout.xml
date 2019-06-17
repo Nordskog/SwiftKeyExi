@@ -6,28 +6,38 @@
 	>
 
     <LinearLayout
+        android:clipChildren="false"
+        android:clipToPadding="false"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:orientation="vertical"
         >
 
     <FrameLayout
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.5">
 
         <LinearLayout
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
 
             <FrameLayout
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
                 <com.mayulive.swiftkeyexi.util.view.FixedViewPager
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:id="@+id/dictionaryPanelTabs"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -130,6 +140,14 @@
                     android:layout_gravity="center"
                     android:layout_height="match_parent"/>
 
+                <com.mayulive.swiftkeyexi.main.emoji.EmojiDropIndicator
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_emoji_add_background_icon"
+                    android:id="@+id/emoji_keyboard_drag_cover"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"/>
+
             </FrameLayout>
 
 
@@ -180,6 +198,13 @@
         style="@style/CenteredFloatingButton"
         app:srcCompat="@drawable/menu_icon"
         android:id="@+id/dictionaryPanelMenuButton"
+        />
+
+    <com.mayulive.swiftkeyexi.main.emoji.EmojiGarbageView
+        android:visibility="gone"
+        style="@style/CenteredFloatingButton"
+        app:srcCompat="@drawable/ic_garbage_icon"
+        android:id="@+id/emoji_garbage_window"
         />
 
 </FrameLayout>

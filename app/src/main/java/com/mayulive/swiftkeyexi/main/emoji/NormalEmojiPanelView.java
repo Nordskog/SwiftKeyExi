@@ -1,27 +1,31 @@
 package com.mayulive.swiftkeyexi.main.emoji;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
-import com.mayulive.swiftkeyexi.EmojiCache.EmojiContainer;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.database.TableList;
+import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
 import com.mayulive.swiftkeyexi.shared.SharedStyles;
 import com.mayulive.swiftkeyexi.util.view.ScrollbarRecyclerView;
+import com.mayulive.swiftkeyexi.util.view.ViewTools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -35,13 +39,41 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 	LayoutManager mLayoutManager = null;
 	GridLayoutManager mGridLayoutManager = null;
 
+	ItemTouchHelper.SimpleCallback mDragHelperCallback;
+	EmojiDragHelper mDragHelper;
 
 	DB_EmojiPanelItem mItem = null;
 
+	EmojiPanelView mCompanionPanel = null;
+	View mDropTargetGarbage = null;
 
-	ArrayList<EmojiAdapterItem> mAdapterItems = new ArrayList<EmojiAdapterItem>();
+	EmojiPanelView.OnEmojiItemClickListener mClickListener = null;
 
-	Map<String, EmojiUsedCounter> mUsedCounter;
+	OnDragEventListener mDragEventListener;
+
+	//////////////////
+	// Dragging
+	/////////////////////
+
+	boolean mIsDragDropEditable = false;
+	boolean mIsDragDropSource = false;
+
+	OverdragLocation mOverdragLocation = OverdragLocation.NONE;
+
+	boolean mIsDragging = false;
+
+	float mDragEndPosX = 0;
+	float mDragEndPosY = 0;
+
+	enum OverdragLocation
+	{
+		NONE, ABOVE, BELOW, GARBAGE
+	}
+
+
+	//ArrayList<EmojiAdapterItem> mAdapterItems = new ArrayList<EmojiAdapterItem>();
+
+	private EmojiUsedCounter mUsedCounter = new EmojiUsedCounter();
 
 	public NormalEmojiPanelView(Context context, @Nullable AttributeSet attrs, int defStyle)
 	{
@@ -61,21 +93,18 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 
 	public static NormalEmojiPanelView getWithScrollbars(Context context)
 	{
-		//return new NormalEmojiPanelView(new ContextThemeWrapper(context, R.style.ScrollbarRecyclerView));
-
 		NormalEmojiPanelView panel = new NormalEmojiPanelView(context);
 
 		return panel;
 	}
 
 
-	public void init(DB_EmojiPanelItem item, int viewWidth, int itemWidth)
+	public void init(DB_EmojiPanelItem item, int viewWidth, int itemWidth, boolean isDragDropEditable, boolean isDragDropSource)
 	{
 		mItem = item;
-		prepareAdapterItems(true);
-		prepareUsedCounter();
+		resetAndCountCurrent();
 
-		mAdapter = new emojiPanelAdapter(this.getContext(), mAdapterItems, mItem, false, false);
+		mAdapter = new emojiPanelAdapter(this.getContext(), mItem.get_items(), mItem, false, false, !(isDragDropEditable || isDragDropSource) );
 
 		mGridLayoutManager = new GridLayoutManager(this.getContext(), EmojiResources.calculateColCount(this.getContext(), viewWidth, itemWidth));
 		mLayoutManager = mGridLayoutManager;
@@ -85,47 +114,405 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 
 		this.setLayoutManager(mLayoutManager);
 		this.setAdapter(mAdapter);
+
+		this.mIsDragDropEditable = isDragDropEditable;
+		this.mIsDragDropSource = isDragDropSource;
+
+		this.setupDragDrop();
+
+		mAdapter.setOnItemClickListener(new emojiPanelAdapter.OnEmojiHolderClickListener()
+		{
+			@Override
+			public void onClick(emojiPanelAdapter.EmojiItemHolder item, int position)
+			{
+				if (mClickListener != null)
+				{
+					mClickListener.onClick( mItem.get_items().get(position), item.itemView, NormalEmojiPanelView.this, mItem, position);
+				}
+			}
+
+			@Override
+			public void onLongPress(emojiPanelAdapter.EmojiItemHolder item, int position)
+			{
+				// Drag and drop consumes long presses in this state.
+				if (mIsDragDropEditable || mIsDragDropSource)
+					return;
+
+				if (mClickListener != null)
+				{
+					mClickListener.onLongPress( mItem.get_items().get(position), item.itemView, NormalEmojiPanelView.this, mItem, position);
+				}
+			}
+		});
+
 	}
 
-	//Only intended for use with static lists, does not support item changes
-	//It also assumes there is only one instance of any given string.
-	//When loading user-defined dictionaries, make sure to remove any duplicates.
-	private void prepareUsedCounter()
+	/////////////////////////
+	// Counter
+	///////////////////////
+
+	@Override
+	public EmojiUsedCounter getUsedCounter()
 	{
-		mUsedCounter = new HashMap<String, EmojiUsedCounter>();
+		return mUsedCounter;
+	}
 
-		ArrayList<DB_EmojiItem> items = mItem.get_items();
-
-		for (int i = 0; i < items.size(); i++)
-		{
-			String currentEmoji = items.get(i).get_text();
-			addUsedItem(currentEmoji, i);
-
-		}
+	private void resetAndCountCurrent()
+	{
+		mUsedCounter.clearCounter();
+		mUsedCounter.count( mItem.get_items() );
 	}
 
 	@Override
-	public void addMark(String emojiString)
+	public void notifyCompanionItemsChanged()
 	{
+		mAdapter.notifyDataSetChanged();
+	}
 
-		EmojiUsedCounter currentCounter = mUsedCounter.get(emojiString);
-		if (currentCounter != null)
+	private void SendNotifyCompanionItemsChanged()
+	{
+		if ( mCompanionPanel != null )
 		{
-			currentCounter.add();
-			updateMarkByCounter(currentCounter);
+			mCompanionPanel.notifyCompanionItemsChanged();
 		}
 	}
 
+	////////////////////
+	// Drag and drop
+	////////////////////
+
+	private void setOverdragLocation( OverdragLocation location )
+	{
+		if (mDragEventListener != null)
+		{
+			if (location != mOverdragLocation)
+			{
+				// clear old hover state
+				switch(mOverdragLocation)
+				{
+					case GARBAGE:
+					{
+						mDragEventListener.onGarbageHover(false);
+						break;
+					}
+
+					case BELOW:
+					{
+						mDragEventListener.onCompanionHover(false);
+						break;
+					}
+				}
+
+				// Set new hover state
+				switch(location)
+				{
+					case GARBAGE:
+					{
+						mDragEventListener.onGarbageHover(true);
+						break;
+					}
+
+					case BELOW:
+					{
+						mDragEventListener.onCompanionHover(true);
+						break;
+					}
+				}
+			}
+		}
+
+
+		mOverdragLocation = location;
+
+	}
+
+	public void setCompanions(EmojiPanelView companion, View garbageDropTarget )
+	{
+		mCompanionPanel = companion;
+		mDropTargetGarbage = garbageDropTarget;
+
+		// Only keep track of items in companion if we are a drag-drop source
+		if ( mIsDragDropSource && mCompanionPanel != null )
+		{
+			mAdapter.setUsedCounter( mCompanionPanel.getUsedCounter() );
+			notifyCompanionItemsChanged();
+		}
+		else
+		{
+			mAdapter.setUsedCounter(null);
+		}
+
+	}
+
+	public void receiveDrop( float x, float y, DB_EmojiItem item )
+	{
+		if ( !mIsDragDropEditable )
+		{
+			EmojiDialogCommons.displayUneditableWarning(this.getContext());
+			return;
+		}
+
+		View closestView = this.findChildViewUnder(x, y);
+
+		int insertPos = mItem.get_items().size();
+
+		if (closestView != null)
+		{
+			ViewHolder holder = this.findContainingViewHolder(closestView);
+			if (holder != null)
+			{
+				insertPos = holder.getAdapterPosition();
+			}
+		}
+
+		addItem(insertPos, new DB_EmojiItem( item ));
+	}
+
 	@Override
-	public void subtractMark(String emojiString)
+	public void setOnDragEventListener(OnDragEventListener listener)
+	{
+		mDragEventListener = listener;
+	}
+
+	private void updateOrderFromIndex()
+	{
+		TableList<DB_EmojiItem> items = mItem.get_items();
+		for (int i = 0; i < items.size(); i++ )
+		{
+			items.get(i).set_last_change(i);
+		}
+
+		items.updateAll();
+	}
+
+	@SuppressLint("ClickableViewAccessibility")
+	private void setupDragDrop()
 	{
 
-		EmojiUsedCounter currentCounter = mUsedCounter.get(emojiString);
-		if (currentCounter != null)
+
+		if (!mIsDragDropEditable && !mIsDragDropSource)
+			return;
+
+		//Item moved/removed in list
+		this.mDragHelperCallback = new ItemTouchHelper.SimpleCallback(
+				ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, 0)
 		{
-			currentCounter.subtract();
-			updateMarkByCounter(currentCounter);
-		}
+
+			@Override
+			public void onSelectedChanged(ViewHolder viewHolder, int actionState)
+			{
+				// Docs lie, viewHolder is always null
+				super.onSelectedChanged(viewHolder, actionState);
+
+				if (actionState == ItemTouchHelper.ACTION_STATE_DRAG)
+				{
+					mOverdragLocation = OverdragLocation.NONE;
+					mIsDragging = true;
+
+					if ( mDragEventListener != null )
+					{
+						mDragEventListener.onDragStarted();
+					}
+
+				}
+				else
+				{
+					// Ideally we'd remove the view here, but since the viewholder is null and onMove may not have been called,
+					// We need to rely on clearView to do it instead. Gay.
+					// overdrag location will be used and reset in onClearView.
+					//mIsDragging = false;
+				}
+
+			}
+
+			@Override
+			public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target)
+			{
+				viewHolder.itemView.setZ(99);
+
+				if (mIsDragDropEditable)
+				{
+					mItem.get_items().setDatabaseMode( TableList.DatabaseMode.MANUAL );
+
+					int startPos = viewHolder.getAdapterPosition();
+					int endPos = target.getAdapterPosition();
+
+					int insertPos = endPos;
+
+					DB_EmojiItem moveItem = mItem.get_items().remove(startPos);
+					mItem.get_items().add(insertPos, moveItem);
+
+					mItem.get_items().setDatabaseMode(TableList.DatabaseMode.IMMEDIATE);
+
+					mAdapter.notifyItemMoved(startPos, endPos);
+
+					return true;
+				}
+
+				return false;
+
+			}
+
+
+			@Override
+			public boolean isLongPressDragEnabled() {
+				return true;
+			}
+
+			@Override
+			public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+			{
+				return;
+			}
+
+			@Override
+			public int interpolateOutOfBoundsScroll(RecyclerView recyclerView, int viewSize, int viewSizeOutOfBounds, int totalSize, long msSinceStartScroll)
+			{
+				if ( mIsDragDropSource )
+				{
+					// Don't want to trigger scroll when we are dragging emoji from template to keyboard
+					return 0;
+				}
+				else
+				{
+					return super.interpolateOutOfBoundsScroll(recyclerView, viewSize, viewSizeOutOfBounds, totalSize, msSinceStartScroll);
+				}
+
+			}
+
+			@Override
+			public long getAnimationDuration(RecyclerView recyclerView, int animationType, float animateDx, float animateDy)
+			{
+				// Skip animation if we are dropping above or below
+				if (	mOverdragLocation == OverdragLocation.BELOW ||
+						mOverdragLocation == OverdragLocation.GARBAGE)
+				{
+					return 0;
+				}
+				else
+				{
+					return super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy);
+				}
+
+			}
+
+			@Override
+			public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
+			{
+
+				viewHolder.itemView.setZ(0);
+
+				mIsDragging = false;
+
+				if (mDragEventListener != null)
+				{
+					mDragEventListener.onDragEnded();
+				}
+
+				super.clearView(recyclerView, viewHolder);
+
+				boolean noAction = true;
+
+				if (mIsDragDropEditable)
+				{
+					if (  mOverdragLocation == OverdragLocation.GARBAGE)
+					{
+						int position = viewHolder.getAdapterPosition();
+						if (position != NO_POSITION)
+						{
+							NormalEmojiPanelView.this.removeItem( position );
+						}
+
+						noAction = false;
+					}
+					else if ( mOverdragLocation == OverdragLocation.NONE )
+					{
+						// No need to update anything on deletion.
+						updateOrderFromIndex();
+						noAction = false;
+					}
+				}
+
+				if (noAction && mIsDragDropSource)
+				{
+					if (mOverdragLocation == OverdragLocation.BELOW)
+					{
+						if (mCompanionPanel != null && mCompanionPanel instanceof View)
+						{
+
+
+							// Get relative location in drop target
+							int[] selfInWindow = ViewTools.getPositionInWindow( NormalEmojiPanelView.this );
+							int[] otherInWindow = ViewTools.getPositionInWindow( (View) mCompanionPanel);
+
+							// X should be the same.
+							float relativeY = mDragEndPosY + selfInWindow[1];
+							relativeY -= otherInWindow[1];
+
+							if ( viewHolder instanceof emojiPanelAdapter.EmojiItemHolder)
+							{
+								emojiPanelAdapter.EmojiItemHolder emojiHolder = (emojiPanelAdapter.EmojiItemHolder) viewHolder;
+
+								// Receive drop is responsible deciding if it can be edited, and displaying the appropriate warning otherwise.
+								mCompanionPanel.receiveDrop( mDragEndPosX, relativeY, new DB_EmojiItem( emojiHolder.mItem ) );
+							}
+
+
+						}
+					}
+				}
+
+				// Finally done with this. Reset.
+				setOverdragLocation(OverdragLocation.NONE);
+			}
+
+
+		};
+
+
+		// Gets called during move event and the following up. Does not receive other events.
+		this.setOnTouchListener(new OnTouchListener()
+		{
+			@Override
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				if (mIsDragging)
+				{
+					if ( event.getActionMasked() == MotionEvent.ACTION_UP)
+					{
+						mDragEndPosX = event.getX();
+						mDragEndPosY = event.getY();
+					}
+
+					// Above
+					if (  mDropTargetGarbage != null && ViewTools.isInsideViewGlobal( NormalEmojiPanelView.this, event.getX(), event.getY(), mDropTargetGarbage ) )
+					{
+						setOverdragLocation(OverdragLocation.GARBAGE);
+					}
+					else if ( event.getY() < 0)
+					{
+						setOverdragLocation(OverdragLocation.ABOVE);
+					}
+					// Below
+					else if ( event.getY() > NormalEmojiPanelView.this.getMeasuredHeight() )
+					{
+						setOverdragLocation(OverdragLocation.BELOW);
+					}
+					else	// Nothing
+					{
+						setOverdragLocation(OverdragLocation.NONE);
+					}
+				}
+
+				return false;
+			}
+		});
+
+
+
+
+		mDragHelper = new EmojiDragHelper(mDragHelperCallback);
+		mDragHelper.attachToRecyclerView(this);
 	}
 
 	private int itemToViewPos (int position)
@@ -133,169 +520,19 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		return mAdapter.getViewIndexFromItemIndex(position);
 	}
 
-	private void addUsedItem(String currentEmoji, int position)
-	{
-		EmojiUsedCounter currentCounter = mUsedCounter.get(currentEmoji);
-		if (currentCounter == null)
-		{
-			currentCounter = new EmojiUsedCounter(position, 0);
-			mUsedCounter.put(currentEmoji, currentCounter);
-		}
-		else
-		{
-			currentCounter.addPosition(position);
-		}
-	}
-
-	private void removeUsedItem(String currentEmoji, int position)
-	{
-		EmojiUsedCounter currentCounter = mUsedCounter.get(currentEmoji);
-		if (currentCounter != null)
-		{
-			currentCounter.removePosition(position);
-			if (currentCounter.getPositionCount() < 1)
-			{
-				mUsedCounter.remove(currentEmoji);
-			}
-		}
-	}
-
-	//Assumes counter has changed, but adapter items and views
-	//have not yet been updated to reflect this change.
-	private void updateMarkByCounter(EmojiUsedCounter counter)
-	{
-		boolean marked = counter.count > 0;
-		for (Integer currentPosition : counter.position)
-		{
-
-			EmojiAdapterItem adapterItem = mAdapterItems.get(currentPosition);
-			boolean currentValue = adapterItem.marked;
-
-			if (currentValue != marked)	//Only update if state has changed
-			{
-				EmojiContainer currentContainer = (EmojiContainer) mLayoutManager.findViewByPosition(  itemToViewPos(currentPosition) );
-				if (currentContainer != null)
-					currentContainer.setMarked(marked);
-			}
-
-			adapterItem.marked = marked;
-		}
-	}
-
-	@Override
-	public void unmarkAll()
-	{
-		for (int i = 0; i < mAdapterItems.size(); i++)
-		{
-			mAdapterItems.get(i).marked = false;
-		}
-
-		for (int i = 0; i < mLayoutManager.getChildCount(); i++)
-		{
-			EmojiContainer currentContainer = (EmojiContainer)mLayoutManager.getChildAt(i);
-			currentContainer.setMarked(false);
-		}
-
-
-		for (EmojiUsedCounter currentCounter : mUsedCounter.values())
-		{
-			currentCounter.clearCounter();
-			updateMarkByCounter(currentCounter);
-		}
-
-	}
 
 	@Override
 	public void clear()
 	{
-		//mItem.set_needsUpdate(true);
 		mItem.get_items().clear();
-		mAdapterItems.clear();
-		mUsedCounter.clear();
+		mUsedCounter.clearCounter();
 		mAdapter.notifyDataSetChanged();
-
-	}
-
-	@Override
-	public void markAll()
-	{
-		for (int i = 0; i < mAdapterItems.size(); i++)
-		{
-			mAdapterItems.get(i).marked = true;
-		}
-
-		for (int i = 0; i < mLayoutManager.getChildCount(); i++)
-		{
-			EmojiContainer currentContainer = (EmojiContainer)mLayoutManager.getChildAt(i);
-			currentContainer.setMarked(true);
-		}
-
-		for (EmojiUsedCounter currentCounter : mUsedCounter.values())
-		{
-			currentCounter.clearCounter();
-			currentCounter.add();
-			updateMarkByCounter(currentCounter);
-		}
-
-
-	}
-
-	@Override
-	public void markInput(List<DB_EmojiItem> items)
-	{
-		//Reset count
-		for (EmojiUsedCounter currentCounter : mUsedCounter.values())
-		{
-			currentCounter.count = 0;
-		}
-
-		//Count using input array
-		for (DB_EmojiItem currentItem : items)
-		{
-			EmojiUsedCounter currentCounter = mUsedCounter.get(currentItem.get_text());
-			if (currentCounter != null)
-			{
-				currentCounter.add();
-			}
-		}
-
-		//Update mark on all
-		for (EmojiUsedCounter currentCounter : mUsedCounter.values())
-		{
-			updateMarkByCounter(currentCounter);
-		}
-
-	}
-
-	private void prepareAdapterItems(boolean reset)
-	{
-		ArrayList<DB_EmojiItem> emojiItems = mItem.get_items();
-
-		while (mAdapterItems.size() < emojiItems.size())
-		{
-			mAdapterItems.add( new EmojiAdapterItem( emojiItems.get(mAdapterItems.size()), false) );
-		}
-
-		while (mAdapterItems.size() > emojiItems.size() )
-		{
-			mAdapterItems.remove( mAdapterItems.size()-1);
-		}
-
-
-		if (reset)
-		{
-			for (EmojiAdapterItem currentPair : mAdapterItems)
-			{
-				currentPair.marked = false;
-			}
-		}
+		SendNotifyCompanionItemsChanged();
 	}
 
 	@Override
 	public void addAll(ArrayList<DB_EmojiItem> inputItems)
 	{
-		//mItem.set_needsUpdate(true);
-
 		int startCount = mItem.get_items().size();
 
 		TableList localItems = mItem.get_items();
@@ -304,15 +541,17 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		for (int i = 0; i < inputItems.size(); i++)
 		{
 			DB_EmojiItem newItem = new DB_EmojiItem(inputItems.get(i));
+			newItem.set_last_change(i);
 
 			localItems.add( newItem);
-			mAdapterItems.add(new EmojiAdapterItem(newItem,false));
+			mUsedCounter.add( newItem );
+
 		}
 
 		localItems.endBatchEdit();
 
-		prepareUsedCounter();
 		mAdapter.notifyItemRangeInserted(startCount, inputItems.size());
+		SendNotifyCompanionItemsChanged();
 	}
 
 	@Override
@@ -320,19 +559,24 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 	{
 		//mItem.set_needsUpdate(true);
 		mItem.get_items().add(position,item);
-		mAdapterItems.add(position, new EmojiAdapterItem(item,false));
-		addUsedItem(item.get_text(), position);
 		mAdapter.notifyItemInserted(position);
+
+		mUsedCounter.add( item );
+
+		// Needlessly expensive, but we never actually call this.
+		updateOrderFromIndex();
+		SendNotifyCompanionItemsChanged();
 	}
 
 	@Override
 	public void addItem(DB_EmojiItem item)
 	{
 		//mItem.set_needsUpdate(true);
+		item.set_last_change( mItem.get_items().size() );	// Set order from index here
 		mItem.get_items().add(item);
-		mAdapterItems.add(new EmojiAdapterItem(item,false));
-		addUsedItem(item.get_text(), mItem.get_items().size()-1);
 		mAdapter.notifyItemInserted(mItem.get_items().size()-1);
+		mUsedCounter.add( item );
+		SendNotifyCompanionItemsChanged();
 	}
 
 	@Override
@@ -341,18 +585,20 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		//I'd rather it crash so I can figure out what's broken upstream
 		//if (position >= 0 && position < mItem.get_items().size())
 		{
-			removeUsedItem(mItem.get_items().get(position).get_text(), position);
+			EmojiItem item = mItem.get_items().get(position);
+
 			mItem.get_items().remove(position);
-			mAdapterItems.remove(position);
 			mAdapter.notifyItemRemoved(position);
+			mUsedCounter.remove( item.get_text() );
+			SendNotifyCompanionItemsChanged();
 		}
 	}
 
 	@Override
 	public void scrollToEnd()
 	{
-		if (!mAdapterItems.isEmpty())
-			this.scrollToPosition( mAdapterItems.size() - 1 );
+		if (!mItem.get_items().isEmpty())
+			this.scrollToPosition( mItem.get_items().size() - 1 );
 	}
 
 	@Override
@@ -363,10 +609,8 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		DB_EmojiItem item = items.get(currentPosition);
 
 		items.remove(currentPosition);
-		mAdapterItems.remove(currentPosition);
 
 		items.add(insertPosition,item);
-		mAdapterItems.add(insertPosition,new EmojiAdapterItem(item,false));
 
 		mAdapter.notifyItemMoved(currentPosition,insertPosition);
 	}
@@ -385,13 +629,15 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		{
 			int startSize = mItem.get_items().size();
 
-			mItem.trimItems(maxSize);
-			while (mAdapterItems.size() > maxSize)
+			for (int i = maxSize - 1; i < mItem.get_items().size(); i++)
 			{
-				mAdapterItems.remove( mAdapterItems.size() - 1 );
+				mUsedCounter.remove( mItem.get_items().get(i).get_text() );
 			}
 
+			mItem.trimItems(maxSize);
+
 			mAdapter.notifyItemRangeRemoved(maxSize-1, startSize-maxSize );
+			SendNotifyCompanionItemsChanged();
 		}
 
 
@@ -437,28 +683,14 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		this.setAdapter(mAdapter);
 	}
 
-
-
-	public class EmojiAdapterItem
+	public void setOnEmojiItemClickedListener( OnEmojiItemClickListener listener )
 	{
-		boolean marked = false;
-		DB_EmojiItem item = null;
-
-
-		EmojiAdapterItem(DB_EmojiItem item, boolean marked)
-		{
-			this.item = item;
-			this.marked = marked;
-
-
-			//checkIfEmoji();
-		}
+		mClickListener = listener;
 	}
 
 	public void setPanelIcon(String icon)
 	{
 		mItem.set_icon(icon);
-		//mItem.set_needsUpdate(true);
 	}
 
 	public String getPanelIcon()
@@ -466,10 +698,6 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		return mItem.get_icon();
 	}
 
-	public void setPanelItem(DB_EmojiPanelItem item)
-	{
-		mItem = item;
-	}
 
 	public DB_EmojiPanelItem getPanelItem()
 	{
@@ -479,61 +707,78 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 	//Keeps track of how many instance of a given emoji
 	//has already been added to the neighbor panel.
 	//Access via a hash of the emoji string
-	private static class EmojiUsedCounter
+	protected static class EmojiUsedCounter
 	{
-		Set<Integer> position = new HashSet<Integer>();
-		int count;
+		HashMap<String, Integer> counter = new HashMap<>();
 
-		public EmojiUsedCounter(int position, int count)
+		public EmojiUsedCounter()
 		{
 
-			this.position.add(position);
-			this.count = count;
 		}
 
-		public EmojiUsedCounter(int[] position, int count)
+		private int getCount( String emoji )
 		{
+			Integer count = this.counter.get(emoji);
+			if (count == null)
+				return 0;
+			else
+				return count;
+		}
 
-			for (int currentInt : position)
+		private void setCount( String emoji, int newCount )
+		{
+			if (newCount <= 0)
 			{
-				this.position.add(currentInt);
+				this.counter.remove(emoji);
 			}
-			this.count = count;
-		}
-
-		public void addPosition(int position)
-		{
-			this.position.add(position);
-		}
-
-		public void removePosition(int pos)
-		{
-			position.remove(pos);
-		}
-
-		public int getPositionCount()
-		{
-			return position.size();
+			else
+			{
+				this.counter.put(emoji, newCount);
+			}
 		}
 
 		public void clearCounter()
 		{
-			count = 0;
+			counter.clear();
 		}
 
-		public void add()
+		public void count(List<? extends EmojiItem> list)
 		{
-			count++;
+			for (EmojiItem item : list)
+			{
+				int getCount = getCount(item.get_text());
+				setCount(item.get_text(), getCount + 1);
+			}
 		}
 
-		public void subtract()
+		public void add( EmojiItem emoji )
 		{
-			count--;
+			int getCount = getCount(emoji.get_text());
+			setCount(emoji.get_text(), getCount + 1);
 		}
 
-		public boolean isUsed()
+		public void remove( EmojiItem emoji )
 		{
-			return count > 0;
+			int getCount = getCount(emoji.get_text());
+			setCount(emoji.get_text(), getCount - 1);
+		}
+
+		public void add( String emoji )
+		{
+			int getCount = getCount(emoji);
+			setCount(emoji, getCount + 1);
+		}
+
+		public void remove( String emoji )
+		{
+			int getCount = getCount(emoji);
+			setCount(emoji, getCount - 1);
+		}
+
+		public boolean contains( String emoji )
+		{
+			// When counter hits 0 we remove it, so it should be null.
+			return counter.containsKey( emoji );
 		}
 
 	}

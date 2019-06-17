@@ -182,7 +182,11 @@ public class EmojiHookCommons
 						//Sort by last change time descending
 						Collections.sort( item.get_items(), (a, b) -> (int)( b.get_last_change() - a.get_last_change() ) );
 
-						break;
+					}
+					else if ( item.get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
+					{
+						//Sort by last change time ascending. Reusing for general order.
+						Collections.sort( item.get_items(), (a, b) -> (int)( a.get_last_change() - b.get_last_change() ) );
 					}
 
 						iterator++;

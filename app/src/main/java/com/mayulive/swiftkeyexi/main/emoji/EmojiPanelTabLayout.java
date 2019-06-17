@@ -38,18 +38,6 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 
 	private void init()
 	{
-		/*
-		try
-		{
-			mSelectedColor = ThemeUtils.getThemeAccentColor(this.getContext());
-		}
-		catch (Exception ex)
-		{
-			//Will get called in the hook as well, but we don't need it there.
-			//Might fail?
-		}
-		*/
-
 		mSelectedColor = SharedStyles.getAccentColor(this.getContext() );
 		this.setSelectedTabIndicatorColor( mSelectedColor  );
 		this.setSelectedTabIndicatorHeight( SharedStyles.getTabHeight(this.getContext() ));
@@ -60,23 +48,31 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 	@Override
 	public void addTab(@NonNull final Tab tab, int position, boolean setSelected)
 	{
+
 		//Set tab padding to roughly half, remove min width
 		View view = getTabView(tab);
 
+		if ( view != null)
+		{
+			EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(this.getContext());
 
-		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(this.getContext());
+			//In the swiftkey hook, there is no default padding, in the config app there is.
+			//Basing the padding on the emoji width seems reasonable.
+			view.setPadding( (int) (dimens.default_singleEmojiWidth * 0.1f),
+					view.getPaddingTop(),
+					(int) (dimens.default_singleEmojiWidth * 0.1f),
+					view.getPaddingBottom());
 
-		//In the swiftkey hook, there is no default padding, in the config app there is.
-		//Basing the padding on the emoji width seems reasonable.
-		view.setPadding( (int) (dimens.default_singleEmojiWidth * 0.1f),
-				view.getPaddingTop(),
-				(int) (dimens.default_singleEmojiWidth * 0.1f),
-				view.getPaddingBottom());
+			//So it can resize itself to whatever
+			view.setMinimumWidth(1 );
 
-		//So it can resize itself to whatever
-		view.setMinimumWidth(1 );
+		}
+
 
 		super.addTab(tab, position, setSelected);
+
+
+
 	}
 
 	private void setCurrentHighlight()

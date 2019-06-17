@@ -6,6 +6,8 @@ import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import com.mayulive.swiftkeyexi.main.emoji.NormalEmojiPanelView;
+import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.util.MathUtils;
 
 /**
@@ -77,6 +79,28 @@ public class ViewTools
 
 		return result;
 	}
+
+	public static boolean isInsideViewGlobal( View sourceView, float sourceX, float sourceY, View targetView )
+	{
+		// Get relative location in drop target
+		int[] sourceInWindow = ViewTools.getPositionInWindow( sourceView );
+		int[] targetInWindow = ViewTools.getPositionInWindow( targetView );
+
+		// Actual screen position
+		sourceX = sourceInWindow[0] + sourceX;
+		sourceY = sourceInWindow[1] + sourceY;
+
+		if (  sourceX > targetInWindow[0] && sourceX < targetInWindow[0] + targetView.getMeasuredWidth() )
+		{
+			if (  sourceY > targetInWindow[1] && sourceY < targetInWindow[1] + targetView.getMeasuredHeight() )
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 
 
 }

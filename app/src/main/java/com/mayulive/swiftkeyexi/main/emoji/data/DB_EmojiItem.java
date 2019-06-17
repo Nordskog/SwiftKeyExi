@@ -26,6 +26,12 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 		this.set_id(-1);
 	}
 
+	public DB_EmojiItem(EmojiItem other)
+	{
+		super(other);
+		this.set_id(-1);
+	}
+
 	public DB_EmojiItem(int id, String text, int style, EmojiType type)
 	{
 		super(text,style,type);
@@ -51,8 +57,6 @@ public class DB_EmojiItem extends EmojiItem implements DatabaseItem
 		set_style(style);
 
 		set_type( DB_EmojiItem.EmojiType.getType(text) );
-
-		//Log.e("###", get_text()+", Type: "+get_type());
 	}
 
 	public DB_EmojiItem(String text)

@@ -24,7 +24,7 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAdapter.EmojiItemHolder>
 {
 	private DB_EmojiPanelItem mPanelItem = null;
-    private List<NormalEmojiPanelView.EmojiAdapterItem> mItems = null;
+    private List<? extends EmojiItem> mItems = null;
 
     private Context mContext;
 
@@ -36,9 +36,13 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 	private int mHorizontalPadding = 0;
 	private int mVerticalPadding = 0;
 
+	private boolean mSetLongPressListener = true;
+
 	private boolean mUseItemStyle = false;
 
-    public emojiPanelAdapter(Context context, List<NormalEmojiPanelView.EmojiAdapterItem> items, DB_EmojiPanelItem panelItem, boolean singleLine, boolean useDefaultTextSize)
+	private NormalEmojiPanelView.EmojiUsedCounter mUsedCounter;
+
+    public emojiPanelAdapter(Context context, List<? extends EmojiItem> items, DB_EmojiPanelItem panelItem, boolean singleLine, boolean useDefaultTextSize, boolean setLongPressListener)
     {
 		super(context);
         mContext = context;
@@ -46,8 +50,13 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 		mPanelItem = panelItem;
 		mSingleLine = singleLine;
 		mUseDefaultTextSize = useDefaultTextSize;
+		mSetLongPressListener = setLongPressListener;
     }
 
+    public void setUsedCounter(NormalEmojiPanelView.EmojiUsedCounter counter )
+	{
+		mUsedCounter = counter;
+	}
 
 	public void setUseItemStyle(boolean use)
 	{
@@ -63,8 +72,8 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 	@Override
 	public int getViewType(int index)
 	{
-		NormalEmojiPanelView.EmojiAdapterItem item = mItems.get(index);
-		if (item.item.get_type() == DB_EmojiItem.EmojiType.CONTAINS_EMOJI)
+		EmojiItem item = mItems.get(index);
+		if (item.get_type() == DB_EmojiItem.EmojiType.CONTAINS_EMOJI)
 			return 1;
 
 		return 0;
@@ -102,11 +111,13 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 	@Override
 	public void onBindView(final EmojiItemHolder holder, int position)
 	{
-		NormalEmojiPanelView.EmojiAdapterItem emojiItem = mItems.get(position);
+		EmojiItem item = mItems.get(position);
 
 		//holder.getContainer().getView().setPadding(mHorizontalPadding, mVerticalPadding, mHorizontalPadding, mVerticalPadding);
-		holder.getContainer().setMarked(emojiItem.marked);
-		holder.getContainer().setModifable(emojiItem.item.get_modifiers_supported());
+
+		holder.setEmojiItem(item);
+		holder.getContainer().setMarked( mUsedCounter != null ? mUsedCounter.contains(item.get_text()) : false );
+		holder.getContainer().setModifable(item.get_modifiers_supported());
 
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(mContext);
 
@@ -116,9 +127,9 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 			textSize = dimens.default_emojiTextSize;
 
 
-		String emojiText = emojiItem.item.get_text();
+		String emojiText = item.get_text();
 		//If diverse modifier supported, check and apply default modifier
-		if (emojiItem.item.get_modifiers_supported())
+		if (item.get_modifiers_supported())
 		{
 			if (!EmojiResources.getDefaultDiverseModifier().isEmpty())
 			{
@@ -126,7 +137,7 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 			}
 		}
 
-		holder.getContainer().setEmojiText(emojiText, textSize, mPanelItem, mUseItemStyle ? emojiItem.item.get_style() : mPanelItem.get_style());
+		holder.getContainer().setEmojiText(emojiText, textSize, mPanelItem, mUseItemStyle ? item.get_style() : mPanelItem.get_style());
 
 		holder.getContainer().getView().setOnClickListener(new View.OnClickListener()
 		{
@@ -146,30 +157,36 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 			}
 		});
 
-		holder.getContainer().getView().setOnLongClickListener(new View.OnLongClickListener()
+		// when we have draggable emoji, this long press listener causes an extra delay and buzz
+		if (mSetLongPressListener)
 		{
-			private EmojiItemHolder mHolder = holder;
-
-			@Override
-			public boolean onLongClick(View v)
+			holder.getContainer().getView().setOnLongClickListener(new View.OnLongClickListener()
 			{
-				//Turns out the holder is still clickable during the removal animation
-				int position = mHolder.getAdapterPosition();
+				private EmojiItemHolder mHolder = holder;
 
-				if (position != NO_POSITION)
+				@Override
+				public boolean onLongClick(View v)
 				{
-					mItemClickListener.onLongPress(mHolder,position);
-					return true;
-				}
+					//Turns out the holder is still clickable during the removal animation
+					int position = mHolder.getAdapterPosition();
 
-				return false;
-			}
-		});
+					if (position != NO_POSITION)
+					{
+						mItemClickListener.onLongPress(mHolder,position);
+						return true;
+					}
+
+					return false;
+				}
+			});
+		}
+
+
 
 		//Reents is weird
 		if (mPanelItem.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
 		{
-			if ( emojiItem.item.get_type() == EmojiItem.EmojiType.CONTAINS_EMOJI )
+			if ( item.get_type() == EmojiItem.EmojiType.CONTAINS_EMOJI )
 			{
 				holder.getContainer().getView().setLayoutParams( new RecyclerView.LayoutParams( 1,1 ));
 			}
@@ -199,6 +216,7 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 	public static class EmojiItemHolder extends HeaderFooterRecyclerAdapter.HFRecyclerViewHolder
 	{
 
+		EmojiItem mItem = null;
 		EmojiContainer mContainer = null;
 
 		public EmojiItemHolder(View view)
@@ -215,6 +233,11 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 		public EmojiContainer getContainer()
 		{
 			return mContainer;
+		}
+
+		public void setEmojiItem( EmojiItem item )
+		{
+			mItem = item;
 		}
 	}
 
