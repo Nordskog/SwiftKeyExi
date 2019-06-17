@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.main.emoji.EmojiFragment;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiModifiersPopup;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
@@ -118,7 +119,7 @@ public class EmojiHooks
 								//Otherwise create and setup
 								EmojiHookCommons.mEmojiPanelPager = new FixedViewPager(context);
 
-								EmojiHookCommons.mEmojiPanelAdapter = new EmojiPanelPagerAdapter(EmojiHookCommons.mPanelItems);
+								EmojiHookCommons.mEmojiPanelAdapter = new EmojiPanelPagerAdapter(EmojiHookCommons.mPanelItems, EmojiFragment.EmojiPanelType.KEYBOARD, false);
 
 								EmojiHookCommons.mEmojiPanelAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
 								{

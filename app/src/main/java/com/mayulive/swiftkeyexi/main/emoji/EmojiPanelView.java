@@ -11,7 +11,6 @@ import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -20,12 +19,6 @@ import java.util.List;
 
 public interface EmojiPanelView
 {
-	void addMark(String emojiString);
-	void subtractMark(String emojiString);
-	void unmarkAll();
-	void markAll();
-	void markInput(List<DB_EmojiItem> items);
-
 
 	void addItem(int position, DB_EmojiItem item);
 	void addItem(DB_EmojiItem item);
@@ -47,12 +40,28 @@ public interface EmojiPanelView
 	void setPanelIcon(String icon);
 	String getPanelIcon();
 
-	void setPanelItem(DB_EmojiPanelItem item);
+	NormalEmojiPanelView.EmojiUsedCounter getUsedCounter();
+
 	DB_EmojiPanelItem getPanelItem();
+
+	void notifyCompanionItemsChanged();
+	void setCompanions(EmojiPanelView companion, View garbageView );
+	void receiveDrop( float x, float y, DB_EmojiItem item );
+
+	void setOnDragEventListener(OnDragEventListener listener);
+
+	interface OnDragEventListener
+	{
+		void onDragStarted();
+		void onDragEnded();
+		void onCompanionHover( boolean entered );
+		void onGarbageHover( boolean entered );
+	}
 
 	interface OnEmojiItemClickListener
 	{
 		void onClick(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position);
 		void onLongPress(DB_EmojiItem item, View view, EmojiPanelView panelView, DB_EmojiPanelItem panel, int position);
 	}
+
 }

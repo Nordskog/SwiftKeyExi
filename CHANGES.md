@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.3.0] - 17-06-2019
+### Added
+ - Drag & Drop emoji editing ( Adding, rearranging, removing )
+ 
+### Changed
+ - Emoji panel icons selected using pick will b/w rather than color emoji
+
 ## [2.2.3] - 05-06-2019
 ### Fixed
  - Long prediction shortcuts being ellipsized

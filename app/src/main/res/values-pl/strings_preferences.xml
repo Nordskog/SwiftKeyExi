@@ -6,6 +6,7 @@
     <string name="category_pref_emoji_panel">Panel Emotikon</string>
     <string name="category_pref_flow_suggestions">Flow &amp; Podpowiedzi </string>
     <string name="category_pref_misc">Różne</string>
+    <string name="category_pref_punctuation">Interpunkcja</string>
     <string name="category_pref_app">Aplikacja</string>
     <string name="category_pref_keys">Klawisze</string>
     <string name="category_pref_audio">Dźwięk</string>
@@ -76,6 +77,10 @@
     <string name="pref_remove_suggestion_padding_summary">Wypełnij ekran paskiem podpowiedzi</string>
     <string name="pref_disable_punctuation_autospace_title">Brak auto-spacji po znaku interpunkcyjnym</string>
     <string name="pref_disable_punctuation_autospace_summary">Spacja nie zostanie dodana po znaku interpunkcyjnym</string>
+    <string name="pref_disable_punctuation_space_removal_title">Wyłącz usuwanie spacji przed znakami interpunkcji</string>
+    <string name="pref_disable_punctuation_space_removal_summary">Znak interpunkcyjny nie usunie poprzedzającej spacji</string>
+    <string name="pref_disable_prediction_autospace_title">Wyłącz automatyczne dodawanie spacji po znaku interpunkcyjnym</string>
+    <string name="pref_disable_prediction_autospace_summary">Spacja nie będzie dodawana po znaku interpunkcyjnym</string>
     <string name="pref_dictionary_toggle_title">Słownik</string>
     <string name="pref_dictionary_toggle_summary">Przełączanie skrótów niestandardowych słowników</string>
     <!-- Swipe behavior -->

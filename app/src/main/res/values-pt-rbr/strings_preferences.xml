@@ -6,6 +6,7 @@
     <string name="category_pref_emoji_panel">Painel de Emoji</string>
     <string name="category_pref_flow_suggestions">Flow &amp; Sugestões </string>
     <string name="category_pref_misc">Outros</string>
+    <string name="category_pref_punctuation">Pontuação</string>
     <string name="category_pref_app">App</string>
     <string name="category_pref_keys">Teclas</string>
     <string name="category_pref_audio">Áudio</string>
@@ -76,6 +77,10 @@
     <string name="pref_remove_suggestion_padding_summary">Deixar a barra de sugestões preencher a tela</string>
     <string name="pref_disable_punctuation_autospace_title">Não inserir espaço automaticamente após pontuação</string>
     <string name="pref_disable_punctuation_autospace_summary">Espaço não será inserido após a pontuação</string>
+    <string name="pref_disable_punctuation_space_removal_title">Desativar a remoção do espaço de pontuação</string>
+    <string name="pref_disable_punctuation_space_removal_summary">A pontuação não irá remover espaço anterior</string>
+    <string name="pref_disable_prediction_autospace_title">Desativar a previsão de espaço automático</string>
+    <string name="pref_disable_prediction_autospace_summary">Espaço não será inserido após a pontuação</string>
     <string name="pref_dictionary_toggle_title">Dicionário</string>
     <string name="pref_dictionary_toggle_summary">Alternar atalhos do dicionário personalizado</string>
     <!-- Swipe behavior -->

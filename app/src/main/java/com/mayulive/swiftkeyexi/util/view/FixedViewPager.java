@@ -6,6 +6,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -176,6 +177,30 @@ public class FixedViewPager extends ViewPager
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev)
+	{
+		/*
 
+		java.lang.IllegalArgumentException: pointerIndex out of range
+        at android.view.MotionEvent.nativeGetAxisValue(Native Method)
+        at android.view.MotionEvent.getX(MotionEvent.java:2122)
+        at android.support.v4.view.ViewPager.onInterceptTouchEvent(ViewPager.java:2064)
 
+		 */
+
+		boolean res = false;
+
+		try
+		{
+			res = super.onInterceptTouchEvent(ev);
+		}
+		catch ( IllegalArgumentException ex  )
+		{
+			Log.i("Exi/ViewPager", "Viewpager out of range error fix");
+			ex.printStackTrace();
+		}
+
+		return res;
+	}
 }
