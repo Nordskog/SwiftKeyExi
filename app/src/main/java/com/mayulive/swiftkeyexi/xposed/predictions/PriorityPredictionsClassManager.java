@@ -118,7 +118,7 @@ public class PriorityPredictionsClassManager
 				MethodProfile profile = new MethodProfile
 				(
 						PUBLIC | STATIC | EXACT ,
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 						new ClassItem(android.content.Context.class),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
@@ -136,7 +136,8 @@ public class PriorityPredictionsClassManager
 						new ClassItem("" , PUBLIC | FINAL | EXACT ),
 						new ClassItem("" , PUBLIC | FINAL | EXACT ),
 						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 				);
 
