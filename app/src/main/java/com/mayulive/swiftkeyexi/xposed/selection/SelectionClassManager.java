@@ -153,6 +153,10 @@ public class SelectionClassManager
 
 				DebugTools.logIfProfileMismatch(  SelectionChangedInputEventClass_hasMovedAbruptlyMethod, SelectionChangedInputEventClass, profile, "SelectionChangedInputEventClass_hasMovedAbruptlyMethod");
 			}
+			else
+			{
+				Log.i(LOGTAG, "SelectionChangedInputEventClass was null, word select changed event may fire.");
+			}
 		}
 		catch (Exception ex)
 		{

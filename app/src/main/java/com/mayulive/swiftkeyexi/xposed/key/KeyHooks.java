@@ -146,11 +146,9 @@ public class KeyHooks
 	}
 
 
-	public static Set<XC_MethodHook.Unhook> hookKeyTemplateConstructor()
+	public static XC_MethodHook.Unhook hookKeyTemplateConstructor()
 	{
-		Set<XC_MethodHook.Unhook> returnSet = new HashSet<>();
-
-		returnSet.addAll( XposedBridge.hookAllConstructors(KeyClassManager.newKeyInfoClass, new XC_MethodHook()
+		return XposedBridge.hookMethod(KeyClassManager.newKeyInfoClass_constructor, new XC_MethodHook()
 		{
 
 			@Override
@@ -158,7 +156,7 @@ public class KeyHooks
 			{
 				int typeInt = (int) param.args[0];
 
-				String content = (String) param.args[1];
+				String content = (String) param.args[ KeyClassManager.newKeyInfoClass_constructorContentArgumentPosition ];
 
 				KeyType Type = KeyType.getType(typeInt, content);
 
@@ -170,9 +168,7 @@ public class KeyHooks
 				KeyCommons.addTemplateKey( System.identityHashCode( param.thisObject ), template );
 
 			}
-		}) );
-
-		return returnSet;
+		});
 
 	}
 
@@ -235,7 +231,7 @@ public class KeyHooks
 
 			if (Hooks.keyHooks_keyDefinition.isRequirementsMet())
 			{
-				Hooks.keyHooks_keyDefinition.addAll( hookKeyTemplateConstructor() );
+				Hooks.keyHooks_keyDefinition.add( hookKeyTemplateConstructor() );
 
 				Hooks.keyHooks_keyDefinition.add( hookOnKeyDown() );
 

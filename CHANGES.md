@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.3.1] - 24-06-2019
+### Fixed
+ - Compatibility targeting 7.3.3.10 ( Everything keyboard key related )
+
 ## [2.3.0] - 17-06-2019
 ### Added
  - Drag & Drop emoji editing ( Adding, rearranging, removing )

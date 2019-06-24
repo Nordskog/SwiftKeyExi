@@ -5,6 +5,8 @@ package com.mayulive.swiftkeyexi.xposed.key;
  */
 
 
+import android.util.Log;
+
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -16,6 +18,7 @@ import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +44,12 @@ public class KeyClassManager
 	protected static Class pointerLocationClass = null;
 	public static Class keyRawDefinitionClass = null;
 
+
+
+
 	public static Class newKeyInfoClass = null;
+	public static Constructor newKeyInfoClass_constructor = null;
+	public static int newKeyInfoClass_constructorContentArgumentPosition = 1;
 
 
 	/////////////////////////
@@ -135,6 +143,40 @@ public class KeyClassManager
 			}
 		}
 
+		if (newKeyInfoClass != null)
+		{
+			Constructor[] constructors = newKeyInfoClass.getDeclaredConstructors();
+
+			if (constructors != null && constructors.length > 0)
+			{
+				if (constructors.length > 1)
+				{
+					Log.w(LOGTAG, "newKeyInfoClass has multiple constructors; expected one");
+				}
+
+				newKeyInfoClass_constructor = constructors[0];
+
+				Class[] args = newKeyInfoClass_constructor.getParameterTypes();
+				if (args[1] == String.class)
+				{
+					// Old position. Probably not required for 7.3.3.10 and later
+					newKeyInfoClass_constructorContentArgumentPosition = 1;
+				}
+				else
+				{
+					// 7.3.3.10 and later it is the first string arg from the end
+					for (int i = args.length -1; i >= 0; i--)
+					{
+						if (args[i] == String.class)
+						{
+							newKeyInfoClass_constructorContentArgumentPosition = i;
+							break;
+						}
+					}
+				}
+			}
+		}
+
 
 	}
 
@@ -169,6 +211,7 @@ public class KeyClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyboardSingleKeyDownMethod", 	keyboardSingleKeyDownMethod );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "newKeyInfoClass", 	newKeyInfoClass );
+		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "newKeyInfoClass_constructor", 	newKeyInfoClass_constructor );
 
 		//Key cancellation
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyCancel,	 "normalButtonClickItemClass", 	normalButtonClickItemClass );

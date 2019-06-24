@@ -1284,7 +1284,7 @@ public class KeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("hvl");
+		newProfile.setFullPath("hbn");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1292,7 +1292,7 @@ public class KeyProfiles
 		newProfile.setModifiers(PUBLIC | FINAL );
 
 		newProfile.setTypeParamCount(0);
-		newProfile.setSuperClass(	new ClassItem("" , PUBLIC | EXACT ));
+		newProfile.setSuperClass(	new ClassItem("hbr" , PUBLIC | EXACT ));
 /////////////////////////
 //Interfaces
 /////////////////////////
@@ -1314,24 +1314,24 @@ public class KeyProfiles
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//a
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//b
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//c
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//d
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//e
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//f
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//g
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//h
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//i
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//j
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//k
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//l
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//b
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//c
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//d
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//e
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//f
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//g
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//h
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//i
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//j
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//k
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//l
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//m
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//n
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//n
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//o
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//p
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//q
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//p
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(double.class)),	//q
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//r
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//s
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//s
 						new FieldItem( PRIVATE | EXACT , 	new ClassItem(java.lang.String.class)),	//x
 
 				});
@@ -1378,25 +1378,25 @@ public class KeyProfiles
 								(		PUBLIC | EXACT ,
 
 										new ClassItem(int.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
+										new ClassItem(double.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
 										new ClassItem(boolean.class),
 										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem(boolean.class),
+										new ClassItem(int.class),
+										new ClassItem(boolean.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
 										new ClassItem(double.class),
 										new ClassItem(double.class),
 										new ClassItem(java.lang.String.class),
-										new ClassItem(int.class),
 										new ClassItem(java.lang.String.class),
-										new ClassItem(int.class),
-										new ClassItem(double.class),
-										new ClassItem(int.class),
 										new ClassItem(java.lang.String.class),
-										new ClassItem(int.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class),
 										new ClassItem(double.class),
 										new ClassItem(double.class),
 										new ClassItem(double.class),
