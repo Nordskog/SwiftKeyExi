@@ -1,8 +1,8 @@
 package com.mayulive.swiftkeyexi.xposed.emoji;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,7 +32,6 @@ import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
-import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -252,7 +250,7 @@ public class EmojiHooks
 	}
 
 
-	public static XC_MethodHook.Unhook hookResourceLookup( PackageTree param) throws NoSuchMethodException
+	public static Set<XC_MethodHook.Unhook> hookResourceLookup( PackageTree param) throws NoSuchMethodException
 	{
 		//ViewPager fails to fetch these two when spawned  inside the hook context.
 		//While I'm sure returning random values affects something, at least it doesn't crash.
@@ -261,10 +259,12 @@ public class EmojiHooks
 		final int res1 = R.dimen.design_tab_text_size_2line;
 		final int res2 =  R.dimen.design_tab_scrollable_min_width;
 
+		HashSet resSet = new HashSet();
+
 		Class resourcesClass = ClassHunter.loadClass("android.content.res.Resources", param.getClassLoader());
 		{
 
-			return XposedHelpers.findAndHookMethod(resourcesClass, "getDimensionPixelSize", int.class, new XC_MethodHook()
+			resSet.add( XposedHelpers.findAndHookMethod(resourcesClass, "getDimensionPixelSize", int.class, new XC_MethodHook()
 			{
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param)
@@ -278,8 +278,27 @@ public class EmojiHooks
 					}
 
 				}
-			});
+			}));
 		}
+
+
+		// Note that we are getting the class loader of the module ( exi ), not swiftkey.
+		Class moduleAppCompatResourcesClass = ClassHunter.loadClass("android.support.v7.content.res.AppCompatResources", EmojiHooks.class.getClassLoader());
+
+		resSet.add( XposedHelpers.findAndHookMethod(moduleAppCompatResourcesClass, "getColorStateList", Context.class, int.class, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param)
+			{
+				// As of writing it is only looking for a tint list thing, which we don't need.
+				// culprit is appcompat imageview in the emoji panel
+				// Check here if things go weird with that.
+				param.setResult( new ColorStateList( new int[0][0], new int[0] ) );
+			}
+		}));
+
+
+		return resSet;
 	}
 
 	public static XC_MethodHook.Unhook hookCheckAppCompat(PackageTree param)
@@ -507,7 +526,7 @@ public class EmojiHooks
 				//Various non-swiftkey fixes
 				Hooks.emojiHooks_base.add( hookCheckAppCompat(param) );
 				Hooks.emojiHooks_base.addAll( hookTabView() );
-				Hooks.emojiHooks_base.add( hookResourceLookup(param) );
+				Hooks.emojiHooks_base.addAll( hookResourceLookup(param) );
 
 				//Swiftkey hooks
 				Hooks.emojiHooks_base.add( hookEmojiPanel(param) );
