@@ -1284,7 +1284,7 @@ public class KeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("hbn");
+		newProfile.setFullPath("hfm");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1292,7 +1292,7 @@ public class KeyProfiles
 		newProfile.setModifiers(PUBLIC | FINAL );
 
 		newProfile.setTypeParamCount(0);
-		newProfile.setSuperClass(	new ClassItem("hbr" , PUBLIC | EXACT ));
+		newProfile.setSuperClass(	new ClassItem("" , PUBLIC | EXACT ));
 /////////////////////////
 //Interfaces
 /////////////////////////

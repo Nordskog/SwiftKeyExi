@@ -110,7 +110,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("fkc");
+		newProfile.setFullPath("foi");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -192,7 +192,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem(int.class),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
 
 								),
@@ -220,7 +219,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
 
 								),
@@ -247,8 +245,7 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -331,7 +328,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #9: lambda$EgBClc87_hd2RHSVPeZcksYh434
+						//Method #9: lambda$-g7h_tWCVRFf1sKx6nNZARuvOfg
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -354,12 +351,11 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
 
 								),
 
-						//Method #10: lambda$g3ZWPk42LC-I79g9IVzgFZS0URE
+						//Method #10: lambda$q_L2ZfdCSC5T0E_5jki5gtfa3tw
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,

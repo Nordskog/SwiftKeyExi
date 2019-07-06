@@ -136,9 +136,7 @@ public class PriorityPredictionsClassManager
 						new ClassItem("" , PUBLIC | FINAL | EXACT ),
 						new ClassItem("" , PUBLIC | FINAL | EXACT ),
 						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
+						new ClassItem("" , PUBLIC | FINAL | EXACT )
 				);
 
 				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(	profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
