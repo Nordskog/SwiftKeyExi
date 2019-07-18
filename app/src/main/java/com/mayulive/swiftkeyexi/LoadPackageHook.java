@@ -17,16 +17,32 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
+
 public class LoadPackageHook implements IXposedHookLoadPackage
 {
+	// Exists per-processs
+	// handleLoadPackage may be called multiple times ( 3, specifically )
+	// set bool to prevent, check multiple times to account for race conditions.
+	private static boolean mHookCalled = false;
+
 	private static String LOGTAG = ExiModule.getLogTag(LoadPackageHook.class);
+
 
 	@Override
 	public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable
 	{
+
 		//Swiftkey
 		if ( lpparam.packageName.equals( ExiModule.SWIFTKEY_BETA_PACKAGE_NAME ) || lpparam.packageName.equals( ExiModule.SWIFTKEY_PACKAGE_NAME ) )
 		{
+			if (mHookCalled)
+			{
+				Log.e(LOGTAG, "Module already loaded in package " + lpparam.packageName + ", exiting");
+				XposedBridge.log("Module already loaded in package " + lpparam.packageName + ", exiting");
+				return;
+			}
+
+			mHookCalled = true;
 
 			// When searching in swiftkey, it launches an entirely separate process every single time.
 			// Do don't do any work there, and the hooking process just makes it launch super slowl
@@ -72,6 +88,12 @@ public class LoadPackageHook implements IXposedHookLoadPackage
 		}
 		else if (lpparam.packageName.equals( AndroidHooks.SYSTEM_SERVER_PACKAGE ))
 		{
+			if (mHookCalled)
+			{
+				Log.e(LOGTAG, "Module already loaded in package " + lpparam.packageName + ", exiting");
+				return;
+			}
+
 			Log.i(LOGTAG, "In system server context");
 			AndroidHooks.hookAll(lpparam.classLoader);
 		}
