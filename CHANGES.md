@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [2.3.4] - 18-07-2019
+### Fixed
+ - Compatibility targeting 7.3.5.18 ( Predictions )
+ - Workaround for module entry being called multiple times by XposedBridge
 
 ## [2.3.2] - 06-07-2019
 ### Fixed
