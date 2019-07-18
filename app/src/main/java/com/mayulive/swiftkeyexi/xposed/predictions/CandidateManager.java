@@ -216,6 +216,11 @@ private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 		///////////////
 
 		clipboardCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.ClipboardCandidate", classLoader);
+		if (clipboardCandidateClass == null)
+		{
+			// Renamed from 7.3.5.18
+			clipboardCandidateClass = ClassHunter.loadClass("com.touchtype_fluency.service.candidates.ClipboardShortcutCandidate", classLoader);
+		}
 
 		if (clipboardCandidateClass != null)
 		{
