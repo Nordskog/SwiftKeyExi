@@ -135,14 +135,11 @@ public class KeyboardClassManager
 
 			MethodProfile profile = new MethodProfile
 			(
-					new ClassItem(java.lang.String.class),
-
-					new ClassItem(java.lang.String.class),
-					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
+					new ClassItem(java.lang.String.class)
 			);
 
-			searchClass_bingSearchMethods = ProfileHelpers.findMostSimilar(  profile, searchClass.getDeclaredMethods(), searchClass, 2 );
+			// There are 3 methods, all return strings. Just check them all.
+			searchClass_bingSearchMethods = ProfileHelpers.findMostSimilar(  profile, searchClass.getDeclaredMethods(), searchClass, 3 );
 
 		}
 

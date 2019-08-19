@@ -23,6 +23,7 @@ import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorSelection;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.UpDownMotionEvent;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SelectionBehavior;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
@@ -1147,6 +1148,31 @@ public class SelectionMethods
 	public static boolean handleMotionEvent(View view, MotionEvent event)
 	{
 
+		int actionMasked = event.getActionMasked();
+
+		switch (actionMasked)
+		{
+			case MotionEvent.ACTION_POINTER_UP:
+			case MotionEvent.ACTION_UP:
+			{
+				SelectionState.mLastUpDownEvent = UpDownMotionEvent.UP;
+				break;
+			}
+
+			case MotionEvent.ACTION_DOWN:
+			case MotionEvent.ACTION_POINTER_DOWN:
+			{
+				SelectionState.mLastUpDownEvent = UpDownMotionEvent.DOWN;
+				break;
+			}
+
+			default:
+			{
+				SelectionState.mLastUpDownEvent = UpDownMotionEvent.DEFAULT;
+				break;
+			}
+		}
+
 		boolean returnValue = false;
 
 		SelectionState.mLastPointerCount = event.getPointerCount();
@@ -1232,12 +1258,10 @@ public class SelectionMethods
 				setDownPointerState(SelectionState.mLastPointerDownAction, SelectionState.mLastPointerDownInfo.downX, SelectionState.mFirstPointerDownInfo, SelectionState.mLastPointerDownInfo);
 			}
 
-
 			//Swiping should normally not be allowed when the modifier key is down.
 			//An exception is made the spacebar is the modifier, and spacebar swiping is enabled.
 			if (!SelectionState.mActionModifierDown || (Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE &&  SelectionState.isSymbols(SelectionState.DUMMY_SPACEBAR) ) )
 			{
-
 				if ( ( SelectionState.mFirstDown.is(KeyType.SPACE) && Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE) || !SelectionState.mFirstDown.is(KeyType.SPACE)   )
 				{
 					SelectionState.mValidFirstDown = true;

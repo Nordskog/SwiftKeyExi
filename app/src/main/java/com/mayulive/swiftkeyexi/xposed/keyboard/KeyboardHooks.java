@@ -89,9 +89,18 @@ public class KeyboardHooks
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
+				// This method is called with either one or two views (varargs).
+				// We are interested in the first item.
 				try
 				{
-					KeyboardMethods.mKeyboardRoot = (ViewGroup) param.getResult();
+					View[] views = (View[]) param.args[0];
+					if (views.length < 1)
+					{
+						Log.i(LOGTAG, "FullKeyboardServiceDelegate_onCreateInputView received array with no views");
+						return;
+					}
+
+					KeyboardMethods.mKeyboardRoot = ( ViewGroup )views[0];
 
 
 					try

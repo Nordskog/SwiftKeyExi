@@ -183,13 +183,16 @@ public class PredictionClassManager
 			List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType( boolean.class, ellipsizeCheckerClass.getDeclaredMethods() );
 			if (!methods.isEmpty())
 			{
-				// First returning bool.
-				// Should have no params
-				Method method = methods.get(0);
 
-				if ( method.getParameterTypes().length == 0 )
+				// Not equals method, and should have no params
+				// Equals method takes a param, so just check for no params.
+				for (Method currentMethod : methods)
 				{
-					ellipsizeCheckerClass_shouldEllipsizeMethod = method;
+					if (  currentMethod.getParameterTypes().length > 0 )
+						continue;
+
+					ellipsizeCheckerClass_shouldEllipsizeMethod = currentMethod;
+					break;
 				}
 			}
 

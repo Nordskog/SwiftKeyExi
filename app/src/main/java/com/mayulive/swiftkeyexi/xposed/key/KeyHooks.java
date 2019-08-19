@@ -11,6 +11,8 @@ import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 
+import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.UpDownMotionEvent;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 import java.lang.reflect.Method;
@@ -33,62 +35,78 @@ public class KeyHooks
 {
 	private static String LOGTAG = ExiModule.getLogTag(KeyHooks.class);
 
-	public static XC_MethodHook.Unhook hookOnKeyDown() throws NoSuchFieldException
+	public static Set<XC_MethodHook.Unhook> hookOnKeyDown() throws NoSuchFieldException
 	{
-		return XposedBridge.hookMethod(KeyClassManager.keyboardSingleKeyDownMethod, new XC_MethodHook()
+		HashSet<XC_MethodHook.Unhook> hooks = new HashSet<>();
+
+		for (Method method : KeyClassManager.keyboardSingleKeyDownMethod)
 		{
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			hooks.add( XposedBridge.hookMethod(method, new XC_MethodHook()
 			{
-
-				try
+				// This used to be a before hook, and we immediately asked to cancel all keys sometimes.
+				// This prevents the key from working at all after 7.3.7.18.
+				// Fixed by changing to After. Not sure what changed here.
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
-					Object thiz = param.thisObject;
-					KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
-
-					if (DebugTools.DEBUG_KEYS)
+					// Need to query last overlay motion event to figure out if this is key down or something else.
+					if (SelectionState.getLastUpDownEvent() != UpDownMotionEvent.DOWN)
 					{
-						Log.i(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" )+", pointer: "+System.identityHashCode(thiz));
+						return;
 					}
 
-					//Maybe keys are defined somewhere else too?
-					//I used to pass a generic key in these cases, but recently swiftkey have
-					//changed how long-presses work. When a popup... pops-up, it triggers
-					//a null key (key that did not pass through the definition methods we are hooking).
-					//This causes some features to think another key was pressed, even though it was just
-					//a key poppping up. We shouldn't be doing anything with these null keys anyway,
-					//so let's just not pass them along.
-					if (key != null)
+					try
 					{
-						KeyCommons.callKeyDownListeners(key);
+						Object thiz = param.thisObject;
+						KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
 
-						// Normally when we invoke the original method, the hook is not called.
-						// with EdXposed, it is, for some reason. Probably only because we call it from outside of the hook.
-						// Check time since last processed and skip delaying key if it was very very recent.
-						if ( System.currentTimeMillis() - KeyCommons.mDelayedKeysLastProcessed > 25 )
+						if (DebugTools.DEBUG_KEYS)
 						{
-							//If we will ever be swiping for from the shift key, we have to delay it triggering
-							//until pointer_up and we're sure we're not going to enter swipe.
-							//This is also technically necessary when swiping from anywhere, but it is unlikely the user
-							//will swipe from shift.
-							if ( key.is(KeyType.SHIFT) && ( Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey() || Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() ) )
+							Log.i(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" )+", pointer: "+System.identityHashCode(thiz));
+						}
+
+						//Maybe keys are defined somewhere else too?
+						//I used to pass a generic key in these cases, but recently swiftkey have
+						//changed how long-presses work. When a popup... pops-up, it triggers
+						//a null key (key that did not pass through the definition methods we are hooking).
+						//This causes some features to think another key was pressed, even though it was just
+						//a key poppping up. We shouldn't be doing anything with these null keys anyway,
+						//so let's just not pass them along.
+						if (key != null)
+						{
+							KeyCommons.callKeyDownListeners(key);
+
+							// Normally when we invoke the original method, the hook is not called.
+							// with EdXposed, it is, for some reason. Probably only because we call it from outside of the hook.
+							// Check time since last processed and skip delaying key if it was very very recent.
+							if ( System.currentTimeMillis() - KeyCommons.mDelayedKeysLastProcessed > 25 )
 							{
-								KeyCommons.DelayedKey delayedKey = new KeyCommons.DelayedKey( param.args, thiz, (Method)param.method, 2000 );
-								KeyCommons.addDelayedKey(delayedKey);
-								param.setResult(null);
+								//If we will ever be swiping for from the shift key, we have to delay it triggering
+								//until pointer_up and we're sure we're not going to enter swipe.
+								//This is also technically necessary when swiping from anywhere, but it is unlikely the user
+								//will swipe from shift.
+								if ( key.is(KeyType.SHIFT) && ( Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey() || Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() ) )
+								{
+									KeyCommons.DelayedKey delayedKey = new KeyCommons.DelayedKey( param.args, thiz, (Method)param.method, 2000 );
+									KeyCommons.addDelayedKey(delayedKey);
+									param.setResult(null);
+								}
 							}
+
 						}
 
 					}
-
+					catch (Throwable ex)
+					{
+						Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in onKeyDown hook");
+					}
 				}
-				catch (Throwable ex)
-				{
-					Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in onKeyDown hook");
-				}
-			}
 
-		});
+			}));
+		}
+
+		return hooks;
+
 	}
 
 	public static Set<XC_MethodHook.Unhook> hookPreventNormalButtonInput() throws NoSuchFieldException
@@ -233,7 +251,7 @@ public class KeyHooks
 			{
 				Hooks.keyHooks_keyDefinition.add( hookKeyTemplateConstructor() );
 
-				Hooks.keyHooks_keyDefinition.add( hookOnKeyDown() );
+				Hooks.keyHooks_keyDefinition.addAll( hookOnKeyDown() );
 
 				Hooks.keyHooks_keyDefinition.addAll( hookKeyFields(param));
 				Hooks.keyHooks_keyDefinition.addAll( hookKeyConstructor(param));

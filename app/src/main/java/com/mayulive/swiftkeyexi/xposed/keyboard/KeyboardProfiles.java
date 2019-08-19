@@ -415,7 +415,7 @@ public class KeyboardProfiles
 				{
 						new ClassItem("com.touchtype_fluency.service.HandwritingModelLoadStateListener" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("com.touchtype_fluency.service.LanguageLoadStateListener" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("com.touchtype_fluency.service.receiver.SDCardListener" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("com.touchtype_fclassluency.service.receiver.SDCardListener" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),

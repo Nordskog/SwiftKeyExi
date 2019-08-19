@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -74,9 +75,21 @@ public class PriorityPredictionsClassManager
 	{
 		PriorityPredictionsClassManager.candidateViewClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_CANDIDATE_VIEW_CLASS_PROFILE(), param );
 
-			PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE(), param );
-
 		PriorityPredictionsClassManager.buClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_BU_CLASS_PROFILE(), param );
+
+		{
+			// New is for 7.3.7.18+ TODO remove old at some point
+			Class oldClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_OLD(), param );
+			Class newClass = PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_NEW(), param );
+
+			// Uhhh... pick class with best similarity?
+			float simOld = PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_OLD().getSimilarity(oldClass, oldClass, 0f);
+			float simNew = PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_NEW().getSimilarity(newClass, newClass, 0f);
+
+			Log.d(LOGTAG, "candidatesViewFactory sim: Old: "+simOld+", new: "+simNew);
+
+			PriorityPredictionsClassManager.candidatesViewFactory = simNew > simOld ? newClass : oldClass;
+		}
 	}
 
 	public static void loadMethods() throws NoSuchMethodException
@@ -104,7 +117,6 @@ public class PriorityPredictionsClassManager
 			hpeClass_constructor = hpeClass.getConstructors()[0];	//No arguments
 
 		}
-
 
 		if (PriorityPredictionsClassManager.candidatesViewFactory != null)
 		{

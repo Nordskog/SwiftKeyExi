@@ -30,6 +30,7 @@ import static com.mayulive.xposed.classhunter.Modifiers.PRIVATE;
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 import static com.mayulive.xposed.classhunter.Modifiers.STATIC;
 import static com.mayulive.xposed.classhunter.Modifiers.SYNTHETIC;
+import static com.mayulive.xposed.classhunter.Modifiers.VARARGS;
 
 public class PriorityKeyboardClassManager
 {
@@ -84,7 +85,6 @@ public class PriorityKeyboardClassManager
 		toolbarOpenButtonOverlayViewClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_TOOLBAR_OPEN_BUTTON_OVERLAY_CLASS_PROFILE(), param );
 
 		PriorityKeyboardClassManager.FullKeyboardServiceDelegate = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_FULL_KEYBOARD_SERVICE_DELEGATE_CLASS_PROFILE(), param );
-
 	}
 
 	public static void loadMethods() throws NoSuchMethodException
@@ -100,12 +100,13 @@ public class PriorityKeyboardClassManager
 
 		}
 
-
 		if (FullKeyboardServiceDelegate != null)
 		{
-			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findFirstProfileMatch( new MethodProfile(
-					PRIVATE | EXACT,
-					new ClassItem(View.class)
+			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findMostSimilar( new MethodProfile(
+					PUBLIC | FINAL | VARARGS,
+					new ClassItem(void.class),
+
+					new ClassItem("android.view.View" , PUBLIC | ARRAY | EXACT )
 			), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
 		}
 
@@ -137,15 +138,12 @@ public class PriorityKeyboardClassManager
 			{
 				MethodProfile profile = new MethodProfile
 				(
-						PRIVATE | EXACT ,
-						new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
+						PUBLIC | FINAL | EXACT ,
+						new ClassItem(void.class),
 
 						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | STATIC | EXACT ),
-						new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-						new ClassItem(int.class),
-						new ClassItem("" , PUBLIC | FINAL | EXACT )
+						new ClassItem(boolean.class),
+						new ClassItem(int.class)
 
 				);
 

@@ -59,7 +59,7 @@ public class KeyClassManager
 	//protected static Method onButtonReleasedHandlerMethod = null;	//Deprecated key-up
 	protected static List<Method> normalButtonClickItemMethods = null;
 
-	protected static Method keyboardSingleKeyDownMethod = null;
+	protected static List<Method> keyboardSingleKeyDownMethod = null;
 
 	protected static Method keyRawDefinitionClass_newKeyMethod = null;
 
@@ -97,7 +97,7 @@ public class KeyClassManager
 		{
 			//Method order expected to to remain the same.
 			//Should they change, maybe we can check the input touch event to figure out which is which?
-			keyboardSingleKeyDownMethod  = ProfileHelpers.findFirstProfileMatch(new MethodProfile(
+			keyboardSingleKeyDownMethod  = ProfileHelpers.findAllProfileMatches(new MethodProfile(
 							new ClassItem(void.class),
 							new ClassItem(pointerLocationClass)
 					),
@@ -130,16 +130,28 @@ public class KeyClassManager
 
 		if (pointerLocationClass != null && !normalButtonClickItemClass.isEmpty())
 		{
+
+			MethodProfile profile = new MethodProfile
+			(
+					PUBLIC | EXACT ,
+					new ClassItem(void.class),
+
+					new ClassItem(pointerLocationClass)
+			);
+
 			normalButtonClickItemMethods = new ArrayList<Method>();
 			for (int i = 0; i < normalButtonClickItemClass.size(); i++)
 			{
 				Class clazz = normalButtonClickItemClass.get(i);
 
+				List<Method> methods = ProfileHelpers.findAllMostSimilar(profile, clazz.getDeclaredMethods(), clazz);
 
-				Method method = ProfileHelpers.firstMethodByName( clazz.getDeclaredMethods(), "b");	//TODO this is going to fall soon
+				if (!methods.isEmpty())
+				{
+					DebugTools.logIfProfileMismatch(methods.get(0), clazz, profile, "normalButtonClickItemMethods");
+				}
 
-				if (method != null)
-					normalButtonClickItemMethods.add(method);
+				normalButtonClickItemMethods.addAll(methods);
 			}
 		}
 
