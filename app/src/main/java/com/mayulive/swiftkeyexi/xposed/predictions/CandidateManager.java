@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.mayulive.xposed.classhunter.Modifiers.*;
+
 
 /**
  * Created by Roughy on 1/15/2017.
@@ -331,8 +333,8 @@ private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 
 			MethodProfile profile = new MethodProfile
 			(
-					Modifiers.PUBLIC | Modifiers.STATIC | Modifiers.EXACT ,
-					new ClassItem( Modifiers.THIS  ),
+					PUBLIC | STATIC | EXACT ,
+					new ClassItem("" , PUBLIC | THIS | EXACT ),
 
 					new ClassItem(java.lang.String.class)
 			);

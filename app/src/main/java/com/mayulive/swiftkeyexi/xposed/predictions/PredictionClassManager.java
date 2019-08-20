@@ -117,13 +117,14 @@ public class PredictionClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-					FINAL | EXACT ,
-					new ClassItem(java.util.List.class),
+					PUBLIC | FINAL | EXACT ,
+					new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem(int.class)
 
 			);
 
@@ -144,15 +145,14 @@ public class PredictionClassManager
 
 			MethodProfile profile = new MethodProfile
 			(
-					PUBLIC | FINAL | EXACT ,
+					PUBLIC | EXACT ,
 					new ClassItem(void.class),
 
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 					new ClassItem(int.class)
-
 			);
 
 			handleCandidateClass_candidateSelectedMethod = ProfileHelpers.findMostSimilar(

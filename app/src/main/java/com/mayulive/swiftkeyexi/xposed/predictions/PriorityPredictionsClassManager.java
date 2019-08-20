@@ -137,18 +137,18 @@ public class PriorityPredictionsClassManager
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem(android.view.View.class),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT )
+						new ClassItem("" , PUBLIC | EXACT )
 				);
 
 				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(	profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
@@ -161,7 +161,7 @@ public class PriorityPredictionsClassManager
 
 				MethodProfile profile = new MethodProfile
 				(
-						PRIVATE | STATIC | EXACT ,
+						PUBLIC | STATIC | EXACT ,
 						new ClassItem(void.class),
 
 						new ClassItem(android.content.Context.class),
@@ -169,8 +169,8 @@ public class PriorityPredictionsClassManager
 						new ClassItem(android.view.View.class),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT )
+						new ClassItem("" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT )
 
 				);
 
@@ -193,7 +193,7 @@ public class PriorityPredictionsClassManager
 		if (PriorityPredictionsClassManager.candidateViewClass != null)
 		{
 			PriorityPredictionsClassManager.candidateViewClass_Constructor = PriorityPredictionsClassManager.candidateViewClass.getDeclaredConstructors()[0];
-			candidateViewClass_setCandidateMethod = XposedHelpers.findMethodExact(PriorityPredictionsClassManager.candidateViewClass, "setCandidate", CandidateManager.candidateInterfaceClass);
+			candidateViewClass_setCandidateMethod = ProfileHelpers.findFirstMethodByName(PriorityPredictionsClassManager.candidateViewClass.getDeclaredMethods(), "setCandidate");
 		}
 
 		if (PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod != null && candidateViewClass_Constructor != null)
@@ -208,19 +208,19 @@ public class PriorityPredictionsClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-					PUBLIC | FINAL | EXACT ,
+					PUBLIC | EXACT ,
 					new ClassItem(void.class),
 
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT )
+					new ClassItem("" , PUBLIC | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT )
 
 			);
 

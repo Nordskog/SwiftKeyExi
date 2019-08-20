@@ -114,8 +114,9 @@ public class KeyboardClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-				Modifiers.PUBLIC | Modifiers.FINAL | Modifiers.EXACT,
+					PUBLIC | EXACT ,
 					new ClassItem(void.class),
+
 					new ClassItem(int.class),
 					new ClassItem(boolean.class)
 			);
@@ -165,12 +166,14 @@ public class KeyboardClassManager
 
 			MethodProfile profile =  new MethodProfile
 			(
-					Modifiers.FINAL | Modifiers.PUBLIC,
-					new ClassItem(Modifiers.INTERFACE),
-					new ClassItem( String.class ),
-					new ClassItem( boolean.class ),
-					new ClassItem( Modifiers.INTERFACE ),
-					new ClassItem(Executor.class)
+					PUBLIC | EXACT ,
+					new ClassItem(PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+					new ClassItem(java.lang.String.class),
+					new ClassItem(boolean.class),
+					new ClassItem( PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem(java.util.concurrent.Executor.class)
+
 			);
 
 			KeyboardClassManager.themeSetterClass_setThemeMethod = ProfileHelpers.findMostSimilar( profile, themeSetterClass.getDeclaredMethods(), themeSetterClass );

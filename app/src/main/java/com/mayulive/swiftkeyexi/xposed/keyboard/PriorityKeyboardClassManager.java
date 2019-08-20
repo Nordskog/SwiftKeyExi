@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 
 import static com.mayulive.xposed.classhunter.Modifiers.ABSTRACT;
 import static com.mayulive.xposed.classhunter.Modifiers.ARRAY;
+import static com.mayulive.xposed.classhunter.Modifiers.BRIDGE;
 import static com.mayulive.xposed.classhunter.Modifiers.ENUM;
 import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
 import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
@@ -155,7 +156,7 @@ public class PriorityKeyboardClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-					PUBLIC | FINAL | SYNTHETIC | EXACT ,
+					PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
 					new ClassItem(void.class),
 
 					new ClassItem(java.lang.Object.class),

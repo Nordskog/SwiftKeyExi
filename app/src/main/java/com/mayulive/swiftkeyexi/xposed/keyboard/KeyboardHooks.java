@@ -56,6 +56,8 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
+import static com.mayulive.xposed.classhunter.Modifiers.*;
+
 /**
  * Created by Roughy on 1/6/2017.
  */
@@ -474,9 +476,10 @@ public class KeyboardHooks
 
 
 			MethodProfile profile = new MethodProfile(
-					Modifiers.STATIC,
-					new ClassItem(Modifiers.THIS),
-					new ClassItem(Modifiers.ARRAY)
+					PUBLIC | STATIC | EXACT ,
+					new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
+
+					new ClassItem(java.lang.Object[].class)
 			);
 
 			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( profile, someCollectionClass.getDeclaredMethods(), someCollectionClass);

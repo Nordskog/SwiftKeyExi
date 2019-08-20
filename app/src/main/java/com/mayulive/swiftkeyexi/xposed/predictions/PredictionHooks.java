@@ -76,6 +76,7 @@ public class PredictionHooks
 				{
 
 					//Method changed from single candidate to list.
+					// and then as of 7.3.7.18 back to candidate again
 					boolean returnList = ((Method)param.method).getReturnType() == List.class;
 
 					PredictionCommons.mLastCandidateResultType = param.args[PredictionClassManager.UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition];

@@ -112,10 +112,10 @@ public class KeyClassManager
 			MethodProfile profile = new MethodProfile
 			(
 					PUBLIC | STATIC | EXACT ,
-					new ClassItem("" , PUBLIC | FINAL | THIS | EXACT ),
+					new ClassItem("" , PUBLIC | THIS | EXACT ),
 
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem(java.util.Locale.class),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
