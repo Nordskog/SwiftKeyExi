@@ -110,8 +110,6 @@ public class KeyboardMethods
 	// Handle landscape and portrait. Assume portrait if value unknown.
 	protected static int mDeviceOrientation = Configuration.ORIENTATION_PORTRAIT;
 
-	protected static ExiIconView mToolbarButton = null;
-
 	protected static int mActivePunctuationMode = PunctuationRuleMode.STOCK.mask;
 
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
@@ -152,21 +150,6 @@ public class KeyboardMethods
 		for (String layout : extendedPredictionLayouts)
 		{
 			mExtendedPredictionsLayouts.add( layout );
-		}
-	}
-
-	public static void updateToolbarButtonColor(int theme)
-	{
-		if (mToolbarButton != null)
-		{
-			if (theme == SharedTheme.DARK_THEME_IDENTIFIER )
-			{
-				mToolbarButton.setIconColor(Color.WHITE);
-			}
-			else if ( theme == SharedTheme.LIGHT_THEME_IDENTIFIER )
-			{
-				mToolbarButton.setIconColor(Color.DKGRAY);
-			}
 		}
 	}
 

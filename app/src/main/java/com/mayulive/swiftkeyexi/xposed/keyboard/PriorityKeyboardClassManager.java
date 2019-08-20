@@ -40,7 +40,6 @@ public class PriorityKeyboardClassManager
 
 	public static Class keyboardServiceClass =  null;
 	public static Class FullKeyboardServiceDelegate = null;
-	public static Class toolbarFrameClass = null;
 
 	public static Class toolbarOpenButtonOverlayViewClass = null;
 	/////////////////////////
@@ -65,15 +64,11 @@ public class PriorityKeyboardClassManager
 	protected static Method punctuatorImplClass_ClearRulesMethod = null;
 	protected static Class punctuatorImplClass = null;
 
-	protected static Method toolbarFrameClass_inflateMethod = null;
-
 	public static void loadKnownClasses(PackageTree param)
 	{
 		PriorityKeyboardClassManager.keyboardServiceClass = ClassHunter.loadClass("com.touchtype.KeyboardService", param.getClassLoader());
 
 		PriorityKeyboardClassManager.punctuatorImplClass = ClassHunter.loadClass("com.touchtype_fluency.impl.PunctuatorImpl", param.getClassLoader());
-
-		toolbarFrameClass = ClassHunter.loadClass("com.touchtype.keyboard.toolbar.ToolbarFrame", param.getClassLoader());
 	}
 
 	public static void loadUnknownClasses(PackageTree param)
@@ -156,22 +151,6 @@ public class PriorityKeyboardClassManager
 
 		}
 
-		if (toolbarFrameClass != null)
-		{
-			MethodProfile profile = new MethodProfile
-			(
-					PRIVATE | Modifiers.EXACT,
-					new ClassItem( void.class ),
-					new ClassItem( boolean.class )
-			);
-
-			toolbarFrameClass_inflateMethod = ProfileHelpers.findMostSimilar(
-					profile, toolbarFrameClass.getDeclaredMethods(), toolbarFrameClass);
-
-			DebugTools.logIfProfileMismatch(  toolbarFrameClass_inflateMethod, toolbarFrameClass, profile, "toolbarFrameClass_inflateMethod");
-
-		}
-
 		if (toolbarOpenButtonOverlayViewClass != null)
 		{
 			MethodProfile profile = new MethodProfile
@@ -219,10 +198,6 @@ public class PriorityKeyboardClassManager
 
 		//View created (Overlay)
 		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "KeyboardServiceClass", 	PriorityKeyboardClassManager.keyboardServiceClass );
-
-
-		//Toolbar button
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_toolbarButton,	 "toolbarFrameClass_inflateMethod", 	PriorityKeyboardClassManager.toolbarFrameClass_inflateMethod );
 
 		//Base
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "KeyboardServiceClass", 	PriorityKeyboardClassManager.keyboardServiceClass );

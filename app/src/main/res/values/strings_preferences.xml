@@ -221,11 +221,6 @@
     <string name="pref_remapped_keys_title">Remapped Keys</string>
     <string name="pref_remapped_keys_summary">Remapped hardware keys</string>
 
-    <!-- toolbar button -->
-    <string name="pref_toolbar_button_key">pref_toolbar_button</string>
-    <string name="pref_toolbar_button_title">Toolbar Button</string>
-    <string name="pref_toolbar_button_summary">Display Exi shortcut in toolbar</string>
-
     <string name="pref_hide_predictions_key">pref_hide_predictions</string>
     <string name="pref_hide_predictions_title">Hide predictions</string>
     <string name="pref_hide_predictions_summary">Do not display the predictions bar</string>

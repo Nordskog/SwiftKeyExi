@@ -73,10 +73,7 @@ public class Hooks
 	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 	public static HookCategory baseHooks_keyHeight = new HookCategory("KeyboardHooks keyHeight");
 
-
-	public static HookCategory baseHooks_toolbarButton = new HookCategory("KeyboardHooks toolbarButton");
 	public static HookCategory baseHooks_hidePredictions = new HookCategory("KeyboardHooks baseHooks_hidePredictions");
-
 
 	//Style
 	public static HookCategory styleHooks_darklight = new HookCategory("StyleHooks Darklight");
@@ -108,7 +105,6 @@ public class Hooks
 																								baseHooks_fullscreenMode,
 																								baseHooks_keyHeight,
 																								hardwareKeys_base,
-																								baseHooks_toolbarButton,
 																								baseHooks_hidePredictions,
 																								incognito,
 																								search,
