@@ -145,7 +145,7 @@ public class PriorityKeyboardClassManager
 				PriorityKeyboardClassManager.keyboardLoader_loadMethod = ProfileHelpers.findMostSimilar(
 						profile, PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), PriorityKeyboardClassManager.keyboardLoaderClass);
 
-				DebugTools.logIfProfileMismatch(  keyboardLoader_loadMethod, keyboardLoaderClass, profile, "keyboardLoader_loadMethod");
+				DebugTools.logIfMethodProfileMismatch(  keyboardLoader_loadMethod, keyboardLoaderClass, profile, "keyboardLoader_loadMethod");
 			}
 
 
@@ -166,7 +166,7 @@ public class PriorityKeyboardClassManager
 			toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = ProfileHelpers.findMostSimilar(
 					profile, PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass.getDeclaredMethods(), PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass);
 
-			DebugTools.logIfProfileMismatch(  toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod, toolbarOpenButtonOverlayViewClass, profile, "toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod");
+			DebugTools.logIfMethodProfileMismatch(  toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod, toolbarOpenButtonOverlayViewClass, profile, "toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod");
 		}
 
 	}

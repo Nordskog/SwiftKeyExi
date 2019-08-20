@@ -123,7 +123,7 @@ public class KeyClassManager
 
 			keyRawDefinitionClass_newKeyMethod  = ProfileHelpers.findMostSimilar(profile, keyRawDefinitionClass.getDeclaredMethods(), keyRawDefinitionClass);
 
-			DebugTools.logIfProfileMismatch(keyRawDefinitionClass_newKeyMethod, keyRawDefinitionClass, profile, "keyRawDefinitionClass_newKeyMethod");
+			DebugTools.logIfMethodProfileMismatch(keyRawDefinitionClass_newKeyMethod, keyRawDefinitionClass, profile, "keyRawDefinitionClass_newKeyMethod");
 
 		}
 
@@ -148,7 +148,7 @@ public class KeyClassManager
 
 				if (!methods.isEmpty())
 				{
-					DebugTools.logIfProfileMismatch(methods.get(0), clazz, profile, "normalButtonClickItemMethods");
+					DebugTools.logIfMethodProfileMismatch(methods.get(0), clazz, profile, "normalButtonClickItemMethods");
 				}
 
 				normalButtonClickItemMethods.addAll(methods);

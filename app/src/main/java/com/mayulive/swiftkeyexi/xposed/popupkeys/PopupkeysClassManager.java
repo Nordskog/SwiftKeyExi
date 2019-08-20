@@ -128,7 +128,7 @@ public class PopupkeysClassManager
 			addLongPressCharacters_A_Method = ProfileHelpers.findMostSimilar(
 					profile, keyConfigureClass.getDeclaredMethods(), keyConfigureClass);
 
-			DebugTools.logIfProfileMismatch(  addLongPressCharacters_A_Method, keyConfigureClass, profile, "addLongPressCharacters_A_Method");
+			DebugTools.logIfMethodProfileMismatch(  addLongPressCharacters_A_Method, keyConfigureClass, profile, "addLongPressCharacters_A_Method");
 		}
 
 

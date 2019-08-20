@@ -130,7 +130,7 @@ public class PredictionClassManager
 			UpdateCandidateTaskClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(
 					profile, UpdateCandidateTaskClass.getDeclaredMethods(), UpdateCandidateTaskClass);
 
-			DebugTools.logIfProfileMismatch(  UpdateCandidateTaskClass_getTopCandidateMethod, UpdateCandidateTaskClass, profile, "UpdateCandidateTaskClass_getTopCandidateMethod");
+			DebugTools.logIfMethodProfileMismatch(  UpdateCandidateTaskClass_getTopCandidateMethod, UpdateCandidateTaskClass, profile, "UpdateCandidateTaskClass_getTopCandidateMethod");
 
 			if (UpdateCandidateTaskClass_getTopCandidateMethod != null && resultTypeEnum != null)
 			{
@@ -158,7 +158,7 @@ public class PredictionClassManager
 			handleCandidateClass_candidateSelectedMethod = ProfileHelpers.findMostSimilar(
 					profile, handleCandidateClass.getDeclaredMethods(), handleCandidateClass);
 
-			DebugTools.logIfProfileMismatch(  handleCandidateClass_candidateSelectedMethod, handleCandidateClass, profile, "handleCandidateClass_candidateSelectedMethod");
+			DebugTools.logIfMethodProfileMismatch(  handleCandidateClass_candidateSelectedMethod, handleCandidateClass, profile, "handleCandidateClass_candidateSelectedMethod");
 
 			if (handleCandidateClass_candidateSelectedMethod != null)
 			{

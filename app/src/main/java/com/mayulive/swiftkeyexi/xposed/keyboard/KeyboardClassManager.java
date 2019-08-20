@@ -122,7 +122,7 @@ public class KeyboardClassManager
 
 			incogControllerClass_ChangeIncogStateMethod = ProfileHelpers.findMostSimilar( profile, incogControllerClass.getDeclaredMethods(), incogControllerClass);
 
-			DebugTools.logIfProfileMismatch(incogControllerClass_ChangeIncogStateMethod, incogControllerClass, profile, "incogControllerClass_ChangeIncogStateMethod");
+			DebugTools.logIfMethodProfileMismatch(incogControllerClass_ChangeIncogStateMethod, incogControllerClass, profile, "incogControllerClass_ChangeIncogStateMethod");
 
 		}
 
@@ -156,7 +156,7 @@ public class KeyboardClassManager
 
 			insertGifClass_insertGifMethod = ProfileHelpers.findMostSimilar( profile, insertGifClass.getDeclaredMethods(), insertGifClass);
 
-			DebugTools.logIfProfileMismatch(insertGifClass_insertGifMethod, insertGifClass, profile, "insertGifClass_insertGifMethod");
+			DebugTools.logIfMethodProfileMismatch(insertGifClass_insertGifMethod, insertGifClass, profile, "insertGifClass_insertGifMethod");
 
 		}
 
@@ -174,7 +174,7 @@ public class KeyboardClassManager
 			);
 
 			KeyboardClassManager.themeSetterClass_setThemeMethod = ProfileHelpers.findMostSimilar( profile, themeSetterClass.getDeclaredMethods(), themeSetterClass );
-			DebugTools.logIfProfileMismatch(  themeSetterClass_setThemeMethod, themeSetterClass, profile, "themeSetterClass_setThemeMethod");
+			DebugTools.logIfMethodProfileMismatch(  themeSetterClass_setThemeMethod, themeSetterClass, profile, "themeSetterClass_setThemeMethod");
 
 		}
 	}

@@ -110,7 +110,7 @@ public class PriorityPredictionsClassManager
 			);
 
 			buClass_submitCandidateMethod =  ProfileHelpers.findMostSimilar( profile, buClass.getDeclaredMethods(), buClass);
-			DebugTools.logIfProfileMismatch(  buClass_submitCandidateMethod, buClass, profile, "buClass_submitCandidateMethod");
+			DebugTools.logIfMethodProfileMismatch(  buClass_submitCandidateMethod, buClass, profile, "buClass_submitCandidateMethod");
 
 
 			hpeClass = buClass_submitCandidateMethod.getParameterTypes()[0];	//Some class we need as first param
@@ -153,7 +153,7 @@ public class PriorityPredictionsClassManager
 
 				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(	profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
 
-				DebugTools.logIfProfileMismatch(  candidatesViewFactory_getViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_getViewMethod");
+				DebugTools.logIfMethodProfileMismatch(  candidatesViewFactory_getViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_getViewMethod");
 
 			}
 
@@ -176,7 +176,7 @@ public class PriorityPredictionsClassManager
 
 				PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod = ProfileHelpers.findMostSimilar(
 						profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
-				DebugTools.logIfProfileMismatch(  candidatesViewFactory_ReturnWrapperClass_GetViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_ReturnWrapperClass_GetViewMethod");
+				DebugTools.logIfMethodProfileMismatch(  candidatesViewFactory_ReturnWrapperClass_GetViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_ReturnWrapperClass_GetViewMethod");
 
 			}
 
@@ -227,7 +227,7 @@ public class PriorityPredictionsClassManager
 			PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod = ProfileHelpers.findMostSimilar(
 					profile, PriorityPredictionsClassManager.keyboardFrameClass.getDeclaredMethods(), PriorityPredictionsClassManager.keyboardFrameClass);
 
-			DebugTools.logIfProfileMismatch(  keyboardFrameClass_setBuMethod, keyboardFrameClass, profile, "keyboardFrameClass_setBuMethod");
+			DebugTools.logIfMethodProfileMismatch(  keyboardFrameClass_setBuMethod, keyboardFrameClass, profile, "keyboardFrameClass_setBuMethod");
 		}
 
 	}

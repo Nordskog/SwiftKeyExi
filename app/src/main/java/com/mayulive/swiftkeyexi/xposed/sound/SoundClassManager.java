@@ -51,7 +51,7 @@ public class SoundClassManager
 			);
 
 			keySoundClass_playSoundMethod = ProfileHelpers.findMostSimilar(profile, keySoundClass.getDeclaredMethods(), keySoundClass);
-			DebugTools.logIfProfileMismatch(  keySoundClass_playSoundMethod, keySoundClass, profile, "keySoundClass_playSoundMethod");
+			DebugTools.logIfMethodProfileMismatch(  keySoundClass_playSoundMethod, keySoundClass, profile, "keySoundClass_playSoundMethod");
 
 		}
 	}

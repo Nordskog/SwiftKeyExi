@@ -481,7 +481,7 @@ public class KeyboardHooks
 
 			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( profile, someCollectionClass.getDeclaredMethods(), someCollectionClass);
 
-			DebugTools.logIfProfileMismatch(  someCollectionClassCreateMethod, someCollectionClass, profile, "someCollectionClassCreateMethod");
+			DebugTools.logIfMethodProfileMismatch(  someCollectionClassCreateMethod, someCollectionClass, profile, "someCollectionClassCreateMethod");
 
 
 

@@ -339,7 +339,7 @@ private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 
 			token_staticConstructor = ProfileHelpers.findMostSimilar(profile, tokenClass.getDeclaredMethods(), tokenClass);
 
-			DebugTools.logIfProfileMismatch(  token_staticConstructor, tokenClass, profile, "token_staticConstructor");
+			DebugTools.logIfMethodProfileMismatch(  token_staticConstructor, tokenClass, profile, "token_staticConstructor");
 		}
 	}
 

@@ -96,7 +96,7 @@ public class SelectionClassManager
 			);
 
 			FlowDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar( profile, FlowDelegateClass.getDeclaredMethods(), FlowDelegateClass);
-			DebugTools.logIfProfileMismatch(  FlowDelegate_flowDetectedMethod, FlowDelegateClass, profile, "FlowDelegate_flowDetectedMethod");
+			DebugTools.logIfMethodProfileMismatch(  FlowDelegate_flowDetectedMethod, FlowDelegateClass, profile, "FlowDelegate_flowDetectedMethod");
 
 
 			if (FlowDelegate_flowDetectedMethod != null)
@@ -127,7 +127,7 @@ public class SelectionClassManager
 			swipeDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar(
 					profile, swipeDelegateClass.getDeclaredMethods(), swipeDelegateClass);
 
-			DebugTools.logIfProfileMismatch(  swipeDelegate_flowDetectedMethod, swipeDelegateClass, profile, "swipeDelegate_flowDetectedMethod");
+			DebugTools.logIfMethodProfileMismatch(  swipeDelegate_flowDetectedMethod, swipeDelegateClass, profile, "swipeDelegate_flowDetectedMethod");
 		}
 
 
@@ -151,7 +151,7 @@ public class SelectionClassManager
 				SelectionChangedInputEventClass_hasMovedAbruptlyMethod = ProfileHelpers.findMostSimilar(
 						profile, SelectionChangedInputEventClass.getDeclaredMethods(), SelectionChangedInputEventClass);
 
-				DebugTools.logIfProfileMismatch(  SelectionChangedInputEventClass_hasMovedAbruptlyMethod, SelectionChangedInputEventClass, profile, "SelectionChangedInputEventClass_hasMovedAbruptlyMethod");
+				DebugTools.logIfMethodProfileMismatch(  SelectionChangedInputEventClass_hasMovedAbruptlyMethod, SelectionChangedInputEventClass, profile, "SelectionChangedInputEventClass_hasMovedAbruptlyMethod");
 			}
 			else
 			{
