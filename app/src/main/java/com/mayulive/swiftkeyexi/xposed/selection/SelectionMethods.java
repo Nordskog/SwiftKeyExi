@@ -1246,7 +1246,7 @@ public class SelectionMethods
 				if ( SelectionState.isSymbols( SelectionState.mFirstDown ))
 				{
 					SelectionState.mActionModifierDown = true;
-					KeyCommons.setCancelAllKeys(true);
+					KeyCommons.setCancelAllKeysAfterKeyDown(true);
 				}
 			}
 			//if (mFirstDown.length() <= 1 || mShiftKeys.contains(mFirstDown) || mDeleteKeys.contains(mFirstDown) || ( mSpaceKey.equals(key) && Settings.SWIPE_CURSOR_BEHAVIOR == CursorBehavior.SPACE_SWIPE)  )
@@ -1254,7 +1254,7 @@ public class SelectionMethods
 		    if ( !SelectionState.mActionModifierDown && SelectionState.isSymbols( SelectionState.mFirstDown ))
 			{
 				SelectionState.mActionModifierDown = true;
-				KeyCommons.setCancelAllKeys(true);
+				KeyCommons.setCancelAllKeysAfterKeyDown(true);
 				setDownPointerState(SelectionState.mLastPointerDownAction, SelectionState.mLastPointerDownInfo.downX, SelectionState.mFirstPointerDownInfo, SelectionState.mLastPointerDownInfo);
 			}
 

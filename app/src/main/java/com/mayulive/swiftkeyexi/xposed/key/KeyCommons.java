@@ -241,6 +241,7 @@ public class KeyCommons
 	protected static boolean mCancelNextKey = false;
 	protected static long mCancelNextKey_RequestTime = 0;
 
+	protected static boolean mCancelAllKeysAfterKeyDown = false;
 	protected static boolean mCancelAllKeys = false;
 
 	public static void requestCancelNextKey()
@@ -249,8 +250,20 @@ public class KeyCommons
 		mCancelNextKey_RequestTime = System.currentTimeMillis();
 	}
 
+	/**
+	 * Cancel all key events AFTER the current keyDown event has finished.
+	 * This is expected to be used from inside the onKeyDown ( before ) hook.
+	 * @param cancel
+	 */
+	public static void setCancelAllKeysAfterKeyDown(boolean cancel)
+	{
+		mCancelAllKeysAfterKeyDown = true;
+	}
+
 	public static void setCancelAllKeys(boolean cancel)
 	{
+		if (cancel)
+			mCancelAllKeysAfterKeyDown = false;
 		mCancelAllKeys = cancel;
 	}
 

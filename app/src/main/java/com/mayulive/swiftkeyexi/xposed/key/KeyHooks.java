@@ -43,11 +43,24 @@ public class KeyHooks
 		{
 			hooks.add( XposedBridge.hookMethod(method, new XC_MethodHook()
 			{
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				{
+					// Back in the day enabling it directly in the before hook would allow the current event but cancel the next one.
+					// For some reason it will now also cancel the current one, so we set it on a delay.
+					if ( KeyCommons.mCancelAllKeysAfterKeyDown )
+					{
+						KeyCommons.mCancelAllKeys = true;
+						KeyCommons.mCancelAllKeysAfterKeyDown = false;
+					}
+
+				}
+
 				// This used to be a before hook, and we immediately asked to cancel all keys sometimes.
 				// This prevents the key from working at all after 7.3.7.18.
 				// Fixed by changing to After. Not sure what changed here.
 				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
 					// Need to query last overlay motion event to figure out if this is key down or something else.
 					if (SelectionState.getLastUpDownEvent() != UpDownMotionEvent.DOWN)
