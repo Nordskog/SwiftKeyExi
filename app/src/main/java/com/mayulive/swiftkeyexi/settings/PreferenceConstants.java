@@ -95,8 +95,6 @@ public class PreferenceConstants
 
 	public static final String pref_swipe_direction_any_key = "pref_swipe_direction_any";
 
-	public static final String pref_toolbar_button_key = "pref_toolbar_button";
-
 	public static final String pref_hide_predictions_key = "pref_hide_predictions";
 
 	public static final String pref_use_custom_search_key = "pref_use_custom_search";

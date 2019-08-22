@@ -15,8 +15,8 @@ import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.keyboard.PriorityKeyboardClassManager;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.CursorSelection;
+import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.UpDownMotionEvent;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SpaceModifierBehavior;
-import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.SwipeOverlay;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.pointerInformation;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
@@ -45,7 +45,6 @@ public class SelectionState
 
 	static final KeyDefinition DUMMY_SPACEBAR = new KeyDefinition("", KeyType.SPACE);
 
-
 	//////////////////////////////
 	// KEy down and some states
 	//////////////////////////////
@@ -62,6 +61,8 @@ public class SelectionState
 	protected static boolean mDeleteDown = false;
 	protected static boolean mNumberDown = false;
 	protected static long mSwipeEndTime = 0;
+
+	protected static UpDownMotionEvent mLastUpDownEvent = UpDownMotionEvent.DEFAULT;
 
 	protected static long mLastPointerUpTime = 0;	//Last time of a pointer up event
 
@@ -376,6 +377,11 @@ public class SelectionState
 				mRightSelectPosition_Original = mRightSelectPosition;
 			}
 		}
+	}
+
+	public static UpDownMotionEvent getLastUpDownEvent()
+	{
+		return mLastUpDownEvent;
 	}
 
 

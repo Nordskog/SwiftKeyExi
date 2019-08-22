@@ -90,13 +90,12 @@ public class SelectionClassManager
 
 			MethodProfile profile = new MethodProfile
 			(
-					PRIVATE,
 					new ClassItem(boolean.class),
-					new ClassItem( ENUM)
+					new ClassItem( ENUM )
 			);
 
 			FlowDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar( profile, FlowDelegateClass.getDeclaredMethods(), FlowDelegateClass);
-			DebugTools.logIfProfileMismatch(  FlowDelegate_flowDetectedMethod, FlowDelegateClass, profile, "FlowDelegate_flowDetectedMethod");
+			DebugTools.logIfMethodProfileMismatch(  FlowDelegate_flowDetectedMethod, FlowDelegateClass, profile, "FlowDelegate_flowDetectedMethod");
 
 
 			if (FlowDelegate_flowDetectedMethod != null)
@@ -108,7 +107,19 @@ public class SelectionClassManager
 					{
 						FlowDelegate_DRAG_ENUM = ProfileHelpers.findEnumByName((Enum[])enumClass.getEnumConstants(), "DRAG");
 					}
+					else
+					{
+						Log.e(LOGTAG, "FlowDelegate_flowDetectedMethod param not enum: " + enumClass.toString());
+					}
 				}
+				else
+				{
+					Log.e(LOGTAG, "FlowDelegate_flowDetectedMethod param type count not 1: " + FlowDelegate_flowDetectedMethod.toString());
+				}
+			}
+			else
+			{
+				Log.e(LOGTAG, "FlowDelegate_flowDetectedMethod null in loadMethods");
 			}
 		}
 
@@ -117,20 +128,18 @@ public class SelectionClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-					PUBLIC | FINAL | EXACT ,
-					new ClassItem(boolean.class),
+					PUBLIC | EXACT ,
+					new ClassItem(void.class),
 
-					new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+					new ClassItem("" ,  STATIC | INTERFACE )
 
 			);
 
 			swipeDelegate_flowDetectedMethod = ProfileHelpers.findMostSimilar(
 					profile, swipeDelegateClass.getDeclaredMethods(), swipeDelegateClass);
 
-			DebugTools.logIfProfileMismatch(  swipeDelegate_flowDetectedMethod, swipeDelegateClass, profile, "swipeDelegate_flowDetectedMethod");
+			DebugTools.logIfMethodProfileMismatch(  swipeDelegate_flowDetectedMethod, swipeDelegateClass, profile, "swipeDelegate_flowDetectedMethod");
 		}
-
-
 
 		try
 		{
@@ -140,7 +149,7 @@ public class SelectionClassManager
 
 				MethodProfile profile = new MethodProfile
 				(
-						PUBLIC | FINAL | SYNTHETIC | EXACT ,
+						PUBLIC | EXACT ,
 						new ClassItem(void.class),
 
 						new ClassItem(SelectionChangedMethodArgumentClass),
@@ -151,7 +160,7 @@ public class SelectionClassManager
 				SelectionChangedInputEventClass_hasMovedAbruptlyMethod = ProfileHelpers.findMostSimilar(
 						profile, SelectionChangedInputEventClass.getDeclaredMethods(), SelectionChangedInputEventClass);
 
-				DebugTools.logIfProfileMismatch(  SelectionChangedInputEventClass_hasMovedAbruptlyMethod, SelectionChangedInputEventClass, profile, "SelectionChangedInputEventClass_hasMovedAbruptlyMethod");
+				DebugTools.logIfMethodProfileMismatch(  SelectionChangedInputEventClass_hasMovedAbruptlyMethod, SelectionChangedInputEventClass, profile, "SelectionChangedInputEventClass_hasMovedAbruptlyMethod");
 			}
 			else
 			{

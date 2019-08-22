@@ -111,8 +111,6 @@ public class Settings
 
 	public static boolean SWIPE_RTL_MODE_ENABLED = true;
 
-	public static boolean DISPLAY_TOOLBAR_SHORTCUT = false;
-
 	public static boolean HIDE_PREDICTIONS_BAR = false;
 
 	///////////////////////
@@ -246,8 +244,6 @@ public class Settings
 
 		//Value is int 0 to 100, convert to 0-1f
 		KEYBOARD_OPACITY = ( (float)prefs.getInt(PreferenceConstants.pref_keyboard_opacity_key, 100) / (float)100  ) ;
-
-		DISPLAY_TOOLBAR_SHORTCUT = prefs.getBoolean(PreferenceConstants.pref_toolbar_button_key, false);
 
 		{
 			boolean originalValue = HIDE_PREDICTIONS_BAR;

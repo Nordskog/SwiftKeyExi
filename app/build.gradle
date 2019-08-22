@@ -12,12 +12,12 @@ android
                         applicationId 'com.mayulive.swiftkeyexi'
                         minSdkVersion 21
                         targetSdkVersion 26
-                        versionCode 52
-                        versionName "2.3.4"
+                        versionCode 53
+                        versionName "2.3.5"
 
                         //About fields/
-                        def SWIFTKEY_SUPORTED_VERSION = "7.3.3.12"
-                        def SWIFTKEY_BETA_SUPORTED_VERSION = "7.3.5.18"
+                        def SWIFTKEY_SUPORTED_VERSION = "7.3.6.19"
+                        def SWIFTKEY_BETA_SUPORTED_VERSION = "7.3.7.18"
                         def APP_AUTHOR_NAME = "Roughy"
 
 
@@ -87,6 +87,7 @@ android
             {
                 //We don't really have the luxury
                 disable 'MissingTranslation'
+                disable 'ExtraTranslation'
             }
 
             compileOptions {
@@ -115,6 +116,6 @@ dependencies
             implementation "com.android.support:preference-v14:$rootProject.supportLibraryVersion"
             implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
             implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
-            implementation 'com.mayulive.xposed.classhunter:classhunter:1.2.0'
+            implementation 'com.mayulive.xposed.classhunter:classhunter:1.3.0'
             compileOnly 'de.robv.android.xposed:api:82'
         }

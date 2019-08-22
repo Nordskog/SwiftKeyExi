@@ -114,15 +114,16 @@ public class KeyboardClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-				Modifiers.PUBLIC | Modifiers.FINAL | Modifiers.EXACT,
+					PUBLIC | EXACT ,
 					new ClassItem(void.class),
+
 					new ClassItem(int.class),
 					new ClassItem(boolean.class)
 			);
 
 			incogControllerClass_ChangeIncogStateMethod = ProfileHelpers.findMostSimilar( profile, incogControllerClass.getDeclaredMethods(), incogControllerClass);
 
-			DebugTools.logIfProfileMismatch(incogControllerClass_ChangeIncogStateMethod, incogControllerClass, profile, "incogControllerClass_ChangeIncogStateMethod");
+			DebugTools.logIfMethodProfileMismatch(incogControllerClass_ChangeIncogStateMethod, incogControllerClass, profile, "incogControllerClass_ChangeIncogStateMethod");
 
 		}
 
@@ -135,14 +136,11 @@ public class KeyboardClassManager
 
 			MethodProfile profile = new MethodProfile
 			(
-					new ClassItem(java.lang.String.class),
-
-					new ClassItem(java.lang.String.class),
-					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
+					new ClassItem(java.lang.String.class)
 			);
 
-			searchClass_bingSearchMethods = ProfileHelpers.findMostSimilar(  profile, searchClass.getDeclaredMethods(), searchClass, 2 );
+			// There are 3 methods, all return strings. Just check them all.
+			searchClass_bingSearchMethods = ProfileHelpers.findMostSimilar(  profile, searchClass.getDeclaredMethods(), searchClass, 3 );
 
 		}
 
@@ -159,7 +157,7 @@ public class KeyboardClassManager
 
 			insertGifClass_insertGifMethod = ProfileHelpers.findMostSimilar( profile, insertGifClass.getDeclaredMethods(), insertGifClass);
 
-			DebugTools.logIfProfileMismatch(insertGifClass_insertGifMethod, insertGifClass, profile, "insertGifClass_insertGifMethod");
+			DebugTools.logIfMethodProfileMismatch(insertGifClass_insertGifMethod, insertGifClass, profile, "insertGifClass_insertGifMethod");
 
 		}
 
@@ -168,16 +166,18 @@ public class KeyboardClassManager
 
 			MethodProfile profile =  new MethodProfile
 			(
-					Modifiers.FINAL | Modifiers.PUBLIC,
-					new ClassItem(Modifiers.INTERFACE),
-					new ClassItem( String.class ),
-					new ClassItem( boolean.class ),
-					new ClassItem( Modifiers.INTERFACE ),
-					new ClassItem(Executor.class)
+					PUBLIC | EXACT ,
+					new ClassItem(PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+					new ClassItem(java.lang.String.class),
+					new ClassItem(boolean.class),
+					new ClassItem( PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem(java.util.concurrent.Executor.class)
+
 			);
 
 			KeyboardClassManager.themeSetterClass_setThemeMethod = ProfileHelpers.findMostSimilar( profile, themeSetterClass.getDeclaredMethods(), themeSetterClass );
-			DebugTools.logIfProfileMismatch(  themeSetterClass_setThemeMethod, themeSetterClass, profile, "themeSetterClass_setThemeMethod");
+			DebugTools.logIfMethodProfileMismatch(  themeSetterClass_setThemeMethod, themeSetterClass, profile, "themeSetterClass_setThemeMethod");
 
 		}
 	}

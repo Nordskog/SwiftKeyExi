@@ -117,20 +117,21 @@ public class PredictionClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-					FINAL | EXACT ,
-					new ClassItem(java.util.List.class),
+					PUBLIC | FINAL | EXACT ,
+					new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem(int.class)
 
 			);
 
 			UpdateCandidateTaskClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(
 					profile, UpdateCandidateTaskClass.getDeclaredMethods(), UpdateCandidateTaskClass);
 
-			DebugTools.logIfProfileMismatch(  UpdateCandidateTaskClass_getTopCandidateMethod, UpdateCandidateTaskClass, profile, "UpdateCandidateTaskClass_getTopCandidateMethod");
+			DebugTools.logIfMethodProfileMismatch(  UpdateCandidateTaskClass_getTopCandidateMethod, UpdateCandidateTaskClass, profile, "UpdateCandidateTaskClass_getTopCandidateMethod");
 
 			if (UpdateCandidateTaskClass_getTopCandidateMethod != null && resultTypeEnum != null)
 			{
@@ -144,21 +145,20 @@ public class PredictionClassManager
 
 			MethodProfile profile = new MethodProfile
 			(
-					PUBLIC | FINAL | EXACT ,
+					PUBLIC | EXACT ,
 					new ClassItem(void.class),
 
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 					new ClassItem(int.class)
-
 			);
 
 			handleCandidateClass_candidateSelectedMethod = ProfileHelpers.findMostSimilar(
 					profile, handleCandidateClass.getDeclaredMethods(), handleCandidateClass);
 
-			DebugTools.logIfProfileMismatch(  handleCandidateClass_candidateSelectedMethod, handleCandidateClass, profile, "handleCandidateClass_candidateSelectedMethod");
+			DebugTools.logIfMethodProfileMismatch(  handleCandidateClass_candidateSelectedMethod, handleCandidateClass, profile, "handleCandidateClass_candidateSelectedMethod");
 
 			if (handleCandidateClass_candidateSelectedMethod != null)
 			{
@@ -183,13 +183,16 @@ public class PredictionClassManager
 			List<Method> methods = ProfileHelpers.findAllMethodsWithReturnType( boolean.class, ellipsizeCheckerClass.getDeclaredMethods() );
 			if (!methods.isEmpty())
 			{
-				// First returning bool.
-				// Should have no params
-				Method method = methods.get(0);
 
-				if ( method.getParameterTypes().length == 0 )
+				// Not equals method, and should have no params
+				// Equals method takes a param, so just check for no params.
+				for (Method currentMethod : methods)
 				{
-					ellipsizeCheckerClass_shouldEllipsizeMethod = method;
+					if (  currentMethod.getParameterTypes().length > 0 )
+						continue;
+
+					ellipsizeCheckerClass_shouldEllipsizeMethod = currentMethod;
+					break;
 				}
 			}
 

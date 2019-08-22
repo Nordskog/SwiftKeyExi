@@ -1,5 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -74,9 +75,21 @@ public class PriorityPredictionsClassManager
 	{
 		PriorityPredictionsClassManager.candidateViewClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_CANDIDATE_VIEW_CLASS_PROFILE(), param );
 
-			PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE(), param );
-
 		PriorityPredictionsClassManager.buClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_BU_CLASS_PROFILE(), param );
+
+		{
+			// New is for 7.3.7.18+ TODO remove old at some point
+			Class oldClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_OLD(), param );
+			Class newClass = PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_NEW(), param );
+
+			// Uhhh... pick class with best similarity?
+			float simOld = PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_OLD().getSimilarity(oldClass, oldClass, 0f);
+			float simNew = PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_NEW().getSimilarity(newClass, newClass, 0f);
+
+			Log.d(LOGTAG, "candidatesViewFactory sim: Old: "+simOld+", new: "+simNew);
+
+			PriorityPredictionsClassManager.candidatesViewFactory = simNew > simOld ? newClass : oldClass;
+		}
 	}
 
 	public static void loadMethods() throws NoSuchMethodException
@@ -97,14 +110,13 @@ public class PriorityPredictionsClassManager
 			);
 
 			buClass_submitCandidateMethod =  ProfileHelpers.findMostSimilar( profile, buClass.getDeclaredMethods(), buClass);
-			DebugTools.logIfProfileMismatch(  buClass_submitCandidateMethod, buClass, profile, "buClass_submitCandidateMethod");
+			DebugTools.logIfMethodProfileMismatch(  buClass_submitCandidateMethod, buClass, profile, "buClass_submitCandidateMethod");
 
 
 			hpeClass = buClass_submitCandidateMethod.getParameterTypes()[0];	//Some class we need as first param
 			hpeClass_constructor = hpeClass.getConstructors()[0];	//No arguments
 
 		}
-
 
 		if (PriorityPredictionsClassManager.candidatesViewFactory != null)
 		{
@@ -125,23 +137,23 @@ public class PriorityPredictionsClassManager
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem(android.view.View.class),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT )
+						new ClassItem("" , PUBLIC | EXACT )
 				);
 
 				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(	profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
 
-				DebugTools.logIfProfileMismatch(  candidatesViewFactory_getViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_getViewMethod");
+				DebugTools.logIfMethodProfileMismatch(  candidatesViewFactory_getViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_getViewMethod");
 
 			}
 
@@ -149,7 +161,7 @@ public class PriorityPredictionsClassManager
 
 				MethodProfile profile = new MethodProfile
 				(
-						PRIVATE | STATIC | EXACT ,
+						PUBLIC | STATIC | EXACT ,
 						new ClassItem(void.class),
 
 						new ClassItem(android.content.Context.class),
@@ -157,14 +169,14 @@ public class PriorityPredictionsClassManager
 						new ClassItem(android.view.View.class),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT ),
-						new ClassItem("" , PUBLIC | FINAL | EXACT )
+						new ClassItem("" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT )
 
 				);
 
 				PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod = ProfileHelpers.findMostSimilar(
 						profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
-				DebugTools.logIfProfileMismatch(  candidatesViewFactory_ReturnWrapperClass_GetViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_ReturnWrapperClass_GetViewMethod");
+				DebugTools.logIfMethodProfileMismatch(  candidatesViewFactory_ReturnWrapperClass_GetViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_ReturnWrapperClass_GetViewMethod");
 
 			}
 
@@ -181,7 +193,7 @@ public class PriorityPredictionsClassManager
 		if (PriorityPredictionsClassManager.candidateViewClass != null)
 		{
 			PriorityPredictionsClassManager.candidateViewClass_Constructor = PriorityPredictionsClassManager.candidateViewClass.getDeclaredConstructors()[0];
-			candidateViewClass_setCandidateMethod = XposedHelpers.findMethodExact(PriorityPredictionsClassManager.candidateViewClass, "setCandidate", CandidateManager.candidateInterfaceClass);
+			candidateViewClass_setCandidateMethod = ProfileHelpers.findFirstMethodByName(PriorityPredictionsClassManager.candidateViewClass.getDeclaredMethods(), "setCandidate");
 		}
 
 		if (PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod != null && candidateViewClass_Constructor != null)
@@ -196,26 +208,26 @@ public class PriorityPredictionsClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-					PUBLIC | FINAL | EXACT ,
+					PUBLIC | EXACT ,
 					new ClassItem(void.class),
 
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | EXACT )
+					new ClassItem("" , PUBLIC | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT )
 
 			);
 
 			PriorityPredictionsClassManager.keyboardFrameClass_setBuMethod = ProfileHelpers.findMostSimilar(
 					profile, PriorityPredictionsClassManager.keyboardFrameClass.getDeclaredMethods(), PriorityPredictionsClassManager.keyboardFrameClass);
 
-			DebugTools.logIfProfileMismatch(  keyboardFrameClass_setBuMethod, keyboardFrameClass, profile, "keyboardFrameClass_setBuMethod");
+			DebugTools.logIfMethodProfileMismatch(  keyboardFrameClass_setBuMethod, keyboardFrameClass, profile, "keyboardFrameClass_setBuMethod");
 		}
 
 	}

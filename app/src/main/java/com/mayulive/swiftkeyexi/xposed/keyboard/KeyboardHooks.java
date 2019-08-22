@@ -56,6 +56,8 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
+import static com.mayulive.xposed.classhunter.Modifiers.*;
+
 /**
  * Created by Roughy on 1/6/2017.
  */
@@ -89,9 +91,18 @@ public class KeyboardHooks
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
 			{
+				// This method is called with either one or two views (varargs).
+				// We are interested in the first item.
 				try
 				{
-					KeyboardMethods.mKeyboardRoot = (ViewGroup) param.getResult();
+					View[] views = (View[]) param.args[0];
+					if (views.length < 1)
+					{
+						Log.i(LOGTAG, "FullKeyboardServiceDelegate_onCreateInputView received array with no views");
+						return;
+					}
+
+					KeyboardMethods.mKeyboardRoot = ( ViewGroup )views[0];
 
 
 					try
@@ -448,141 +459,6 @@ public class KeyboardHooks
 		});
 	}
 
-
-	private static XC_MethodHook.Unhook hookToolbarButton()
-	{
-
-		return XposedBridge.hookMethod(PriorityKeyboardClassManager.toolbarFrameClass_inflateMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
-			{
-
-				//Toolbar inflates a layout inside itself with a framelayout root containing a constriantlayout.
-				//We remove the constraint layout and place it inside a linear layout along with our button,
-				//and insert it back into the original frame layout.
-
-				try
-				{
-					//Run init always since we may need to remove the view if disabled
-
-					ViewGroup toolbarView = (ViewGroup)param.thisObject;
-
-					int toolbar_content_ID = toolbarView.getResources().getIdentifier("toolbar_content", "id", ExiXposed.HOOK_PACKAGE_NAME);
-
-					ViewGroup contentView = toolbarView.findViewById(toolbar_content_ID);
-
-					if (contentView != null)
-					{
-
-						ViewGroup toolParent = (ViewGroup) contentView.getParent();
-
-						//Check if we've already done this
-						{
-							ViewParent parentParent = toolParent.getParent();
-							if (parentParent != null && parentParent instanceof LinearLayout)
-							{
-
-								if ( !Settings.DISPLAY_TOOLBAR_SHORTCUT)
-								{
-									//Hide icon if already present
-									if (KeyboardMethods.mToolbarButton != null)
-									{
-										KeyboardMethods.mToolbarButton.setVisibility(View.GONE);
-									}
-
-								}
-								else
-								{
-									//Make visible again
-									if (KeyboardMethods.mToolbarButton != null)
-									{
-										KeyboardMethods.mToolbarButton.setVisibility(View.VISIBLE);
-									}
-								}
-
-
-								return;
-							}
-						}
-
-						//Do nto add if disabled.
-						if ( !Settings.DISPLAY_TOOLBAR_SHORTCUT )
-						{
-							return;
-						}
-
-						toolParent.removeView(contentView);
-
-						ViewGroup.LayoutParams matchParentParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-						LinearLayout.LayoutParams originalContainerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-						originalContainerParams.weight = 1;
-
-						LinearLayout toolbarContainer = new LinearLayout( contentView.getContext() );
-						FrameLayout originalContainer = new FrameLayout(contentView.getContext());
-
-						toolbarContainer.setLayoutParams(matchParentParams);
-						originalContainer.setLayoutParams(originalContainerParams);
-
-						ExiIconView button = new ExiIconView(contentView.getContext());
-						KeyboardMethods.mToolbarButton = button;
-
-						int currentTheme = StyleCommons.getCurrentTheme();
-						KeyboardMethods.updateToolbarButtonColor(currentTheme);
-
-						FrameLayout buttonContainer = new FrameLayout( contentView.getContext() );
-						LinearLayout.LayoutParams buttonContainerParams = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-						buttonContainerParams.weight = 0;
-
-						FrameLayout.LayoutParams buttonParams = new FrameLayout.LayoutParams( (int)DimenUtils.calculatePixelFromDp(contentView.getContext(), 26), (int)DimenUtils.calculatePixelFromDp(contentView.getContext(), 26));
-						buttonParams.gravity = Gravity.CENTER;
-
-						button.setLayoutParams(buttonParams);
-						buttonParams.leftMargin =  (int)DimenUtils.calculatePixelFromDp(contentView.getContext(), 6);
-						buttonParams.rightMargin = (int)DimenUtils.calculatePixelFromDp(contentView.getContext(), 8);	//A bit greater to compensate for lopsided icon
-						buttonContainer.setLayoutParams(buttonContainerParams);
-
-
-
-						buttonContainer.setOnClickListener(new View.OnClickListener()
-						{
-							@Override
-							public void onClick(View v)
-							{
-
-								Intent launchIntent = v.getContext().getPackageManager().getLaunchIntentForPackage(ExiModule.PACKAGE);
-								if (launchIntent != null)
-								{
-									v.getContext().startActivity(launchIntent);
-								}
-								else
-								{
-									Log.e(LOGTAG, "Could not obtain launch intent for swiftkeyexi");
-								}
-							}
-						});
-
-
-						buttonContainer.addView(button);
-						originalContainer.addView(contentView);
-						toolbarContainer.addView(originalContainer);
-						toolbarContainer.addView(buttonContainer);
-
-						toolParent.addView(toolbarContainer);
-					}
-
-				}
-				catch (Throwable ex)
-				{
-					//No point in removing hook I don't think.
-					Log.e(LOGTAG, "Something went wrong adding toolbar button");
-					ex.printStackTrace();
-				}
-			}
-		});
-	}
-
 	// This hook doesn't have any ... hooks. It just sets a value.
 	// Not going to bother with the class manager.
 	private static void hookLocation(  PackageTree lpparam )
@@ -600,14 +476,15 @@ public class KeyboardHooks
 
 
 			MethodProfile profile = new MethodProfile(
-					Modifiers.STATIC,
-					new ClassItem(Modifiers.THIS),
-					new ClassItem(Modifiers.ARRAY)
+					PUBLIC | STATIC | EXACT ,
+					new ClassItem("" , PUBLIC | ABSTRACT | THIS | EXACT ),
+
+					new ClassItem(java.lang.Object[].class)
 			);
 
 			Method someCollectionClassCreateMethod = ProfileHelpers.findMostSimilar( profile, someCollectionClass.getDeclaredMethods(), someCollectionClass);
 
-			DebugTools.logIfProfileMismatch(  someCollectionClassCreateMethod, someCollectionClass, profile, "someCollectionClassCreateMethod");
+			DebugTools.logIfMethodProfileMismatch(  someCollectionClassCreateMethod, someCollectionClass, profile, "someCollectionClassCreateMethod");
 
 
 
@@ -896,11 +773,6 @@ public class KeyboardHooks
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
 
-				if (Hooks.baseHooks_toolbarButton.isRequirementsMet())
-				{
-					Hooks.baseHooks_toolbarButton.add( hookToolbarButton() );
-				}
-
 				if (Hooks.baseHooks_hidePredictions.isRequirementsMet())
 				{
 					Hooks.baseHooks_hidePredictions.add( hookToolbarPredictionBarRemoval() );
@@ -910,17 +782,6 @@ public class KeyboardHooks
 				if (Hooks.baseHooks_fullscreenMode.isRequirementsMet())
 				{
 					hookFullscreen(lpparam);
-
-					StyleCommons.addThemeChangedListener(new StyleCommons.ThemeChangedListener()
-					{
-						@Override
-						public void themeChanged(int newTheme)
-						{
-							KeyboardMethods.updateToolbarButtonColor(newTheme);
-						}
-
-					});
-
 				}
 
 				if (Hooks.baseHooks_invalidateLayout.isRequirementsMet())

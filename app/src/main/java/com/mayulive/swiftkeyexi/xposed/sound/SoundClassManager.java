@@ -42,7 +42,7 @@ public class SoundClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-					PUBLIC | FINAL | EXACT ,
+					PUBLIC | EXACT ,
 					new ClassItem(void.class),
 
 					new ClassItem(int.class),
@@ -51,7 +51,7 @@ public class SoundClassManager
 			);
 
 			keySoundClass_playSoundMethod = ProfileHelpers.findMostSimilar(profile, keySoundClass.getDeclaredMethods(), keySoundClass);
-			DebugTools.logIfProfileMismatch(  keySoundClass_playSoundMethod, keySoundClass, profile, "keySoundClass_playSoundMethod");
+			DebugTools.logIfMethodProfileMismatch(  keySoundClass_playSoundMethod, keySoundClass, profile, "keySoundClass_playSoundMethod");
 
 		}
 	}
