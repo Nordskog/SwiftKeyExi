@@ -342,7 +342,7 @@ public class SelectionState
 	protected static boolean cursorAtEnd()
 	{
 		//Was there an offset here? I don't remember
-		if (mCursorPosition >= mLastExtractedText.length() )
+		if ( mLastExtractedText != null && mCursorPosition >= mLastExtractedText.length() )
 		{
 			return true;
 		}

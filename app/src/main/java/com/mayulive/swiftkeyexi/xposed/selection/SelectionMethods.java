@@ -273,6 +273,10 @@ public class SelectionMethods
 		SelectionState.updateSelection();
 		updateSelectionDirectionForKeyCursorMovement(state);
 
+		//Just incase
+		if (SelectionState.mLastExtractedText == null)
+			SelectionState.mLastExtractedText = new String();
+
 		//Negative should move up, positive down
 		//Note that regardless of how much we want to move it, we limit it to 1.
 		//This is because dpad cursor keys will move the focus to the next field
