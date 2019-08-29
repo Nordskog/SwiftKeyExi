@@ -74,7 +74,7 @@ public class SelectionState
 	///////////////
 
 	protected static boolean mIsRtl = false;
-	protected static boolean mLastSelectionChangeWasFallback = false;
+	protected static boolean mLastSelectionChangeWasKeyPress = false;
 	protected static PointerState mLastFallbackSelectionPointerState = null;
 
 	//If true, update cursor position from extracted text before moving horizontally
@@ -342,7 +342,7 @@ public class SelectionState
 	protected static boolean cursorAtEnd()
 	{
 		//Was there an offset here? I don't remember
-		if (mCursorPosition >= mLastExtractedText.length() )
+		if ( mLastExtractedText != null && mCursorPosition >= mLastExtractedText.length() )
 		{
 			return true;
 		}
@@ -483,9 +483,9 @@ public class SelectionState
 	{
 		if (mSwiping)
 		{
-			if ( mLastSelectionChangeWasFallback )
+			if (mLastSelectionChangeWasKeyPress)
 			{
-				// When the last movement was caused by a key press ( setSelectionFallback ),
+				// When the last movement was caused by a key press ( setSelectionFallback() or setSelectionVertical() ),
 				// it is undone when we end batch mode. Fix by getting updated selection from
 				// inputconnection and setting it again.
 				SelectionMethods.updateAndFinalizeSelection();

@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+## [2.3.6] - 28-08-2019
+### Fixed
+ - Cursor reverting to old position when moving vertically ( swipe-selection )
+ - Swipe-selection and quick-menu failing for some users ( NPE )
+
 ## [2.3.5] - 22-08-2019
 ### Fixed
  - Compatibility targeting 7.3.7.18 ( Everything, backwards compatible except custom sound )

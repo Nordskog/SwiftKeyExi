@@ -42,7 +42,7 @@ import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mFirstDow
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mIsRtl;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastExtractedText;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastFallbackSelectionPointerState;
-import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastSelectionChangeWasFallback;
+import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mLastSelectionChangeWasKeyPress;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.mModifierKeyActions;
 import static com.mayulive.swiftkeyexi.xposed.selection.SelectionState.updateSelection;
 import static com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.PointerState.LEFT_SWIPE;
@@ -190,7 +190,7 @@ public class SelectionMethods
 		{
 
 			//Mixed needs selection update, slow.
-			if (mLastSelectionChangeWasFallback)
+			if (mLastSelectionChangeWasKeyPress)
 			{
 				ExtractedTextRequest request = new ExtractedTextRequest();
 				request.hintMaxChars = 0;	//Only want selection, though we still get a lot of text.
@@ -273,6 +273,10 @@ public class SelectionMethods
 		SelectionState.updateSelection();
 		updateSelectionDirectionForKeyCursorMovement(state);
 
+		//Just incase
+		if (SelectionState.mLastExtractedText == null)
+			SelectionState.mLastExtractedText = new String();
+
 		//Negative should move up, positive down
 		//Note that regardless of how much we want to move it, we limit it to 1.
 		//This is because dpad cursor keys will move the focus to the next field
@@ -299,11 +303,14 @@ public class SelectionMethods
 					SelectionActions.sendKeyPress( KeyEvent.KEYCODE_DPAD_UP, yCursorChange);
 			}
 		}
+
+		// Is not fallback, but requires the same aftercare.
+		SelectionState.mLastSelectionChangeWasKeyPress = true;
 	}
 
 	public static void setSelectionChange(int change, final PointerState state)
 	{
-		if (SelectionState.mLastSelectionChangeWasFallback)
+		if (SelectionState.mLastSelectionChangeWasKeyPress)
 		{
 			updateSelection();
 			ensureCursorOrder();
@@ -399,7 +406,7 @@ public class SelectionMethods
 		SelectionState.setInternalSelectionValue(selection.start,selection.end, state);
 		setSelectionWithOffset(connection,selection.start,selection.end);
 
-		SelectionState.mLastSelectionChangeWasFallback = false;
+		SelectionState.mLastSelectionChangeWasKeyPress = false;
 		SelectionState.mLastFallbackSelectionPointerState = null;
 
 	}
@@ -476,7 +483,7 @@ public class SelectionMethods
 
 		}
 
-		SelectionState.mLastSelectionChangeWasFallback = true;
+		SelectionState.mLastSelectionChangeWasKeyPress = true;
 	}
 
 	protected static void setSwipePointerState(pointerInformation firstPointerInfo, pointerInformation currentPointerInfo, boolean isPrimary)
