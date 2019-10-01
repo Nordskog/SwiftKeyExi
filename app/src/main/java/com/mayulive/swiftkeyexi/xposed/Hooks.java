@@ -47,7 +47,7 @@ public class Hooks
 
 	//Selection
 	public static HookCategory selectionHooks_movedAbruptly = new HookCategory("selectionHooks_movedAbruptly");
-	public static HookCategory selectionHooks_base = new HookCategory("SelectionHooks", selectionHooks_movedAbruptly);
+	public static HookCategory selectionHooks_base = new HookCategory("SelectionHooks" );
 
 	//Popups
 	public static HookCategory popupHooks_cancel = new HookCategory("PopupHooks Cancel", selectionHooks_base);
