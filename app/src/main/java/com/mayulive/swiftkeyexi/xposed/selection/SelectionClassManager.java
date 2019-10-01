@@ -63,7 +63,7 @@ public class SelectionClassManager
 
 	private static void loadKnownClasses(PackageTree param )
 	{
-		keyboardFrameHolderFrameHolderClass = ClassHunter.loadClass( "com.touchtype.keyboard.view.KeyboardFrameHolderFrame", param.getClassLoader() );
+		keyboardFrameHolderFrameHolderClass = ProfileHelpers.loadProfiledClass( SelectionProfiles.get_KEYBOARD_FRAME_HOLDER_CLASS_PROFILE(), param );
 	}
 
 	public static void loadUnknownClasses(PackageTree param) throws IOException
