@@ -46,7 +46,7 @@ public class KeyboardClassManager
 	private static Class insertGifClass = null;
 	protected static Method insertGifClass_insertGifMethod = null;
 
-	public static Class insertGifTextClass = null;
+	public static List<Class> insertGifTextClasses = null;
 
 	///////////////////////////////////////
 
@@ -86,7 +86,7 @@ public class KeyboardClassManager
 		incogControllerClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles._get_INCOG_CONTROL_CLASS_PROFILE(), param );
 
 		insertGifClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_INSERT_GIF_CLASS_PROFILE(), param );
-		insertGifTextClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_INSERT_GIF_TEXT_CLASS_RPFOILE(), param );
+		insertGifTextClasses = ProfileHelpers.loadProfiledClasses( KeyboardProfiles.get_INSERT_GIF_TEXT_CLASS_RPFOILE(), 2, param );
 
 		searchClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_SEARCH_CLASS_PROFILE(), param );
 
