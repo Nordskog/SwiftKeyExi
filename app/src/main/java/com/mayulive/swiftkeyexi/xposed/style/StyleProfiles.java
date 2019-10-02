@@ -15,7 +15,7 @@ public class StyleProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("Vsb");
+		newProfile.setFullPath("je5");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -37,7 +37,7 @@ public class StyleProfiles
 /////////////////////////
 		newProfile.setNestedClasses(new ClassItem[]
 				{
-						new ClassItem("" , PRIVATE | STATIC | INTERFACE | ABSTRACT | EXACT )
+						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 				});
 /////////////////////////
@@ -101,10 +101,11 @@ public class StyleProfiles
 						//Method #4: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(java.lang.Object.class),
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -121,11 +122,10 @@ public class StyleProfiles
 						//Method #6: a
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PUBLIC | EXACT ,
 										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem(java.lang.Object.class),
-										new ClassItem("" , PRIVATE | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 

@@ -33,7 +33,7 @@ public class KeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("mya");
+		newProfile.setFullPath("kt2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -54,7 +54,7 @@ public class KeyProfiles
 /////////////////////////
 		newProfile.setNestedClasses(new ClassItem[]
 				{
-						new ClassItem("" , STATIC | EXACT ),
+						new ClassItem("" , PUBLIC | STATIC | EXACT ),
 						new ClassItem("" , PUBLIC | STATIC | EXACT )
 
 				});
@@ -63,30 +63,30 @@ public class KeyProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//a
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//b
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//c
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//d
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//e
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//f
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//g
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//d
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//e
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//f
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//g
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//h
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//i
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//j
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//k
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.Float.class)),	//l
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(int.class)),	//m
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(float.class)),	//n
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(float.class)),	//o
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//p
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//q
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.graphics.RectF.class)),	//r
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//s
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//t
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//u
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//v
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.Integer.class)),	//w
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(int.class)),	//x
-						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Splitter" , PUBLIC | FINAL | EXACT )),	//a
-						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.google.common.collect.ImmutableMap" , PUBLIC | ABSTRACT | EXACT )),	//b
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//i
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.Float.class)),	//j
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(int.class)),	//k
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(float.class)),	//l
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(float.class)),	//m
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//n
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.String.class)),	//o
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.graphics.RectF.class)),	//p
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//q
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//r
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//s
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//t
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.lang.Integer.class)),	//u
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(int.class)),	//v
+						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Splitter" , PUBLIC | FINAL | EXACT )),	//w
+						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.google.common.collect.ImmutableMap" , PUBLIC | ABSTRACT | EXACT )),	//x
 
 				});
 /////////////////////////
@@ -110,10 +110,8 @@ public class KeyProfiles
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem("" , PUBLIC | THIS | EXACT ),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.util.Locale.class),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -123,8 +121,10 @@ public class KeyProfiles
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem("" , PUBLIC | THIS | EXACT ),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.util.Locale.class),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -143,13 +143,13 @@ public class KeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , STATIC | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | EXACT ),
 
 										new ClassItem(java.lang.String.class)
 
 								),
 
-						//Method #5: b
+						//Method #5: g
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -175,7 +175,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #8: c
+						//Method #8: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -183,7 +183,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #9: d
+						//Method #9: c
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -191,7 +191,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #10: e
+						//Method #10: d
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -199,7 +199,15 @@ public class KeyProfiles
 
 								),
 
-						//Method #11: equals
+						//Method #11: e
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #12: equals
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -209,15 +217,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #12: f
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #13: g
+						//Method #13: f
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -467,7 +467,7 @@ public class KeyProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("Xka");
+		newProfile.setFullPath("j32");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -499,50 +499,50 @@ public class KeyProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//A
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//B
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//C
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//D
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//E
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//A
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//B
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//C
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//D
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//E
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//F
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//G
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//H
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//I
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//J
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//K
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//H
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//I
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//J
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//K
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//L
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//M
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//N
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.SymbolsNumberDisplay" , PUBLIC | FINAL | ENUM | EXACT )),	//O
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.SharedPreferences.class)),	//P
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//Q
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.FullLayoutProvider" , PUBLIC | EXACT )),	//R
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//a
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//b
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//c
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//d
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//O
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//P
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//Q
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//R
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.SymbolsNumberDisplay" , PUBLIC | FINAL | ENUM | EXACT )),	//S
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.SharedPreferences.class)),	//T
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//U
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.FullLayoutProvider" , PUBLIC | EXACT )),	//V
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//e
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//f
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//g
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//h
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//h
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//i
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//j
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.FluencyServiceProxy" , PUBLIC | EXACT )),	//k
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//l
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//m
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//n
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("eya.a" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//o
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//p
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//q
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//r
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//s
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//t
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//j
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//k
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//l
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//m
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//n
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.FluencyServiceProxy" , PUBLIC | EXACT )),	//o
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//p
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//q
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//r
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )),	//s
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//t
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//u
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//v
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//w
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//x
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//y
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//z
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//v
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//w
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//x
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//y
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//z
 
 				});
 /////////////////////////
@@ -564,7 +564,7 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(android.view.View.class)
 
 								),
 
@@ -574,12 +574,22 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(java.lang.Object.class),
+										new ClassItem(int.class)
 
 								),
 
 						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #4: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -592,17 +602,6 @@ public class KeyProfiles
 
 								),
 
-						//Method #4: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
 						//Method #5: a
 						new MethodProfile
 								(
@@ -610,11 +609,33 @@ public class KeyProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
 						//Method #6: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #7: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #8: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -626,34 +647,13 @@ public class KeyProfiles
 
 								),
 
-						//Method #7: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #8: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.view.View.class)
-
-								),
-
 						//Method #9: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(int.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -725,7 +725,7 @@ public class KeyProfiles
 
 								),
 
-						//Method #18: i
+						//Method #18: j
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,

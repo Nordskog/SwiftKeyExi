@@ -111,7 +111,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("msa");
+		newProfile.setFullPath("qh2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -239,6 +239,16 @@ public class PredictionProfiles
 						//Method #8: a
 						new MethodProfile
 								(
+										PUBLIC | STATIC | FINAL | EXACT ,
+										new ClassItem(int.class),
+
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #9: a
+						new MethodProfile
+								(
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem(int.class),
 
@@ -249,7 +259,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #9: a
+						//Method #10: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -259,7 +269,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #10: a
+						//Method #11: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -271,31 +281,15 @@ public class PredictionProfiles
 
 								),
 
-						//Method #11: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
-
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.util.Locale.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.util.Set.class)
-
-								),
-
 						//Method #12: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.animation.Animator.class),
 
-										new ClassItem(android.net.Uri.class),
-										new ClassItem(android.content.Context.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem(android.view.View.class),
+										new ClassItem(float.class),
+										new ClassItem(java.lang.Runnable.class)
 
 								),
 
@@ -303,15 +297,335 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.graphics.Bitmap.class),
 
-										new ClassItem(java.util.Map.class),
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(android.content.res.Resources.class)
+										new ClassItem(android.graphics.Bitmap.class),
+										new ClassItem(int.class)
 
 								),
 
 						//Method #14: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.Bitmap.class),
+
+										new ClassItem(android.graphics.Bitmap.class),
+										new ClassItem(android.net.Uri.class),
+										new ClassItem(android.content.Context.class)
+
+								),
+
+						//Method #15: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.PointF.class),
+
+										new ClassItem(android.graphics.PointF.class),
+										new ClassItem(android.graphics.Matrix.class)
+
+								),
+
+						//Method #16: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.Rect.class),
+
+										new ClassItem(android.graphics.Rect.class),
+										new ClassItem(android.graphics.Rect.class)
+
+								),
+
+						//Method #17: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.Rect.class),
+
+										new ClassItem(android.graphics.RectF.class)
+
+								),
+
+						//Method #18: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.Rect.class),
+
+										new ClassItem(android.graphics.drawable.Drawable.class)
+
+								),
+
+						//Method #19: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.Rect.class),
+
+										new ClassItem(android.graphics.drawable.Drawable.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.graphics.PointF.class)
+
+								),
+
+						//Method #20: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.RectF.class),
+
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem(float.class),
+										new ClassItem(float.class)
+
+								),
+
+						//Method #21: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
+
+										new ClassItem(boolean.class),
+										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #22: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.text.Spannable.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.AndroidLanguagePackManager" , PUBLIC | EXACT )
+
+								),
+
+						//Method #23: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.text.SpannableString.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #24: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.text.SpannableString.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.ConsentId" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+
+								),
+
+						//Method #25: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class)
+
+								),
+
+						//Method #26: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #27: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.view.View.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
+
+								),
+
+						//Method #28: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #29: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
+
+								),
+
+						//Method #30: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #31: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.view.View.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #32: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #33: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #34: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.view.View.class),
+
+										new ClassItem(android.view.View.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #35: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(android.view.animation.TranslateAnimation.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #36: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -336,411 +650,23 @@ public class PredictionProfiles
 
 								),
 
-						//Method #15: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-
-										new ClassItem(java.util.Set.class)
-
-								),
-
-						//Method #16: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.util.concurrent.Executor.class),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #17: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.animation.Animator.class),
-
-										new ClassItem(android.view.View.class),
-										new ClassItem(float.class),
-										new ClassItem(java.lang.Runnable.class)
-
-								),
-
-						//Method #18: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.Bitmap.class),
-
-										new ClassItem(android.graphics.Bitmap.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #19: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.Bitmap.class),
-
-										new ClassItem(android.graphics.Bitmap.class),
-										new ClassItem(android.net.Uri.class),
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #20: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.PointF.class),
-
-										new ClassItem(android.graphics.PointF.class),
-										new ClassItem(android.graphics.Matrix.class)
-
-								),
-
-						//Method #21: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.Rect.class),
-
-										new ClassItem(android.graphics.Rect.class),
-										new ClassItem(android.graphics.Rect.class)
-
-								),
-
-						//Method #22: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.Rect.class),
-
-										new ClassItem(android.graphics.RectF.class)
-
-								),
-
-						//Method #23: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.Rect.class),
-
-										new ClassItem(android.graphics.drawable.Drawable.class)
-
-								),
-
-						//Method #24: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.Rect.class),
-
-										new ClassItem(android.graphics.drawable.Drawable.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.graphics.RectF.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.graphics.PointF.class)
-
-								),
-
-						//Method #25: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.RectF.class),
-
-										new ClassItem(android.graphics.RectF.class),
-										new ClassItem(float.class),
-										new ClassItem(float.class)
-
-								),
-
-						//Method #26: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.graphics.drawable.Drawable.class),
-
-										new ClassItem(boolean.class),
-										new ClassItem(android.content.res.Resources.class)
-
-								),
-
-						//Method #27: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.text.Spannable.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype_fluency.service.languagepacks.AndroidLanguagePackManager" , PUBLIC | EXACT )
-
-								),
-
-						//Method #28: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.text.SpannableString.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #29: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.text.SpannableString.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("com.swiftkey.avro.telemetry.sk.android.ConsentId" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
-
-								),
-
-						//Method #30: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #31: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #32: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #33: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #34: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
-
-								),
-
-						//Method #35: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #36: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT ),
-										new ClassItem(android.text.Spannable.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(android.view.View.OnClickListener.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
-
-								),
-
 						//Method #37: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT ),
-										new ClassItem(android.text.Spannable.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(android.view.View.OnClickListener.class),
-										new ClassItem(android.view.View.OnClickListener.class)
+										new ClassItem(android.view.View.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class)
 
 								),
 
 						//Method #38: a
 						new MethodProfile
 								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #39: a
-						new MethodProfile
-								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
-
-								),
-
-						//Method #40: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #41: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(android.view.animation.TranslateAnimation.class),
-
-										new ClassItem(int.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #42: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.google.android.material.snackbar.Snackbar" , PUBLIC | FINAL | EXACT ),
-
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #43: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.google.android.material.snackbar.Snackbar" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 
 										new ClassItem(android.view.View.class),
 										new ClassItem(java.lang.CharSequence.class),
@@ -748,84 +674,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #44: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #45: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #46: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #47: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #48: a
+						//Method #39: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -839,7 +688,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #49: a
+						//Method #40: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -847,7 +696,27 @@ public class PredictionProfiles
 
 								),
 
-						//Method #50: a
+						//Method #41: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.CapHint" , PUBLIC | FINAL | ENUM | EXACT ),
+
+										new ClassItem("com.touchtype_fluency.ResultsFilter.CapitalizationHint" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #42: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.CapHint" , PUBLIC | FINAL | ENUM | EXACT ),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #43: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -859,27 +728,40 @@ public class PredictionProfiles
 
 								),
 
-						//Method #51: a
+						//Method #44: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.swiftkey.avro.telemetry.sk.android.CapHint" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-										new ClassItem("com.touchtype_fluency.ResultsFilter.CapitalizationHint" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+										new ClassItem(java.util.Map.class),
+										new ClassItem(java.lang.Object.class),
+										new ClassItem(android.content.res.Resources.class)
 
 								),
 
-						//Method #52: a
+						//Method #45: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.swiftkey.avro.telemetry.sk.android.CapHint" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(java.util.Set.class)
 
 								),
 
-						//Method #53: a
+						//Method #46: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.content.Context.class)
+
+								),
+
+						//Method #47: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -892,7 +774,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #54: a
+						//Method #48: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -902,7 +784,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #55: a
+						//Method #49: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -912,7 +794,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #56: a
+						//Method #50: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -922,18 +804,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #57: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(java.lang.String.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #58: a
+						//Method #51: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | VARARGS | EXACT ,
@@ -947,7 +818,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #59: a
+						//Method #52: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -957,7 +828,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #60: a
+						//Method #53: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -969,7 +840,18 @@ public class PredictionProfiles
 
 								),
 
-						//Method #61: a
+						//Method #54: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #55: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -979,17 +861,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #62: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(java.util.List.class),
-
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #63: a
+						//Method #56: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -999,7 +871,70 @@ public class PredictionProfiles
 
 								),
 
-						//Method #64: a
+						//Method #57: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(java.util.List.class),
+
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #58: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | EXACT ),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(long.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #59: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | EXACT ),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.util.concurrent.Executor.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #60: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("org.json.JSONObject" , PUBLIC | EXACT ),
+
+										new ClassItem(java.io.File.class)
+
+								),
+
+						//Method #61: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | EXACT ),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.util.Locale.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.util.Set.class)
+
+								),
+
+						//Method #62: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1016,6 +951,35 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #63: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #64: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | EXACT ),
+
+										new ClassItem(android.net.Uri.class),
+										new ClassItem(android.content.Context.class),
 										new ClassItem(java.lang.String.class)
 
 								),
@@ -1026,11 +990,8 @@ public class PredictionProfiles
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem("" , PUBLIC | EXACT ),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(long.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -1038,9 +999,11 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem("org.json.JSONObject" , PUBLIC | EXACT ),
+										new ClassItem(void.class),
 
-										new ClassItem(java.io.File.class)
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -1048,214 +1011,21 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(void.class),
 
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class)
+										new ClassItem(int.class),
+										new ClassItem(boolean.class)
 
 								),
 
 						//Method #68: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
-
-										new ClassItem(android.graphics.RectF.class),
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
-
-								),
-
-						//Method #69: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #70: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #71: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #72: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #73: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #74: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #75: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #76: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #77: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #78: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #79: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.languagepacks.AndroidLanguagePackManager" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #80: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.languagepacks.AndroidLanguagePackManager" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #81: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #82: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(int.class),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #83: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1267,7 +1037,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #84: a
+						//Method #69: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1282,7 +1052,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #85: a
+						//Method #70: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1294,21 +1064,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #86: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.widget.LinearLayout.class),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #87: a
+						//Method #71: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1324,7 +1080,51 @@ public class PredictionProfiles
 
 								),
 
-						//Method #88: a
+						//Method #72: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem(android.widget.LinearLayout.class),
+										new ClassItem(android.view.View.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #73: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(int.class),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #74: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #75: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1335,7 +1135,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #89: a
+						//Method #76: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1350,7 +1150,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #90: a
+						//Method #77: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1362,7 +1162,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #91: a
+						//Method #78: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1372,7 +1172,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #92: a
+						//Method #79: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1384,7 +1184,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #93: a
+						//Method #80: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1392,11 +1192,65 @@ public class PredictionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.SettingStateEventOrigin" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
-						//Method #94: a
+						//Method #81: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.content.Context.class),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #82: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.AndroidLanguagePackManager" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #83: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.AndroidLanguagePackManager" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.content.Context.class),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #84: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.content.Context.class),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #85: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1408,7 +1262,33 @@ public class PredictionProfiles
 
 								),
 
-						//Method #95: a
+						//Method #86: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #87: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #88: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1420,7 +1300,57 @@ public class PredictionProfiles
 
 								),
 
-						//Method #96: a
+						//Method #89: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #90: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #91: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #92: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #93: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1430,7 +1360,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #97: a
+						//Method #94: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1441,80 +1371,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #98: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #99: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
-										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.materialsettings.SwiftKeyPreferenceFragment" , PUBLIC | EXACT ),
-										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
-										new ClassItem("androidx.preference.Preference" , PUBLIC | EXACT )
-
-								),
-
-						//Method #100: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
-										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.materialsettings.SwiftKeyPreferenceFragment" , PUBLIC | EXACT ),
-										new ClassItem("androidx.preference.Preference" , PUBLIC | EXACT )
-
-								),
-
-						//Method #101: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #102: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #103: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #104: a
+						//Method #95: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1524,7 +1381,27 @@ public class PredictionProfiles
 
 								),
 
-						//Method #105: a
+						//Method #96: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #97: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #98: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1535,7 +1412,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #106: a
+						//Method #99: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1545,7 +1422,50 @@ public class PredictionProfiles
 
 								),
 
-						//Method #107: a
+						//Method #100: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #101: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
+										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.materialsettings.SwiftKeyPreferenceFragment" , PUBLIC | EXACT ),
+										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
+										new ClassItem("androidx.preference.Preference" , PUBLIC | EXACT )
+
+								),
+
+						//Method #102: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
+										new ClassItem("androidx.preference.CheckBoxPreference" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.materialsettings.SwiftKeyPreferenceFragment" , PUBLIC | EXACT ),
+										new ClassItem("androidx.preference.Preference" , PUBLIC | EXACT )
+
+								),
+
+						//Method #103: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1555,7 +1475,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #108: a
+						//Method #104: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1566,7 +1486,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #109: a
+						//Method #105: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1577,7 +1497,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #110: a
+						//Method #106: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1587,7 +1507,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #111: b
+						//Method #107: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1598,7 +1518,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #112: b
+						//Method #108: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | FINAL | EXACT ,
@@ -1608,7 +1528,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #113: b
+						//Method #109: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1619,7 +1539,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #114: b
+						//Method #110: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1629,7 +1549,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #115: b
+						//Method #111: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1637,7 +1557,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #116: b
+						//Method #112: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1651,7 +1571,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #117: b
+						//Method #113: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1662,7 +1582,18 @@ public class PredictionProfiles
 
 								),
 
-						//Method #118: b
+						//Method #114: b
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.content.Context.class)
+
+								),
+
+						//Method #115: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1672,7 +1603,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #119: b
+						//Method #116: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1684,7 +1615,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #120: b
+						//Method #117: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1695,14 +1626,49 @@ public class PredictionProfiles
 
 								),
 
-						//Method #121: b
+						//Method #118: b
+						new MethodProfile
+								(
+										PUBLIC | STATIC | FINAL | EXACT ,
+										new ClassItem(java.util.List.class),
+
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #119: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class)
+
+										new ClassItem(android.graphics.RectF.class),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+
+								),
+
+						//Method #120: b
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem(android.view.View.class),
+										new ClassItem(android.text.Spannable.class)
+
+								),
+
+						//Method #121: b
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.content.Context.class),
+										new ClassItem(android.view.View.class)
 
 								),
 
@@ -1714,7 +1680,6 @@ public class PredictionProfiles
 
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem(android.view.View.class)
 
 								),
@@ -1727,36 +1692,12 @@ public class PredictionProfiles
 
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem(android.view.View.class)
 
 								),
 
 						//Method #124: b
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #125: b
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.view.View.class),
-										new ClassItem(android.text.Spannable.class)
-
-								),
-
-						//Method #126: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1766,7 +1707,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #127: b
+						//Method #125: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1777,17 +1718,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #128: b
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #129: b
+						//Method #126: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1797,7 +1728,17 @@ public class PredictionProfiles
 
 								),
 
-						//Method #130: c
+						//Method #127: b
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #128: c
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1808,7 +1749,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #131: c
+						//Method #129: c
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1818,7 +1759,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #132: c
+						//Method #130: c
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1826,6 +1767,25 @@ public class PredictionProfiles
 
 										new ClassItem(boolean.class),
 										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #131: c
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #132: c
+						new MethodProfile
+								(
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.content.Context.class)
 
 								),
 
@@ -1842,25 +1802,6 @@ public class PredictionProfiles
 						//Method #134: c
 						new MethodProfile
 								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #135: c
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #136: c
-						new MethodProfile
-								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(void.class),
 
@@ -1871,7 +1812,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #137: c
+						//Method #135: c
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1883,7 +1824,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #138: d
+						//Method #136: d
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1893,7 +1834,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #139: d
+						//Method #137: d
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1901,7 +1842,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #140: d
+						//Method #138: d
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1914,7 +1855,27 @@ public class PredictionProfiles
 
 								),
 
-						//Method #141: d
+						//Method #139: d
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.view.View.class)
+
+								),
+
+						//Method #140: e
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #141: e
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1929,12 +1890,22 @@ public class PredictionProfiles
 						//Method #142: e
 						new MethodProfile
 								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT )
+										PUBLIC | STATIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(android.content.Context.class)
 
 								),
 
-						//Method #143: e
+						//Method #143: f
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.Boolean.class)
+
+								),
+
+						//Method #144: f
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -1943,42 +1914,12 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #144: e
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(android.content.Context.class)
 
 								),
 
 						//Method #145: f
 						new MethodProfile
 								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(java.lang.Boolean.class)
-
-								),
-
-						//Method #146: f
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #147: f
-						new MethodProfile
-								(
 										PUBLIC | STATIC | EXACT ,
 										new ClassItem(boolean.class),
 
@@ -1986,7 +1927,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #148: g
+						//Method #146: g
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -1996,7 +1937,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #149: g
+						//Method #147: g
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2004,7 +1945,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #150: g
+						//Method #148: g
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2016,7 +1957,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #151: h
+						//Method #149: h
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -2024,7 +1965,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #152: h
+						//Method #150: h
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2036,7 +1977,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #153: i
+						//Method #151: i
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -2044,7 +1985,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #154: i
+						//Method #152: i
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2056,7 +1997,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #155: j
+						//Method #153: j
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -2064,7 +2005,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #156: j
+						//Method #154: j
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2076,7 +2017,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #157: k
+						//Method #155: k
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -2084,7 +2025,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #158: k
+						//Method #156: k
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2096,7 +2037,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #159: l
+						//Method #157: l
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -2104,7 +2045,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #160: l
+						//Method #158: l
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2116,7 +2057,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #161: m
+						//Method #159: m
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2128,7 +2069,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #162: n
+						//Method #160: n
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2140,7 +2081,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #163: o
+						//Method #161: o
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -2149,291 +2090,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(android.view.View.class)
-
-								),
-
-
-				});
-/////////////////////////
-//Declared Constructors
-/////////////////////////
-		newProfile.setDeclaredConstructors(new ConstructorProfile[]
-				{
-
-				});
-
-		return newProfile;
-	}
-
-
-
-
-	protected static ClassProfile get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_OLD()
-	{
-		ClassProfile newProfile = new ClassProfile();
-
-		newProfile.setFullPath("foi_CANDIDATES_VIEW_FACTORY_OLD_PROFILE");
-		newProfile.setKnownPath("");
-
-		newProfile.setMinDepth(0);
-		newProfile.setMaxDepth(0);
-		newProfile.setModifiers(PUBLIC | FINAL );
-
-		newProfile.setTypeParamCount(0);
-		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
-/////////////////////////
-//Interfaces
-/////////////////////////
-		newProfile.setInterfaces(new ClassItem[]
-				{
-
-				});
-/////////////////////////
-//Nested Classes
-/////////////////////////
-		newProfile.setNestedClasses(new ClassItem[]
-				{
-
-				});
-/////////////////////////
-//Declared fields
-/////////////////////////
-		newProfile.setDeclaredFields(new FieldItem[]
-				{
-
-				});
-/////////////////////////
-//Declared Methods
-/////////////////////////
-		newProfile.setDeclaredMethods(new MethodProfile[]
-				{
-						//Method #0: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
-
-								),
-
-						//Method #1: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
-
-								),
-
-						//Method #2: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #3: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | EXACT ,
-										new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #4: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.widget.LinearLayout.class),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #5: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.widget.LinearLayout.class),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #6: a
-						new MethodProfile
-								(
-										STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.widget.LinearLayout.class),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #7: a
-						new MethodProfile
-								(
-										PRIVATE | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #8: b
-						new MethodProfile
-								(
-										PRIVATE | STATIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem(android.widget.LinearLayout.class),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #9: lambda$-g7h_tWCVRFf1sKx6nNZARuvOfg
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.view.View.class),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #10: lambda$q_L2ZfdCSC5T0E_5jki5gtfa3tw
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class)
 
 								),
 
@@ -2455,7 +2111,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("Vpa");
+		newProfile.setFullPath("yc2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -2485,15 +2141,15 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//e
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//f
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//g
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.text.TextPaint.class)),	//h
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.graphics.Rect.class)),	//i
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//j
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//k
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//l
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//m
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//i
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//j
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//k
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.text.TextPaint.class)),	//l
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.graphics.Rect.class)),	//m
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(boolean.class)),	//n
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//o
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//p
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//q
 
 				});
 /////////////////////////
@@ -2509,13 +2165,11 @@ public class PredictionProfiles
 
 								),
 
-						//Method #1: a
+						//Method #1: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(void.class)
 
 								),
 
@@ -2560,7 +2214,7 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2625,7 +2279,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("lua");
+		newProfile.setFullPath("ml2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -2677,11 +2331,83 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(android.net.Uri.class),
+										new ClassItem(android.net.Uri.class),
+										new ClassItem(java.lang.String.class)
 
 								),
 
 						//Method #2: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype_fluency.Punctuator" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #5: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #6: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #7: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #8: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #9: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2697,7 +2423,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #3: a
+						//Method #10: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2709,18 +2435,103 @@ public class PredictionProfiles
 
 								),
 
-						//Method #4: a
+						//Method #11: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(android.view.inputmethod.CompletionInfo.class)
 
 								),
 
-						//Method #5: a
+						//Method #12: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.view.inputmethod.EditorInfo.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #13: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.view.inputmethod.EditorInfo.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #14: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
+
+								),
+
+						//Method #15: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.Tokenizer" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #16: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #17: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #18: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.FluencyCandidate" , PUBLIC | EXACT )
+
+								),
+
+						//Method #19: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2732,7 +2543,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #6: a
+						//Method #20: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2745,103 +2556,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #7: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.inputmethod.CompletionInfo.class)
-
-								),
-
-						//Method #8: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.inputmethod.EditorInfo.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #9: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.inputmethod.EditorInfo.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #10: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
-
-								),
-
-						//Method #11: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.Tokenizer" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #12: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #13: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #14: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.FluencyCandidate" , PUBLIC | EXACT )
-
-								),
-
-						//Method #15: a
+						//Method #21: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2852,7 +2567,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #16: a
+						//Method #22: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2866,7 +2581,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #17: a
+						//Method #23: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2882,18 +2597,18 @@ public class PredictionProfiles
 
 								),
 
-						//Method #18: a
+						//Method #24: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
-						//Method #19: a
+						//Method #25: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2905,7 +2620,18 @@ public class PredictionProfiles
 
 								),
 
-						//Method #20: a
+						//Method #26: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #27: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2916,7 +2642,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #21: a
+						//Method #28: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -2925,78 +2651,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #22: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #23: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #24: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #25: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #26: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.net.Uri.class),
-										new ClassItem(android.net.Uri.class),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #27: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype_fluency.Punctuator" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #28: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(java.util.List.class)
 
 								),
 
@@ -3016,13 +2670,25 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(boolean.class),
 
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #31: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class),
+
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
 										new ClassItem(android.view.KeyEvent.class)
 
 								),
 
-						//Method #31: a
+						//Method #32: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -3036,23 +2702,11 @@ public class PredictionProfiles
 
 								),
 
-						//Method #32: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
 						//Method #33: b
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(void.class)
 
 								),
 
@@ -3062,7 +2716,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -3072,8 +2726,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -3084,7 +2737,7 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -3094,7 +2747,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -3102,7 +2756,7 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -3131,21 +2785,13 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #42: d
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
-						//Method #43: d
+						//Method #42: d
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -3156,11 +2802,21 @@ public class PredictionProfiles
 
 								),
 
+						//Method #43: d
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
 						//Method #44: e
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -3168,9 +2824,7 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(boolean.class)
 
 								),
 
@@ -3192,23 +2846,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #48: h
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #49: i
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #50: j
+						//Method #48: g
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -3216,7 +2854,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #51: k
+						//Method #49: h
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -3224,7 +2862,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #52: l
+						//Method #50: i
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -3232,7 +2870,23 @@ public class PredictionProfiles
 
 								),
 
-						//Method #53: m
+						//Method #51: j
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #52: k
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #53: l
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -3240,27 +2894,27 @@ public class PredictionProfiles
 
 								),
 
-						//Method #54: n
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #55: o
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #56: onCreate
+						//Method #54: m
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class)
+
+								),
+
+						//Method #55: n
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #56: o
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(boolean.class)
 
 								),
 
@@ -3284,6 +2938,14 @@ public class PredictionProfiles
 								),
 
 						//Method #59: p
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #60: q
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -3593,7 +3255,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("mwa");
+		newProfile.setFullPath("np2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -3628,6 +3290,7 @@ public class PredictionProfiles
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )),	//f
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//g
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | STATIC | EXACT )),	//h
 
 				});
 /////////////////////////
@@ -3659,22 +3322,22 @@ public class PredictionProfiles
 						//Method #2: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(java.lang.String.class)
 
 								),
 
 						//Method #3: a
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -3722,7 +3385,9 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -3733,9 +3398,7 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -3803,7 +3466,8 @@ public class PredictionProfiles
 										new ClassItem("com.touchtype.report.TouchTypeStats" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.FluencyServiceProxy" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | EXACT )
 
 								),
 
@@ -3954,7 +3618,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("gAa");
+		newProfile.setFullPath("bx2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -3982,13 +3646,13 @@ public class PredictionProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(float.class)),	//j
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.graphics.RectF.class)),	//k
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int[].class)),	//l
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//m
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//n
-						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate.Visitor" , PUBLIC | STATIC | ABSTRACT | EXACT )),	//h
-						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate.Visitor" , PUBLIC | STATIC | ABSTRACT | EXACT )),	//i
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(float.class)),	//h
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.graphics.RectF.class)),	//i
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int[].class)),	//j
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(java.lang.String.class)),	//k
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//l
+						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate.Visitor" , PUBLIC | STATIC | ABSTRACT | EXACT )),	//m
+						new FieldItem( PUBLIC | STATIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.candidates.Candidate.Visitor" , PUBLIC | STATIC | ABSTRACT | EXACT )),	//n
 
 				});
 /////////////////////////
@@ -4017,7 +3681,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #2: g
+						//Method #2: i
 						new MethodProfile
 								(
 										PUBLIC | STATIC | EXACT ,
@@ -4028,11 +3692,9 @@ public class PredictionProfiles
 						//Method #3: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
+										PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-										new ClassItem("UEa" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
@@ -4043,7 +3705,7 @@ public class PredictionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -4051,9 +3713,9 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -4061,8 +3723,10 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT ),
 
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
@@ -4093,7 +3757,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #10: c
+						//Method #10: d
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -4127,7 +3791,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #14: h
+						//Method #14: g
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -4135,19 +3799,19 @@ public class PredictionProfiles
 
 								),
 
-						//Method #15: hashCode
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(int.class)
-
-								),
-
-						//Method #16: i
+						//Method #15: h
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class)
+
+								),
+
+						//Method #16: hashCode
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(int.class)
 
 								),
 

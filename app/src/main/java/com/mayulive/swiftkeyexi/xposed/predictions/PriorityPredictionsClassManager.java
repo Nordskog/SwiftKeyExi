@@ -77,19 +77,7 @@ public class PriorityPredictionsClassManager
 
 		PriorityPredictionsClassManager.buClass = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_BU_CLASS_PROFILE(), param );
 
-		{
-			// New is for 7.3.7.18+ TODO remove old at some point
-			Class oldClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_OLD(), param );
-			Class newClass = PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_NEW(), param );
-
-			// Uhhh... pick class with best similarity?
-			float simOld = PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_OLD().getSimilarity(oldClass, oldClass, 0f);
-			float simNew = PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_NEW().getSimilarity(newClass, newClass, 0f);
-
-			Log.d(LOGTAG, "candidatesViewFactory sim: Old: "+simOld+", new: "+simNew);
-
-			PriorityPredictionsClassManager.candidatesViewFactory = simNew > simOld ? newClass : oldClass;
-		}
+		PriorityPredictionsClassManager.candidatesViewFactory = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATES_VIEW_FACTORY_CLASS_PROFILE_NEW(), param );
 	}
 
 	public static void loadMethods() throws NoSuchMethodException
@@ -130,9 +118,10 @@ public class PriorityPredictionsClassManager
 				MethodProfile profile = new MethodProfile
 				(
 						PUBLIC | STATIC | EXACT ,
-						new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem(android.view.View.class),
 
 						new ClassItem(android.content.Context.class),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
@@ -143,12 +132,11 @@ public class PriorityPredictionsClassManager
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT )
+						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
 				);
 
 				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(	profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);

@@ -676,46 +676,49 @@ public class KeyboardHooks
 
 		HashSet<XC_MethodHook.Unhook> returnSet = new HashSet<>();
 
-		if ( KeyboardClassManager.insertGifTextClass != null )
+		if ( KeyboardClassManager.insertGifTextClasses != null )
 		{
-			returnSet.addAll( XposedBridge.hookAllConstructors( KeyboardClassManager.insertGifTextClass, new XC_MethodHook()
+			for (Class aClass : KeyboardClassManager.insertGifTextClasses)
 			{
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				returnSet.addAll( XposedBridge.hookAllConstructors( aClass, new XC_MethodHook()
 				{
-					// Params:
-					// I have no idea
-					// url string
-
-					if ( Settings.GIF_REMOVE_REDIRECT )
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 					{
-						try
+						// Params:
+						// I have no idea
+						// url string
+
+						if ( Settings.GIF_REMOVE_REDIRECT )
 						{
-							String imageUri = (String) param.args[1];
-
-							Matcher matcher = BING_GIF_REDIRECT_URL_PATTERN.matcher(imageUri);
-
-							if (matcher.find())
+							try
 							{
+								String imageUri = (String) param.args[1];
 
-								// Original url is escaped, so decode it after matching.
-								String escapedHtmlString = matcher.group(1);
-								escapedHtmlString = Uri.decode(escapedHtmlString);
+								Matcher matcher = BING_GIF_REDIRECT_URL_PATTERN.matcher(imageUri);
 
-								// Turns out you can just edit the args, no need to call method yourself.
-								param.args[1] = escapedHtmlString;
+								if (matcher.find())
+								{
+
+									// Original url is escaped, so decode it after matching.
+									String escapedHtmlString = matcher.group(1);
+									escapedHtmlString = Uri.decode(escapedHtmlString);
+
+									// Turns out you can just edit the args, no need to call method yourself.
+									param.args[1] = escapedHtmlString;
+								}
+							}
+							catch ( Throwable ex )
+							{
+								// Will fallback to standard behavior, so not need to remove the hook.
+								Log.e(LOGTAG, "Problem in remove gif text redirect method");
+								ex.printStackTrace();
+								XposedBridge.log(ex);
 							}
 						}
-						catch ( Throwable ex )
-						{
-							// Will fallback to standard behavior, so not need to remove the hook.
-							Log.e(LOGTAG, "Problem in remove gif text redirect method");
-							ex.printStackTrace();
-							XposedBridge.log(ex);
-						}
 					}
-				}
-			}));
+				}));
+			}
 		}
 
 		returnSet.add( XposedBridge.hookMethod( KeyboardClassManager.insertGifClass_insertGifMethod, new XC_MethodHook()

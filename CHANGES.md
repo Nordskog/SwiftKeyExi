@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
+
+## [2.4.0] - 02-10-2019
+### Fixed
+ - Compatibility targeting 7.4.0.17 ( Swipe-selection, quick menu, jumping cursor, hotkeys )
+ - Bing redirect not being removed from gif when inserted as text link
+ - Lenny
+
 ## [2.3.6] - 28-08-2019
 ### Fixed
  - Cursor reverting to old position when moving vertically ( swipe-selection )
