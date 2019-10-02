@@ -19,7 +19,7 @@ public class SoundProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("Yeb");
+		newProfile.setFullPath("cq4");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -47,13 +47,13 @@ public class SoundProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//b
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(android.media.SoundPool.class)),	//c
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//d
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(int.class)),	//e
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//f
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.media.AudioManager.class)),	//g
-						new FieldItem( PUBLIC | STATIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )),	//a
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//a
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(android.media.SoundPool.class)),	//b
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//c
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(int.class)),	//d
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.media.AudioManager.class)),	//f
+						new FieldItem( PUBLIC | STATIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )),	//g
 
 				});
 /////////////////////////
@@ -105,7 +105,6 @@ public class SoundProfiles
 						new ConstructorProfile
 								(		PUBLIC | EXACT ,
 
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem(android.content.res.Resources.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(android.media.AudioManager.class)
