@@ -219,7 +219,7 @@ public class KeyboardHooks
 
 	private static Set<XC_MethodHook.Unhook> hookKeyboardLoaded()
 	{
-		return XposedBridge.hookAllConstructors(PriorityKeyboardClassManager.keyboardLoaderClass, new XC_MethodHook()
+		return XposedBridge.hookAllConstructors(PriorityKeyboardClassManager.keyboardLoaderPreferenceClass, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
