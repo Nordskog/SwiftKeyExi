@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.4.1] - 11-11-2019
+### Fixed
+ - Compatibility targeting 7.4.3.32 ( Spacebar / Anything overlay related )
+
 ## [2.4.0] - 02-10-2019
 ### Fixed
  - Compatibility targeting 7.4.0.17 ( Swipe-selection, quick menu, jumping cursor, hotkeys )
