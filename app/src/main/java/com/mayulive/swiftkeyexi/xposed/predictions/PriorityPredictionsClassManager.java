@@ -136,7 +136,8 @@ public class PriorityPredictionsClassManager
 						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT )
+						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
+						new ClassItem("" , PUBLIC | EXACT )
 				);
 
 				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(	profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
@@ -206,6 +207,7 @@ public class PriorityPredictionsClassManager
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | EXACT )
