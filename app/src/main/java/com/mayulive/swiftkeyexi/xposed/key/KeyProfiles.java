@@ -463,11 +463,11 @@ public class KeyProfiles
 		return newProfile;
 	}
 
-	public static ClassProfile get_KEYBOARD_LOADER_CLASS_PROFILE()
+	public static ClassProfile get_KEYBOARD_LOADER_PREFERENCE_CLASS_PROFILE()
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("j32");
+		newProfile.setFullPath("m92");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -483,7 +483,156 @@ public class KeyProfiles
 				{
 						new ClassItem(android.content.SharedPreferences.OnSharedPreferenceChangeListener.class),
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//e
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #1: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.LanguageLayoutChangeSource" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #5: b
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #6: j
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #7: onSharedPreferenceChanged
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(android.content.SharedPreferences.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
+
+	public static ClassProfile get_KEYBOARD_LOADER_CLASS_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("o92");
+		newProfile.setKnownPath("");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
 						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 				});
@@ -499,28 +648,29 @@ public class KeyProfiles
 /////////////////////////
 		newProfile.setDeclaredFields(new FieldItem[]
 				{
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//A
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//B
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//C
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//D
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//E
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//F
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//G
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//H
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//I
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//J
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//K
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//L
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//A
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//B
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//C
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Set.class)),	//D
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//E
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.List.class)),	//F
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//G
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//H
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//I
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//J
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//K
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//L
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//M
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//N
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//O
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//P
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//Q
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//R
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.SymbolsNumberDisplay" , PUBLIC | FINAL | ENUM | EXACT )),	//S
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.SharedPreferences.class)),	//T
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//U
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.FullLayoutProvider" , PUBLIC | EXACT )),	//V
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//S
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.SymbolsNumberDisplay" , PUBLIC | FINAL | ENUM | EXACT )),	//T
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.SharedPreferences.class)),	//U
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//V
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.FullLayoutProvider" , PUBLIC | EXACT )),	//W
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//e
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//f
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//g
@@ -539,10 +689,10 @@ public class KeyProfiles
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//t
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//u
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//v
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//w
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//x
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//y
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//z
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//w
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )),	//x
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | EXACT )),	//y
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//z
 
 				});
 /////////////////////////
@@ -574,8 +724,7 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(int.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -585,7 +734,7 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -595,10 +744,8 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
-										new ClassItem("com.swiftkey.avro.telemetry.sk.android.LanguageLayoutChangeSource" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -609,7 +756,7 @@ public class KeyProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -620,7 +767,11 @@ public class KeyProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem("com.swiftkey.avro.telemetry.sk.android.LanguageLayoutChangeSource" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -631,7 +782,11 @@ public class KeyProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -642,8 +797,8 @@ public class KeyProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(int.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -653,17 +808,24 @@ public class KeyProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
 						//Method #10: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(int.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -688,8 +850,8 @@ public class KeyProfiles
 						//Method #13: c
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(int.class)
+										PUBLIC | EXACT ,
+										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -697,7 +859,7 @@ public class KeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
-										new ClassItem(boolean.class)
+										new ClassItem(int.class)
 
 								),
 
@@ -705,7 +867,7 @@ public class KeyProfiles
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
+										new ClassItem(boolean.class)
 
 								),
 
@@ -725,22 +887,11 @@ public class KeyProfiles
 
 								),
 
-						//Method #18: j
+						//Method #18: h
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class)
-
-								),
-
-						//Method #19: onSharedPreferenceChanged
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.content.SharedPreferences.class),
-										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -772,7 +923,6 @@ public class KeyProfiles
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem("com.touchtype_fluency.service.languagepacks.layouts.FullLayoutProvider" , PUBLIC | EXACT )

@@ -1,8 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.res.Configuration;
-import android.util.Log;
-import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -10,7 +8,6 @@ import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.key.KeyProfiles;
 import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
@@ -24,12 +21,10 @@ import java.lang.reflect.Method;
 import static com.mayulive.xposed.classhunter.Modifiers.ABSTRACT;
 import static com.mayulive.xposed.classhunter.Modifiers.ARRAY;
 import static com.mayulive.xposed.classhunter.Modifiers.BRIDGE;
-import static com.mayulive.xposed.classhunter.Modifiers.ENUM;
 import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
 import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
-import static com.mayulive.xposed.classhunter.Modifiers.PRIVATE;
+import static com.mayulive.xposed.classhunter.Modifiers.INTERFACE;
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
-import static com.mayulive.xposed.classhunter.Modifiers.STATIC;
 import static com.mayulive.xposed.classhunter.Modifiers.SYNTHETIC;
 import static com.mayulive.xposed.classhunter.Modifiers.VARARGS;
 
@@ -52,12 +47,18 @@ public class PriorityKeyboardClassManager
 	///////////////////
 	//Objects and instances
 	//////////////////
+
 	public static Object keyboardServiceInstance = null;
-	//public static Class keyboardSizerClass = null;
+
 	public static Class keyboardLoaderClass = null;
-	public static Method keyboardLoader_onSharedPreferenceChangedMethod;
 	public static Method keyboardLoader_loadMethod = null;
+
+	public static Class keyboardLoaderPreferenceClass = null;
+	public static Method keyboardLoaderPreference_onSharedPreferenceChangedMethod;
+
+
 	public static Object punctuatorImplInstance = null;
+
 	protected static Method keyboardService_onEvaluateFullscreenModeMethod = null;
 	protected static Method keyboardService_onConfigurationChangedMethod = null;
 	protected static Method keyboardService_isFullscreenModeMethod = null;
@@ -75,8 +76,15 @@ public class PriorityKeyboardClassManager
 	public static void loadUnknownClasses(PackageTree param)
 	{
 
-
 		PriorityKeyboardClassManager.keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
+		PriorityKeyboardClassManager.keyboardLoaderPreferenceClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_PREFERENCE_CLASS_PROFILE(), param );
+
+		//TODO remove backwards compatibility targeting < 7.4.3.32
+		if (  ProfileHelpers.findFirstMethodByName( keyboardLoaderPreferenceClass.getDeclaredMethods(), "onSharedPreferenceChanged") == null )
+		{
+			// Used to be same class.
+			keyboardLoaderPreferenceClass = keyboardLoaderClass;
+		}
 
 		toolbarOpenButtonOverlayViewClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_TOOLBAR_OPEN_BUTTON_OVERLAY_CLASS_PROFILE(), param );
 
@@ -125,11 +133,13 @@ public class PriorityKeyboardClassManager
 
 		}
 
+		if ( keyboardLoaderPreferenceClass != null )
+		{
+			PriorityKeyboardClassManager.keyboardLoaderPreference_onSharedPreferenceChangedMethod = ProfileHelpers.findFirstMethodByName(PriorityKeyboardClassManager.keyboardLoaderPreferenceClass.getDeclaredMethods(), "onSharedPreferenceChanged");
+		}
 
 		if (PriorityKeyboardClassManager.keyboardLoaderClass != null)
 		{
-
-			PriorityKeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod = ProfileHelpers.findFirstMethodByName(PriorityKeyboardClassManager.keyboardLoaderClass.getDeclaredMethods(), "onSharedPreferenceChanged");
 
 			{
 				MethodProfile profile = new MethodProfile
@@ -139,7 +149,9 @@ public class PriorityKeyboardClassManager
 
 						new ClassItem("" , PUBLIC | EXACT ),
 						new ClassItem(boolean.class),
-						new ClassItem(int.class)
+						new ClassItem(int.class),
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+						new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 				);
 

@@ -1,7 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -9,10 +8,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -24,7 +21,6 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
-import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
@@ -32,17 +28,14 @@ import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
-import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 import com.mayulive.swiftkeyexi.xposed.system.SystemIntentService;
 import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -226,7 +219,7 @@ public class KeyboardHooks
 
 	private static Set<XC_MethodHook.Unhook> hookKeyboardLoaded()
 	{
-		return XposedBridge.hookAllConstructors(PriorityKeyboardClassManager.keyboardLoaderClass, new XC_MethodHook()
+		return XposedBridge.hookAllConstructors(PriorityKeyboardClassManager.keyboardLoaderPreferenceClass, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable
@@ -356,7 +349,7 @@ public class KeyboardHooks
 
 	private static XC_MethodHook.Unhook hookPrefChanged()
 	{
-		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardLoader_onSharedPreferenceChangedMethod, new XC_MethodHook()
+		return XposedBridge.hookMethod(PriorityKeyboardClassManager.keyboardLoaderPreference_onSharedPreferenceChangedMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
