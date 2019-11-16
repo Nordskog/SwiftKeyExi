@@ -20,6 +20,7 @@ public class KeyboardInteraction
 		COPY,
 		CUT,
 		PASTE,
+		PASTE_PLAIN,
 		SELECT_ALL,
 		GO_TO_END,
 		GO_TO_START,
@@ -43,6 +44,8 @@ public class KeyboardInteraction
 						return context.getResources().getString(R.string.textaction_cut);
 					case PASTE:
 						return context.getResources().getString(R.string.textaction_paste);
+					case PASTE_PLAIN:
+						return context.getResources().getString(R.string.textaction_paste_plain);
 					case SELECT_ALL:
 						return context.getResources().getString(R.string.textaction_selectall);
 					case GO_TO_END:
@@ -82,6 +85,8 @@ public class KeyboardInteraction
 						return context.getResources().getString(R.string.textaction_short_cut);
 					case PASTE:
 						return context.getResources().getString(R.string.textaction_short_paste);
+					case PASTE_PLAIN:
+						return context.getResources().getString(R.string.textaction_short_paste_plain);
 					case SELECT_ALL:
 						return context.getResources().getString(R.string.textaction_short_selectall);
 					case GO_TO_END:
@@ -124,6 +129,12 @@ public class KeyboardInteraction
 			values.add( TextAction.COPY);
 			values.add( TextAction.CUT);
 			values.add( TextAction.PASTE);
+
+			//Supports everything
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+			{
+				values.add( TextAction.PASTE_PLAIN );
+			}
 
 			if (includeSpecial)
 			{

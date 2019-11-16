@@ -357,6 +357,11 @@ public class KeyCommons
 					menuAction = android.R.id.paste;
 					break;
 				}
+				case PASTE_PLAIN:
+				{
+					menuAction = android.R.id.pasteAsPlainText;
+					break;
+				}
 				case SELECT_ALL:
 				{
 					menuAction = android.R.id.selectAll;
