@@ -29,6 +29,8 @@ import java.util.concurrent.Executor;
 public class KeyboardMethods
 {
 
+	private static final String AUTOCOMPLETE_PREF_KEY = "pref_typing_style_autocomplete";
+
 
 	public static void inputText(String text)
 	{
@@ -183,6 +185,12 @@ public class KeyboardMethods
 		{
 			setIncogState(true);
 		}
+	}
+
+	public static boolean getIncogState()
+	{
+		SharedPreferences prefs = SettingsCommons.getSharedPreferences( ContextUtils.getHookContext(), ExiXposed.getPrefsPath() );
+		return prefs.getBoolean("pref_exi_xposed_incog_enabled", false);
 	}
 
 	/**
@@ -477,6 +485,22 @@ public class KeyboardMethods
 	{
 		Context context = ContextUtils.getHookContext();
 		return context.getSharedPreferences(ExiXposed.HOOK_PACKAGE_NAME+"_preferences", Context.MODE_PRIVATE);
+	}
+
+	public static boolean getAutocorrectEnabled()
+	{
+		SharedPreferences prefs = getSwiftkeySharedPrefs();
+		return prefs.getInt(AUTOCOMPLETE_PREF_KEY, 1) == 1; // Probably defaults to on?
+	}
+
+	public static void setAutocorrectEnabled(boolean on)
+	{
+		SharedPreferences prefs = getSwiftkeySharedPrefs();
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putInt( AUTOCOMPLETE_PREF_KEY,  on ? 1 : 0);
+		editor.apply();
+
+		return;
 	}
 
 	public static void setKeyboardOpacity()

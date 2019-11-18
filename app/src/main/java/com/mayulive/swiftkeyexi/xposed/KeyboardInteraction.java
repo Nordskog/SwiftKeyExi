@@ -24,7 +24,10 @@ public class KeyboardInteraction
 		SELECT_ALL,
 		GO_TO_END,
 		GO_TO_START,
-		INSERT;
+		INSERT,
+		TOGGLE_AUTOCORRECT,
+		TOGGLE_INCOGNITO,
+		TOGGLE_AUTO_INCOGNITO;
 
 		public static String getTextRepresentation(Context context, TextAction action)
 		{
@@ -54,6 +57,12 @@ public class KeyboardInteraction
 						return context.getResources().getString(R.string.textaction_gotostart);
 					case INSERT:
 						return context.getResources().getString(R.string.textaction_insert);
+					case TOGGLE_AUTOCORRECT:
+						return context.getResources().getString(R.string.textaction_toggle_auto);
+					case TOGGLE_INCOGNITO:
+						return context.getResources().getString(R.string.textaction_toggle_incog);
+					case TOGGLE_AUTO_INCOGNITO:
+						return context.getResources().getString(R.string.textaction_toggle_auto_incog);
 
 					default:
 						return "Null";
@@ -95,6 +104,12 @@ public class KeyboardInteraction
 						return context.getResources().getString(R.string.textaction_short_gotostart);
 					case INSERT:
 						return context.getResources().getString(R.string.textaction_short_insert);
+					case TOGGLE_AUTOCORRECT:
+						return context.getResources().getString(R.string.textaction_short_toggle_auto);
+					case TOGGLE_INCOGNITO:
+						return context.getResources().getString(R.string.textaction_short_toggle_incog);
+					case TOGGLE_AUTO_INCOGNITO:
+						return context.getResources().getString(R.string.textaction_short_toggle_auto_incog);
 
 					default:
 						return "Null";
@@ -144,6 +159,10 @@ public class KeyboardInteraction
 			values.add( TextAction.SELECT_ALL);
 			values.add( TextAction.GO_TO_END);
 			values.add( TextAction.GO_TO_START);
+
+			values.add( TextAction.TOGGLE_AUTOCORRECT);
+			values.add( TextAction.TOGGLE_INCOGNITO);
+			values.add( TextAction.TOGGLE_AUTO_INCOGNITO);
 
 
 

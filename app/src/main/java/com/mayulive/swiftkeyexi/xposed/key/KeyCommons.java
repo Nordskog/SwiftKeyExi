@@ -387,6 +387,40 @@ public class KeyCommons
 
 					return true;
 				}
+
+				case TOGGLE_AUTOCORRECT:
+				{
+					KeyboardMethods.setAutocorrectEnabled( !KeyboardMethods.getAutocorrectEnabled() );
+					return true;
+				}
+
+				case TOGGLE_INCOGNITO:
+				{
+					KeyboardMethods.setIncogState( !KeyboardMethods.getIncogState() );
+					return true;
+				}
+
+				case TOGGLE_AUTO_INCOGNITO:
+				{
+					// When toggling both, use auto-correct state to determine what to do.
+					boolean autocorrectEnabled = KeyboardMethods.getAutocorrectEnabled();
+
+					if (autocorrectEnabled)
+					{
+						// Opposite state is autocorrect off, incog on
+						KeyboardMethods.setIncogState( true );
+						KeyboardMethods.setAutocorrectEnabled( false );
+					}
+					else
+					{
+						// Opposite state is autocorrect on, incog off
+						KeyboardMethods.setIncogState( false );
+						KeyboardMethods.setAutocorrectEnabled( true );
+					}
+
+					return true;
+				}
+
 				default:
 					break;
 			}

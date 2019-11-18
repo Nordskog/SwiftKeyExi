@@ -12,6 +12,9 @@
     <string name="textaction_gotoend">Go to End</string>
     <string name="textaction_gotostart">Go to Start</string>
     <string name="textaction_insert">Insert</string>
+    <string name="textaction_toggle_auto">Toggle Auto-correct</string>
+    <string name="textaction_toggle_incog">Toggle Incognito</string>
+    <string name="textaction_toggle_auto_incog">Toggle Auto-Incognito</string>
 
     <!-- Short-hand for quick menu -->
     <string name="textaction_short_undo">Undo</string>
@@ -24,5 +27,8 @@
     <string name="textaction_short_gotoend">End</string>
     <string name="textaction_short_gotostart">Start</string>
     <string name="textaction_short_insert">Insert</string>
+    <string name="textaction_short_toggle_auto">Auto</string>
+    <string name="textaction_short_toggle_incog">Incog</string>
+    <string name="textaction_short_toggle_auto_incog">Auto-Incog</string>
 
 </resources>
