@@ -6,10 +6,12 @@
     <string name="category_pref_emoji_panel">Panneau Emoji</string>
     <string name="category_pref_flow_suggestions">Suggestions &amp; Flow </string>
     <string name="category_pref_misc">Divers</string>
+    <string name="category_pref_punctuation">Ponctuation</string>
     <string name="category_pref_app">Appli</string>
     <string name="category_pref_keys">Touches</string>
     <string name="category_pref_audio">Audio</string>
     <string name="category_pref_gifs">Gifs</string>
+    <string name="category_pref_data">Données de base</string>
     <!-- App Theme -->
     <string name="pref_app_theme_title">Thème de l\'application</string>
     <string name="pref_app_theme_summary">Apparence de l\'appli</string>
@@ -22,8 +24,12 @@
     <string name="pref_keyboard_opacity_title">Opacité du clavier</string>
     <string name="pref_keyboard_opacity_summary">Rendre le clavier transparent</string>
     <!-- custom search section -->
+    <string name="pref_section_custom_search_title">Recherche personnalisée</string>
     <!-- use search -->
+    <string name="pref_use_custom_search_title">Utiliser la recherche personnalisée</string>
+    <string name="pref_use_custom_search_summary">Utiliser la recherche personnalisée</string>
     <!-- custom search string -->
+    <string name="pref_custom_search_string_title">Recherche personnalisée</string>
     <!-- fullscreen keyboard -->
     <string name="pref_disable_fullscreen_title">Bloquer le plein écran</string>
     <string name="pref_disable_fullscreen_summary">Empêcher le clavier de passer en mode plein écran</string>
@@ -32,6 +38,8 @@
     <string name="pref_gifs_enable_nsfw_summary">Afficher les gifs NSFW</string>
     <string name="pref_gifs_more_sources_title">Plus de sources</string>
     <string name="pref_gifs_more_sources_summary">Afficher des gifs depuis d\'autres sites</string>
+    <string name="pref_gifs_remove_redirect_title">Supprimer la redirection Bing</string>
+    <string name="pref_gifs_remove_redirect_summary">Lien direct vers l\'image</string>
     <!-- Force emoji set -->
     <string name="pref_emoji_force_version_title">Version Emoji</string>
     <string name="pref_emoji_force_version_summary">Utiliser des Emojis de diverses versions Android</string>
@@ -69,6 +77,10 @@
     <string name="pref_remove_suggestion_padding_summary">Ajuster la barre des suggestions selon l\'écran</string>
     <string name="pref_disable_punctuation_autospace_title">Pas de ponctuation à l\'espace auto</string>
     <string name="pref_disable_punctuation_autospace_summary">Aucun espace inséré après une ponctuation</string>
+    <string name="pref_disable_punctuation_space_removal_title">Désactiver la suppression de l\'espace avant la ponctuation</string>
+    <string name="pref_disable_punctuation_space_removal_summary">La ponctuation ne supprimera l\'espace précédent</string>
+    <string name="pref_disable_prediction_autospace_title">Désactiver l\'espace auto après une prédiction</string>
+    <string name="pref_disable_prediction_autospace_summary">L\'espace ne sera pas inséré après les prédictions</string>
     <string name="pref_dictionary_toggle_title">Dictionnaire</string>
     <string name="pref_dictionary_toggle_summary">Basculer les raccourcis du dictionnaire personnalisés</string>
     <!-- Swipe behavior -->
@@ -111,4 +123,10 @@
     <string name="pref_toolbar_button_summary">Afficher le raccourci Exi dans la barre d\'outils</string>
     <string name="pref_hide_predictions_title">Masquer les prédictions</string>
     <string name="pref_hide_predictions_summary">Ne pas afficher la barre des prédictions</string>
+    <!-- keyboard theme hash, not a pref. -->
+    <string name="pref_data_keyboard_theme_last_hash_title">Hash du thème du clavier</string>
+    <string name="pref_data_keyboard_theme_last_hash_default_summary">Veuillez sélectionner un thème</string>
+    <!-- Only remap hardware keys if keyboard open -->
+    <string name="pref_hardware_remap_only_in_keyboard_title">Réorganiser uniquement avec le clavier</string>
+    <string name="pref_hardware_remap_only_in_keyboard_summary">Ne réorganiser les touches que lorsque le clavier est ouvert</string>
 </resources>
