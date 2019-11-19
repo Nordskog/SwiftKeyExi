@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+
+## [2.5.1] - 19-11-2019
+### Added
+ - Quick/hotkey actions to toggle auto-correct, incognito mode, and both at the same time.
+ - Paste-as-plain-text action
+
+### Changed
+ - Updated emoji ( Android 10 )
+ - Updated French translation
+
 ## [2.4.1] - 11-11-2019
 ### Fixed
  - Compatibility targeting 7.4.3.32 ( Spacebar / Anything overlay related )
