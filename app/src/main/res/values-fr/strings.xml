@@ -14,6 +14,9 @@
     <string name="button_done">Terminé</string>
     <string name="button_save">Terminé</string>
     <string name="button_ok">OK</string>
+    <string name="portrait">Portrait</string>
+    <string name="landscape">Paysage</string>
+    <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
     <string name="content_description">Contenu : </string>
     <string name="content_title">Contenu</string>
     <string name="parent_key_title">Touche parent</string>
@@ -28,4 +31,7 @@
     <string name="tab_name_swipe">Glisser</string>
     <string name="title_activity_compat_settings">Paramètres</string>
     <!-- Search engines -->
+    <string name="search_engine_google">Google</string>
+    <string name="search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="search_engine_wikipedia">Wikipédia</string>
 </resources>
