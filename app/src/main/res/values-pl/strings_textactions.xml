@@ -8,9 +8,13 @@
     <string name="textaction_copy">Kopiuj</string>
     <string name="textaction_cut">Wytnij</string>
     <string name="textaction_paste">Wklej</string>
+    <string name="textaction_paste_plain">Wklej sam tekst</string>
     <string name="textaction_gotoend">Idź na koniec</string>
     <string name="textaction_gotostart">Idź na początek</string>
     <string name="textaction_insert">Wstaw</string>
+    <string name="textaction_toggle_auto">Włącz auto-korektę</string>
+    <string name="textaction_toggle_incog">Włącz incognito</string>
+    <string name="textaction_toggle_auto_incog">Włącz auto-incognito</string>
     <!-- Short-hand for quick menu -->
     <string name="textaction_short_undo">Cofnij</string>
     <string name="textaction_short_redo">Powtórz</string>
@@ -18,7 +22,11 @@
     <string name="textaction_short_copy">Kopiuj</string>
     <string name="textaction_short_cut">Wytnij</string>
     <string name="textaction_short_paste">Wklej</string>
+    <string name="textaction_short_paste_plain">Sam tekst</string>
     <string name="textaction_short_gotoend">Koniec</string>
     <string name="textaction_short_gotostart">Początek</string>
     <string name="textaction_short_insert">Wstaw</string>
+    <string name="textaction_short_toggle_auto">Auto</string>
+    <string name="textaction_short_toggle_incog">Incognito</string>
+    <string name="textaction_short_toggle_auto_incog">Auto-Incognito</string>
 </resources>
