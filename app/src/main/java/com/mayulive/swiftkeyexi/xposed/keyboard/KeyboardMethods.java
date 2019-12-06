@@ -168,6 +168,16 @@ public class KeyboardMethods
 		mKeyboardEventListeners.remove(listener);
 	}
 
+	public static View getKeyboardRoot()
+	{
+		return mKeyboardRoot;
+	}
+
+	public static int getOrientation()
+	{
+		return mDeviceOrientation;
+	}
+
 	public static void saveIncogState( boolean state )
 	{
 		SharedPreferences.Editor editor = SettingsCommons.getSharedPreferencesEditor( ContextUtils.getHookContext(), ExiXposed.getPrefsPath() );
