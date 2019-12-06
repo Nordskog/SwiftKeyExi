@@ -2,14 +2,18 @@ package com.mayulive.swiftkeyexi.xposed.emoji;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.inputmethodservice.Keyboard;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.ViewUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,6 +29,8 @@ import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
+import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.R;
@@ -67,7 +73,7 @@ public class EmojiHooks
 					{
 						if (Settings.EMOJI_PANEL_ENABLED)
 						{
-							RelativeLayout thiz = (RelativeLayout) param.getResult();
+							ViewGroup thiz = (ViewGroup) param.getResult();
 							EmojiHookCommons.mEmojiTopRelative = thiz;
 
 							//These are the two views we want to replace.
@@ -79,7 +85,7 @@ public class EmojiHooks
 							View pagerView = thiz.findViewById(pagerID);
 							View titlesView = thiz.findViewById(titlesID);
 
-							LinearLayout emojiTopBarView = (LinearLayout) thiz.findViewById(emojiTopBarID);
+							ViewGroup emojiTopBarView = thiz.findViewById(emojiTopBarID);
 
 
 							pagerView.setVisibility(View.GONE);
@@ -91,6 +97,7 @@ public class EmojiHooks
 							boolean reuse = 	EmojiHookCommons.mEmojiPanelTabs != null &&
 									EmojiHookCommons.mEmojiPanelAdapter != null &&
 									EmojiHookCommons.mEmojiPanelPager != null;
+
 
 							//Reuse existing views of they exist
 							if (reuse)
@@ -114,11 +121,17 @@ public class EmojiHooks
 
 							if (!reuse)
 							{
-								//Otherwise create and setup
+								// Sits in a constraint layout. Adding it at pos 0 with match parent will make it fill it.
+								// It is wrapped in a framelayout below so we can add enough margin so the top tablayout doesn't cover it.
 								EmojiHookCommons.mEmojiPanelPager = new FixedViewPager(context);
 
-								EmojiHookCommons.mEmojiPanelAdapter = new EmojiPanelPagerAdapter(EmojiHookCommons.mPanelItems, EmojiFragment.EmojiPanelType.KEYBOARD, false);
+								LinearLayout.LayoutParams pagerParams = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT  );
 
+								EmojiHookCommons.mEmojiPanelPager.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
+
+								EmojiHookCommons.mEmojiPanelPager.setLayoutParams( pagerParams );
+
+								EmojiHookCommons.mEmojiPanelAdapter = new EmojiPanelPagerAdapter(EmojiHookCommons.mPanelItems, EmojiFragment.EmojiPanelType.KEYBOARD, false);
 								EmojiHookCommons.mEmojiPanelAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
 								{
 									@Override
@@ -179,6 +192,12 @@ public class EmojiHooks
 
 
 								EmojiHookCommons.mEmojiPanelTabs = new EmojiPanelTabLayout(context);
+
+								// Center vertically
+								LinearLayout.LayoutParams tabsParamas = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
+								tabsParamas.gravity = Gravity.CENTER;
+								EmojiHookCommons.mEmojiPanelTabs.setLayoutParams(tabsParamas);
+
 								EmojiHookCommons.mEmojiPanelTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 								EmojiHookCommons.mEmojiPanelTabs.setTabGravity(TabLayout.GRAVITY_CENTER);
 
@@ -199,10 +218,23 @@ public class EmojiHooks
 								EmojiHookCommons.mEmojiPanelAdapter.setupWithFixedTabLayout(EmojiHookCommons.mEmojiPanelTabs);
 
 								EmojiHookCommons.mEmojiPanelTabs.setupWithViewPager(EmojiHookCommons.mEmojiPanelPager);
+
+								// Since are are match_parenting the parent constraintlayout, we need to know the size of the top bar
+								// so we can push ourselves out from undeneath it. This is nasty, but works.
+								EmojiHookCommons.mEmojiPanelTabs.setOnMeasureListener(new EmojiPanelTabLayout.OnMeasuredListener()
+								{
+									@Override
+									public void onMeasured(int width, int height)
+									{
+										EmojiHookCommons.mEmojiPanelPager.setPadding(0, height, 0, 0);
+									}
+								});
+
 							}
 
 
 							{
+
 								/////////////
 								// Tabs
 								/////////////
@@ -213,25 +245,6 @@ public class EmojiHooks
 								////////////////
 								// Pager
 								////////////////
-
-								RelativeLayout.LayoutParams pagerParams = (RelativeLayout.LayoutParams) pagerView.getLayoutParams();
-
-								//We are in relative layout, and the actualy pager needs to be placed below the tablayout
-								if ( EmojiHookCommons.mOuterTabsWrapper != null)
-								{
-									EmojiHookCommons.mOuterTabsWrapper.setId( View.generateViewId() );
-									pagerParams.removeRule( RelativeLayout.BELOW );
-									pagerParams.addRule(RelativeLayout.BELOW, EmojiHookCommons.mOuterTabsWrapper.getId());
-									EmojiHookCommons.mEmojiPanelPager.setLayoutParams( pagerParams );
-								}
-								else
-								{
-									pagerParams.removeRule( RelativeLayout.BELOW );
-									pagerParams.addRule(RelativeLayout.BELOW, emojiTopBarView.getId() );
-									EmojiHookCommons.mEmojiPanelPager.setLayoutParams( pagerParams );
-								}
-
-								//And finally add the view
 
 								thiz.addView(EmojiHookCommons.mEmojiPanelPager,0);
 							}

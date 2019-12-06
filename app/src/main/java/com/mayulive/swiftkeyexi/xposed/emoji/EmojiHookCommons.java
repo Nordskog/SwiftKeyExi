@@ -4,8 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
@@ -26,7 +27,6 @@ import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
-import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,9 +44,9 @@ public class EmojiHookCommons
 	protected static EmojiPanelTabLayout mEmojiPanelTabs;
 	protected static EmojiPanelPagerAdapter mEmojiPanelAdapter;
 	protected static int mEmojiPanelRecentsTabIndex = -1;
+	protected static LinearLayout mEmojiWrapper;
 	protected static FixedViewPager mEmojiPanelPager;
-	protected static FrameLayout mOuterTabsWrapper = null;
-	protected static RelativeLayout mEmojiTopRelative = null;
+	protected static ViewGroup mEmojiTopRelative = null;
 
 
 	private final static int RECENTS_COUNT = 32;

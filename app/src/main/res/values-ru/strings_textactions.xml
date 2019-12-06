@@ -8,9 +8,13 @@
     <string name="textaction_copy">Копировать</string>
     <string name="textaction_cut">Вырезать</string>
     <string name="textaction_paste">Вставить</string>
+    <string name="textaction_paste_plain">Вставить простой текст</string>
     <string name="textaction_gotoend">Перейти в конец</string>
     <string name="textaction_gotostart">Перейти в начало</string>
     <string name="textaction_insert">Вписать</string>
+    <string name="textaction_toggle_auto">Включить автоисправление</string>
+    <string name="textaction_toggle_incog">Включить инкогнито</string>
+    <string name="textaction_toggle_auto_incog">Включить авто-инкогнито</string>
     <!-- Short-hand for quick menu -->
     <string name="textaction_short_undo">Отменить</string>
     <string name="textaction_short_redo">Повторить</string>
@@ -18,7 +22,11 @@
     <string name="textaction_short_copy">Копировать</string>
     <string name="textaction_short_cut">Вырезать</string>
     <string name="textaction_short_paste">Вставить</string>
+    <string name="textaction_short_paste_plain">Простой</string>
     <string name="textaction_short_gotoend">Конец</string>
     <string name="textaction_short_gotostart">Начало</string>
     <string name="textaction_short_insert">Вписать</string>
+    <string name="textaction_short_toggle_auto">Авто</string>
+    <string name="textaction_short_toggle_incog">Инког</string>
+    <string name="textaction_short_toggle_auto_incog">Авто-инког</string>
 </resources>

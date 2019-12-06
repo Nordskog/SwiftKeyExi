@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.5.3] - 06-12-2019
+### Fixed
+ - Compatibility targeting 7.4.5.3 ( Emoji panel )
+ 
+### Changed
+ - Updated translations ( Polish, Russian )
 
 ## [2.5.1] - 19-11-2019
 ### Added
