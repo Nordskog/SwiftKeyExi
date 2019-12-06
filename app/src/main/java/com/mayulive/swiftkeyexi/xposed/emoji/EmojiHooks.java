@@ -85,7 +85,7 @@ public class EmojiHooks
 							View pagerView = thiz.findViewById(pagerID);
 							View titlesView = thiz.findViewById(titlesID);
 
-							LinearLayout emojiTopBarView = (LinearLayout) thiz.findViewById(emojiTopBarID);
+							ViewGroup emojiTopBarView = thiz.findViewById(emojiTopBarID);
 
 
 							pagerView.setVisibility(View.GONE);
@@ -96,12 +96,7 @@ public class EmojiHooks
 
 							boolean reuse = 	EmojiHookCommons.mEmojiPanelTabs != null &&
 									EmojiHookCommons.mEmojiPanelAdapter != null &&
-									EmojiHookCommons.mEmojiPanelPager != null &&
-									EmojiHookCommons.mEmojiWrapper != null;
-
-
-
-
+									EmojiHookCommons.mEmojiPanelPager != null;
 
 
 							//Reuse existing views of they exist
@@ -111,7 +106,7 @@ public class EmojiHooks
 								{
 									//Which basically just involves removing them from their parents
 									((ViewGroup) EmojiHookCommons.mEmojiPanelTabs.getParent()).removeView(EmojiHookCommons.mEmojiPanelTabs);
-									((ViewGroup) EmojiHookCommons.mEmojiWrapper.getParent()).removeView(EmojiHookCommons.mEmojiWrapper);
+									((ViewGroup) EmojiHookCommons.mEmojiPanelPager.getParent()).removeView(EmojiHookCommons.mEmojiPanelPager);
 								}
 								catch (Exception ex)
 								{
@@ -129,29 +124,12 @@ public class EmojiHooks
 								// Sits in a constraint layout. Adding it at pos 0 with match parent will make it fill it.
 								// It is wrapped in a framelayout below so we can add enough margin so the top tablayout doesn't cover it.
 								EmojiHookCommons.mEmojiPanelPager = new FixedViewPager(context);
-								EmojiHookCommons.mEmojiWrapper = new LinearLayout(context);
-								EmojiHookCommons.mEmojiWrapper.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-								EmojiHookCommons.mEmojiWrapper.setOrientation( LinearLayout.VERTICAL );
 
-
-								LinearLayout.LayoutParams paddingParams = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT  );
 								LinearLayout.LayoutParams pagerParams = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT  );
 
-								// Observed ratio, used to push us out from underneath tablayout
-								paddingParams.weight = 0.83f;
-								pagerParams.weight = 0.17f;
-
 								EmojiHookCommons.mEmojiPanelPager.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-								EmojiHookCommons.mEmojiWrapper.setLayoutParams( new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ) );
-
-								FrameLayout padding = new FrameLayout(context);
 
 								EmojiHookCommons.mEmojiPanelPager.setLayoutParams( pagerParams );
-								padding.setLayoutParams( paddingParams );
-
-								EmojiHookCommons.mEmojiWrapper.addView( padding );
-								EmojiHookCommons.mEmojiWrapper.addView( EmojiHookCommons.mEmojiPanelPager  );
-
 
 								EmojiHookCommons.mEmojiPanelAdapter = new EmojiPanelPagerAdapter(EmojiHookCommons.mPanelItems, EmojiFragment.EmojiPanelType.KEYBOARD, false);
 								EmojiHookCommons.mEmojiPanelAdapter.setOnItemClickListener(new EmojiPanelView.OnEmojiItemClickListener()
@@ -216,7 +194,7 @@ public class EmojiHooks
 								EmojiHookCommons.mEmojiPanelTabs = new EmojiPanelTabLayout(context);
 
 								// Center vertically
-								LinearLayout.LayoutParams tabsParamas = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
+								LinearLayout.LayoutParams tabsParamas = new LinearLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
 								tabsParamas.gravity = Gravity.CENTER;
 								EmojiHookCommons.mEmojiPanelTabs.setLayoutParams(tabsParamas);
 
@@ -240,6 +218,18 @@ public class EmojiHooks
 								EmojiHookCommons.mEmojiPanelAdapter.setupWithFixedTabLayout(EmojiHookCommons.mEmojiPanelTabs);
 
 								EmojiHookCommons.mEmojiPanelTabs.setupWithViewPager(EmojiHookCommons.mEmojiPanelPager);
+
+								// Since are are match_parenting the parent constraintlayout, we need to know the size of the top bar
+								// so we can push ourselves out from undeneath it. This is nasty, but works.
+								EmojiHookCommons.mEmojiPanelTabs.setOnMeasureListener(new EmojiPanelTabLayout.OnMeasuredListener()
+								{
+									@Override
+									public void onMeasured(int width, int height)
+									{
+										EmojiHookCommons.mEmojiPanelPager.setPadding(0, height, 0, 0);
+									}
+								});
+
 							}
 
 
@@ -256,8 +246,7 @@ public class EmojiHooks
 								// Pager
 								////////////////
 
-								// Parent is a constraintlayout, so we need to wrap it in a framelayotu so we can set a margin on it
-								thiz.addView(EmojiHookCommons.mEmojiWrapper,0);
+								thiz.addView(EmojiHookCommons.mEmojiPanelPager,0);
 							}
 
 						}

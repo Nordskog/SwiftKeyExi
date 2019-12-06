@@ -17,6 +17,7 @@ import com.mayulive.swiftkeyexi.util.view.FixedTabLayout;
 public class EmojiPanelTabLayout extends FixedTabLayout
 {
 	private int mSelectedColor = 0;
+	private OnMeasuredListener mMeasureListener = null;
 
 	public EmojiPanelTabLayout(Context context)
 	{
@@ -110,4 +111,23 @@ public class EmojiPanelTabLayout extends FixedTabLayout
 		this.addOnTabSelectedListener(listener);
 	}
 
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+	{
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		if (mMeasureListener != null)
+		{
+			mMeasureListener.onMeasured(this.getMeasuredWidth(), this.getMeasuredHeight());
+		}
+	}
+
+	public void setOnMeasureListener( OnMeasuredListener listener )
+	{
+		mMeasureListener = listener;
+	}
+
+	public interface OnMeasuredListener
+	{
+		void onMeasured(int width, int height);
+	}
 }
