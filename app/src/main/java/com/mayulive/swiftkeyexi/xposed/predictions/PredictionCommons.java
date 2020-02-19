@@ -4,18 +4,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryWordItem;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +49,7 @@ public class PredictionCommons
 	protected static CandidatesRecyclerAdapter mCandidatesAdapter = null;
 	protected static RecyclerView mCandidatesRecycler = null;
 	protected static LinearLayoutManager mCandidatesManager = null;
+	protected static ViewGroup mCandidateContainer = null;
 
 	protected static List<Object> mPrevCandidateList = null;
 
@@ -55,12 +61,12 @@ public class PredictionCommons
 
 	public static void setSuggestionsPaddingVisibility(boolean visible)
 	{
-		if ( mSuggestionsPadding[0] != null && mSuggestionsPadding[1] != null )
+		if ( mSuggestionsPadding[0] != null && mSuggestionsPadding[1] != null)
 		{
 			View pad1 = mSuggestionsPadding[0].get();
 			View pad2 = mSuggestionsPadding[1].get();
 
-			if (pad1 != null && pad2 != null)
+			if ( pad1 != null && pad2 != null )
 			{
 				if (visible)
 				{
@@ -81,6 +87,7 @@ public class PredictionCommons
 			}
 		}
 	}
+
 
 	public static boolean shortcutsExist()
 	{

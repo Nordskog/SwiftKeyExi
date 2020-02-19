@@ -36,14 +36,11 @@ public class PriorityKeyboardClassManager
 
 	public static Class keyboardServiceClass =  null;
 	public static Class FullKeyboardServiceDelegate = null;
-
-	public static Class toolbarOpenButtonOverlayViewClass = null;
 	/////////////////////////
 	//Methods
 	/////////////////////////
 	public static Method keyboardService_getCurrentInputConnectionMethod = null;
 	public static Method FullKeyboardServiceDelegate_onCreateInputView = null;
-	public static Method toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = null;
 	///////////////////
 	//Objects and instances
 	//////////////////
@@ -85,8 +82,6 @@ public class PriorityKeyboardClassManager
 			// Used to be same class.
 			keyboardLoaderPreferenceClass = keyboardLoaderClass;
 		}
-
-		toolbarOpenButtonOverlayViewClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_TOOLBAR_OPEN_BUTTON_OVERLAY_CLASS_PROFILE(), param );
 
 		PriorityKeyboardClassManager.FullKeyboardServiceDelegate = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_FULL_KEYBOARD_SERVICE_DELEGATE_CLASS_PROFILE(), param );
 	}
@@ -164,24 +159,6 @@ public class PriorityKeyboardClassManager
 
 		}
 
-		if (toolbarOpenButtonOverlayViewClass != null)
-		{
-			MethodProfile profile = new MethodProfile
-			(
-					PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
-					new ClassItem(void.class),
-
-					new ClassItem(java.lang.Object.class),
-					new ClassItem(int.class)
-
-			);
-
-			toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod = ProfileHelpers.findMostSimilar(
-					profile, PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass.getDeclaredMethods(), PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass);
-
-			DebugTools.logIfMethodProfileMismatch(  toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod, toolbarOpenButtonOverlayViewClass, profile, "toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod");
-		}
-
 	}
 
 	public static void loadFields()
@@ -223,10 +200,6 @@ public class PriorityKeyboardClassManager
 		//Punctuation space
 		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_AddRulesMethod", PriorityKeyboardClassManager.punctuatorImplClass_AddRulesMethod);
 		Hooks.logSetRequirementFalseIfNull(Hooks.baseHooks_punctuationSpace, "punctuatorImplClass_ClearRulesMethod", PriorityKeyboardClassManager.punctuatorImplClass_ClearRulesMethod);
-
-		//Hide predictions
-		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_hidePredictions, "toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod", toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod );
-
 
 	}
 

@@ -69,6 +69,10 @@ public class KeyboardClassManager
 	protected static List<Method> searchClass_bingSearchMethods = new ArrayList<>();
 
 
+	////////////////////////////
+
+	protected static Class toolbarButtonClass = null;
+
 	public static void loadKnownClasses(PackageTree param)
 	{
 		layoutClass = ClassHunter.loadClass("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout", param.getClassLoader());
@@ -76,6 +80,7 @@ public class KeyboardClassManager
 
 	public static void loadUnknownClasses(PackageTree param)
 	{
+		toolbarButtonClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_TOOLBAR_BUTTON_PROFILE(), param );
 
 		themeSetterClass = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_KEYBOARD_THEME_SETTER_PROFILE(), param );
 
@@ -218,6 +223,8 @@ public class KeyboardClassManager
 		//Base
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardLoaderClass", 	PriorityKeyboardClassManager.keyboardLoaderClass );
 
+		//Theme set
+		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_toolbarExpandButton, "toolbarButtonClass", toolbarButtonClass );
 
 		//Popup
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_invalidateLayout,	 "keyboardLoaderPreference_onSharedPreferenceChangedMethod", 	PriorityKeyboardClassManager.keyboardLoaderPreference_onSharedPreferenceChangedMethod);

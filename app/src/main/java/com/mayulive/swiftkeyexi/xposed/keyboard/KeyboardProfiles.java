@@ -12,224 +12,6 @@ import static com.mayulive.xposed.classhunter.Modifiers.*;
 public class KeyboardProfiles
 {
 
-	public static ClassProfile get_TOOLBAR_OPEN_BUTTON_OVERLAY_CLASS_PROFILE()
-	{
-		ClassProfile newProfile = new ClassProfile();
-
-		newProfile.setFullPath("za3");
-		newProfile.setKnownPath("");
-
-		newProfile.setMinDepth(0);
-		newProfile.setMaxDepth(0);
-		newProfile.setModifiers(PUBLIC );
-
-		newProfile.setTypeParamCount(0);
-		newProfile.setSuperClass(	new ClassItem(android.widget.FrameLayout.class));
-/////////////////////////
-//Interfaces
-/////////////////////////
-		newProfile.setInterfaces(new ClassItem[]
-				{
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem(android.view.ViewTreeObserver.OnGlobalLayoutListener.class),
-						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
-
-				});
-/////////////////////////
-//Nested Classes
-/////////////////////////
-		newProfile.setNestedClasses(new ClassItem[]
-				{
-
-				});
-/////////////////////////
-//Declared fields
-/////////////////////////
-		newProfile.setDeclaredFields(new FieldItem[]
-				{
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.Context.class)),	//e
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//f
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//g
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//h
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//i
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//j
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//k
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//l
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//m
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//n
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//o
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//p
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//q
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//r
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(boolean.class)),	//s
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | ABSTRACT | EXACT )),	//t
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.touchtype.keyboard.toolbar.ToolbarButton" , PUBLIC | EXACT )),	//u
-
-				});
-/////////////////////////
-//Declared Methods
-/////////////////////////
-		newProfile.setDeclaredMethods(new MethodProfile[]
-				{
-						//Method #0: setUpRedDot
-						new MethodProfile
-								(
-										PRIVATE | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.widget.ImageView.class)
-
-								),
-
-						//Method #1: a
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #2: a
-						new MethodProfile
-								(
-										PUBLIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(android.view.View.class)
-
-								),
-
-						//Method #3: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | STATIC | EXACT )
-
-								),
-
-						//Method #4: a
-						new MethodProfile
-								(
-										PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(java.lang.Object.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #5: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #6: b
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #7: c
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #8: onAttachedToWindow
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #9: onDetachedFromWindow
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #10: onGlobalLayout
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #11: r
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #12: setVisibility
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(int.class)
-
-								),
-
-						//Method #13: t
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-
-				});
-/////////////////////////
-//Declared Constructors
-/////////////////////////
-		newProfile.setDeclaredConstructors(new ConstructorProfile[]
-				{
-						//Constructor #0
-						new ConstructorProfile
-								(		PUBLIC | EXACT ,
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.google.common.base.Function" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-
-				});
-
-		return newProfile;
-	}
-
 	public static ClassProfile get_KEY_HEIGHT_CLASS_PROFILE()
 	{
 		ClassProfile newProfile = new ClassProfile();
@@ -3912,4 +3694,161 @@ public class KeyboardProfiles
 	}
 
 
+	public static ClassProfile get_TOOLBAR_BUTTON_PROFILE()
+	{
+		ClassProfile newProfile = new ClassProfile();
+
+		newProfile.setFullPath("qm2");
+		newProfile.setKnownPath("");
+
+		newProfile.setMinDepth(0);
+		newProfile.setMaxDepth(0);
+		newProfile.setModifiers(PUBLIC | FINAL );
+
+		newProfile.setTypeParamCount(0);
+		newProfile.setSuperClass(	new ClassItem("androidx.appcompat.widget.AppCompatImageButton" , PUBLIC | EXACT ));
+/////////////////////////
+//Interfaces
+/////////////////////////
+		newProfile.setInterfaces(new ClassItem[]
+				{
+						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+				});
+/////////////////////////
+//Nested Classes
+/////////////////////////
+		newProfile.setNestedClasses(new ClassItem[]
+				{
+
+				});
+/////////////////////////
+//Declared fields
+/////////////////////////
+		newProfile.setDeclaredFields(new FieldItem[]
+				{
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//g
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | STATIC | EXACT )),	//h
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//i
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//j
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//k
+
+				});
+/////////////////////////
+//Declared Methods
+/////////////////////////
+		newProfile.setDeclaredMethods(new MethodProfile[]
+				{
+						//Method #0: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | FINAL | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #1: b
+						new MethodProfile
+								(
+										PUBLIC | STATIC | FINAL | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | FINAL | THIS | EXACT )
+
+								),
+
+						//Method #2: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | FINAL | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #4: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | STATIC | EXACT ),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #5: a
+						new MethodProfile
+								(
+										PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(java.lang.Object.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #6: onAttachedToWindow
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+						//Method #7: onCreateDrawableState
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(int[].class),
+
+										new ClassItem(int.class)
+
+								),
+
+						//Method #8: onDetachedFromWindow
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class)
+
+								),
+
+
+				});
+/////////////////////////
+//Declared Constructors
+/////////////////////////
+		newProfile.setDeclaredConstructors(new ConstructorProfile[]
+				{
+						//Constructor #0
+						new ConstructorProfile
+								(		PUBLIC | EXACT ,
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+
+				});
+
+		return newProfile;
+	}
 }

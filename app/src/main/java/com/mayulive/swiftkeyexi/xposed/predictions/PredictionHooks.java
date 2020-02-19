@@ -8,14 +8,12 @@ import java.util.Set;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
-import android.gesture.Prediction;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -138,8 +136,8 @@ public class PredictionHooks
 								{
 									try
 									{
-										View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
-										KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+										KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
+										KeyboardMethods.handleExpandButton();
 									}
 									catch ( Throwable ex )
 									{
@@ -202,7 +200,8 @@ public class PredictionHooks
 				{
 					try
 					{
-						PredictionHandlers.handleCandidateViewHook_replace((ViewGroup) param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition]);
+						ViewGroup parent = (ViewGroup) param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition];
+						PredictionHandlers.handleCandidateViewHook_replace( parent );
 					}
 					catch (Throwable ex)
 					{
@@ -212,8 +211,8 @@ public class PredictionHooks
 					try
 					{
 						//Not really this guy's responsbility, but good to run here. Lots of other places too.
-						View parent = CodeUtils.getTopParent( (ViewGroup) param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition] );
-						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop(parent);
+						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
+						KeyboardMethods.handleExpandButton();
 					}
 					catch (Throwable ex)
 					{
@@ -382,6 +381,7 @@ public class PredictionHooks
 		return returnHooks;
 	}
 
+
 	public static boolean hookPriority(final PackageTree param)
 	{
 		try
@@ -451,9 +451,11 @@ public class PredictionHooks
 					if (Settings.changed_REMOVE_SUGGESTIONS_PADDING)
 					{
 						PredictionCommons.setSuggestionsPaddingVisibility( !Settings.REMOVE_SUGGESTIONS_PADDING );
+						KeyboardMethods.handleExpandButton();
 					}
 				}
 			});
+
 
         }
         catch(Throwable ex)
