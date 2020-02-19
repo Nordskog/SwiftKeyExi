@@ -89,11 +89,28 @@ public class CodeUtils
 			viewIdName = "#"+viewID;
 		}
 
+		Log.i(LOGTAG,depthIndent + className+", ID: "+viewIdName+", Viz: "+getVisibility(view)+", params: "+layoutParamToString(view.getLayoutParams()) );
+	}
 
-		Log.i(LOGTAG,depthIndent + className+", ID: "+viewIdName+", Viz: "+getVisibility(view) );
+	public static String layoutParamToString(ViewGroup.LayoutParams params)
+	{
+		if (params == null)
+			return "NULL";
 
+		return "W: "+layoutParamSizeToString(params.width)+", H: "+layoutParamSizeToString(params.height);
+	}
 
-
+	public static String layoutParamSizeToString(int size)
+	{
+		switch (size)
+		{
+			case -1:
+				return "MATCH_PARENT";
+			case -2:
+				return "WRAP_CONTENT";
+			default:
+				return String.valueOf(size);
+		}
 	}
 
 	public static View getTopParent(View view)
@@ -190,6 +207,29 @@ public class CodeUtils
 				traverseLayout(((ViewGroup) rootView).getChildAt(i), depth + 1);
 			}
 		}
+	}
+
+	public static List<View> findViewsById(View rootView, int targetId, ArrayList<View> views)
+	{
+		if ( views == null )
+			views = new ArrayList<>();
+
+
+		if ( rootView != null && rootView instanceof ViewGroup)
+		{
+			int childCount = ((ViewGroup) rootView).getChildCount();
+			for (int i = 0; i < childCount; i++)
+			{
+				View childView = ((ViewGroup)rootView).getChildAt(i);
+
+				if (childView.getId() == targetId)
+					views.add(childView);
+
+				findViewsById(childView, targetId, views);
+			}
+		}
+
+		return views;
 	}
 
 	public static Enum findEnumByName(Enum[] enums, String searchString)
