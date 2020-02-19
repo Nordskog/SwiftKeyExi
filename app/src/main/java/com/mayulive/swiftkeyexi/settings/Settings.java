@@ -294,7 +294,16 @@ public class Settings
 	{
 		for (OnSettingsUpdatedListener listener : mSettingsUpdatedListeners)
 		{
-			listener.OnSettingsUpdated();
+			try
+			{
+				listener.OnSettingsUpdated();
+			}
+			catch (Exception ex )
+			{
+				Log.e(LOGTAG, "Problem calling settings updated listener");
+				ex.printStackTrace();
+			}
+
 		}
 
 		//At this point any changes that require data to be read from exi's database should have completed.

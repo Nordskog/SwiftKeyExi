@@ -6,7 +6,7 @@ apply from: 'keystore/signing.gradle'
 
 android
         {
-            compileSdkVersion 26
+            compileSdkVersion 28
             defaultConfig
                     {
                         applicationId 'com.mayulive.swiftkeyexi'
