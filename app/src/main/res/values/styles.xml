@@ -81,23 +81,24 @@
     </style>
 
     <style name="FloatingButton">
-        <item name="android:layout_width">56dp</item>
-        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">16dp</item>
+        <item name="android:gravity">center</item>
         <!-- item name="android:elevation">12dp</item -->
-        <item name="fabSize">mini</item>
+        <item name="fabSize">normal</item>
         <item name="android:clickable">true</item>
     </style>
 
     <style name="CenteredFloatingButton">
-        <item name="android:layout_width">56dp</item>
-        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginBottom">24dp</item>
         <item name ="android:layout_gravity">center_vertical|end</item>
         <!-- item name="android:elevation">12dp</item -->
-        <item name="fabSize">mini</item>
+        <item name="fabSize">normal</item>
         <item name="android:clickable">true</item>
     </style>
 
