@@ -5,6 +5,7 @@ import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
+import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.Modifiers;
@@ -19,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import dalvik.system.DexFile;
 import de.robv.android.xposed.XposedHelpers;
 
 import static com.mayulive.xposed.classhunter.Modifiers.ABSTRACT;
@@ -43,7 +45,7 @@ public class PriorityPredictionsClassManager
 	protected static Class hpeClass = null;
 
 	protected static Constructor candidateViewClass_Constructor;
-	public static Method candidatesViewFactory_getViewMethod;
+	public static Constructor candidatesViewFactory_getViewMethod;
 	public static Method candidatesViewFactory_ReturnWrapperClass_GetViewMethod = null;
 	protected static Method candidateViewClass_setCandidateMethod;
 
@@ -54,7 +56,6 @@ public class PriorityPredictionsClassManager
 
 	protected static Constructor hpeClass_constructor;
 
-	public static int candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition = 1;
 	protected static int[] getViewMethod_CandidateViewClassConstructorArgPositions;
 	protected static int getViewMethod_EnumArgPosition;
 	protected static int getViewMethod_FloatArgPosition;
@@ -115,67 +116,13 @@ public class PriorityPredictionsClassManager
 			//Edit2: Nope. Lots of changes later we're back. Can tell the method apart now.
 
 			{
-				MethodProfile profile = new MethodProfile
-				(
-						PUBLIC | STATIC | EXACT ,
-						new ClassItem(android.view.View.class),
 
-						new ClassItem(android.content.Context.class),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem(android.view.View.class),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("com.touchtype_fluency.service.jobs.FluencyDebugLogSaver" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT )
-				);
-
-				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = ProfileHelpers.findMostSimilar(	profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
-
-				DebugTools.logIfMethodProfileMismatch(  candidatesViewFactory_getViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_getViewMethod");
-
+				PriorityPredictionsClassManager.candidatesViewFactory_getViewMethod = PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredConstructors()[0] ;
 			}
 
 			{
 
-				MethodProfile profile = new MethodProfile
-				(
-						PUBLIC | STATIC | EXACT ,
-						new ClassItem(void.class),
-
-						new ClassItem(android.content.Context.class),
-						new ClassItem(android.widget.LinearLayout.class),
-						new ClassItem(android.view.View.class),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT ),
-						new ClassItem("" , PUBLIC | EXACT )
-
-				);
-
-				PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod = ProfileHelpers.findMostSimilar(
-						profile, PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), PriorityPredictionsClassManager.candidatesViewFactory);
-				DebugTools.logIfMethodProfileMismatch(  candidatesViewFactory_ReturnWrapperClass_GetViewMethod, candidatesViewFactory, profile, "candidatesViewFactory_ReturnWrapperClass_GetViewMethod");
-
-			}
-
-
-
-
-
-			if (PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod != null)
-			{
-				PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition = ProfileHelpers.findFirstClassIndex( LinearLayout.class, PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod.getParameterTypes() );
+				PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod  = ProfileHelpers.findFirstMethodByName(	PriorityPredictionsClassManager.candidatesViewFactory.getDeclaredMethods(), "apply");
 			}
 		}
 

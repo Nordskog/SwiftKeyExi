@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -20,6 +21,7 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.swiftkeyexi.util.view.HeaderFooterRecyclerAdapter;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
@@ -138,7 +140,7 @@ public class PredictionHandlers
 			//Full and compact both and 3 children now. Two-thumb only has two.  Skip if two.
 			if (childFrame.getChildCount() <= 2)
 			{
-				//Log.i(LOGTAG, "Insufficient candidate children, doing nothing");
+				Log.i(LOGTAG, "Insufficient candidate children, doing nothing");
 				return;
 			}
 
@@ -318,6 +320,24 @@ public class PredictionHandlers
 				PredictionCommons.mCandidatesManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
 
+				// support library 28 recyclerview does not handle match_parent properly, so we have to manually make sure things are the right size.
+				PredictionCommons.mCandidatesRecycler.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) ->
+				{
+					CandidatesRecyclerAdapter.CandidateItemViewHolder holder = PredictionCommons.mCandidatesAdapter.getHeader();
+					if (holder != null && holder.itemView != null)
+					{
+						ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+
+						if (params.width != right || params.height != bottom && params.width > 0 && params.height > 0)
+						{
+							params.width = right;
+							params.height = bottom;
+							holder.itemView.setLayoutParams( params );
+						}
+					}
+				});
+
+
 
 				//Order of these 3 is important, otherwise a few of the first items will be the wrong height
 				//Ref http://stackoverflow.com/a/35916393/2312367
@@ -363,6 +383,10 @@ public class PredictionHandlers
 					public void run()
 					{
 						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
+
+						// For some reason the original candidates view isn't displayed unless we
+						// scroll the container we place it in. Invalidate is does not work.
+						headerScroller.scrollTo(0,0);
 					}
 				});
 			}

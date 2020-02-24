@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.inputmethod.InputConnection;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -700,15 +701,28 @@ public class KeyboardMethods
 				// Ensure we are the top view
 				mReplacementExpandToolbarButton.setVisibility(View.VISIBLE);
 
-				int existingIndex = toolbarContainer.indexOfChild( mReplacementExpandToolbarButton );
-				if ( existingIndex < toolbarContainer.getChildCount() -1 )
+				if (toolbarContainer != null )
 				{
-					if (existingIndex > 0) // Skip removing if not actually a child yet
-						toolbarContainer.removeView(mReplacementExpandToolbarButton);
-					toolbarContainer.addView(mReplacementExpandToolbarButton);
+					// Sometimes a new container is created, so we cannot assume that
+					// the, if the view has a parent, it is the same as this new container.
+					{
+						ViewParent currentParent = mReplacementExpandToolbarButton.getParent();
+						if (currentParent != null && currentParent != toolbarContainer)
+						{
+							// Has parent, but is a different container
+							((ViewGroup)currentParent).removeView(mReplacementExpandToolbarButton);
+						}
+					}
+
+					// Will handle inserting the ivew, and moving it back to the top if something has decided to cover it.
+					int existingIndex = toolbarContainer.indexOfChild( mReplacementExpandToolbarButton );
+					if ( existingIndex < toolbarContainer.getChildCount() -1 )
+					{
+						if (existingIndex != -1) // Skip removing if not actually a child yet
+							toolbarContainer.removeView(mReplacementExpandToolbarButton);
+						toolbarContainer.addView(mReplacementExpandToolbarButton);
+					}
 				}
-
-
 			}
 			else
 			{
@@ -732,10 +746,21 @@ public class KeyboardMethods
 
 					if (toolbarContainer != null)
 					{
+						// Sometimes a new container is created, so we cannot assume that
+						// the, if the view has a parent, it is the same as this new container.
+						{
+							ViewParent currentParent = mReplacementExpandToolbarButtonMinor.getParent();
+							if (currentParent != null && currentParent != toolbarContainer)
+							{
+								// Has parent, but is a different container
+								((ViewGroup)currentParent).removeView(mReplacementExpandToolbarButtonMinor);
+							}
+						}
+
 						int existingIndex = toolbarContainer.indexOfChild( mReplacementExpandToolbarButtonMinor );
 						if ( existingIndex < toolbarContainer.getChildCount() -1 )
 						{
-							if (existingIndex > 0) // Skip removing if not actually a child yet
+							if (existingIndex != -1) // Skip removing if not actually a child yet
 								toolbarContainer.removeView(mReplacementExpandToolbarButtonMinor);
 							toolbarContainer.addView(mReplacementExpandToolbarButtonMinor);
 						}
@@ -760,7 +785,7 @@ public class KeyboardMethods
 			return;
 		}
 
-		if ( KeyboardClassManager.themeSetter_dummyCtiInstance == null )
+		if ( KeyboardClassManager.themeSetterClass_instance == null )
 		{
 			Log.e(LOGTAG, "themeSetterClass_instance was null, not setting theme");
 			return;

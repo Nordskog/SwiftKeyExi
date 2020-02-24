@@ -37,7 +37,6 @@ public abstract class CandidatesRecyclerAdapter extends HeaderFooterRecyclerAdap
 		return mCandidates;
 	}
 
-
 	@Override
 	public void onBindView(CandidateItemViewHolder holder, int position)
 	{

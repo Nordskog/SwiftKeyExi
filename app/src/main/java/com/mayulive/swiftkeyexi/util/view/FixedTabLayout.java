@@ -121,21 +121,6 @@ public class FixedTabLayout extends TabLayout
 
 	}
 
-	//Cannot set min width programtically otherwise
-	public void setTabMinWidth(int value)
-	{
-		Field field;
-		try {
-			field = TabLayout.class.getDeclaredField("mRequestedTabMinWidth");
-			field.setAccessible(true);
-			field.set(this, value);
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
-
 	//Tablayout will request requestDisallowInterceptTouchEvent on its parent, thus breaking viewpagers.
 	//It checks mParent before calling it. Simplest workaround is to override, null the field, call super, re-set field.
 	//I can't think of any scenario where you would want the original behavior in a tablayout.

@@ -1,5 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -169,7 +171,9 @@ public class PredictionCommons
 		if (isOnMainThread)
 		{
 			if (mCandidatesRecycler != null)
-				mCandidatesRecycler.scrollToPosition(0);
+			{
+				mCandidatesRecycler.scrollToPosition( 0 );
+			}
 
 			if (PredictionCommons.mCandidatesAdapter != null)
 			{
