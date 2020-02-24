@@ -20,7 +20,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("ls2");
+		newProfile.setFullPath("mv2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -236,8 +236,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -248,7 +247,7 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -259,9 +258,7 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -273,7 +270,8 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem(int.class),
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -285,10 +283,7 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(boolean.class)
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -302,7 +297,7 @@ public class SelectionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
+										new ClassItem(int.class),
 										new ClassItem(boolean.class)
 
 								),
@@ -316,6 +311,7 @@ public class SelectionProfiles
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(boolean.class),
 										new ClassItem(boolean.class)
 
@@ -329,7 +325,9 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -352,9 +350,8 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -364,7 +361,10 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -421,7 +421,7 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(boolean.class),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -432,7 +432,7 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -484,17 +484,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #35: commitCompletion
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem(android.view.inputmethod.CompletionInfo.class)
-
-								),
-
-						//Method #36: d
+						//Method #35: d
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -502,7 +492,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #37: e
+						//Method #36: e
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -510,7 +500,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #38: f
+						//Method #37: f
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -518,7 +508,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #39: finishComposingText
+						//Method #38: finishComposingText
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -526,7 +516,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #40: g
+						//Method #39: g
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -534,7 +524,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #41: setComposingRegion
+						//Method #40: setComposingRegion
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -545,7 +535,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #42: setSelection
+						//Method #41: setSelection
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1128,11 +1118,11 @@ public class SelectionProfiles
 	}
 
 
-	public static ClassProfile 	get_SELECTION_CHANGED_INPUT_EVENT_PROFILE( Class emq)
+	public static ClassProfile 	get_SELECTION_CHANGED_INPUT_EVENT_PROFILE( Class mv2)
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("Hva");
+		newProfile.setFullPath("ky2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1177,7 +1167,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(mv2),
 										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
 
 								),
