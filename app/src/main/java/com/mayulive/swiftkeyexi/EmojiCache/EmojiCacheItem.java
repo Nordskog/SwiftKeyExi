@@ -116,8 +116,9 @@ public class EmojiCacheItem
 		if (isSingleWidth)
 			return false;
 
-		if (widthUnits <= newWidthUnits)
-			return false;
+		// ????
+		//if (widthUnits <= newWidthUnits)
+		//	return false;
 
 		return true;
 	}

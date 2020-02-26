@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
 import com.mayulive.swiftkeyexi.main.commons.PopupLinearLayout;
@@ -41,7 +42,23 @@ public class EmojiColumnWidthConfigView
 		mPicker.setMinValue(min);
 		mPicker.setMaxValue(max);
 		mPicker.setValue(startValue);
-		//mLayout.addItem(pickerRoot);
+
+		// Custom display values must have a value set for each value.
+		// We want 0 to display auto, and the rest the actual values
+		String[] displayValues = new String[max-min + 1];
+		displayValues[0] = context.getString(R.string.emoji_column_width_auto);
+		for (int i = 1; i < displayValues.length; i++)
+		{
+			displayValues[i] = String.valueOf( min + i);
+		}
+
+		// When a string is used as the display value, it literally becomes and edit text, keyboard pops up and everything.
+		// Since we most certainly do not want that, we set the focusability accordingly.
+		mPicker.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+		mPicker.setDisplayedValues(displayValues);
+
+
+
 	}
 
 	public PopupLinearLayout getPopup()

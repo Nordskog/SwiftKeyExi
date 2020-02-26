@@ -74,7 +74,19 @@ public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAda
 	{
 		EmojiItem item = mItems.get(index);
 		if (item.get_type() == DB_EmojiItem.EmojiType.CONTAINS_EMOJI)
-			return 1;
+		{
+			// We generally want to cache anything emoji, but that's going to be a problem with
+			// longer strings. Fall back to normal text view rendering if longer than 20 characters.
+			if ( item.get_text().length() < 20 )
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
 
 		return 0;
 	}

@@ -115,7 +115,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		mViewWidth = viewWidth;
 		mItemWidth = itemWidth;
 
-		updateLayoutManager(mItemWidth);
+		updateLayoutManager(mItemWidth, false);
 
 		// Goes here
 
@@ -656,7 +656,13 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 	}
 
 
-	private void updateLayoutManager(int itemWidth)
+	/**
+	 *
+	 * @param itemWidth
+	 * @param updateGridColumns whether we calculate and call setSpanCount. If done too early
+	 *                          the items will have the wrong width for a while. I dunno.
+	 */
+	private void updateLayoutManager(int itemWidth, boolean updateGridColumns)
 	{
 		if (itemWidth < 1 )
 		{
@@ -668,7 +674,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 			else
 			{
 				manager = new FlexboxLayoutManager(this.getContext());
-				manager.setFlexDirection(FlexDirection.COLUMN);
+				manager.setFlexDirection(FlexDirection.ROW);
 				manager.setJustifyContent(JustifyContent.SPACE_AROUND);
 			}
 
@@ -688,7 +694,8 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 			}
 
 			mGridLayoutManager = manager;
-			manager.setSpanCount( EmojiResources.calculateColCount(this.getContext(), this.getMeasuredWidth(), mItemWidth ) );
+			if (updateGridColumns)
+				manager.setSpanCount( EmojiResources.calculateColCount(this.getContext(), this.getMeasuredWidth(), mItemWidth ) );
 			this.setLayoutManager(mGridLayoutManager);
 		}
 
@@ -706,7 +713,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 		mItem.set_column_width(itemWidth);
 		invalidateAllViews();
 
-		updateLayoutManager(itemWidth);
+		updateLayoutManager(itemWidth, true);
 	}
 
 	@Override

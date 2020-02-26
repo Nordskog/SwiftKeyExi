@@ -1098,7 +1098,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		if (copyFrom != null)
 			newPanel = new DB_EmojiPanelItem(copyFrom);
 		else
-			newPanel = new DB_EmojiPanelItem( -1,-1,1,"◯", "◯", 0, 1 );
+			newPanel = new DB_EmojiPanelItem( -1,-1,0,"◯", "◯", 0, 1 );
 
 		switch(panelType)
 		{

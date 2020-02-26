@@ -208,7 +208,7 @@ public class FancyEmojiPanelTemplates
 					"(っ•́｡•́)♪♬",
 					"(҂◡_◡)",
 					"ƪ(ړײ)‎ƪ​", };
-			EMOJI_PANEL_TEMPLATES.add( getEmojiPanel( newStrings, 4, "ಠ_ಠ", "ಠ_ಠ", 0,false, MARSHMALLOW_REDDIT) );
+			EMOJI_PANEL_TEMPLATES.add( getEmojiPanel( newStrings, 0, "ಠ_ಠ", "ಠ_ಠ", 0,false, MARSHMALLOW_REDDIT) );
 		}
 
 
@@ -267,7 +267,7 @@ public class FancyEmojiPanelTemplates
 					"(☞ﾟヮﾟ)☞",
 					"☜(ﾟヮﾟ☜)",
 					"☜(⌒▽⌒)☞", };
-			EMOJI_PANEL_TEMPLATES.add( getEmojiPanel(newStrings, 4, "( ・ω・)", "( ・ω・)", 0,false, MARSHMALLOW_JAPANESE) );
+			EMOJI_PANEL_TEMPLATES.add( getEmojiPanel(newStrings, 0, "( ・ω・)", "( ・ω・)", 0,false, MARSHMALLOW_JAPANESE) );
 		}
 
 
