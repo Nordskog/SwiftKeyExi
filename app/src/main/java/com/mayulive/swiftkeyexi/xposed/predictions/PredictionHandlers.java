@@ -2,6 +2,8 @@ package com.mayulive.swiftkeyexi.xposed.predictions;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -18,11 +21,15 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.swiftkeyexi.util.view.HeaderFooterRecyclerAdapter;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
+import com.mayulive.swiftkeyexi.xposed.ExiXposed;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -108,7 +115,7 @@ public class PredictionHandlers
 	}
 
 	@SuppressLint("MissingPermission")
-	public static void handleCandidateViewHook_replace(ViewGroup childFrame)
+	public static void handleCandidateViewHook_replace( ViewGroup childFrame)
 	{
 
 		if (candidateViewArgs == null)
@@ -133,7 +140,7 @@ public class PredictionHandlers
 			//Full and compact both and 3 children now. Two-thumb only has two.  Skip if two.
 			if (childFrame.getChildCount() <= 2)
 			{
-				//Log.i(LOGTAG, "Insufficient candidate children, doing nothing");
+				Log.i(LOGTAG, "Insufficient candidate children, doing nothing");
 				return;
 			}
 
@@ -313,6 +320,24 @@ public class PredictionHandlers
 				PredictionCommons.mCandidatesManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
 
+				// support library 28 recyclerview does not handle match_parent properly, so we have to manually make sure things are the right size.
+				PredictionCommons.mCandidatesRecycler.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) ->
+				{
+					CandidatesRecyclerAdapter.CandidateItemViewHolder holder = PredictionCommons.mCandidatesAdapter.getHeader();
+					if (holder != null && holder.itemView != null)
+					{
+						ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+
+						if (params.width != right || params.height != bottom && params.width > 0 && params.height > 0)
+						{
+							params.width = right;
+							params.height = bottom;
+							holder.itemView.setLayoutParams( params );
+						}
+					}
+				});
+
+
 
 				//Order of these 3 is important, otherwise a few of the first items will be the wrong height
 				//Ref http://stackoverflow.com/a/35916393/2312367
@@ -344,13 +369,26 @@ public class PredictionHandlers
 				//Candidate view doesn't have a container anymore, need to create our own.
 				LinearLayout.LayoutParams candidateContainerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 				candidateContainerParams.weight = 0.75f;
-				final FrameLayout candidateContainer = new FrameLayout(kView.getContext());
-				candidateContainer.setLayoutParams(candidateContainerParams);
+				PredictionCommons.mCandidateContainer = new FrameLayout(kView.getContext());
+				PredictionCommons.mCandidateContainer.setLayoutParams(candidateContainerParams);
 
-				candidateContainer.addView(headerScroller);
-				candidateContainer.addView(PredictionCommons.mCandidatesRecycler);
+				PredictionCommons.mCandidateContainer.addView(headerScroller);
+				PredictionCommons.mCandidateContainer.addView(PredictionCommons.mCandidatesRecycler);
 
-				centerLinear.addView(candidateContainer, 1);
+				centerLinear.addView(PredictionCommons.mCandidateContainer, 1);
+
+				new Handler(Looper.getMainLooper()).post(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
+
+						// For some reason the original candidates view isn't displayed unless we
+						// scroll the container we place it in. Invalidate is does not work.
+						headerScroller.scrollTo(0,0);
+					}
+				});
 			}
 		}
 	}

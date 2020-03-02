@@ -6,22 +6,32 @@ import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.inputmethod.InputConnection;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
-import com.mayulive.swiftkeyexi.xposed.Hooks;
+import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 
 import java.io.ByteArrayInputStream;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
@@ -30,6 +40,8 @@ public class KeyboardMethods
 {
 
 	private static final String AUTOCOMPLETE_PREF_KEY = "pref_typing_style_autocomplete";
+	public static Map<Integer, WeakReference<View>> mExpandButtons = new HashMap<>();
+	public static int mExpandButtonOriginalWidth = 0;	// Set when added to above list
 
 
 	public static void inputText(String text)
@@ -64,6 +76,58 @@ public class KeyboardMethods
 		}
 	}
 
+	public static boolean getToolbarOpen()
+	{
+		for (WeakReference<View> reference : mExpandButtons.values())
+		{
+			View button = reference.get();
+			if (button != null)
+			{
+				// State value [2], 0 if closed.
+				int[] state = button.getDrawableState();
+				if (state.length < 3)	// Isn't populated initially?
+					return false;
+				else
+					return button.getDrawableState()[2] != 0;
+			}
+		}
+
+		return false;
+	}
+
+	public static void handleExpandButton()
+	{
+		for (WeakReference<View> reference : mExpandButtons.values())
+		{
+			View button = reference.get();
+			if (button != null)
+			{
+				ViewGroup.LayoutParams params = button.getLayoutParams();
+
+				if (mExpandButtonOriginalWidth == 0)
+				{
+					mExpandButtonOriginalWidth = params.width;
+				}
+
+				if ( Settings.REMOVE_SUGGESTIONS_PADDING)
+				{
+					params.width = 0;
+					params.height = 0;
+				}
+				else
+				{
+					if (mExpandButtonOriginalWidth != 0)
+					{
+						params.width = mExpandButtonOriginalWidth;
+						params.height = -1;
+					}
+				}
+
+				button.setLayoutParams(params);
+			}
+		}
+
+	}
 
 
 	public enum PunctuationRuleMode
@@ -115,6 +179,8 @@ public class KeyboardMethods
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
 	protected static ArrayList<SharedPreferences.OnSharedPreferenceChangeListener> mSwiftkeyPrefChangedListeners = new ArrayList<>();
 
+	protected static ImageView mReplacementExpandToolbarButton = null;
+	protected static ImageView mReplacementExpandToolbarButtonMinor = null;
 	protected static ViewGroup mKeyboardRoot = null;
 	protected static float mLastKeyboardOpacity = 1;
 
@@ -396,36 +462,48 @@ public class KeyboardMethods
 		Log.i(LOGTAG, "Orientation now: "+mDeviceOrientation);
 	}
 
-	public static void updateHidePredictionBarAndPadKeyboardTop( View rootView )
+	public static void updateHidePredictionBarAndPadKeyboardTop()
 	{
-		//Once activated even once, we have to do all this work to make sure visibility is restored.
-		//It's a lot of work though, so we want to avoid doing it if the option has never been enabled.
-		if ( !Settings.everActivated_HIDE_PREDICTIONS_BAR)
+		if (OverlayCommons.mKeyboardOverlay == null)
 		{
+			Log.e(LOGTAG, "Overlay null in updateHidePredictionBarAndPadKeyboardTop");
 			return;
 		}
 
-		//This is called from a lot of places where things might have changed.
-		//Make sure the hook is event active.
-		if (!Hooks.baseHooks_hidePredictions.isRequirementsMet())
-		{
-			return;
-		}
+		View rootView = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
 
 		try
 		{
 			int candidatesId = rootView.getContext().getResources().getIdentifier("ribbon_model_tracking_frame", "id", ExiXposed.HOOK_PACKAGE_NAME);
 			{
-				ViewGroup targetView = rootView.findViewById(candidatesId);
+				ViewGroup targetView = rootView.findViewById(candidatesId);	// Would like to hide this too but visibiltiy changes all the time
+																			// Maybe remove but just leave as black space? would be easy.
+
+				////////////////////////////////
+				// Replacement toolbar button
+				////////////////////////////////
+
+				handleReplacementExpandToolbarButton(targetView);
+
+
+				/////////////////////
+				// Predictions bar
+				/////////////////////
+
 				if (targetView != null)
 				{
-					if (Settings.HIDE_PREDICTIONS_BAR)
+					if ( Settings.everActivated_HIDE_PREDICTIONS_BAR)
 					{
-						targetView.setVisibility(View.GONE);
-					}
-					else
-					{
-						targetView.setVisibility(View.VISIBLE);
+						// Visibility is the only thing it will listen to
+						// params do nothing
+						if (Settings.HIDE_PREDICTIONS_BAR)
+						{
+							targetView.setVisibility(View.GONE);
+						}
+						else
+						{
+							targetView.setVisibility(View.VISIBLE);
+						}
 					}
 				}
 			}
@@ -526,6 +604,179 @@ public class KeyboardMethods
 
 	}
 
+	private static ImageView getExpandToolbarButton( Context context, boolean makeCompact )
+	{
+		ImageView button = new ImageView( context );
+
+		int toolbarOpenDrawable = context.getResources().getIdentifier("toolbar_control_button_open", "drawable", ExiXposed.HOOK_PACKAGE_NAME);
+		int toolbarClosedDrawable = context.getResources().getIdentifier("toolbar_control_button_closed", "drawable", ExiXposed.HOOK_PACKAGE_NAME);
+
+		// This will probably be called too early
+		if ( getToolbarOpen() )
+		{
+			button.setImageResource(toolbarOpenDrawable);
+		}
+		else
+		{
+			button.setImageResource(toolbarClosedDrawable);
+		}
+
+		button.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+		FrameLayout.LayoutParams params;
+		if (makeCompact)
+		{
+			params = new FrameLayout.LayoutParams( (int)DimenUtils.calculatePixelFromDp(context, 32), (int)DimenUtils.calculatePixelFromDp(context, 32));
+			button.setPadding(0,0, (int)DimenUtils.calculatePixelFromDp(context, 10), 0 );
+		}
+		else
+		{
+			params = new FrameLayout.LayoutParams( (int)DimenUtils.calculatePixelFromDp(context, 42), ViewGroup.LayoutParams.MATCH_PARENT );
+		}
+
+		//FrameLayout.LayoutParams params = new FrameLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT );
+
+		params.gravity = Gravity.TOP | Gravity.LEFT;
+		button.setLayoutParams(params);
+
+		// For some reason the button will stop responding to click events, but touch events are still received.
+		button.setOnTouchListener(new View.OnTouchListener()
+		{
+			@Override
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				if (event.getActionMasked() == MotionEvent.ACTION_DOWN )
+				{
+					for (WeakReference<View> reference : mExpandButtons.values())
+					{
+						View expandButton = reference.get();
+						if (expandButton != null)
+						{
+							expandButton.performClick();
+
+							// TODO: maybe update state of other button too
+							if ( getToolbarOpen() )
+							{
+								button.setImageResource(toolbarOpenDrawable);
+							}
+							else
+							{
+								button.setImageResource(toolbarClosedDrawable);
+							}
+
+							// Visibility gets reset so refresh here
+							updateHidePredictionBarAndPadKeyboardTop();
+							break;
+						}
+					}
+
+					return true;
+				}
+
+				return false;
+			}
+		});
+
+
+		return button;
+	}
+
+	public static void handleReplacementExpandToolbarButton( ViewGroup toolbarContainer )
+	{
+		if (toolbarContainer != null)
+		{
+			if (mReplacementExpandToolbarButton == null)
+			{
+				mReplacementExpandToolbarButton = getExpandToolbarButton(toolbarContainer.getContext(), false);
+				mReplacementExpandToolbarButtonMinor = getExpandToolbarButton(toolbarContainer.getContext(), true);
+			}
+
+			//////////////////////////////////////////
+			// Button that goes next to suggestions
+			//////////////////////////////////////////
+
+
+			if ( Settings.REMOVE_SUGGESTIONS_PADDING )
+			{
+				// Ensure we are the top view
+				mReplacementExpandToolbarButton.setVisibility(View.VISIBLE);
+
+				if (toolbarContainer != null )
+				{
+					// Sometimes a new container is created, so we cannot assume that
+					// the, if the view has a parent, it is the same as this new container.
+					{
+						ViewParent currentParent = mReplacementExpandToolbarButton.getParent();
+						if (currentParent != null && currentParent != toolbarContainer)
+						{
+							// Has parent, but is a different container
+							((ViewGroup)currentParent).removeView(mReplacementExpandToolbarButton);
+						}
+					}
+
+					// Will handle inserting the ivew, and moving it back to the top if something has decided to cover it.
+					int existingIndex = toolbarContainer.indexOfChild( mReplacementExpandToolbarButton );
+					if ( existingIndex < toolbarContainer.getChildCount() -1 )
+					{
+						if (existingIndex != -1) // Skip removing if not actually a child yet
+							toolbarContainer.removeView(mReplacementExpandToolbarButton);
+						toolbarContainer.addView(mReplacementExpandToolbarButton);
+					}
+				}
+			}
+			else
+			{
+				mReplacementExpandToolbarButton.setVisibility(View.GONE);
+			}
+
+			//////////////////////////////////////////////////////////
+			// Inserted at top of keyboard when suggestions hidden
+			//////////////////////////////////////////////////////////
+
+
+			if ( Settings.HIDE_PREDICTIONS_BAR )
+			{
+				// Ensure we are the top view
+				mReplacementExpandToolbarButtonMinor.setVisibility(View.VISIBLE);
+
+				if ( mKeyboardRoot != null )
+				{
+					int keyboardFrameHolderId = mKeyboardRoot.getContext().getResources().getIdentifier("keyboard_frame_holder", "id", ExiXposed.HOOK_PACKAGE_NAME);
+					toolbarContainer = mKeyboardRoot.findViewById(keyboardFrameHolderId);
+
+					if (toolbarContainer != null)
+					{
+						// Sometimes a new container is created, so we cannot assume that
+						// the, if the view has a parent, it is the same as this new container.
+						{
+							ViewParent currentParent = mReplacementExpandToolbarButtonMinor.getParent();
+							if (currentParent != null && currentParent != toolbarContainer)
+							{
+								// Has parent, but is a different container
+								((ViewGroup)currentParent).removeView(mReplacementExpandToolbarButtonMinor);
+							}
+						}
+
+						int existingIndex = toolbarContainer.indexOfChild( mReplacementExpandToolbarButtonMinor );
+						if ( existingIndex < toolbarContainer.getChildCount() -1 )
+						{
+							if (existingIndex != -1) // Skip removing if not actually a child yet
+								toolbarContainer.removeView(mReplacementExpandToolbarButtonMinor);
+							toolbarContainer.addView(mReplacementExpandToolbarButtonMinor);
+						}
+
+					}
+				}
+			}
+			else
+			{
+				mReplacementExpandToolbarButtonMinor.setVisibility(View.GONE);
+			}
+
+
+		}
+	}
+
 	public static void setThemeByHash(String themeHash)
 	{
 		if ( KeyboardClassManager.themeSetter_dummyCtiInstance == null )
@@ -534,7 +785,7 @@ public class KeyboardMethods
 			return;
 		}
 
-		if ( KeyboardClassManager.themeSetter_dummyCtiInstance == null )
+		if ( KeyboardClassManager.themeSetterClass_instance == null )
 		{
 			Log.e(LOGTAG, "themeSetterClass_instance was null, not setting theme");
 			return;

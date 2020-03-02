@@ -310,7 +310,11 @@ public class KeyCommons
 		if (action == KeyboardInteraction.TextAction.INSERT && text != null )
 		{
 			KeyboardMethods.inputText(text, connection);
-
+			return true;
+		}
+		else if (action == KeyboardInteraction.TextAction.NEWLINE)
+		{
+			KeyboardMethods.inputText("\n", connection);
 			return true;
 		}
 		else

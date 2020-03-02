@@ -109,7 +109,7 @@ public class Settings
 	//Transparent keyboard is transparent
 	public static float KEYBOARD_OPACITY = 1f;
 
-	public static boolean SWIPE_RTL_MODE_ENABLED = true;
+	public static boolean SWIPE_RTL_MODE_ENABLED = false;
 
 	public static boolean HIDE_PREDICTIONS_BAR = false;
 
@@ -164,7 +164,7 @@ public class Settings
 		HARDWARE_KEY_REMAP_ONLY_IN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_hardware_remap_only_in_keyboard_key, false);
 
 
-		SWIPE_RTL_MODE_ENABLED = prefs.getBoolean(PreferenceConstants.pref_swipe_rtl_mode_key, true);
+		SWIPE_RTL_MODE_ENABLED = prefs.getBoolean(PreferenceConstants.pref_swipe_rtl_mode_key, false);
 
 		SWIPE_SELECTION_BEHAVIOR = SelectionBehavior.valueOf
 				(
@@ -294,7 +294,16 @@ public class Settings
 	{
 		for (OnSettingsUpdatedListener listener : mSettingsUpdatedListeners)
 		{
-			listener.OnSettingsUpdated();
+			try
+			{
+				listener.OnSettingsUpdated();
+			}
+			catch (Exception ex )
+			{
+				Log.e(LOGTAG, "Problem calling settings updated listener");
+				ex.printStackTrace();
+			}
+
 		}
 
 		//At this point any changes that require data to be read from exi's database should have completed.

@@ -7,11 +7,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
@@ -24,7 +26,6 @@ import com.mayulive.swiftkeyexi.util.view.ViewTools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -36,8 +37,7 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 {
 	emojiPanelAdapter mAdapter = null;
 
-	LayoutManager mLayoutManager = null;
-	GridLayoutManager mGridLayoutManager = null;
+	LayoutManager mGridLayoutManager = null;
 
 	ItemTouchHelper.SimpleCallback mDragHelperCallback;
 	EmojiDragHelper mDragHelper;
@@ -64,6 +64,9 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 
 	float mDragEndPosX = 0;
 	float mDragEndPosY = 0;
+
+	int mViewWidth = 0;
+	int mItemWidth = 0;
 
 	enum OverdragLocation
 	{
@@ -106,13 +109,16 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 
 		mAdapter = new emojiPanelAdapter(this.getContext(), mItem.get_items(), mItem, false, false, !(isDragDropEditable || isDragDropSource) );
 
-		mGridLayoutManager = new GridLayoutManager(this.getContext(), EmojiResources.calculateColCount(this.getContext(), viewWidth, itemWidth));
-		mLayoutManager = mGridLayoutManager;
-
 		this.setScrollbarEnabled(true);
 		this.setScrollbarColor(SharedStyles.getAccentColor(this.getContext()));
 
-		this.setLayoutManager(mLayoutManager);
+		mViewWidth = viewWidth;
+		mItemWidth = itemWidth;
+
+		updateLayoutManager(mItemWidth, false);
+
+		// Goes here
+
 		this.setAdapter(mAdapter);
 
 		this.mIsDragDropEditable = isDragDropEditable;
@@ -650,29 +656,69 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 	}
 
 
-	@Override
-	public void setColumnWidth(int itemWidth)
+	/**
+	 *
+	 * @param itemWidth
+	 * @param updateGridColumns whether we calculate and call setSpanCount. If done too early
+	 *                          the items will have the wrong width for a while. I dunno.
+	 */
+	private void updateLayoutManager(int itemWidth, boolean updateGridColumns)
 	{
-		//Only allow if layout is grid
-		if (mGridLayoutManager != null)
+		if (itemWidth < 1 )
 		{
-			if (itemWidth < 1)
+			FlexboxLayoutManager manager = null;
+			if ( mGridLayoutManager instanceof FlexboxLayoutManager)
 			{
-				itemWidth = 1;
+				manager = (FlexboxLayoutManager) mGridLayoutManager;
+			}
+			else
+			{
+				manager = new FlexboxLayoutManager(this.getContext());
+				manager.setFlexDirection(FlexDirection.ROW);
+				manager.setJustifyContent(JustifyContent.SPACE_AROUND);
 			}
 
-			EmojiCache.clearIfWidthTooSmall(mItem, itemWidth);
-
-			mItem.set_column_width(itemWidth);
-
-			invalidateAllViews();
-
-			mGridLayoutManager.setSpanCount( EmojiResources.calculateColCount(this.getContext(), this.getMeasuredWidth(), itemWidth ) );
+			// Flexbox makes the scrollbar all wonky, so let's disable it.
+			this.setScrollbarEnabled(false);
+			mGridLayoutManager = manager;
+			this.setLayoutManager(mGridLayoutManager);
 		}
 		else
 		{
+			GridLayoutManager manager = null;
+			if ( mGridLayoutManager instanceof GridLayoutManager )
+			{
+				manager = (GridLayoutManager) mGridLayoutManager;
+			}
+			else
+			{
+				manager = new GridLayoutManager(this.getContext(), EmojiResources.calculateColCount(this.getContext(), mViewWidth, mItemWidth));
+			}
 
+			this.setScrollbarEnabled(true);
+			mGridLayoutManager = manager;
+			if (updateGridColumns)
+				manager.setSpanCount( EmojiResources.calculateColCount(this.getContext(), this.getMeasuredWidth(), mItemWidth ) );
+			this.setLayoutManager(mGridLayoutManager);
 		}
+
+
+
+	}
+
+	@Override
+	public void setColumnWidth(int itemWidth)
+	{
+
+		if (itemWidth < 1)
+			itemWidth = 0;
+		mItemWidth = itemWidth;
+
+		EmojiCache.clearIfWidthTooSmall(mItem, itemWidth);
+		mItem.set_column_width(itemWidth);
+		invalidateAllViews();
+
+		updateLayoutManager(itemWidth, true);
 	}
 
 	@Override

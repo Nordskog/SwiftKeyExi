@@ -19,12 +19,14 @@
         <item>@string/pref_emoji_force_version_auto</item>
         <item>@string/pref_emoji_force_version_pre_nougat</item>
         <item>@string/pref_emoji_force_version_post_nougat</item>
+        <item>@string/pref_emoji_force_version_post_pie</item>
     </string-array>
 
     <string-array name="pref_emoji_force_version_values">
         <item>AUTO</item>
         <item>PRE_NOUGAT</item>
         <item>POST_NOUGAT</item>
+        <item>POST_PIE</item>
     </string-array>
 
 

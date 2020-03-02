@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -19,7 +20,6 @@ import com.mayulive.swiftkeyexi.service.SwiftkeyBroadcastListener;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
-import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
@@ -36,11 +36,13 @@ import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -164,7 +166,7 @@ public class KeyboardHooks
 
 					if (!NormalEmojiItem.isAssetsLoaded())
 					{
-						NormalEmojiItem.loadAssets( FontProvider.getFont(ContextUtils.getHookContext(), "NotoEmoji_der_nougat.ttf") );
+						NormalEmojiItem.loadAssets( FontProvider.getFont(ContextUtils.getHookContext(), "NotoEmoji_der_ten.ttf") );
 					}
 
 					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)
@@ -409,47 +411,6 @@ public class KeyboardHooks
 
 
 		return returnSet;
-	}
-
-	private static XC_MethodHook.Unhook hookToolbarPredictionBarRemoval()
-	{
-
-		return XposedBridge.hookMethod(PriorityKeyboardClassManager.toolbarOpenButtonOverlayViewClass_createToolbarOpenMethod, new XC_MethodHook()
-		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
-			{
-
-				if (Settings.HIDE_PREDICTIONS_BAR)
-				{
-					ViewGroup thiz = (ViewGroup) param.thisObject;
-					View button = thiz.getChildAt(0);
-					if (button != null)
-					{
-						//Button will be centered inside this container
-						FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(
-								(int) DimenUtils.calculatePixelFromDp(thiz.getContext(), 32),
-								(int) DimenUtils.calculatePixelFromDp(thiz.getContext(), 18)
-						);
-						FrameLayout container = new FrameLayout(button.getContext());
-						container.setLayoutParams(containerParams);
-
-						//The actual button will stretch to fit whatever dimensions you give it, so we render it
-						//at 64x64dp before cropping it above.
-						FrameLayout.LayoutParams buttonParams = (FrameLayout.LayoutParams) button.getLayoutParams();
-						buttonParams.gravity = Gravity.CENTER;
-						buttonParams.height = (int) DimenUtils.calculatePixelFromDp(thiz.getContext(), 64);
-						buttonParams.width = (int) DimenUtils.calculatePixelFromDp(thiz.getContext(), 64);
-						button.setLayoutParams(buttonParams);
-
-						//Place view into container
-						thiz.removeView(button);
-						container.addView(button);
-						thiz.addView(container);
-					}
-				}
-			}
-		});
 	}
 
 	// This hook doesn't have any ... hooks. It just sets a value.
@@ -756,7 +717,60 @@ public class KeyboardHooks
 	}
 
 
-	public static boolean hookPriority(final PackageTree lpparam)
+	private static Set<XC_MethodHook.Unhook> hookToolbarButton( PackageTree param)
+	{
+
+		HashSet<XC_MethodHook.Unhook> hooks = new HashSet<>();
+
+		hooks.addAll(XposedBridge.hookAllConstructors( KeyboardClassManager.toolbarButtonClass, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				View button = (View) param.thisObject;
+
+				// Prune old buttons
+				Iterator<WeakReference<View>> it = KeyboardMethods.mExpandButtons.values().iterator();
+				while ( it.hasNext() )
+				{
+					WeakReference<View> ref = it.next();
+					if (ref.get() == null)
+					{
+						it.remove();
+					}
+				}
+
+				KeyboardMethods.mExpandButtons.put( System.identityHashCode(button), new WeakReference<>(button) );
+
+
+				// Params is set immediately afterwards, so delay a bit to override them
+				new Handler(Looper.getMainLooper()).post(() ->
+				{
+
+					ViewGroup.LayoutParams params = button.getLayoutParams();
+
+					KeyboardMethods.mExpandButtonOriginalWidth = params.width;
+
+					if ( Settings.REMOVE_SUGGESTIONS_PADDING )
+					{
+						params.height = 0;
+						params.width = 0;
+						button.setLayoutParams(params );
+					}
+
+
+				});
+
+			}
+		}));
+
+		return hooks;
+	}
+
+
+
+
+		public static boolean hookPriority(final PackageTree lpparam)
 	{
 		try
 		{
@@ -768,12 +782,6 @@ public class KeyboardHooks
 				Hooks.baseHooks_base.add( hookKeyboardConfigurationChanged() );
 				Hooks.baseHooks_base.add( hookKeyboardOpened() );
 				Hooks.baseHooks_base.add( hookKeyboardClosed() );
-
-				if (Hooks.baseHooks_hidePredictions.isRequirementsMet())
-				{
-					Hooks.baseHooks_hidePredictions.add( hookToolbarPredictionBarRemoval() );
-				}
-
 
 				if (Hooks.baseHooks_fullscreenMode.isRequirementsMet())
 				{
@@ -806,6 +814,7 @@ public class KeyboardHooks
 		return true;
 	}
 
+
 	public static boolean HookAll(final PackageTree lpparam)
 	{
 		try
@@ -814,9 +823,12 @@ public class KeyboardHooks
 
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
-
 				Hooks.baseHooks_base.add( hookPrefChanged() );
 
+				if ( Hooks.baseHooks_toolbarExpandButton.isRequirementsMet() )
+				{
+					Hooks.baseHooks_toolbarExpandButton.addAll( hookToolbarButton(lpparam) );
+				}
 
 				if (Hooks.gifRemoveRedirect.isRequirementsMet())
 				{
@@ -854,12 +866,10 @@ public class KeyboardHooks
 
 						KeyboardMethods.setKeyboardOpacity();
 
-						if ( Settings.changed_HIDE_PREDICTIONS_BAR && OverlayCommons.mKeyboardOverlay != null)
+						if ( Settings.changed_HIDE_PREDICTIONS_BAR || Settings.changed_REMOVE_SUGGESTIONS_PADDING )
 						{
-							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
-							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
 						}
-
 
 					}
 				});
@@ -876,12 +886,7 @@ public class KeyboardHooks
 					@Override
 					public void afterKeyboardOpened()
 					{
-						// I guess this does something
-						if (OverlayCommons.mKeyboardOverlay != null)
-						{
-							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
-							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
-						}
+						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
 
 						// Only called once to restore after reboot.
 						if ( !KeyboardMethods.mIncogStateLoaded )
@@ -893,6 +898,7 @@ public class KeyboardHooks
 								KeyboardMethods.loadIncogState();
 							}
 						}
+
 					}
 
 					@Override
@@ -904,12 +910,7 @@ public class KeyboardHooks
 					@Override
 					public void afterKeyboardConfigurationChanged()
 					{
-						if (OverlayCommons.mKeyboardOverlay != null)
-						{
-							View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
-							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
-						}
-
+						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
 					}
 				});
 

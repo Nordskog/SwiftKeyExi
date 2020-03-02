@@ -6,8 +6,10 @@ package com.mayulive.swiftkeyexi.util.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 
 /**
@@ -17,11 +19,12 @@ import android.view.ViewGroup;
 public abstract class HeaderFooterRecyclerAdapter<T extends HeaderFooterRecyclerAdapter.HFRecyclerViewHolder> extends RecyclerView.Adapter<T>
 {
 
-	private static final int HEADER = 100;
-	private static final int FOOTER = 101;
+	public static final int HEADER = 100;
+	public static final int FOOTER = 101;
 
-	private T mHeader = null;
-	private T mFooter = null;
+	protected T mHeader = null;
+	protected T mFooter = null;
+
 
 	private Context mContext = null;
 
@@ -62,6 +65,11 @@ public abstract class HeaderFooterRecyclerAdapter<T extends HeaderFooterRecycler
 		mContext = context;
 	}
 
+	public T getHeader()
+	{
+		return mHeader;
+	}
+
 	public void setHeader(T header)
 	{
 		mHeader = header;
@@ -85,7 +93,10 @@ public abstract class HeaderFooterRecyclerAdapter<T extends HeaderFooterRecycler
 	public T onCreateViewHolder(ViewGroup parent, int viewType)
 	{
 		if (viewType == HEADER)
+		{
 			return mHeader;
+		}
+
 		else if (viewType == FOOTER)
 			return mFooter;
 		else

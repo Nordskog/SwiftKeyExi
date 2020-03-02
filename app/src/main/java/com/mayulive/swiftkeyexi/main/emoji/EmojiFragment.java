@@ -335,11 +335,6 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			tabs = mDictionaryTabIndicator;
 		}
 
-		//Originally only needed to fix things in hook context, but I guess that's the new standard.
-		//Unfortunately it has no effect here ... Shame, I prefer the other size.
-		// TODO do battle with layout tab size
-		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(this.getContext());
-		tabs.setTabMinWidth( (int)(dimens.default_singleEmojiWidth * 1.1f) );
 
 		pager.setAdapter(pagerAdapter);
 
@@ -1103,7 +1098,7 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 		if (copyFrom != null)
 			newPanel = new DB_EmojiPanelItem(copyFrom);
 		else
-			newPanel = new DB_EmojiPanelItem( -1,-1,1,"◯", "◯", 0, 1 );
+			newPanel = new DB_EmojiPanelItem( -1,-1,0,"◯", "◯", 0, 1 );
 
 		switch(panelType)
 		{

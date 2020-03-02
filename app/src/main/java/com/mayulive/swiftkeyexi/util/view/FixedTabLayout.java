@@ -7,9 +7,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.HorizontalScrollView;
 
+import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
+import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 import com.mayulive.swiftkeyexi.R;
 
 import java.lang.reflect.Field;
@@ -41,7 +44,7 @@ public class FixedTabLayout extends TabLayout
 
 		try
 		{
-			mTabViewField = Tab.class.getDeclaredField("mView");
+			mTabViewField = Tab.class.getDeclaredField("view");
 			mTabViewField.setAccessible(true);
 		} catch (NoSuchFieldException e)
 		{
@@ -116,21 +119,6 @@ public class FixedTabLayout extends TabLayout
 	{
 		super(context, attrs, defStyleAttr);
 
-	}
-
-	//Cannot set min width programtically otherwise
-	public void setTabMinWidth(int value)
-	{
-		Field field;
-		try {
-			field = TabLayout.class.getDeclaredField("mRequestedTabMinWidth");
-			field.setAccessible(true);
-			field.set(this, value);
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
 	}
 
 	//Tablayout will request requestDisallowInterceptTouchEvent on its parent, thus breaking viewpagers.

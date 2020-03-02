@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mayulive.swiftkeyexi.util.view.ViewTools;
+
 import java.util.ArrayList;
 
 import static android.R.attr.width;
@@ -67,11 +69,20 @@ public class EmojiCacheRenderer
 	protected static EmojiCacheItem populateEmojiCacheItem(Context context, EmojiCacheItem item, String text, float textSize, int styleId, int itemWidth, boolean singleLine)
 	{
 
+		// 0 is auto, which effectively means unlimited
+		if ( itemWidth < 1)
+			itemWidth = 99;
+
 		NormalEmojiItem textView = getView(context);
 
 		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
 
 		int width = (int) (dimens.configured_singleEmojiWidth * (float)itemWidth);
+
+		// No wider than screen width. Won't cut it if using floating layout or something though.
+		int screenWidth = ViewTools.getScrenSize()[0];
+		if (width > screenWidth)
+			width = screenWidth;
 
 		int paddingLeft = textView.getPaddingLeft();
 		int paddingRight = textView.getPaddingRight();

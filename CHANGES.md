@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.6.0] - 02-03-2020
+### Added
+ - Auto-width emoji panels
+ - Insert Newline text action
+
+### Fixed
+ - Compatibility targeting 7.5.0.8 ( Emoji, jumping cursor, prediction bar stuff )
+
+### Changed
+ - Updated to Android 10 ( Unicode 13.0 ) Emoji ( Properly this time ) 
+ - Swipe-selection RTL support disabled by default
+ - Updated French translations
+
 ## [2.5.3] - 06-12-2019
 ### Fixed
  - Compatibility targeting 7.4.5.3 ( Emoji panel )

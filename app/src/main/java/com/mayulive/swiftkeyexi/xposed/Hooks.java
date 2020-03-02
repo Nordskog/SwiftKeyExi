@@ -1,8 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed;
 
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -24,8 +22,6 @@ import com.mayulive.swiftkeyexi.xposed.selection.SelectionHooks;
 import com.mayulive.swiftkeyexi.xposed.sound.SoundHooks;
 import com.mayulive.swiftkeyexi.xposed.style.StyleHooks;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
-
-import java.util.ArrayList;
 
 /**
  * Created by Roughy on 6/22/2017.
@@ -73,7 +69,7 @@ public class Hooks
 	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 	public static HookCategory baseHooks_keyHeight = new HookCategory("KeyboardHooks keyHeight");
 
-	public static HookCategory baseHooks_hidePredictions = new HookCategory("KeyboardHooks baseHooks_hidePredictions");
+	public static HookCategory baseHooks_toolbarExpandButton = new HookCategory("KeyboardHooks baseHooks_toolbarExpandButton");
 
 	//Style
 	public static HookCategory styleHooks_darklight = new HookCategory("StyleHooks Darklight");
@@ -105,7 +101,7 @@ public class Hooks
 																								baseHooks_fullscreenMode,
 																								baseHooks_keyHeight,
 																								hardwareKeys_base,
-																								baseHooks_hidePredictions,
+			baseHooks_toolbarExpandButton,
 																								incognito,
 																								search,
 																								gifRemoveRedirect,

@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements Theme.ThemeApplic
 		////////////////////
 		//EmojiResources.loadResources(this);
 
-		Typeface simpleFont = Typeface.createFromAsset(this.getAssets(), "fonts/NotoEmoji_der_nougat.ttf");
+		Typeface simpleFont = Typeface.createFromAsset(this.getAssets(), "fonts/NotoEmoji_der_ten.ttf");
 		FontLoader.initFontLoader(getFontPathArray());
 		NormalEmojiItem.loadAssets(simpleFont);
 

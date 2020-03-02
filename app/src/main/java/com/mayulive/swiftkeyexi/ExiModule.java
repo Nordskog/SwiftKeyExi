@@ -19,6 +19,7 @@ import com.mayulive.swiftkeyexi.database.WrappedDatabase;
 import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
+import com.mayulive.swiftkeyexi.util.Pref;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 
 import java.util.ArrayList;
@@ -52,9 +53,9 @@ public class ExiModule
 	public static String SWIFTKEY_PACKAGE_NAME = "com.touchtype.swiftkey";
 	public static String SWIFTKEY_BETA_PACKAGE_NAME = "com.touchtype.swiftkey.beta";
 
-	public static final int DISPLAY_EMOJI_VARIANT_FIX_VERSION = 8;
-	public static final int OREO_EMOJI_FIX_VERSION = 12;
+	public static final int ADDED_TEN_EMOJI = 61;
 
+	public static Pref.EnumPreference<FancyEmojiPanelTemplates.EmojiPanelVersion> EMOJI_PANEL_VERSION = new Pref.EnumPreference<>( SettingsCommons.MODULE_SHARED_PREFERENCES_KEY, PreferenceConstants.pref_emoji_force_version_key);
 
 	public enum ModuleDatabaseType
 	{
@@ -144,10 +145,7 @@ public class ExiModule
 
 		int currentEmoji = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
 
-		FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref(
-			prefs.getString(PreferenceConstants.pref_emoji_force_version_key, "AUTO")
-	);
-
+		FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref( EMOJI_PANEL_VERSION.get(context, FancyEmojiPanelTemplates.EmojiPanelVersion.AUTO) );
 
 		Log.i(LOGTAG, "Exi version: "+BuildConfig.VERSION_CODE+", previousVersion: "+previousExiVersionCode);
 		Log.i(LOGTAG, "Current emoji: "+currentEmoji+", for SDK: "+newVersion.getSdkVersion());
@@ -155,26 +153,40 @@ public class ExiModule
 
 		//If current emoji version differs from new version
 		if (currentEmoji != newVersion.getSdkVersion())
+		{
+			Log.i(LOGTAG, "Current emoji version differs from new version, updating emoji.");
 			return true;
+		}
+
 
 		//If different version of android
 		if ( Build.VERSION.SDK_INT != previousSDK)
+		{
+			Log.i(LOGTAG, "Current SDK differs from previous SDK, updating emoji.");
 			return true;
+		}
 
 		//In Exi v8 (Version code) the display-as-emoji variant selector was added to all emoji
 		//Update panels need to be refreshed.
 		//Android oreo made some changes to fonts.xml that murdered our parser, must be reloaded there.
-		if (previousExiVersionCode < DISPLAY_EMOJI_VARIANT_FIX_VERSION
-				|| (previousExiVersionCode < OREO_EMOJI_FIX_VERSION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-			)
+		//We messed with emoji version numbering when we added ten emoji, will be consistent from now on.
+		if ( previousExiVersionCode < ADDED_TEN_EMOJI )
+		{
+			Log.i(LOGTAG, "Previous version prior to Ten emoji being added, updating emoji");
 			return true;
+		}
+
 
 		//If we haven't added identifiers to the panels yet, better to unify this stuff.
 		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M)
 		{
 			boolean hasIdentifiers = prefs.getBoolean(PreferenceConstants.status_emoji_panels_have_identifiers_key, false);
 			if (!hasIdentifiers)
+			{
+				Log.i(LOGTAG, "Emoji panels missing identifiers, updating");
 				return true;
+			}
+
 		}
 
 		return false;
@@ -188,9 +200,7 @@ public class ExiModule
 
 		int currentVersion = prefs.getInt(PreferenceConstants.status_api_version_emoji,  Build.VERSION_CODES.M );
 
-		FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref(
-				prefs.getString(PreferenceConstants.pref_emoji_force_version_key, "AUTO")
-		);
+		FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref( EMOJI_PANEL_VERSION.get(context, FancyEmojiPanelTemplates.EmojiPanelVersion.AUTO));
 
 		//Older versions did not provide identifiers for panels
 		//Nougat panels were added afterwards, so they will always have identifiers.

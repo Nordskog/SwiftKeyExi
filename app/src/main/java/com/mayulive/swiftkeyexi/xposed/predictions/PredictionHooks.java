@@ -8,14 +8,12 @@ import java.util.Set;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
-import android.gesture.Prediction;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -138,8 +136,8 @@ public class PredictionHooks
 								{
 									try
 									{
-										View parent = CodeUtils.getTopParent( OverlayCommons.mKeyboardOverlay );
-										KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop( parent );
+										KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
+										KeyboardMethods.handleExpandButton();
 									}
 									catch ( Throwable ex )
 									{
@@ -161,7 +159,7 @@ public class PredictionHooks
 		}
 	}
 
-	public static XC_MethodHook.Unhook hookCandidatesDisplayView_getViewWrapper( ) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
+	public static XC_MethodHook.Unhook hookCandidatesDisplayView_getViewWrapper( )
 	{
 		/////////////////
 		//Candidate bar
@@ -170,39 +168,12 @@ public class PredictionHooks
 			return XposedBridge.hookMethod(PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod, new XC_MethodHook()
 			{
 				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-				{
-
-					try
-					{
-						//Due a view hierarchy change, we must make sure to remove the candidate kview from
-						//our container before we enter this method, as it will attempt to attach it to a new parent
-						LinearLayout centerLinear = (LinearLayout)param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition];
-						if (centerLinear.getChildCount() >= 3)
-						{
-							View centerView = centerLinear.getChildAt(1);
-							if (centerView instanceof FrameLayout)
-							{
-								ViewGroup centerFrame = (FrameLayout)centerView;
-								ViewGroup scrollHeader = (ViewGroup)centerFrame.getChildAt(0);
-								scrollHeader.removeAllViews();
-								centerFrame.removeAllViews();
-								centerFrame.removeAllViews();
-							}
-						}
-					}
-					catch (Throwable ex)
-					{
-						Hooks.predictionHooks_more.invalidate(ex, "Unexpected problem in Candidates Display View hook");
-					}
-				}
-
-				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
 					try
 					{
-						PredictionHandlers.handleCandidateViewHook_replace((ViewGroup) param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition]);
+						ViewGroup parent = (ViewGroup) param.getResult();
+						PredictionHandlers.handleCandidateViewHook_replace( parent );
 					}
 					catch (Throwable ex)
 					{
@@ -212,8 +183,8 @@ public class PredictionHooks
 					try
 					{
 						//Not really this guy's responsbility, but good to run here. Lots of other places too.
-						View parent = CodeUtils.getTopParent( (ViewGroup) param.args[PriorityPredictionsClassManager.candidatesViewFactory_ReturnWrapperClass_GetViewMethod_LinearLayoutPosition] );
-						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop(parent);
+						KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
+						KeyboardMethods.handleExpandButton();
 					}
 					catch (Throwable ex)
 					{
@@ -382,6 +353,7 @@ public class PredictionHooks
 		return returnHooks;
 	}
 
+
 	public static boolean hookPriority(final PackageTree param)
 	{
 		try
@@ -451,9 +423,11 @@ public class PredictionHooks
 					if (Settings.changed_REMOVE_SUGGESTIONS_PADDING)
 					{
 						PredictionCommons.setSuggestionsPaddingVisibility( !Settings.REMOVE_SUGGESTIONS_PADDING );
+						KeyboardMethods.handleExpandButton();
 					}
 				}
 			});
+
 
         }
         catch(Throwable ex)

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.Log;
 import android.util.Xml;
 
@@ -320,19 +321,37 @@ public class FontLoader
 	//Oddly enough this fails to detect emoji with unrenderable modifiers.
 	public static boolean isSingleChar(String text)
 	{
-		float[] widths = new float[text.length()];
-		mPaint.getTextWidths(text,widths);
+		if (text == null || text.isEmpty())
+			return false;
 
-		//So this basically returns the render width of each individual character.
-		//If the whole lot is rendered as a single character, only the first elemnent will be non-zero
-		//So if any of the other values are non-zero, it is rendering as multiple characters
-		for (int i = 1; i< widths.length; i++)
+		float[] widths = new float[text.length()];
+		mPaint.getTextWidths(text, widths);
+
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P )
 		{
-			if (widths[i] != 0.0f)
-				return false;
+			//So this basically returns the render width of each individual character.
+			//If the whole lot is rendered as a single character, only the first elemnent will be non-zero
+			//So if any of the other values are non-zero, it is rendering as multiple characters
+			for (int i = 1; i< widths.length; i++)
+			{
+				if (widths[i] > 0.0f)
+					return false;
+			}
+
+			return true;
+		}
+		else
+		{
+			// getTextWidths() is supposed to give us the rendered width of each individual character.
+			// Unfortunately, as of Android 10 the first character will consume the width of any following
+			// characters if they are /supposed/ to be rendered as one character, even if the system
+			// is unable to do so and will be rendering it as several characters instead.
+			// Ugly workaround for that.
+			Rect bounds = new Rect();
+			mPaint.getTextBounds(text,0,text.length(), bounds);
+			return bounds.width() <= ( bounds.height() * 1.5f );
 		}
 
-		return true;
 	}
 
 

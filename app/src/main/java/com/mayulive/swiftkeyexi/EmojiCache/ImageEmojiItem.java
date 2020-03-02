@@ -124,6 +124,7 @@ public class ImageEmojiItem extends ImageView implements EmojiContainer
 		this.setPadding(hPadding,vPadding,hPadding,vPadding);
 
 		this.setMinimumHeight( (int)dimens.configured_singleEmojiWidth );
+		this.setMinimumWidth( (int)dimens.configured_singleEmojiWidth );
 
 		//Fun fact: If an imageview has passed the layout phase and you set the a net bitmap,
 		//it will grow bigger to accommodate it, but not smaller.
@@ -318,7 +319,11 @@ public class ImageEmojiItem extends ImageView implements EmojiContainer
 		//If width is set to match parent, we want our
 		//cached items to have a width up to the
 		//width of the parent. Do not do anything until measure.
-		if (mConfiguredItemWidth != AUTO)
+
+		//Edit: This breaks flexbox.
+		// I do not understand why this was done. It is only AUTO ( 0 ) if used by the recents view.
+		// Works fine commented out, recents should probably be replaced by flexbox too.
+		//if (mConfiguredItemWidth != AUTO)
 		{
 			updateCacheItem();
 

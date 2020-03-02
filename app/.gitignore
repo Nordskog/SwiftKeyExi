@@ -1,3 +1,5 @@
 /keystore
 /bin
 /build
+/.cxx
+/.externalNativeBuild

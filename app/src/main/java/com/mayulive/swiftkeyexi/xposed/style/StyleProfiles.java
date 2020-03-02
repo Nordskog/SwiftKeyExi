@@ -15,7 +15,7 @@ public class StyleProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("je5");
+		newProfile.setFullPath("lw5");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -47,10 +47,11 @@ public class StyleProfiles
 				{
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//a
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//b
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//c
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//d
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//e
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//f
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//c
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//d
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem(int.class)),	//e
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Map.class)),	//f
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )),	//g
 
 				});
 /////////////////////////
@@ -101,21 +102,21 @@ public class StyleProfiles
 						//Method #4: a
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PUBLIC | EXACT ,
 										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem(java.lang.Object.class),
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
 						//Method #5: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(android.graphics.drawable.Drawable.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(java.lang.Object.class),
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -163,13 +164,23 @@ public class StyleProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
+										new ClassItem(android.graphics.drawable.Drawable.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #11: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
 										new ClassItem(android.text.TextPaint.class),
 
 										new ClassItem(java.lang.String.class)
 
 								),
 
-						//Method #11: a
+						//Method #12: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -179,7 +190,17 @@ public class StyleProfiles
 
 								),
 
-						//Method #12: a
+						//Method #13: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(java.lang.Integer.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #14: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -189,7 +210,7 @@ public class StyleProfiles
 
 								),
 
-						//Method #13: b
+						//Method #15: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -199,7 +220,7 @@ public class StyleProfiles
 
 								),
 
-						//Method #14: b
+						//Method #16: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -221,7 +242,8 @@ public class StyleProfiles
 								(		PUBLIC | EXACT ,
 
 										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 

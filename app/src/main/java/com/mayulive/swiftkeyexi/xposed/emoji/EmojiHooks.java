@@ -30,6 +30,7 @@ import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
+import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
@@ -201,19 +202,6 @@ public class EmojiHooks
 								EmojiHookCommons.mEmojiPanelTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 								EmojiHookCommons.mEmojiPanelTabs.setTabGravity(TabLayout.GRAVITY_CENTER);
 
-								//Before lollipop, tablayout doesn't size its tabs properly.
-								//I mean it's pretty broken after lollipop too but you get the idea.
-								//if (!VersionTools.isLollipopOrGreater())
-								//Turns out this is a tablet thing, not a kitkat thing.
-								{
-									EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
-
-									//If no min is set they're all super wide,
-									//if set to 0 they're all tiny.
-									EmojiHookCommons.mEmojiPanelTabs.setTabMinWidth( (int)(dimens.default_singleEmojiWidth * 1.1f) );
-								}
-
-
 								EmojiHookCommons.mEmojiPanelAdapter.setProvidePageTitles(false);
 								EmojiHookCommons.mEmojiPanelAdapter.setupWithFixedTabLayout(EmojiHookCommons.mEmojiPanelTabs);
 
@@ -262,43 +250,53 @@ public class EmojiHooks
 		}
 	}
 
-
-	public static Set<XC_MethodHook.Unhook> hookResourceLookup( PackageTree param) throws NoSuchMethodException
+	public static Set<XC_MethodHook.Unhook> hookResourceLookup( PackageTree param) throws NoSuchMethodException, NoSuchFieldException
 	{
-		//ViewPager fails to fetch these two when spawned  inside the hook context.
-		//While I'm sure returning random values affects something, at least it doesn't crash.
-		//We can't just intercept and catch all exceptions here, as other bits of
-		//code sometimes rely on catching the exception.
-		final int res1 = R.dimen.design_tab_text_size_2line;
-		final int res2 =  R.dimen.design_tab_scrollable_min_width;
-
 		HashSet resSet = new HashSet();
 
-		Class resourcesClass = ClassHunter.loadClass("android.content.res.Resources", param.getClassLoader());
+		Class sizeHElperClass = ClassHunter.loadClass("android.support.v7.widget.AppCompatTextViewAutoSizeHelper", android.support.v7.widget.TintTypedArray.class.getClassLoader());
+
+		Field contextField = sizeHElperClass.getDeclaredField("mContext");
+		contextField.setAccessible(true);
+
+
+		resSet.add( XposedBridge.hookAllConstructors( sizeHElperClass, new XC_MethodHook()
 		{
-
-			resSet.add( XposedHelpers.findAndHookMethod(resourcesClass, "getDimensionPixelSize", int.class, new XC_MethodHook()
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
 			{
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param)
+				try
 				{
-					int id = (int)param.args[0];
-
-					if (id == res1 || id == res2)
-					{
-						//param.setResult((int)10);
-						param.setResult( (int) getModuleContext().getResources().getDimension(id) );
-					}
+					contextField.set(param.thisObject, ContextUtils.getModuleContext());
 
 				}
-			}));
-		}
+				catch (Exception ex )
+				{
+					Log.e(LOGTAG, "Failed to set context");
+					ex.printStackTrace();
+				}
 
+			}
+		}));
+
+
+		Class backgroundHelper = ClassHunter.loadClass("android.support.v7.widget.AppCompatBackgroundHelper", android.support.v7.widget.TintTypedArray.class.getClassLoader());
+		Method backgroundHelper_loadFromAttributes = ProfileHelpers.findFirstMethodByName( backgroundHelper.getDeclaredMethods(),  "loadFromAttributes");
+
+		resSet.add( XposedBridge.hookMethod(backgroundHelper_loadFromAttributes, new XC_MethodHook()
+		{
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param)
+			{
+				param.setResult(null);
+			}
+		}));
+
+
+		Method stateListMethod = ProfileHelpers.findFirstMethodByName( android.support.v7.widget.TintTypedArray.class.getDeclaredMethods(),  "getColorStateList");
 
 		// Note that we are getting the class loader of the module ( exi ), not swiftkey.
-		Class moduleAppCompatResourcesClass = ClassHunter.loadClass("android.support.v7.content.res.AppCompatResources", EmojiHooks.class.getClassLoader());
-
-		resSet.add( XposedHelpers.findAndHookMethod(moduleAppCompatResourcesClass, "getColorStateList", Context.class, int.class, new XC_MethodHook()
+		resSet.add( XposedBridge.hookMethod(stateListMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param)
@@ -311,10 +309,51 @@ public class EmojiHooks
 		}));
 
 
+
+
+		Class tabViewclass = ClassHunter.loadClass("android.support.design.widget.TabLayout$TabView", param.getClass().getClassLoader() );
+		Method updateTabMethod = ProfileHelpers.firstMethodByName( tabViewclass.getDeclaredMethods(), "update" );
+
+		Field tabView_tabField = tabViewclass.getDeclaredField("tab");
+		tabView_tabField.setAccessible(true);
+
+		// tab layout's update must never be called with a tab that doens't have a custom view set, as this will make it attempt to load an inaccessible resource
+		resSet.add(XposedBridge.hookMethod(updateTabMethod, new XC_MethodHook()
+		{
+			boolean inCall = false;
+
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				if (!inCall)
+				{
+					inCall = true;
+
+					Method superMethod = (Method) param.method;
+					try
+					{
+						superMethod.invoke(param.thisObject, param.args);
+					}
+					catch ( Exception ex)
+					{
+						// Expected
+					}
+
+					param.setResult(null);
+
+					inCall = false;
+				}
+
+
+			}
+
+		}));
+
+
 		return resSet;
 	}
 
-	public static XC_MethodHook.Unhook hookCheckAppCompat(PackageTree param)
+	public static Set<XC_MethodHook.Unhook> hookCheckAppCompat(PackageTree param) throws NoSuchFieldException
 	{
 		//TabLayout (design lib) requires that the parent theme extends AppCompat. Swiftkey does not.
 		//This used to work fine, but suddenly started trggering the check. Not a support lib change, can't figure it out.
@@ -322,13 +361,15 @@ public class EmojiHooks
 		//Since we can't track down what broke it, we'll just... preventing the exception instead.
 		//This is fine.
 
+		HashSet<XC_MethodHook.Unhook> hooks = new HashSet<>();
+
 		//Note that we are using getClass().getClassLoader() instead of the classloader stored in param. This is because the class belongs to us,
 		//not swiftkey, and is thus not present in the other classloader.
-		Class themeUtilsClass = ClassHunter.loadClass("android.support.design.widget.ThemeUtils", param.getClass().getClassLoader() );
-		Method ThemeUtilsClass_checkAppCompatThemeMethod = ProfileHelpers.firstMethodByName(themeUtilsClass.getDeclaredMethods(), "checkAppCompatTheme");
+		Class themeUtilsClass = ClassHunter.loadClass("android.support.design.internal.ThemeEnforcement", param.getClass().getClassLoader() );
+		Method ThemeUtilsClass_checkAppCompatThemeMethod = ProfileHelpers.firstMethodByName(themeUtilsClass.getDeclaredMethods(), "checkTheme");
+		Method ThemeUtilsClass_checkTextAppearance = ProfileHelpers.firstMethodByName(themeUtilsClass.getDeclaredMethods(), "checkTextAppearance");
 
-
-		return XposedBridge.hookMethod(ThemeUtilsClass_checkAppCompatThemeMethod, new XC_MethodHook()
+		hooks.add(XposedBridge.hookMethod(ThemeUtilsClass_checkAppCompatThemeMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -336,130 +377,23 @@ public class EmojiHooks
 				//I am okay with this.
 				param.setResult(null);
 			}
-		});
-
-
-	}
-
-
-
-	//This is actually the the individual icon views in our own TabLayout.
-	//At some point it inflates a layout consisting of a single imageview, but fails:
-	//"Caused by: java.lang.ClassNotFoundException: Didn't find class "android.view.set" on path"
-	//During an update it checks if if mIconView is null, and inflates it if necessary.
-	//Fix by hooking constructor and setting it ourselves.
-	//Same for the textview, it just fails to find that one (which is what should happen)
-	public static Set<XC_MethodHook.Unhook> hookTabView() throws NoSuchFieldException
-	{
-
-		Set<XC_MethodHook.Unhook> returnSet = new HashSet<>();
-
-		Class TabLayoutClass = TabLayout.class;
-		Class[] innerClasses = TabLayoutClass.getDeclaredClasses();
-		Class tabViewClass = null;
-		for (int i = 0; i < innerClasses.length; i++)
-		{
-			//Log.e("###", "Checking class: "+innerClasses[i].getSimpleName());
-			if (innerClasses[i].getSimpleName().equals("TabView"))
-			{
-				tabViewClass = innerClasses[i];
-				break;
-			}
-		}
-
-
-		final Field tabViewClass_mIconViewField = tabViewClass.getDeclaredField("mIconView");
-		tabViewClass_mIconViewField.setAccessible(true);
-		final Field tabViewClass_mTextViewField = tabViewClass.getDeclaredField("mTextView");
-		tabViewClass_mTextViewField.setAccessible(true);
-
-
-		//XposedHelpers.findAndHookMethod(EmojiClassManager.keyboardServiceClass, "onStartInputView", EditorInfo.class, boolean.class, new XC_MethodHook()
-		returnSet.addAll( XposedBridge.hookAllConstructors(tabViewClass, new XC_MethodHook()
-		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
-			{
-				//Only has a single constructor taking a context
-
-				//Context context =(Context)param.args[0];
-				View thiz = (View)param.thisObject;
-
-				Context context = thiz.getContext();
-				Context moduleContext = getModuleContext();
-
-
-				//////////////
-				//Icon view
-				//////////////
-				int viewSize = (int)moduleContext.getResources().getDimension(R.dimen.design_layout_tab_icon_size);
-				ImageView imageView = new ImageView(context);
-				{
-					ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(viewSize,viewSize);
-					imageView.setLayoutParams(params);
-					imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-				}
-
-				tabViewClass_mIconViewField.set(thiz, imageView);
-
-
-				/////////////
-				//Text view
-				/////////////
-
-				//We use a custom view, so none of this actually matters to us.
-
-				TextView textView = new TextView(context);
-				{
-					ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-					textView.setLayoutParams(params);
-					textView.setEllipsize(TextUtils.TruncateAt.END);
-					textView.setGravity(Gravity.CENTER);
-					textView.setMaxLines(2);
-
-					textView.setText("hookButtonOrder");
-					textView.setTextSize(56);
-					textView.setTextColor(Color.RED);
-
-				}
-
-				tabViewClass_mTextViewField.set(thiz, textView);
-
-				////////////////////
-				//More broken stuff
-				////////////////////
-
-
-			}
 		}));
 
 
-
-		//tablayout views are not being added in hook context.
-		//Temp workaround is to just add them manually
-		//We actually use a custom view now so this bit isn't needed,
-		//but I tried to remove it once and it broke so... voodoo.
-		returnSet.addAll( XposedBridge.hookAllMethods(tabViewClass, "update", new XC_MethodHook()
+		hooks.add(XposedBridge.hookMethod(ThemeUtilsClass_checkTextAppearance, new XC_MethodHook()
 		{
 			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
-				LinearLayout view = (LinearLayout) param.thisObject;
-
-				view.setVisibility(View.VISIBLE);
-
-				ImageView imageView = (ImageView) tabViewClass_mIconViewField.get(view);
-
-				//Log.e("###","Child count: "+view.getChildCount());
-				if (view.getChildCount() == 0)
-				{
-					view.addView(imageView);
-				}
+				//I am okay with this.
+				param.setResult(null);
 			}
-		}) );
+		}));
 
-		return returnSet;
+		return hooks;
+
 	}
+
 
 	private static String lastAuthority = null;
 
@@ -537,8 +471,7 @@ public class EmojiHooks
 			if (Hooks.emojiHooks_base.isRequirementsMet())
 			{
 				//Various non-swiftkey fixes
-				Hooks.emojiHooks_base.add( hookCheckAppCompat(param) );
-				Hooks.emojiHooks_base.addAll( hookTabView() );
+				Hooks.emojiHooks_base.addAll( hookCheckAppCompat(param) );
 				Hooks.emojiHooks_base.addAll( hookResourceLookup(param) );
 
 				//Swiftkey hooks
