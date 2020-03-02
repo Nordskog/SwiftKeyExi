@@ -76,13 +76,6 @@ public class PriorityKeyboardClassManager
 		PriorityKeyboardClassManager.keyboardLoaderClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_CLASS_PROFILE(), param );
 		PriorityKeyboardClassManager.keyboardLoaderPreferenceClass = ProfileHelpers.loadProfiledClass( KeyProfiles.get_KEYBOARD_LOADER_PREFERENCE_CLASS_PROFILE(), param );
 
-		//TODO remove backwards compatibility targeting < 7.4.3.32
-		if (  ProfileHelpers.findFirstMethodByName( keyboardLoaderPreferenceClass.getDeclaredMethods(), "onSharedPreferenceChanged") == null )
-		{
-			// Used to be same class.
-			keyboardLoaderPreferenceClass = keyboardLoaderClass;
-		}
-
 		PriorityKeyboardClassManager.FullKeyboardServiceDelegate = ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_FULL_KEYBOARD_SERVICE_DELEGATE_CLASS_PROFILE(), param );
 	}
 

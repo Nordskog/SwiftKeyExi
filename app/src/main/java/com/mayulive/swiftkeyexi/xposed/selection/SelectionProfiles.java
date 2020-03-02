@@ -1203,9 +1203,8 @@ public class SelectionProfiles
 		newProfile.setFullPath("yr3");
 		newProfile.setKnownPath("");
 
-		//TODO change to 0/0 once 7.4.0.17 goes stable
 		newProfile.setMinDepth(0);
-		newProfile.setMaxDepth(4);
+		newProfile.setMaxDepth(0);
 		newProfile.setModifiers(PUBLIC );
 
 		newProfile.setTypeParamCount(0);
