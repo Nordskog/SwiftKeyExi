@@ -75,6 +75,7 @@
     <string name="pref_emoji_force_version_auto">Auto</string>
     <string name="pref_emoji_force_version_pre_nougat">Pre Nougat</string>
     <string name="pref_emoji_force_version_post_nougat">Post Nougat</string>
+    <string name="pref_emoji_force_version_post_pie">Post Pie</string>
 
     <!-- Emoji click vibrate -->
     <string name="pref_emoji_tap_vibrate_key">pref_emoji_tap_vibrate</string>

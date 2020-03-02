@@ -678,6 +678,8 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 				manager.setJustifyContent(JustifyContent.SPACE_AROUND);
 			}
 
+			// Flexbox makes the scrollbar all wonky, so let's disable it.
+			this.setScrollbarEnabled(false);
 			mGridLayoutManager = manager;
 			this.setLayoutManager(mGridLayoutManager);
 		}
@@ -693,11 +695,14 @@ public class NormalEmojiPanelView extends ScrollbarRecyclerView implements Emoji
 				manager = new GridLayoutManager(this.getContext(), EmojiResources.calculateColCount(this.getContext(), mViewWidth, mItemWidth));
 			}
 
+			this.setScrollbarEnabled(true);
 			mGridLayoutManager = manager;
 			if (updateGridColumns)
 				manager.setSpanCount( EmojiResources.calculateColCount(this.getContext(), this.getMeasuredWidth(), mItemWidth ) );
 			this.setLayoutManager(mGridLayoutManager);
 		}
+
+
 
 	}
 

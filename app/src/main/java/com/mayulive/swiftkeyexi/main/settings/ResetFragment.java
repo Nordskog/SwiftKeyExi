@@ -104,9 +104,7 @@ public class ResetFragment extends PreferenceFragmentCompat
 						ExiModule.clear(getContext(), mDbWrap, type);
 
 						SharedPreferences prefs = SettingsCommons.getSharedPreferences(ResetFragment.this.getContext());
-						FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref(
-								prefs.getString(PreferenceConstants.pref_emoji_force_version_key, "AUTO")
-						);
+						FancyEmojiPanelTemplates.EmojiPanelVersion newVersion = FancyEmojiPanelTemplates.EmojiPanelVersion.getFromPref( ExiModule.EMOJI_PANEL_VERSION.get(getContext(), FancyEmojiPanelTemplates.EmojiPanelVersion.AUTO));
 
 
 						ExiModule.loadDefaults(getContext(), mDbWrap, type, newVersion.getSdkVersion());

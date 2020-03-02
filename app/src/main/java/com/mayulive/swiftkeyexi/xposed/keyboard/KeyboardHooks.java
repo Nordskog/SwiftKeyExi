@@ -166,7 +166,7 @@ public class KeyboardHooks
 
 					if (!NormalEmojiItem.isAssetsLoaded())
 					{
-						NormalEmojiItem.loadAssets( FontProvider.getFont(ContextUtils.getHookContext(), "NotoEmoji_der_nougat.ttf") );
+						NormalEmojiItem.loadAssets( FontProvider.getFont(ContextUtils.getHookContext(), "NotoEmoji_der_ten.ttf") );
 					}
 
 					for (KeyboardMethods.KeyboardEventListener listener : KeyboardMethods.mKeyboardEventListeners)

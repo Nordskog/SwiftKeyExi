@@ -131,7 +131,7 @@ public class EmojiPanelPagerAdapter extends PagerAdapter
 					mConfigMode && mType == EmojiFragment.EmojiPanelType.DICTIONARY );
 
 			//I have no idea what I'm doing with these settings
-			newPanel.setHasFixedSize(true);
+			newPanel.setHasFixedSize(false);
 			newPanel.setItemViewCacheSize(20);
 			//newPanel.setDrawingCacheEnabled(true);
 			//newPanel.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
