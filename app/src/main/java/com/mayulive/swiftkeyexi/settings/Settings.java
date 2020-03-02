@@ -109,7 +109,7 @@ public class Settings
 	//Transparent keyboard is transparent
 	public static float KEYBOARD_OPACITY = 1f;
 
-	public static boolean SWIPE_RTL_MODE_ENABLED = true;
+	public static boolean SWIPE_RTL_MODE_ENABLED = false;
 
 	public static boolean HIDE_PREDICTIONS_BAR = false;
 
@@ -164,7 +164,7 @@ public class Settings
 		HARDWARE_KEY_REMAP_ONLY_IN_KEYBOARD = prefs.getBoolean(PreferenceConstants.pref_hardware_remap_only_in_keyboard_key, false);
 
 
-		SWIPE_RTL_MODE_ENABLED = prefs.getBoolean(PreferenceConstants.pref_swipe_rtl_mode_key, true);
+		SWIPE_RTL_MODE_ENABLED = prefs.getBoolean(PreferenceConstants.pref_swipe_rtl_mode_key, false);
 
 		SWIPE_SELECTION_BEHAVIOR = SelectionBehavior.valueOf
 				(
