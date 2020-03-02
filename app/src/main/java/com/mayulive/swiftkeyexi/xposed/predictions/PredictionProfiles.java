@@ -388,7 +388,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("qs2");
+		newProfile.setFullPath("rv2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -462,7 +462,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.util.List.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -482,6 +482,46 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
+										new ClassItem(java.util.List.class)
+
+								),
+
+						//Method #6: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #7: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #8: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #9: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
 										new ClassItem(int.class),
@@ -492,7 +532,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #6: a
+						//Method #10: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -504,18 +544,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #7: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.inputmethod.CompletionInfo.class)
-
-								),
-
-						//Method #8: a
+						//Method #11: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -528,7 +557,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #9: a
+						//Method #12: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -542,7 +571,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #10: a
+						//Method #13: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -553,7 +582,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #11: a
+						//Method #14: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -564,7 +593,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #12: a
+						//Method #15: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -576,7 +605,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #13: a
+						//Method #16: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -589,7 +618,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #14: a
+						//Method #17: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -600,7 +629,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #15: a
+						//Method #18: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -611,7 +640,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #16: a
+						//Method #19: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -625,7 +654,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #17: a
+						//Method #20: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -641,7 +670,19 @@ public class PredictionProfiles
 
 								),
 
-						//Method #18: a
+						//Method #21: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #22: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -652,7 +693,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #19: a
+						//Method #23: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -664,7 +705,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #20: a
+						//Method #24: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -677,7 +718,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #21: a
+						//Method #25: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -688,19 +729,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #22: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #23: a
+						//Method #26: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -711,7 +740,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #24: a
+						//Method #27: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -723,47 +752,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #25: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #26: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #27: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
 						//Method #28: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #29: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -773,7 +762,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #30: a
+						//Method #29: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -785,7 +774,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #31: a
+						//Method #30: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -797,7 +786,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #32: a
+						//Method #31: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -812,11 +801,21 @@ public class PredictionProfiles
 
 								),
 
-						//Method #33: b
+						//Method #32: b
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class)
+
+								),
+
+						//Method #33: b
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -852,12 +851,10 @@ public class PredictionProfiles
 
 								),
 
-						//Method #37: b
+						//Method #37: c
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
@@ -866,7 +863,9 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -876,18 +875,18 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class)
 
 								),
 
-						//Method #40: c
+						//Method #40: d
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -897,7 +896,8 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -905,18 +905,17 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class)
+										new ClassItem(boolean.class)
 
 								),
 
-						//Method #43: d
+						//Method #43: e
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class)
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -924,17 +923,15 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(boolean.class)
 
 								),
 
-						//Method #45: e
+						//Method #45: f
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(boolean.class)
+										new ClassItem(void.class)
 
 								),
 
@@ -942,21 +939,13 @@ public class PredictionProfiles
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class)
-
-								),
-
-						//Method #47: f
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
-						//Method #48: g
+						//Method #47: g
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -964,7 +953,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #49: h
+						//Method #48: h
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -972,7 +961,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #50: i
+						//Method #49: i
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -980,7 +969,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #51: j
+						//Method #50: j
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -988,7 +977,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #52: k
+						//Method #51: k
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -996,7 +985,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #53: l
+						//Method #52: l
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -1004,7 +993,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #54: m
+						//Method #53: m
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -1012,7 +1001,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #55: n
+						//Method #54: n
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -1020,7 +1009,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #56: o
+						//Method #55: o
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -1028,7 +1017,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #57: onDestroy
+						//Method #56: onDestroy
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -1036,7 +1025,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #58: onLanguageLoadStateChanged
+						//Method #57: onLanguageLoadStateChanged
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -1047,7 +1036,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #59: p
+						//Method #58: p
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -1055,7 +1044,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #60: q
+						//Method #59: q
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -1082,7 +1071,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("Sta");
+		newProfile.setFullPath("yu2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1133,7 +1122,6 @@ public class PredictionProfiles
 						"RICH_TEXT_CONTENT_AFTER_FLOW",
 						"CLIPBOARD_AFTER_FLOW",
 						"HANDWRITING_AFTER_FLOW",
-						"AUTO_COMMIT_STABILISED_TOKEN",
 						"COMMIT_UNCOMMITTED_TEXT",
 						"FLOW_AUTO_COMMIT",
 						"SINGLE_LETTER_BEFORE_FLOW",
@@ -1167,11 +1155,10 @@ public class PredictionProfiles
 						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//J
 						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//K
 						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//L
-						new FieldItem( PUBLIC | STATIC | FINAL | SYNTHETIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | ARRAY | EXACT )),	//M
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//a
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//b
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//c
-						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//d
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//M
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//N
+						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//O
+						new FieldItem( PUBLIC | STATIC | FINAL | SYNTHETIC | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | ARRAY | EXACT )),	//P
 						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//e
 						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//f
 						new FieldItem( PUBLIC | STATIC | FINAL | ENUM | EXACT , 	new ClassItem("" , PUBLIC | FINAL | ENUM | THIS | EXACT )),	//g
