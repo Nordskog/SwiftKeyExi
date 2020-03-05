@@ -202,6 +202,14 @@ public class EmojiHooks
 								EmojiHookCommons.mEmojiPanelTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 								EmojiHookCommons.mEmojiPanelTabs.setTabGravity(TabLayout.GRAVITY_CENTER);
 
+
+								EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
+
+								//If no min is set they're all super wide,
+								//if set to 0 they're all tiny.
+								EmojiHookCommons.mEmojiPanelTabs.setTabMinWidth( (int)(dimens.default_singleEmojiWidth * 1.1f) );
+
+
 								EmojiHookCommons.mEmojiPanelAdapter.setProvidePageTitles(false);
 								EmojiHookCommons.mEmojiPanelAdapter.setupWithFixedTabLayout(EmojiHookCommons.mEmojiPanelTabs);
 

@@ -335,6 +335,8 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			tabs = mDictionaryTabIndicator;
 		}
 
+		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(this.getContext());
+		tabs.setTabMinWidth( (int)(dimens.default_singleEmojiWidth * 1.1f) );
 
 		pager.setAdapter(pagerAdapter);
 

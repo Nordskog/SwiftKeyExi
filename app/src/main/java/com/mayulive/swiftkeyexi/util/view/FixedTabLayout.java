@@ -71,6 +71,20 @@ public class FixedTabLayout extends TabLayout
 		return view;
 	}
 
+	public void setTabMinWidth(int value)
+	{
+		Field field;
+		try {
+			field = TabLayout.class.getDeclaredField("requestedTabMinWidth");
+			field.setAccessible(true);
+			field.set(this, value);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private ViewParent getParentFieldValue()
 	{
 		if (mParentField != null)
