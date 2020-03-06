@@ -2,26 +2,21 @@ package com.mayulive.swiftkeyexi.xposed.emoji;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.inputmethodservice.Keyboard;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.ViewUtils;
-import android.text.TextUtils;
+
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.ViewUtils;
+
+import android.content.res.XmlResourceParser;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
-import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiFragment;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiModifiersPopup;
 import com.mayulive.swiftkeyexi.main.emoji.data.EmojiItem;
@@ -29,12 +24,9 @@ import com.mayulive.swiftkeyexi.main.emoji.data.EmojiPanelItem;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelPagerAdapter;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelView;
-import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
-import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.util.view.FixedViewPager;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiPanelItem;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiPanelTabLayout;
@@ -52,9 +44,6 @@ import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
-
-import static com.mayulive.swiftkeyexi.util.ContextUtils.getModuleContext;
 
 public class EmojiHooks 
 {
@@ -202,14 +191,6 @@ public class EmojiHooks
 								EmojiHookCommons.mEmojiPanelTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 								EmojiHookCommons.mEmojiPanelTabs.setTabGravity(TabLayout.GRAVITY_CENTER);
 
-
-								EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
-
-								//If no min is set they're all super wide,
-								//if set to 0 they're all tiny.
-								EmojiHookCommons.mEmojiPanelTabs.setTabMinWidth( (int)(dimens.default_singleEmojiWidth * 1.1f) );
-
-
 								EmojiHookCommons.mEmojiPanelAdapter.setProvidePageTitles(false);
 								EmojiHookCommons.mEmojiPanelAdapter.setupWithFixedTabLayout(EmojiHookCommons.mEmojiPanelTabs);
 
@@ -262,46 +243,43 @@ public class EmojiHooks
 	{
 		HashSet resSet = new HashSet();
 
-		Class sizeHElperClass = ClassHunter.loadClass("android.support.v7.widget.AppCompatTextViewAutoSizeHelper", android.support.v7.widget.TintTypedArray.class.getClassLoader());
+		Method getLayoutMethod = ProfileHelpers.findFirstMethodByName( android.content.res.Resources.class.getDeclaredMethods(), "getLayout" );
 
-		Field contextField = sizeHElperClass.getDeclaredField("mContext");
-		contextField.setAccessible(true);
-
-
-		resSet.add( XposedBridge.hookAllConstructors( sizeHElperClass, new XC_MethodHook()
-		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
-				try
-				{
-					contextField.set(param.thisObject, ContextUtils.getModuleContext());
-
-				}
-				catch (Exception ex )
-				{
-					Log.e(LOGTAG, "Failed to set context");
-					ex.printStackTrace();
-				}
-
-			}
-		}));
-
-
-		Class backgroundHelper = ClassHunter.loadClass("android.support.v7.widget.AppCompatBackgroundHelper", android.support.v7.widget.TintTypedArray.class.getClassLoader());
-		Method backgroundHelper_loadFromAttributes = ProfileHelpers.findFirstMethodByName( backgroundHelper.getDeclaredMethods(),  "loadFromAttributes");
-
-		resSet.add( XposedBridge.hookMethod(backgroundHelper_loadFromAttributes, new XC_MethodHook()
+		resSet.add( XposedBridge.hookMethod( getLayoutMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param)
 			{
-				param.setResult(null);
+				switch ( (int) param.args[0] )
+				{
+					case R.layout.design_layout_tab_icon:
+					case R.layout.design_layout_tab_text:
+					{
+						try
+						{
+							XmlResourceParser parser = ContextUtils.getModuleContext().getResources().getLayout( (int) param.args[0] );
+							param.setResult(parser);
+						}
+						catch ( Exception ex )
+						{
+							Log.e(LOGTAG, "Problem hooking layout inflate");
+							ex.printStackTrace();
+						}
+
+					}
+
+
+					default:
+						break;
+
+				}
+
+
 			}
 		}));
 
 
-		Method stateListMethod = ProfileHelpers.findFirstMethodByName( android.support.v7.widget.TintTypedArray.class.getDeclaredMethods(),  "getColorStateList");
+		Method stateListMethod = ProfileHelpers.findFirstMethodByName( androidx.appcompat.widget.TintTypedArray.class.getDeclaredMethods(),  "getColorStateList");
 
 		// Note that we are getting the class loader of the module ( exi ), not swiftkey.
 		resSet.add( XposedBridge.hookMethod(stateListMethod, new XC_MethodHook()
@@ -316,48 +294,6 @@ public class EmojiHooks
 			}
 		}));
 
-
-
-
-		Class tabViewclass = ClassHunter.loadClass("android.support.design.widget.TabLayout$TabView", param.getClass().getClassLoader() );
-		Method updateTabMethod = ProfileHelpers.firstMethodByName( tabViewclass.getDeclaredMethods(), "update" );
-
-		Field tabView_tabField = tabViewclass.getDeclaredField("tab");
-		tabView_tabField.setAccessible(true);
-
-		// tab layout's update must never be called with a tab that doens't have a custom view set, as this will make it attempt to load an inaccessible resource
-		resSet.add(XposedBridge.hookMethod(updateTabMethod, new XC_MethodHook()
-		{
-			boolean inCall = false;
-
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
-			{
-				if (!inCall)
-				{
-					inCall = true;
-
-					Method superMethod = (Method) param.method;
-					try
-					{
-						superMethod.invoke(param.thisObject, param.args);
-					}
-					catch ( Exception ex)
-					{
-						// Expected
-					}
-
-					param.setResult(null);
-
-					inCall = false;
-				}
-
-
-			}
-
-		}));
-
-
 		return resSet;
 	}
 
@@ -371,9 +307,10 @@ public class EmojiHooks
 
 		HashSet<XC_MethodHook.Unhook> hooks = new HashSet<>();
 
+
 		//Note that we are using getClass().getClassLoader() instead of the classloader stored in param. This is because the class belongs to us,
 		//not swiftkey, and is thus not present in the other classloader.
-		Class themeUtilsClass = ClassHunter.loadClass("android.support.design.internal.ThemeEnforcement", param.getClass().getClassLoader() );
+		Class themeUtilsClass = ClassHunter.loadClass("com.google.android.material.internal.ThemeEnforcement", param.getClass().getClassLoader() );
 		Method ThemeUtilsClass_checkAppCompatThemeMethod = ProfileHelpers.firstMethodByName(themeUtilsClass.getDeclaredMethods(), "checkTheme");
 		Method ThemeUtilsClass_checkTextAppearance = ProfileHelpers.firstMethodByName(themeUtilsClass.getDeclaredMethods(), "checkTextAppearance");
 
@@ -397,6 +334,8 @@ public class EmojiHooks
 				param.setResult(null);
 			}
 		}));
+
+
 
 		return hooks;
 

@@ -1,7 +1,7 @@
 package com.mayulive.swiftkeyexi.main.emoji;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 import com.mayulive.swiftkeyexi.R;
 

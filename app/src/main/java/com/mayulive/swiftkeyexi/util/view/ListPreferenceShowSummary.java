@@ -1,8 +1,8 @@
 package com.mayulive.swiftkeyexi.util.view;
 
 import android.content.Context;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import android.util.AttributeSet;
 
 /**

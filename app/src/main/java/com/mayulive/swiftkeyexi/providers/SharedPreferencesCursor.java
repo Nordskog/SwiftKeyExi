@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -25,7 +25,7 @@
         android:background="?attr/textColor"
         ></FrameLayout>
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/seek_bar"
         android:layout_centerInParent="true"
         android:layout_weight="1"

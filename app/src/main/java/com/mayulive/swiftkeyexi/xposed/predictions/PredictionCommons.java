@@ -1,28 +1,22 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
-import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryWordItem;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

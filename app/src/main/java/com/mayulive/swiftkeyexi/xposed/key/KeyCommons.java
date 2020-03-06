@@ -1,7 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.key;
 
 import android.graphics.RectF;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.inputmethod.InputConnection;
 

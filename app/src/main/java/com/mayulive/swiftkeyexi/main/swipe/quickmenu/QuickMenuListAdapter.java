@@ -1,13 +1,11 @@
 package com.mayulive.swiftkeyexi.main.swipe.quickmenu;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.view.MotionEventCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,9 +19,7 @@ import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.xposed.KeyboardInteraction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Created by Roughy on 9/22/2017.

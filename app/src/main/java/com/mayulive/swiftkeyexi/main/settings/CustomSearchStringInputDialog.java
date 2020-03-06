@@ -3,14 +3,13 @@ package com.mayulive.swiftkeyexi.main.settings;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.mayulive.swiftkeyexi.R;
-import com.mayulive.swiftkeyexi.main.popupkeys.data.DB_PopupParentKeyItem;
 
 /**
  * Created by Roughy on 5/4/2017.

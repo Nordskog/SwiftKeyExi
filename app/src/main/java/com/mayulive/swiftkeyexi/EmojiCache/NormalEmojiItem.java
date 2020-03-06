@@ -2,13 +2,11 @@ package com.mayulive.swiftkeyexi.EmojiCache;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-
-import com.mayulive.swiftkeyexi.R;
 
 /**
  * Created by Roughy on 12/3/2016.

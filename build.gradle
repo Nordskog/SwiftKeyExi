@@ -47,6 +47,7 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
     mavenCentral()
+    google()
 }
 
 // In this section you declare the dependencies for your production and test code

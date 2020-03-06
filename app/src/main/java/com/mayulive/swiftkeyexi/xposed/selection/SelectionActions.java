@@ -3,7 +3,7 @@ package com.mayulive.swiftkeyexi.xposed.selection;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Vibrator;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
 

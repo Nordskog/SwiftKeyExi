@@ -1,10 +1,9 @@
 package com.mayulive.swiftkeyexi.main.shortcutkeys;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.main.commons.data.ModifierKeyItem;

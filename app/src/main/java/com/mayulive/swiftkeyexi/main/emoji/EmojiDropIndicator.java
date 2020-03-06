@@ -1,14 +1,13 @@
 package com.mayulive.swiftkeyexi.main.emoji;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.mayulive.swiftkeyexi.R;
 
-public class EmojiDropIndicator extends android.support.v7.widget.AppCompatImageView
+public class EmojiDropIndicator extends androidx.appcompat.widget.AppCompatImageView
 {
 
 

@@ -1,11 +1,10 @@
 package com.mayulive.swiftkeyexi.util;
 
 import android.content.Context;
-import android.support.v4.provider.DocumentFile;
+import androidx.documentfile.provider.DocumentFile;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.backup.Backup;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -15,9 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 

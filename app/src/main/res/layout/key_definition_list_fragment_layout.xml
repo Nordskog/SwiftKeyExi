@@ -38,7 +38,7 @@
 	        >
 	    </ListView>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FloatingButton"
             app:srcCompat="@drawable/add_button_symbol"
             android:id="@+id/addKeyButton"

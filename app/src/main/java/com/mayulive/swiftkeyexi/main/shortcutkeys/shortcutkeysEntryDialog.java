@@ -1,16 +1,14 @@
 package com.mayulive.swiftkeyexi.main.shortcutkeys;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 
 import com.mayulive.swiftkeyexi.main.commons.data.DB_ModifierKeyItem;
 import com.mayulive.swiftkeyexi.R;

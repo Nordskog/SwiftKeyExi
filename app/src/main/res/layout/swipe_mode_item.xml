@@ -8,7 +8,7 @@
     android:layout_gravity="top"
     >
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:id="@+id/swipe_mode_item_image"
         android:layout_height="wrap_content"

@@ -61,7 +61,7 @@
                             android:layout_gravity="bottom"
                             android:layout_height="wrap_content">
 
-                            <android.support.v4.widget.Space
+                            <androidx.legacy.widget.Space
                                 android:layout_width="match_parent"
                                 android:layout_height="35dp"/>
 
@@ -152,7 +152,7 @@
 
 
 
-                    <android.support.v7.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_gravity="right|center_vertical"
                         android:id="@+id/swipe_direction_switch_button"
                         android:layout_width="30dp"
@@ -235,7 +235,7 @@
                     <include layout="@layout/swipe_mode_item"
                              android:id="@+id/space_modifier_select_mode_menu"/>
 
-                    <android.support.v7.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/quick_menu_config_button"
                                 android:layout_width="50dp"
                                  android:layout_height="50dp"
@@ -245,7 +245,7 @@
                         >
 
 
-                    </android.support.v7.widget.AppCompatImageView>
+                    </androidx.appcompat.widget.AppCompatImageView>
 
 
                 </FrameLayout>
@@ -264,7 +264,7 @@
 
     </ScrollView>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         style="@style/FloatingButton"
         app:srcCompat="@drawable/ic_keyboardbutton"
         android:id="@+id/testkeyboardbutton"

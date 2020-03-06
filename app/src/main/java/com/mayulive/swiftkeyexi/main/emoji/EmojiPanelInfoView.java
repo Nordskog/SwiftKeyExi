@@ -2,8 +2,8 @@ package com.mayulive.swiftkeyexi.main.emoji;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.Nullable;
-import android.text.Editable;
+import androidx.annotation.Nullable;
+
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;

@@ -1,41 +1,29 @@
 package com.mayulive.swiftkeyexi.main.settings;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.provider.DocumentFile;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
+import androidx.documentfile.provider.DocumentFile;
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.MainActivity;
 import com.mayulive.swiftkeyexi.R;
 import com.mayulive.swiftkeyexi.backup.Backup;
-import com.mayulive.swiftkeyexi.database.DatabaseHolder;
-import com.mayulive.swiftkeyexi.database.WrappedDatabase;
-import com.mayulive.swiftkeyexi.main.emoji.data.FancyEmojiPanelTemplates;
-import com.mayulive.swiftkeyexi.main.swipe.SwipeFragment;
-import com.mayulive.swiftkeyexi.main.swipe.quickmenu.QuickMenuActivity;
-import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.SettingsCommons;
 import com.mayulive.swiftkeyexi.util.FileUtils;
 
 import java.io.File;
-import java.net.URLConnection;
-import java.util.zip.Inflater;
 
 /**
  * Created by Roughy on 1/4/2017.

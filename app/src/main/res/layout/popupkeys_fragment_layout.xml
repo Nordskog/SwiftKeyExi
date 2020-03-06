@@ -21,14 +21,14 @@
         android:orientation="vertical"
         >
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FloatingButton"
             app:srcCompat="@drawable/add_button_symbol"
             android:id="@+id/addPopupkeyButton"
             />
 
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FloatingButton"
             app:srcCompat="@drawable/ic_keyboardbutton"
             android:id="@+id/testkeyboardbutton"

@@ -2,7 +2,7 @@ package com.mayulive.swiftkeyexi.main.popupkeys;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
