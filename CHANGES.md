@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+
+## [2.6.5] - 07-03-2020
+### Fixed
+ - Emoji panel tab icons not displaying no some devices
+ - Some emoji missing skin tone modifiers
+ - Some emoji missing triangle indicating they support skin tones
+ - Insert Newline action not working when triggered via hotkey
+
 ## [2.6.0] - 02-03-2020
 ### Added
  - Auto-width emoji panels
