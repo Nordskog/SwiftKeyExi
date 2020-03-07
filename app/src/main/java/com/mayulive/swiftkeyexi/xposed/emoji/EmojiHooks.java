@@ -241,15 +241,22 @@ public class EmojiHooks
 
 	public static Set<XC_MethodHook.Unhook> hookResourceLookup( PackageTree param) throws NoSuchMethodException, NoSuchFieldException
 	{
-		HashSet resSet = new HashSet();
+		HashSet<XC_MethodHook.Unhook> resSet = new HashSet();
 
 		Method getLayoutMethod = ProfileHelpers.findFirstMethodByName( android.content.res.Resources.class.getDeclaredMethods(), "getLayout" );
 
 		resSet.add( XposedBridge.hookMethod( getLayoutMethod, new XC_MethodHook()
 		{
+			boolean inHook = false;
+
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param)
 			{
+				if (inHook)
+					return;
+
+				inHook = true;
+
 				switch ( (int) param.args[0] )
 				{
 					case R.layout.design_layout_tab_icon:
@@ -274,6 +281,7 @@ public class EmojiHooks
 
 				}
 
+				inHook = false;
 
 			}
 		}));
