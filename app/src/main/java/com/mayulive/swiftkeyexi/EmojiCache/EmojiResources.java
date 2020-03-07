@@ -78,6 +78,7 @@ public class EmojiResources
 		dimens.configured_singleEmojiWidth =  dimens.configured_emojiTextSize * 2; //(int)calculatePixelFromDp(context, SINGLE_EMOJI_ITEM_WIDTH_DP);
 
 		ImageEmojiItem.updateDiverseIndicator(context);
+		NormalEmojiItem.updateDiverseIndicator(context);
 
 		return changed;
 	}

@@ -28,8 +28,8 @@ import java.util.Arrays;
 public class ImageEmojiItem extends ImageView implements EmojiContainer
 {
 
-	private static final int DIVERSE_INDICATOR_LIGHT = 0xFFcbcdce;
-	private static final int DIVERSE_INDICATOR_DARK = 0xFF4d4e53;
+	protected static final int DIVERSE_INDICATOR_LIGHT = 0xFFcbcdce;
+	protected static final int DIVERSE_INDICATOR_DARK = 0xFF4d4e53;
 
 	private boolean mSingleLine = false;
 	boolean mRenderImmediate = false;

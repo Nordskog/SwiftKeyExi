@@ -1,12 +1,19 @@
 package com.mayulive.swiftkeyexi.EmojiCache;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Typeface;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+
+import com.mayulive.swiftkeyexi.SharedTheme;
 
 /**
  * Created by Roughy on 12/3/2016.
@@ -19,6 +26,19 @@ public class NormalEmojiItem extends AppCompatTextView implements EmojiContainer
 
 	private static boolean mAssetsLoaded = false;
 	private static Typeface mSimpleEmojiFont = null;
+
+	boolean mModifiable = false;
+
+	private static Bitmap mDiverseIndicator = Bitmap.createBitmap(10, 27, Bitmap.Config.RGB_565);
+	private static int mDiverseIndicatorPadding = 15;
+
+	private static Paint mPaint = new Paint();
+	static
+	{
+		mPaint.setColor(Color.LTGRAY);
+		mPaint.setAlpha(75);
+		mPaint.setStyle(Paint.Style.FILL);
+	}
 
 	public NormalEmojiItem(Context context) {
 		super(context);
@@ -138,6 +158,68 @@ public class NormalEmojiItem extends AppCompatTextView implements EmojiContainer
 		super.setText(text);
 	}
 
+	//For drawing diverse emoji indictaor
+	public static void setThemeType(Context context, int themeType)
+	{
+		if (themeType == SharedTheme.DARK_THEME_IDENTIFIER)
+			mPaint.setColor(ImageEmojiItem.DIVERSE_INDICATOR_DARK);
+		else
+			mPaint.setColor(ImageEmojiItem.DIVERSE_INDICATOR_LIGHT);
+
+		updateDiverseIndicator(context);
+	}
+
+	protected static void updateDiverseIndicator(Context context)
+	{
+		EmojiResources.EmojiPixelDimensions dimens = EmojiResources.getDimensions(context);
+
+		int indicatorSize = (int)(dimens.configured_singleEmojiWidth*0.15f);
+		mDiverseIndicator = Bitmap.createBitmap(indicatorSize, indicatorSize, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(mDiverseIndicator);
+
+
+		float[] positions = new float[6];
+
+		positions[0] = indicatorSize;	//Right edge
+		positions[1] = 0;	//Upper limit
+
+		positions[2] = indicatorSize;	//Corner
+		positions[3] = indicatorSize;				//Corner
+
+		positions[4] = 0;	//Bottom left corner
+		positions[5] = indicatorSize;
+
+		Path path = new Path();
+		path.moveTo(positions[0], positions[1]);
+		path.lineTo(positions[2], positions[3]);
+		path.lineTo(positions[4], positions[5]);
+		path.close();
+
+		canvas.drawPath(path,mPaint);
+
+		//Padding based on original size because otherwise things look weird.
+		mDiverseIndicatorPadding = (int)((dimens.default_singleEmojiWidth*0.15f) * 2);
+
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas)
+	{
+		super.onDraw(canvas);
+		if (mModifiable)
+		{
+
+			//Basically just eyeballing this
+			canvas.drawBitmap(
+					mDiverseIndicator,
+					//(this.getMeasuredWidth() / 2) - mDiverseIndicator.getHeight(),
+					(this.getMeasuredWidth() / 2) - (mDiverseIndicatorPadding ) + (this.getMeasuredHeight() / 2),
+					this.getMeasuredHeight() - (mDiverseIndicatorPadding),
+					null
+			);
+		}
+	}
+
 	@Override
 	public String getText()
 	{
@@ -153,6 +235,6 @@ public class NormalEmojiItem extends AppCompatTextView implements EmojiContainer
 	@Override
 	public void setModifable(boolean modifiable)
 	{
-		//Stub, will never be used
+		mModifiable = modifiable;
 	}
 }
