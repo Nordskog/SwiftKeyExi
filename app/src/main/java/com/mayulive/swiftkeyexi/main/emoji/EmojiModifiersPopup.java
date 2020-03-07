@@ -3,8 +3,8 @@ package com.mayulive.swiftkeyexi.main.emoji;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AlertDialog;
-import android.text.Layout;
+import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;

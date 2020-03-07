@@ -1,7 +1,7 @@
 package com.mayulive.swiftkeyexi.main.emoji;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,7 +18,7 @@ import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.NO_POSITION;
+import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
 
 public class emojiPanelAdapter extends HeaderFooterRecyclerAdapter<emojiPanelAdapter.EmojiItemHolder>

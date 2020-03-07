@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.key;
 
 import android.graphics.RectF;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.inputmethod.InputConnection;
 
@@ -305,31 +306,29 @@ public class KeyCommons
 	//Actions
 	///////////////////
 
-	public static boolean PerformTextAction( InputConnection connection, KeyboardInteraction.TextAction action, String text  )
+	public static boolean PerformTextAction( InputConnection connection, KeyboardInteraction.TextAction action  )
+	{
+		return PerformTextAction(connection, action, null);
+	}
+
+	public static boolean PerformTextAction( InputConnection connection, KeyboardInteraction.TextAction action, @Nullable String text  )
 	{
 		if (action == KeyboardInteraction.TextAction.INSERT && text != null )
 		{
 			KeyboardMethods.inputText(text, connection);
 			return true;
 		}
-		else if (action == KeyboardInteraction.TextAction.NEWLINE)
-		{
-			KeyboardMethods.inputText("\n", connection);
-			return true;
-		}
 		else
 		{
-			return PerformTextAction(connection, action);
+			return performSimpleTextAction(connection, action);
 		}
 
 	}
 
-	public static boolean PerformTextAction(InputConnection connection, KeyboardInteraction.TextAction action)
+	private static boolean performSimpleTextAction(InputConnection connection, KeyboardInteraction.TextAction action)
 	{
 		if (action != null && action != KeyboardInteraction.TextAction.DEFAULT)
 		{
-			//Log.e("###", "Performing action: "+action.toString());
-
 			int menuAction = 0;
 
 			switch(action)
@@ -404,6 +403,12 @@ public class KeyCommons
 					return true;
 				}
 
+				case NEWLINE:
+				{
+					KeyboardMethods.inputText("\n", connection);
+					return true;
+				}
+
 				case TOGGLE_AUTO_INCOGNITO:
 				{
 					// When toggling both, use auto-correct state to determine what to do.
@@ -426,7 +431,9 @@ public class KeyCommons
 				}
 
 				default:
-					break;
+				{
+					return false;
+				}
 			}
 
 			connection.performContextMenuAction(menuAction);

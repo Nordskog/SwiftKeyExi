@@ -1,7 +1,7 @@
 package com.mayulive.swiftkeyexi.EmojiCache;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.TypedValue;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -78,6 +78,7 @@ public class EmojiResources
 		dimens.configured_singleEmojiWidth =  dimens.configured_emojiTextSize * 2; //(int)calculatePixelFromDp(context, SINGLE_EMOJI_ITEM_WIDTH_DP);
 
 		ImageEmojiItem.updateDiverseIndicator(context);
+		NormalEmojiItem.updateDiverseIndicator(context);
 
 		return changed;
 	}

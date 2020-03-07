@@ -1,11 +1,10 @@
 package com.mayulive.swiftkeyexi.util.view;
 
 import android.content.Context;
-import android.support.v7.preference.CheckBoxPreference;
-import android.support.v7.preference.PreferenceViewHolder;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.PreferenceViewHolder;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TextView;
 
 /**

@@ -1,16 +1,14 @@
 package com.mayulive.swiftkeyexi.util.view;
 
 import android.content.Context;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.view.ViewCompat;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.mayulive.swiftkeyexi.util.CodeUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

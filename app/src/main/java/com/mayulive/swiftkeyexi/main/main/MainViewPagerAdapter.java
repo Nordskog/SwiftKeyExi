@@ -1,11 +1,10 @@
 package com.mayulive.swiftkeyexi.main.main;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.mayulive.swiftkeyexi.main.swipe.quickmenu.QuickMenuConfigFragment;
 import com.mayulive.swiftkeyexi.main.dictionary.DictionaryFragment;
 import com.mayulive.swiftkeyexi.main.emoji.EmojiFragment;
 import com.mayulive.swiftkeyexi.main.shortcutkeys.ShortcutkeysFragment;

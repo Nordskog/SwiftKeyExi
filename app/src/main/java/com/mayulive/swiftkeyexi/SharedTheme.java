@@ -4,6 +4,7 @@ package com.mayulive.swiftkeyexi;
 import android.content.Context;
 
 import com.mayulive.swiftkeyexi.EmojiCache.ImageEmojiItem;
+import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
 //For theme stuff that needs to be accessed in both the config app and swiftkey.
 //Each of them is responsible for setting the value, and certain bits and pieces
@@ -24,6 +25,7 @@ public class SharedTheme
 	{
 		mCurrentThemeIdentifier = theme;
 		ImageEmojiItem.setThemeType(context, theme);
+		NormalEmojiItem.setThemeType(context, theme);
 	}
 
 	public static int getCurrentThemeType()

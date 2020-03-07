@@ -3,7 +3,7 @@ package com.mayulive.swiftkeyexi.database;
 
 
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;

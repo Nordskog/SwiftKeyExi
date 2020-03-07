@@ -1,10 +1,6 @@
 package com.mayulive.swiftkeyexi.main.emoji;
 
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MotionEvent;
-
-import java.lang.reflect.Field;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 public class EmojiDragHelper extends ItemTouchHelper
 {

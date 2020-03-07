@@ -2,19 +2,14 @@ package com.mayulive.swiftkeyexi.util.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceViewHolder;
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.R;
-
-import java.nio.charset.Charset;
-import java.security.acl.LastOwnerException;
-import java.util.Arrays;
 
 
 //If that's what it fucking takes to get a line break in a summary!

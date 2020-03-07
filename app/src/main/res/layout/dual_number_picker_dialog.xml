@@ -39,7 +39,7 @@
 
     </LinearLayout>
 
-    <android.support.v4.widget.Space
+    <androidx.legacy.widget.Space
         android:layout_width="20dp"
         android:layout_height="match_parent"/>
 

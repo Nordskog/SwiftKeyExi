@@ -1,19 +1,12 @@
 package com.mayulive.swiftkeyexi.util.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
+import androidx.annotation.NonNull;
+import com.google.android.material.tabs.TabLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.HorizontalScrollView;
-
-import com.mayulive.swiftkeyexi.EmojiCache.EmojiResources;
-import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
-import com.mayulive.swiftkeyexi.R;
 
 import java.lang.reflect.Field;
 
@@ -69,6 +62,20 @@ public class FixedTabLayout extends TabLayout
 		}
 
 		return view;
+	}
+
+	public void setTabMinWidth(int value)
+	{
+		Field field;
+		try {
+			field = TabLayout.class.getDeclaredField("requestedTabMinWidth");
+			field.setAccessible(true);
+			field.set(this, value);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private ViewParent getParentFieldValue()

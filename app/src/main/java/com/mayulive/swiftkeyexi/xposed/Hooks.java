@@ -1,7 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed;
 
 import android.os.AsyncTask;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;

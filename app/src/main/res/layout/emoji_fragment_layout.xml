@@ -194,7 +194,7 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         style="@style/CenteredFloatingButton"
         app:srcCompat="@drawable/menu_icon"
         android:id="@+id/dictionaryPanelMenuButton"

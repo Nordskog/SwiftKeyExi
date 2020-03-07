@@ -1,6 +1,6 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -9,7 +9,6 @@ import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryWordItem;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.xposed.classhunter.ClassHunter;
-import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;

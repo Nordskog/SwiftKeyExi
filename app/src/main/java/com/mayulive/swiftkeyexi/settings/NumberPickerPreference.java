@@ -1,6 +1,6 @@
 package com.mayulive.swiftkeyexi.settings;
 
-import android.support.v7.preference.DialogPreference;
+import androidx.preference.DialogPreference;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -28,10 +28,10 @@
                 android:id="@+id/set_icon_textview"
                 android:text="@string/emoji_icon_description" />
 
-            <android.support.v7.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 style="@style/EditBoxInput"
                 android:id="@+id/set_icon_edittext" >
-            </android.support.v7.widget.AppCompatEditText>
+            </androidx.appcompat.widget.AppCompatEditText>
 
 
             <ImageButton

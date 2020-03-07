@@ -27,20 +27,20 @@
             android:orientation="vertical"
             >
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 style="@style/FloatingButton"
                 app:srcCompat="@drawable/add_button_symbol"
                 android:id="@+id/addShortcutButton"
                 />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 style="@style/FloatingButton"
                 app:srcCompat="@drawable/menu_icon"
                 android:id="@+id/dictionaryPanelMenuButton"
                 />
 
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 style="@style/FloatingButton"
                 app:srcCompat="@drawable/ic_keyboardbutton"
                 android:id="@+id/testkeyboardbutton"
