@@ -51,11 +51,14 @@ public class EmojiHooks
 
 	private static String LOGTAG = ExiModule.getLogTag(EmojiHooks.class);
 
-	public static XC_MethodHook.Unhook hookEmojiPanel(final PackageTree packageParam) throws NoSuchMethodException
+	public static Set<XC_MethodHook.Unhook> hookEmojiPanel(final PackageTree packageParam) throws NoSuchMethodException
 	{
+		HashSet<XC_MethodHook.Unhook> hooks = new HashSet<>();
+
+
 		{
 			//XposedBridge.hookAllConstructors(emojiPanelClass, new XC_MethodHook()
-			return XposedBridge.hookMethod(EmojiClassManager.emojiPanel_staticConstructorMethod, new XC_MethodHook()
+			hooks.add( XposedBridge.hookMethod(EmojiClassManager.emojiPanel_staticConstructorMethod, new XC_MethodHook()
 			{
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
@@ -79,95 +82,14 @@ public class EmojiHooks
 						// Needed for resize
 						/////////////////////////////////////////////
 
-						ViewGroup thiz = (ViewGroup) param.getResult();
-
-						int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
-						int emojiBottomBarID = thiz.getResources().getIdentifier("fancy_bottom_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
-
-						ViewGroup emojiTopBar = thiz.findViewById(emojiTopBarID);
-
-
-
-
-						// The top and bottom bars are not actually part of this layout, so we need to do a post and get parent afterwards
-						new Handler(Looper.getMainLooper()).post(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								ViewGroup emojiBottomBar = null;
-
-								ViewParent parent = thiz.getParent();
-								if (parent == null)
-								{
-									Log.e(LOGTAG, "EmojiPanel parent null");
-								}
-								else
-								{
-									parent = parent.getParent();
-
-									if (parent == null)
-									{
-										Log.e(LOGTAG, "EmojiPanel parent parent null");
-									}
-									else
-									{
-										emojiBottomBar = ((ViewGroup) parent).findViewById(emojiBottomBarID);
-									}
-								}
-
-
-
-								if ( KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f  )
-								{
-									if (emojiTopBar != null)
-									{
-										// When we have a size modifier set for the emoji panel, we ideally want the top and bottom bars to
-										// stay whatever size is used for the rest of the keyboard.
-										// Calculate the inverse modifier ( from emoji panel modifier to keyboard size modifier )
-										// and apply to the top and bottom bars.
-										ViewGroup.LayoutParams topParams =  emojiTopBar.getLayoutParams();
-										if (topParams != null)
-										{
-											int height = topParams.height;
-											float modifier = KeyboardMethods.getKeyboardSizeModifier() / KeyboardMethods.getEmojiPanelSizeModifier();
-											height *= modifier;
-
-											topParams.height = height;
-											emojiTopBar.setLayoutParams(topParams);
-
-											// May not be a thing
-											if (emojiBottomBar != null)
-											{
-												ViewGroup.LayoutParams bottomParams =  emojiBottomBar.getLayoutParams();
-
-												bottomParams.height = height;
-												emojiBottomBar.setLayoutParams(bottomParams);
-
-											}
-										}
-										else
-										{
-											Log.e(LOGTAG, "Bottom params null, cannot adjust bar size");
-										}
-									}
-									else
-									{
-										Log.e(LOGTAG, "Top or bottom bar views null, cannot adust bar size");
-									}
-
-								}
-							}
-						});
-
-
-
-
-
-
 						if (Settings.EMOJI_PANEL_ENABLED)
 						{
+
+							ViewGroup thiz = (ViewGroup) param.getResult();
 							EmojiHookCommons.mEmojiTopRelative = thiz;
+
+							int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
+							ViewGroup emojiTopBar = thiz.findViewById(emojiTopBarID);
 
 							//These are the two views we want to replace.
 							int pagerID = thiz.getResources().getIdentifier("emoji_pager", "id", ExiXposed.HOOK_PACKAGE_NAME);
@@ -334,8 +256,47 @@ public class EmojiHooks
 						Hooks.emojiHooks_base.invalidate(ex, "Unexpected problem in Emoji Panel hook");
 					}
 				}
-			});
+			}));
 		}
+
+		if (EmojiClassManager.emojiPanel_onAttachedToWindowMethod != null)
+		{
+			hooks.add( XposedBridge.hookMethod(EmojiClassManager.emojiPanel_onAttachedToWindowMethod, new XC_MethodHook()
+			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param)
+				{
+					if ( Settings.EMOJI_PANEL_ENABLED && KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f )
+					{
+						ViewGroup thiz = (ViewGroup) param.thisObject;
+
+						int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
+
+						ViewGroup emojiTopBar = thiz.findViewById(emojiTopBarID);
+
+						if (emojiTopBar != null)
+						{
+							ViewGroup.LayoutParams topParams =  emojiTopBar.getLayoutParams();
+							if (topParams != null)
+							{
+								int height = topParams.height;
+								float modifier = KeyboardMethods.getKeyboardSizeModifier() / KeyboardMethods.getEmojiPanelSizeModifier();
+								height *= modifier;
+
+								topParams.height = height;
+								emojiTopBar.setLayoutParams(topParams);
+							}
+						}
+					}
+				}
+			}));
+		}
+		else
+		{
+			Log.e(LOGTAG, "EmojiClassManager.emojiPanel_onAttachedToWindowMethod was null, top bar size cannot be adjusted.");
+		}
+
+		return hooks;
 	}
 
 	public static Set<XC_MethodHook.Unhook> hookResourceLookup( PackageTree param) throws NoSuchMethodException, NoSuchFieldException
@@ -529,7 +490,7 @@ public class EmojiHooks
 				Hooks.emojiHooks_base.addAll( hookResourceLookup(param) );
 
 				//Swiftkey hooks
-				Hooks.emojiHooks_base.add( hookEmojiPanel(param) );
+				Hooks.emojiHooks_base.addAll( hookEmojiPanel(param) );
 
 				Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 				{

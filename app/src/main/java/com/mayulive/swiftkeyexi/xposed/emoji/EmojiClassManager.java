@@ -23,6 +23,8 @@ public class EmojiClassManager
 
 	protected static Class emojiPanelClass = null;
 
+	protected static Method emojiPanel_onAttachedToWindowMethod = null;
+
 	/////////////////
 	//Unknown classes
 	/////////////////
@@ -57,6 +59,9 @@ public class EmojiClassManager
 		{
 			emojiPanel_staticConstructorMethod = ProfileHelpers.findAllMethodsWithReturnType(EmojiClassManager.emojiPanelClass, EmojiClassManager.emojiPanelClass.getDeclaredMethods()).get(0);
 			emojiPanel_staticConstructorMethod.setAccessible(true);
+
+			// Only used to resizing top bar when modifying size, not a requirement
+			emojiPanel_onAttachedToWindowMethod = ProfileHelpers.findFirstMethodByName( EmojiClassManager.emojiPanelClass.getDeclaredMethods(), "onAttachedToWindow");
 		}
 
 
