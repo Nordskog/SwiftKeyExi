@@ -183,7 +183,6 @@ public class KeyboardMethods
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
 	protected static ArrayList<SharedPreferences.OnSharedPreferenceChangeListener> mSwiftkeyPrefChangedListeners = new ArrayList<>();
 
-	protected static ImageView mReplacementExpandToolbarButton = null;
 	protected static ImageView mReplacementExpandToolbarButtonMinor = null;
 	protected static ViewGroup mKeyboardRoot = null;
 	protected static float mLastKeyboardOpacity = 1;
@@ -743,52 +742,32 @@ public class KeyboardMethods
 		return button;
 	}
 
+	/**
+	 * Copypasta of getExpandToolbarButton
+	 */
+	public static void doToolbarButtonClick()
+	{
+		for (WeakReference<View> reference : mExpandButtons.values())
+		{
+			View expandButton = reference.get();
+			if (expandButton != null)
+			{
+				expandButton.performClick();
+
+				// Visibility gets reset so refresh here
+				updateHidePredictionBarAndPadKeyboardTop();
+				break;
+			}
+		}
+	}
+
 	public static void handleReplacementExpandToolbarButton( ViewGroup toolbarContainer )
 	{
 		if (toolbarContainer != null)
 		{
-			if (mReplacementExpandToolbarButton == null)
+			if (mReplacementExpandToolbarButtonMinor == null)
 			{
-				mReplacementExpandToolbarButton = getExpandToolbarButton(toolbarContainer.getContext(), false);
 				mReplacementExpandToolbarButtonMinor = getExpandToolbarButton(toolbarContainer.getContext(), true);
-			}
-
-			//////////////////////////////////////////
-			// Button that goes next to suggestions
-			//////////////////////////////////////////
-
-
-			if ( Settings.REMOVE_SUGGESTIONS_PADDING )
-			{
-				// Ensure we are the top view
-				mReplacementExpandToolbarButton.setVisibility(View.VISIBLE);
-
-				if (toolbarContainer != null )
-				{
-					// Sometimes a new container is created, so we cannot assume that
-					// the, if the view has a parent, it is the same as this new container.
-					{
-						ViewParent currentParent = mReplacementExpandToolbarButton.getParent();
-						if (currentParent != null && currentParent != toolbarContainer)
-						{
-							// Has parent, but is a different container
-							((ViewGroup)currentParent).removeView(mReplacementExpandToolbarButton);
-						}
-					}
-
-					// Will handle inserting the ivew, and moving it back to the top if something has decided to cover it.
-					int existingIndex = toolbarContainer.indexOfChild( mReplacementExpandToolbarButton );
-					if ( existingIndex < toolbarContainer.getChildCount() -1 )
-					{
-						if (existingIndex != -1) // Skip removing if not actually a child yet
-							toolbarContainer.removeView(mReplacementExpandToolbarButton);
-						toolbarContainer.addView(mReplacementExpandToolbarButton);
-					}
-				}
-			}
-			else
-			{
-				mReplacementExpandToolbarButton.setVisibility(View.GONE);
 			}
 
 			//////////////////////////////////////////////////////////

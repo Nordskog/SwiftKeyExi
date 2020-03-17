@@ -173,7 +173,11 @@ public class PredictionHooks
 					try
 					{
 						ViewGroup parent = (ViewGroup) param.getResult();
-						PredictionHandlers.handleCandidateViewHook_replace( parent );
+						View replacement = PredictionHandlers.handleCandidateViewHook_replace( parent );
+						if (replacement != null)
+						{
+							param.setResult(replacement);
+						}
 					}
 					catch (Throwable ex)
 					{
