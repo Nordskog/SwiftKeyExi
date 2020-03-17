@@ -64,6 +64,8 @@ public class Settings
 
 	public static float KEYBOARD_SIZE_MULTIPLIER = 1;
 	public static float KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE = 1;
+	public static float KEYBOARD_SIZE_EMOJI_MULTIPLIER = 1;
+	public static float KEYBOARD_SIZE_EMOJI_MULTIPLIER_LANDSCAPE = 1;
 
 	public static boolean USE_CUSTOM_SEARCH_STRING = false;
 	public static String CUSTOM_SEARCH_STRING = CustomSearchStringInputDialog.GOOGLE_SEARCH_STRING;
@@ -233,8 +235,10 @@ public class Settings
 			float existingValue = KEYBOARD_SIZE_MULTIPLIER + (KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE * 10);
 			KEYBOARD_SIZE_MULTIPLIER =  prefs.getFloat(PreferenceConstants.pref_keyboard_size_multiplier_key, 1f);
 			KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE =  prefs.getFloat(PreferenceConstants.pref_keyboard_size_multiplier_landscape_key, 1f);
+			KEYBOARD_SIZE_EMOJI_MULTIPLIER =  prefs.getFloat(PreferenceConstants.pref_keyboard_size_emoji_multiplier_key, 1f);
+			KEYBOARD_SIZE_EMOJI_MULTIPLIER_LANDSCAPE =  prefs.getFloat(PreferenceConstants.pref_keyboard_size_emoji_multiplier_landscape_key, 1f);
 
-			if (existingValue != KEYBOARD_SIZE_MULTIPLIER + (KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE * 10) )
+			if (existingValue != KEYBOARD_SIZE_MULTIPLIER + (KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE * 10) + ( KEYBOARD_SIZE_EMOJI_MULTIPLIER * 100 ) + ( KEYBOARD_SIZE_EMOJI_MULTIPLIER_LANDSCAPE * 1000 ) )
 			{
 				KeyboardMethods.forceKeyboardResize();
 			}

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.emoji.data.DB_EmojiItem;
@@ -44,7 +42,6 @@ public class EmojiHookCommons
 	protected static EmojiPanelTabLayout mEmojiPanelTabs;
 	protected static EmojiPanelPagerAdapter mEmojiPanelAdapter;
 	protected static int mEmojiPanelRecentsTabIndex = -1;
-	protected static LinearLayout mEmojiWrapper;
 	protected static FixedViewPager mEmojiPanelPager;
 	protected static ViewGroup mEmojiTopRelative = null;
 

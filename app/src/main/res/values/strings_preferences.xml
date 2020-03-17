@@ -186,8 +186,14 @@
     <string name="pref_keyboard_size_multiplier_title">Keyboard Size Multiplier</string>
     <string name="pref_keyboard_size_multiplier_summary">Tweak the size of the keyboard</string>
 
+    <!-- keyboard emoji panel size -->
+    <string name="pref_keyboard_size_emoji_multiplier_key">pref_keyboard_size_emoji_multiplier</string>
+    <string name="pref_keyboard_size_emoji_multiplier_title">Emoji panel Size Multiplier</string>
+    <string name="pref_keyboard_size_emoji_multiplier_summary">Tweak the size of the Emoji panel</string>
+
     <!-- Separate key for landscape, primary is portrait -->
     <string name="pref_keyboard_size_multiplier_landscape_key">pref_keyboard_size_multiplier_landscape</string>
+    <string name="pref_keyboard_size_emoji_multiplier_landscape_key">pref_keyboard_size_emoji_multiplier_landscape</string>
 
     <!-- Swipe selection -->
     <string name="pref_cursor_speed_key">pref_cursor_speed</string>

@@ -2,7 +2,6 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,11 +18,9 @@ import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.service.SwiftkeyBroadcastListener;
 import com.mayulive.swiftkeyexi.settings.PreferenceConstants;
 import com.mayulive.swiftkeyexi.settings.Settings;
-import com.mayulive.swiftkeyexi.util.CodeUtils;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
-import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
@@ -244,28 +241,7 @@ public class KeyboardHooks
 					try
 					{
 						Enum layoutEnum = (Enum)KeyboardClassManager.keyboardLoaderClass_layoutField.get(param.thisObject);
-
-						KeyboardMethods.mCurrentLayoutName = layoutEnum.name();
-						KeyCommons.setCurrentHitboxMap(layoutEnum.name());
-
-						//Werid layouts that are split into multiple boxes, meaning the hitboxes we
-						//get don't match the layout.
-						// Anything that contains "12"
-						// Anything that contains FIVESTROKE
-						// HANDWRITING_CN maybe? I can't find it anywhere
-						if (KeyboardMethods.mCurrentLayoutName.contains("12")
-								|| KeyboardMethods.mCurrentLayoutName.contains("FIVESTROKE") )
-						{
-							KeyboardMethods.mLayoutIsWeird = true;
-						}
-						else
-						{
-							KeyboardMethods.mLayoutIsWeird = false;
-						}
-
-						KeyboardMethods.mLayoutIsExtendedPredictions = KeyboardMethods.isLayoutExtendedPredictions( KeyboardMethods.mCurrentLayoutName );
-
-						KeyboardMethods.mIsSymbols = KeyboardMethods.mCurrentLayoutName.contains("SYMBOLS");
+						KeyboardMethods.handleLayoutChange(layoutEnum.name());
 					}
 					catch (Throwable ex)
 					{
@@ -382,15 +358,14 @@ public class KeyboardHooks
 					try
 					{
 						float multiplier = 1;
-						if ( KeyboardMethods.mDeviceOrientation == Configuration.ORIENTATION_LANDSCAPE)
+						if (KeyboardMethods.mIsInEmojiPanel)
 						{
-							multiplier = Settings.KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE;
+							multiplier = KeyboardMethods.getEmojiPanelSizeModifier();
 						}
 						else
 						{
-							multiplier = Settings.KEYBOARD_SIZE_MULTIPLIER;
+							multiplier = KeyboardMethods.getKeyboardSizeModifier();
 						}
-
 
 						if ( multiplier != 1f )
 						{

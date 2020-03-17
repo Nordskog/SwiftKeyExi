@@ -23,6 +23,7 @@ import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.util.DimenUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
+import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
 
 import java.io.ByteArrayInputStream;
 import java.lang.ref.WeakReference;
@@ -42,6 +43,9 @@ public class KeyboardMethods
 	private static final String AUTOCOMPLETE_PREF_KEY = "pref_typing_style_autocomplete";
 	public static Map<Integer, WeakReference<View>> mExpandButtons = new HashMap<>();
 	public static int mExpandButtonOriginalWidth = 0;	// Set when added to above list
+
+	public static final String EMOJI_PANEL_LAYOUT_NAME = "emoji_panel_layout";
+	public static boolean mIsInEmojiPanel = false;
 
 
 	public static void inputText(String text)
@@ -189,6 +193,64 @@ public class KeyboardMethods
 
 	public static boolean mKeyboardOpen = false;
 
+	// Receives layout changes, and also triggered manually when emoji panel is opened
+	protected static void handleLayoutChange( String layoutName )
+	{
+		KeyboardMethods.mCurrentLayoutName = layoutName;
+		KeyCommons.setCurrentHitboxMap(layoutName);
+
+		boolean wasInEmojiPanel = mIsInEmojiPanel;
+		mIsInEmojiPanel = EMOJI_PANEL_LAYOUT_NAME.equals(layoutName);
+
+		//Werid layouts that are split into multiple boxes, meaning the hitboxes we
+		//get don't match the layout.
+		// Anything that contains "12"
+		// Anything that contains FIVESTROKE
+		// HANDWRITING_CN maybe? I can't find it anywhere
+		if (KeyboardMethods.mCurrentLayoutName.contains("12")
+				|| KeyboardMethods.mCurrentLayoutName.contains("FIVESTROKE") )
+		{
+			KeyboardMethods.mLayoutIsWeird = true;
+		}
+		else
+		{
+			KeyboardMethods.mLayoutIsWeird = false;
+		}
+
+		KeyboardMethods.mLayoutIsExtendedPredictions = KeyboardMethods.isLayoutExtendedPredictions( KeyboardMethods.mCurrentLayoutName );
+
+		KeyboardMethods.mIsSymbols = KeyboardMethods.mCurrentLayoutName.contains("SYMBOLS");
+
+		if ( wasInEmojiPanel && Settings.KEYBOARD_SIZE_EMOJI_MULTIPLIER != 1.0 )
+		{
+			// Bad idea to do here?
+			KeyboardMethods.forceKeyboardResize();
+		}
+	}
+
+	public static float getEmojiPanelSizeModifier()
+	{
+		if ( KeyboardMethods.mDeviceOrientation == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			return Settings.KEYBOARD_SIZE_EMOJI_MULTIPLIER_LANDSCAPE * Settings.KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE;
+		}
+		else
+		{
+			return Settings.KEYBOARD_SIZE_EMOJI_MULTIPLIER * Settings.KEYBOARD_SIZE_MULTIPLIER;
+		}
+	}
+
+	public static float getKeyboardSizeModifier()
+	{
+		if ( KeyboardMethods.mDeviceOrientation == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			return Settings.KEYBOARD_SIZE_MULTIPLIER_LANDSCAPE;
+		}
+		else
+		{
+			return Settings.KEYBOARD_SIZE_MULTIPLIER;
+		}
+	}
 
 	static protected Set<String> mExtendedPredictionsLayouts = new HashSet<>();
 	static

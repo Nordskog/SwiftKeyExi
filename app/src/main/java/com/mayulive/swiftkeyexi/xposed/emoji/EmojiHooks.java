@@ -5,13 +5,15 @@ import android.content.res.ColorStateList;
 
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.widget.ViewUtils;
 
 import android.content.res.XmlResourceParser;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
@@ -37,7 +39,6 @@ import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
@@ -57,25 +58,123 @@ public class EmojiHooks
 			return XposedBridge.hookMethod(EmojiClassManager.emojiPanel_staticConstructorMethod, new XC_MethodHook()
 			{
 				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					KeyboardMethods.mIsInEmojiPanel = true;
+
+					if ( KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f )
+					{
+						// Bad idea to do here?
+						KeyboardMethods.forceKeyboardResize();
+					}
+
+				}
+
+				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
 					try
 					{
+						/////////////////////////////////////////////
+						// Needed for resize
+						/////////////////////////////////////////////
+
+						ViewGroup thiz = (ViewGroup) param.getResult();
+
+						int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
+						int emojiBottomBarID = thiz.getResources().getIdentifier("fancy_bottom_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
+
+						ViewGroup emojiTopBar = thiz.findViewById(emojiTopBarID);
+
+
+
+
+						// The top and bottom bars are not actually part of this layout, so we need to do a post and get parent afterwards
+						new Handler(Looper.getMainLooper()).post(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								ViewGroup emojiBottomBar = null;
+
+								ViewParent parent = thiz.getParent();
+								if (parent == null)
+								{
+									Log.e(LOGTAG, "EmojiPanel parent null");
+								}
+								else
+								{
+									parent = parent.getParent();
+
+									if (parent == null)
+									{
+										Log.e(LOGTAG, "EmojiPanel parent parent null");
+									}
+									else
+									{
+										emojiBottomBar = ((ViewGroup) parent).findViewById(emojiBottomBarID);
+									}
+								}
+
+
+
+								if ( KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f  )
+								{
+									if (emojiTopBar != null)
+									{
+										// When we have a size modifier set for the emoji panel, we ideally want the top and bottom bars to
+										// stay whatever size is used for the rest of the keyboard.
+										// Calculate the inverse modifier ( from emoji panel modifier to keyboard size modifier )
+										// and apply to the top and bottom bars.
+										ViewGroup.LayoutParams topParams =  emojiTopBar.getLayoutParams();
+										if (topParams != null)
+										{
+											int height = topParams.height;
+											float modifier = KeyboardMethods.getKeyboardSizeModifier() / KeyboardMethods.getEmojiPanelSizeModifier();
+											height *= modifier;
+
+											topParams.height = height;
+											emojiTopBar.setLayoutParams(topParams);
+
+											// May not be a thing
+											if (emojiBottomBar != null)
+											{
+												ViewGroup.LayoutParams bottomParams =  emojiBottomBar.getLayoutParams();
+
+												bottomParams.height = height;
+												emojiBottomBar.setLayoutParams(bottomParams);
+
+											}
+										}
+										else
+										{
+											Log.e(LOGTAG, "Bottom params null, cannot adjust bar size");
+										}
+									}
+									else
+									{
+										Log.e(LOGTAG, "Top or bottom bar views null, cannot adust bar size");
+									}
+
+								}
+							}
+						});
+
+
+
+
+
+
 						if (Settings.EMOJI_PANEL_ENABLED)
 						{
-							ViewGroup thiz = (ViewGroup) param.getResult();
 							EmojiHookCommons.mEmojiTopRelative = thiz;
 
 							//These are the two views we want to replace.
 							int pagerID = thiz.getResources().getIdentifier("emoji_pager", "id", ExiXposed.HOOK_PACKAGE_NAME);
 							int titlesID = thiz.getResources().getIdentifier("emoji_tabs", "id", ExiXposed.HOOK_PACKAGE_NAME);
 
-							int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
-
 							View pagerView = thiz.findViewById(pagerID);
 							View titlesView = thiz.findViewById(titlesID);
-
-							ViewGroup emojiTopBarView = thiz.findViewById(emojiTopBarID);
 
 
 							pagerView.setVisibility(View.GONE);
@@ -217,7 +316,7 @@ public class EmojiHooks
 								/////////////
 
 								// Now a linear layout makes upe the top bar, with the bakc button and tabs inside of it. a lot simpler.
-								emojiTopBarView.addView( EmojiHookCommons.mEmojiPanelTabs );
+								emojiTopBar.addView( EmojiHookCommons.mEmojiPanelTabs );
 
 								////////////////
 								// Pager
