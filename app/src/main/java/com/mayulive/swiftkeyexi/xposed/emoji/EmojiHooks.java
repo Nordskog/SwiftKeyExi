@@ -445,16 +445,17 @@ public class EmojiHooks
 
 						if ( (isLicense || isSafeSearch ) && lastAuthority != null && lastAuthority.equals("www.bingapis.com"))
 						{
-							Object[] newArgs = param.args;
+
 							if (isSafeSearch)
-								newArgs[1] ="Off";
+							{
+								param.args[1] ="Off";
+							}
 
 							if (isLicense)
-								newArgs[1] ="All";
+							{
+								param.args[1] ="All";
+							}
 
-							Method superMethod = (Method)param.method;
-							Object result = superMethod.invoke(param.thisObject, newArgs);
-							param.setResult(result);
 						}
 					}
 					catch ( Throwable ex)
