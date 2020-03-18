@@ -4,13 +4,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryShortcutItem;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
+import com.mayulive.swiftkeyexi.util.view.SimpleGestureFrameLayout;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.main.dictionary.data.DB_DictionaryWordItem;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
@@ -45,7 +45,7 @@ public class PredictionCommons
 	protected static CandidatesRecyclerAdapter mCandidatesAdapter = null;
 	protected static RecyclerView mCandidatesRecycler = null;
 	protected static LinearLayoutManager mCandidatesManager = null;
-	protected static ViewGroup mCandidateContainer = null;
+	protected static SimpleGestureFrameLayout mCandidateContainer = null;
 
 	protected static List<Object> mPrevCandidateList = null;
 

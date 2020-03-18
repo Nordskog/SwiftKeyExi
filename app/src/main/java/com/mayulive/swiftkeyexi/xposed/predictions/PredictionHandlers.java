@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
+
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +22,8 @@ import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.main.dictionary.CandidatesRecyclerAdapter;
 import com.mayulive.swiftkeyexi.main.dictionary.SlowRecyclerView;
 import com.mayulive.swiftkeyexi.util.ContextUtils;
+import com.mayulive.swiftkeyexi.util.view.SimpleGestureFrameLayout;
+import com.mayulive.swiftkeyexi.util.view.SimpleGestureLinearLayout;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 
@@ -110,38 +114,57 @@ public class PredictionHandlers
 	}
 
 	@SuppressLint("MissingPermission")
-	public static void handleCandidateViewHook_replace( ViewGroup childFrame)
+	@Nullable
+	public static View handleCandidateViewHook_replace( ViewGroup childFrame)
 	{
 
 		if (candidateViewArgs == null)
 		{
 			Log.e(LOGTAG, "Expeceted candidateViewArgs to be popuplated, cannot create candidate views");
-			return;
+			return null;
 		}
 
-		//I did consider not adding it for disabled, but then the user would
-		//require a reboot/app-restart to re-enable it.
-		//If disabled we don't do any of the work required later anyway,
-		//so we should be good to just keep this here regardless.
+		// Normal keyboard layouts have 3 children.
+		// Some others, such as the japanese one, have 2.
+		// There may be others, but this should be able to hangle everything.
+		if (childFrame.getChildCount() <= 2)
+		{
 
-			//if (true)
+			ArrayList<View> children = new ArrayList<>();
+			for (int i = 0; i < childFrame.getChildCount(); i++)
 			{
-			//Due to changes, now actually a linear layout wrapping the framelayout and a few other views
-			//ViewGroup frameLayout = (ViewGroup)param.getResult();
+				children.add( childFrame.getChildAt(i) );
+			}
+			childFrame.removeAllViews();
 
-			//Full and compact layouts are fine. The two-thumb one has a weird split candidate view.
-			//It turns out it is actually two separate instances of the candidates view, each calling this method on their own.
-			//We could probably could with this somehow, but I'm not sure what we'd do about it.
-			//Full and compact both and 3 children now. Two-thumb only has two.  Skip if two.
-			if (childFrame.getChildCount() <= 2)
+			SimpleGestureLinearLayout replacementLinear = new SimpleGestureLinearLayout( childFrame.getContext() );
+			for (View view : children)
 			{
-				Log.i(LOGTAG, "Insufficient candidate children, doing nothing");
-				return;
+				replacementLinear.addView(view);
 			}
 
+			// Would set parameters on the replacement, but childFrame has none set.
+
+			replacementLinear.setOnFlingListener(direction ->
+			{
+				switch (direction)
+				{
+					case UP:
+					case DOWN:
+						KeyboardMethods.doToolbarButtonClick();
+						return true;
+					default:
+						return false;
+				}
+			});
+
+			return replacementLinear;
+		}
+		else
+		{
 			//Oddly enough this is still called multiple times after you open another keyboard.
-				//Think it's called for every layout you have accessed in the current session,
-				// so we will return above a lot, even when on a compatible layout.
+			//Think it's called for every layout you have accessed in the current session,
+			// so we will return above a lot, even when on a compatible layout.
 
 
 			ViewGroup centerLinear = childFrame;
@@ -160,7 +183,6 @@ public class PredictionHandlers
 
 			}
 
-			//if(false)
 			{
 
 
@@ -364,8 +386,21 @@ public class PredictionHandlers
 				//Candidate view doesn't have a container anymore, need to create our own.
 				LinearLayout.LayoutParams candidateContainerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 				candidateContainerParams.weight = 0.75f;
-				PredictionCommons.mCandidateContainer = new FrameLayout(kView.getContext());
+				PredictionCommons.mCandidateContainer = new SimpleGestureFrameLayout(kView.getContext());
 				PredictionCommons.mCandidateContainer.setLayoutParams(candidateContainerParams);
+
+				PredictionCommons.mCandidateContainer.setOnFlingListener(direction ->
+				{
+					switch (direction)
+					{
+						case UP:
+						case DOWN:
+							KeyboardMethods.doToolbarButtonClick();
+							return true;
+						default:
+							return false;
+					}
+				});
 
 				PredictionCommons.mCandidateContainer.addView(headerScroller);
 				PredictionCommons.mCandidateContainer.addView(PredictionCommons.mCandidatesRecycler);
@@ -385,7 +420,12 @@ public class PredictionHandlers
 					}
 				});
 			}
+
 		}
+
+		return null;
+
+
 	}
 
 	public static void handleCandidatesUpdateHook(XC_MethodHook.MethodHookParam param)

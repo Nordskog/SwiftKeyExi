@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.widget.ViewUtils;
 
 import android.content.res.XmlResourceParser;
 import android.util.Log;
@@ -37,7 +36,6 @@ import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,32 +48,52 @@ public class EmojiHooks
 
 	private static String LOGTAG = ExiModule.getLogTag(EmojiHooks.class);
 
-	public static XC_MethodHook.Unhook hookEmojiPanel(final PackageTree packageParam) throws NoSuchMethodException
+	public static Set<XC_MethodHook.Unhook> hookEmojiPanel(final PackageTree packageParam) throws NoSuchMethodException
 	{
+		HashSet<XC_MethodHook.Unhook> hooks = new HashSet<>();
+
+
 		{
 			//XposedBridge.hookAllConstructors(emojiPanelClass, new XC_MethodHook()
-			return XposedBridge.hookMethod(EmojiClassManager.emojiPanel_staticConstructorMethod, new XC_MethodHook()
+			hooks.add( XposedBridge.hookMethod(EmojiClassManager.emojiPanel_staticConstructorMethod, new XC_MethodHook()
 			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					KeyboardMethods.mIsInEmojiOrGifPanel = true;
+
+					if ( KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f && !KeyboardMethods.mForceKeyboardResizeInProgress )
+					{
+						// Bad idea to do here?
+						KeyboardMethods.forceKeyboardResize();
+					}
+
+				}
+
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
 					try
 					{
+						/////////////////////////////////////////////
+						// Needed for resize
+						/////////////////////////////////////////////
+
 						if (Settings.EMOJI_PANEL_ENABLED)
 						{
+
 							ViewGroup thiz = (ViewGroup) param.getResult();
 							EmojiHookCommons.mEmojiTopRelative = thiz;
+
+							int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
+							ViewGroup emojiTopBar = thiz.findViewById(emojiTopBarID);
 
 							//These are the two views we want to replace.
 							int pagerID = thiz.getResources().getIdentifier("emoji_pager", "id", ExiXposed.HOOK_PACKAGE_NAME);
 							int titlesID = thiz.getResources().getIdentifier("emoji_tabs", "id", ExiXposed.HOOK_PACKAGE_NAME);
 
-							int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
-
 							View pagerView = thiz.findViewById(pagerID);
 							View titlesView = thiz.findViewById(titlesID);
-
-							ViewGroup emojiTopBarView = thiz.findViewById(emojiTopBarID);
 
 
 							pagerView.setVisibility(View.GONE);
@@ -217,7 +235,7 @@ public class EmojiHooks
 								/////////////
 
 								// Now a linear layout makes upe the top bar, with the bakc button and tabs inside of it. a lot simpler.
-								emojiTopBarView.addView( EmojiHookCommons.mEmojiPanelTabs );
+								emojiTopBar.addView( EmojiHookCommons.mEmojiPanelTabs );
 
 								////////////////
 								// Pager
@@ -235,8 +253,85 @@ public class EmojiHooks
 						Hooks.emojiHooks_base.invalidate(ex, "Unexpected problem in Emoji Panel hook");
 					}
 				}
-			});
+			}));
 		}
+
+		// emojipanel staticConstructor is null here because it is handled above
+		addFancyPanelResizeHooks( hooks, null, EmojiClassManager.emojiPanel_onAttachedToWindowMethod, "emoji_top_bar", "EmojiPanel" );
+		addFancyPanelResizeHooks( hooks, EmojiClassManager.gifPanel_StaticConstructorClass, EmojiClassManager.gifPanel_onAttachedToWindowMethod, "gif_categories", "gifPanel" );
+		addFancyPanelResizeHooks( hooks, EmojiClassManager.stickerPanel_StaticConstructorClass, EmojiClassManager.stickerPanel_onAttachedToWindowMethod, "stickers_top_bar", "StickersPanell" );
+
+		return hooks;
+	}
+
+	private static void addFancyPanelResizeHooks(HashSet<XC_MethodHook.Unhook> hooks, Method staticConstructor, Method attachedToWindowMethod, String topBarIdName, String debugName )
+	{
+		//////////////////////////////
+		//////////////////////////////
+
+		if (staticConstructor != null)
+		{
+			hooks.add( XposedBridge.hookMethod(staticConstructor, new XC_MethodHook()
+			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					KeyboardMethods.mIsInEmojiOrGifPanel = true;
+
+					if ( KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f && !KeyboardMethods.mForceKeyboardResizeInProgress )
+					{
+						// Bad idea to do here?
+						KeyboardMethods.forceKeyboardResize();
+					}
+
+				}
+			}));
+		}
+		else
+		{
+			Log.e(LOGTAG, debugName+" static constructor was null");
+		}
+
+		//////////////////////////////
+		//////////////////////////////
+
+		if (attachedToWindowMethod!= null)
+		{
+			hooks.add( XposedBridge.hookMethod(attachedToWindowMethod, new XC_MethodHook()
+			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param)
+				{
+					if ( Settings.EMOJI_PANEL_ENABLED && KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f )
+					{
+						ViewGroup thiz = (ViewGroup) param.thisObject;
+
+						int topBarId = thiz.getResources().getIdentifier(topBarIdName, "id", ExiXposed.HOOK_PACKAGE_NAME);
+
+						ViewGroup topBar = thiz.findViewById(topBarId);
+
+						if (topBar != null)
+						{
+							ViewGroup.LayoutParams topParams =  topBar.getLayoutParams();
+							if (topParams != null)
+							{
+								int height = topParams.height;
+								float modifier = KeyboardMethods.getKeyboardSizeModifier() / KeyboardMethods.getEmojiPanelSizeModifier();
+								height *= modifier;
+
+								topParams.height = height;
+								topBar.setLayoutParams(topParams);
+							}
+						}
+					}
+				}
+			}));
+		}
+		else
+		{
+			Log.e(LOGTAG, debugName+" on attached to window method was null");
+		}
+
 	}
 
 	public static Set<XC_MethodHook.Unhook> hookResourceLookup( PackageTree param) throws NoSuchMethodException, NoSuchFieldException
@@ -385,16 +480,17 @@ public class EmojiHooks
 
 						if ( (isLicense || isSafeSearch ) && lastAuthority != null && lastAuthority.equals("www.bingapis.com"))
 						{
-							Object[] newArgs = param.args;
+
 							if (isSafeSearch)
-								newArgs[1] ="Off";
+							{
+								param.args[1] ="Off";
+							}
 
 							if (isLicense)
-								newArgs[1] ="All";
+							{
+								param.args[1] ="All";
+							}
 
-							Method superMethod = (Method)param.method;
-							Object result = superMethod.invoke(param.thisObject, newArgs);
-							param.setResult(result);
 						}
 					}
 					catch ( Throwable ex)
@@ -430,7 +526,7 @@ public class EmojiHooks
 				Hooks.emojiHooks_base.addAll( hookResourceLookup(param) );
 
 				//Swiftkey hooks
-				Hooks.emojiHooks_base.add( hookEmojiPanel(param) );
+				Hooks.emojiHooks_base.addAll( hookEmojiPanel(param) );
 
 				Settings.addOnSettingsUpdatedListener(new Settings.OnSettingsUpdatedListener()
 				{

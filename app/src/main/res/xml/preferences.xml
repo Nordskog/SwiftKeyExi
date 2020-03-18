@@ -167,6 +167,21 @@
         app:maxFloat="3"
         />
 
+    <!-- duplicate key value is ignored, still needed to avoid crash -->
+    <com.mayulive.swiftkeyexi.settings.FloatDualNumberPickerPreference
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:key="@string/pref_keyboard_size_emoji_multiplier_key"
+        app:keyA="@string/pref_keyboard_size_emoji_multiplier_key"
+        app:keyB="@string/pref_keyboard_size_emoji_multiplier_landscape_key"
+        app:titleA="@string/portrait"
+        app:titleB="@string/landscape"
+        android:title="@string/pref_keyboard_size_emoji_multiplier_title"
+        android:summary="@string/pref_keyboard_size_emoji_multiplier_summary"
+        app:appDefaultValueFloat="1"
+        app:minFloat="0.3"
+        app:maxFloat="3"
+        />
+
     <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
         android:key="@string/pref_disable_jumping_cursor_key"
         android:title="@string/pref_disable_jumping_cursor_title"
