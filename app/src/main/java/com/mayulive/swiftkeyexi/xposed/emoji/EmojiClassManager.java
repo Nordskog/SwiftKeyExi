@@ -11,6 +11,7 @@ import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 
@@ -18,33 +19,35 @@ import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
 public class EmojiClassManager 
 {
 	/////////////////
-	//Known classes
 	/////////////////
 
 	protected static Class emojiPanelClass = null;
-
+	protected static Method emojiPanel_staticConstructorMethod = null;
 	protected static Method emojiPanel_onAttachedToWindowMethod = null;
 
 	/////////////////
-	//Unknown classes
 	/////////////////
 
+	protected static Class gifPanelClass = null;
+	protected static Method gifPanel_StaticConstructorClass = null;
+	protected static Method gifPanel_onAttachedToWindowMethod = null;
+
+	protected static Class  stickerPanelClass = null;
+	protected static Method stickerPanel_StaticConstructorClass = null;
+	protected static Method stickerPanel_onAttachedToWindowMethod = null;
 
 	/////////////////
-	//Methods
 	/////////////////
 
 	protected static Method uriBuilderAppendParameterMethod = null;
-
 	protected static Method uriBuilderSetAuthorityMethod = null;
 
-
-
-	protected static Method emojiPanel_staticConstructorMethod = null;
 
 	protected static void loadKnownClasses( PackageTree param )
 	{
 		emojiPanelClass = ClassHunter.loadClass("com.touchtype.keyboard.view.fancy.emoji.EmojiPanel", param.getClassLoader());
+		gifPanelClass = ClassHunter.loadClass("com.touchtype.keyboard.view.fancy.richcontent.gifs.GifPanel", param.getClassLoader());
+		stickerPanelClass = ClassHunter.loadClass("com.touchtype.keyboard.view.fancy.richcontent.stickers.StickerGalleryPanel", param.getClassLoader());
 	}
 
 	protected static void loadUnknownClasses(PackageTree param)
@@ -64,6 +67,25 @@ public class EmojiClassManager
 			emojiPanel_onAttachedToWindowMethod = ProfileHelpers.findFirstMethodByName( EmojiClassManager.emojiPanelClass.getDeclaredMethods(), "onAttachedToWindow");
 		}
 
+		if (gifPanelClass != null)
+		{
+			List<Method> methods =ProfileHelpers.findAllMethodsWithReturnType(EmojiClassManager.gifPanelClass, EmojiClassManager.gifPanelClass.getDeclaredMethods());
+			if (!methods.isEmpty())
+				gifPanel_StaticConstructorClass = methods.get(0);
+
+			gifPanel_onAttachedToWindowMethod = ProfileHelpers.findFirstMethodByName( EmojiClassManager.gifPanelClass.getDeclaredMethods(), "onAttachedToWindow");
+
+		}
+
+		if (stickerPanelClass != null)
+		{
+			List<Method> methods =ProfileHelpers.findAllMethodsWithReturnType(EmojiClassManager.stickerPanelClass, EmojiClassManager.stickerPanelClass.getDeclaredMethods());
+			if (!methods.isEmpty())
+				stickerPanel_StaticConstructorClass = methods.get(0);
+
+			stickerPanel_onAttachedToWindowMethod = ProfileHelpers.findFirstMethodByName( EmojiClassManager.stickerPanelClass.getDeclaredMethods(), "onAttachedToWindow");
+
+		}
 
 		uriBuilderAppendParameterMethod = ProfileHelpers.firstMethodByName(android.net.Uri.Builder.class.getDeclaredMethods(), "appendQueryParameter");
 

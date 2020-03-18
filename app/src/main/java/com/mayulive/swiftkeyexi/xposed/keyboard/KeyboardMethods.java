@@ -45,7 +45,7 @@ public class KeyboardMethods
 	public static int mExpandButtonOriginalWidth = 0;	// Set when added to above list
 
 	public static final String EMOJI_PANEL_LAYOUT_NAME = "emoji_panel_layout";
-	public static boolean mIsInEmojiPanel = false;
+	public static boolean mIsInEmojiOrGifPanel = false;
 
 
 	public static void inputText(String text)
@@ -193,13 +193,15 @@ public class KeyboardMethods
 	public static boolean mKeyboardOpen = false;
 
 	// Receives layout changes, and also triggered manually when emoji panel is opened
+	// Unfortunatley this is not trigger when the user returns from emoji/gif panels using the button in the upper-left corner,
+	// only the abc button in the lower left corner. No one should be using that thought so... good enough for now.
 	protected static void handleLayoutChange( String layoutName )
 	{
 		KeyboardMethods.mCurrentLayoutName = layoutName;
 		KeyCommons.setCurrentHitboxMap(layoutName);
 
-		boolean wasInEmojiPanel = mIsInEmojiPanel;
-		mIsInEmojiPanel = EMOJI_PANEL_LAYOUT_NAME.equals(layoutName);
+		boolean wasInEmojiPanel = mIsInEmojiOrGifPanel;
+		mIsInEmojiOrGifPanel = EMOJI_PANEL_LAYOUT_NAME.equals(layoutName);
 
 		//Werid layouts that are split into multiple boxes, meaning the hitboxes we
 		//get don't match the layout.
@@ -220,7 +222,7 @@ public class KeyboardMethods
 
 		KeyboardMethods.mIsSymbols = KeyboardMethods.mCurrentLayoutName.contains("SYMBOLS");
 
-		if ( wasInEmojiPanel && Settings.KEYBOARD_SIZE_EMOJI_MULTIPLIER != 1.0 )
+		if ( wasInEmojiPanel && Settings.KEYBOARD_SIZE_EMOJI_MULTIPLIER != 1.0 && !KeyboardMethods.mForceKeyboardResizeInProgress )
 		{
 			// Bad idea to do here?
 			KeyboardMethods.forceKeyboardResize();
@@ -248,6 +250,21 @@ public class KeyboardMethods
 		else
 		{
 			return Settings.KEYBOARD_SIZE_MULTIPLIER;
+		}
+	}
+
+	/**
+	 * @return appropriate size modifier for current state
+	 */
+	public static float getCurrentSizeModifier()
+	{
+		if (KeyboardMethods.mIsInEmojiOrGifPanel)
+		{
+			return KeyboardMethods.getEmojiPanelSizeModifier();
+		}
+		else
+		{
+			return KeyboardMethods.getKeyboardSizeModifier();
 		}
 	}
 
@@ -423,8 +440,26 @@ public class KeyboardMethods
 		}
 	}
 
+	// infinite loop guard
+	// this calls listener calls emoji panel creation calls this calls listeners... and so on.
+	public static boolean mForceKeyboardResizeInProgress = false;
+	private static float mSizeAtLastForceResize = -1;
+
 	public static void forceKeyboardResize()
 	{
+		// Skip we've already been called while the modifier was the same value
+		if ( getCurrentSizeModifier() == mSizeAtLastForceResize)
+		{
+			return;
+		}
+
+		mSizeAtLastForceResize = getCurrentSizeModifier();
+
+		if (mForceKeyboardResizeInProgress)
+			return;
+		mForceKeyboardResizeInProgress = true;
+
+
 		try
 		{
 			SharedPreferences prefs = SettingsCommons.getSharedPreferences(ContextUtils.getHookContext(), ExiXposed.getPrefsPath());
@@ -453,6 +488,8 @@ public class KeyboardMethods
 		{
 			Log.e(LOGTAG, "Failed to force keyboard resize, user can still change the size manually");
 		}
+
+		mForceKeyboardResizeInProgress = false;
 	}
 
 	public static int getVibrationDuration()

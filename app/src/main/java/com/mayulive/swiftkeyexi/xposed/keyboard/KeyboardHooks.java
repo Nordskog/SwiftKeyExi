@@ -357,15 +357,7 @@ public class KeyboardHooks
 				{
 					try
 					{
-						float multiplier = 1;
-						if (KeyboardMethods.mIsInEmojiPanel)
-						{
-							multiplier = KeyboardMethods.getEmojiPanelSizeModifier();
-						}
-						else
-						{
-							multiplier = KeyboardMethods.getKeyboardSizeModifier();
-						}
+						float multiplier = KeyboardMethods.getCurrentSizeModifier();
 
 						if ( multiplier != 1f )
 						{

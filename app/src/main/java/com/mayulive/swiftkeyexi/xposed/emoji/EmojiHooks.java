@@ -7,13 +7,10 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.res.XmlResourceParser;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.LinearLayout;
 
 import com.mayulive.swiftkeyexi.EmojiCache.EmojiCache;
@@ -63,9 +60,9 @@ public class EmojiHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-					KeyboardMethods.mIsInEmojiPanel = true;
+					KeyboardMethods.mIsInEmojiOrGifPanel = true;
 
-					if ( KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f )
+					if ( KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f && !KeyboardMethods.mForceKeyboardResizeInProgress )
 					{
 						// Bad idea to do here?
 						KeyboardMethods.forceKeyboardResize();
@@ -259,9 +256,48 @@ public class EmojiHooks
 			}));
 		}
 
-		if (EmojiClassManager.emojiPanel_onAttachedToWindowMethod != null)
+		// emojipanel staticConstructor is null here because it is handled above
+		addFancyPanelResizeHooks( hooks, null, EmojiClassManager.emojiPanel_onAttachedToWindowMethod, "emoji_top_bar", "EmojiPanel" );
+		addFancyPanelResizeHooks( hooks, EmojiClassManager.gifPanel_StaticConstructorClass, EmojiClassManager.gifPanel_onAttachedToWindowMethod, "gif_categories", "gifPanel" );
+		addFancyPanelResizeHooks( hooks, EmojiClassManager.stickerPanel_StaticConstructorClass, EmojiClassManager.stickerPanel_onAttachedToWindowMethod, "stickers_top_bar", "StickersPanell" );
+
+		return hooks;
+	}
+
+	private static void addFancyPanelResizeHooks(HashSet<XC_MethodHook.Unhook> hooks, Method staticConstructor, Method attachedToWindowMethod, String topBarIdName, String debugName )
+	{
+		//////////////////////////////
+		//////////////////////////////
+
+		if (staticConstructor != null)
 		{
-			hooks.add( XposedBridge.hookMethod(EmojiClassManager.emojiPanel_onAttachedToWindowMethod, new XC_MethodHook()
+			hooks.add( XposedBridge.hookMethod(staticConstructor, new XC_MethodHook()
+			{
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					KeyboardMethods.mIsInEmojiOrGifPanel = true;
+
+					if ( KeyboardMethods.getEmojiPanelSizeModifier() != 1.0f && !KeyboardMethods.mForceKeyboardResizeInProgress )
+					{
+						// Bad idea to do here?
+						KeyboardMethods.forceKeyboardResize();
+					}
+
+				}
+			}));
+		}
+		else
+		{
+			Log.e(LOGTAG, debugName+" static constructor was null");
+		}
+
+		//////////////////////////////
+		//////////////////////////////
+
+		if (attachedToWindowMethod!= null)
+		{
+			hooks.add( XposedBridge.hookMethod(attachedToWindowMethod, new XC_MethodHook()
 			{
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param)
@@ -270,13 +306,13 @@ public class EmojiHooks
 					{
 						ViewGroup thiz = (ViewGroup) param.thisObject;
 
-						int emojiTopBarID = thiz.getResources().getIdentifier("emoji_top_bar", "id", ExiXposed.HOOK_PACKAGE_NAME);
+						int topBarId = thiz.getResources().getIdentifier(topBarIdName, "id", ExiXposed.HOOK_PACKAGE_NAME);
 
-						ViewGroup emojiTopBar = thiz.findViewById(emojiTopBarID);
+						ViewGroup topBar = thiz.findViewById(topBarId);
 
-						if (emojiTopBar != null)
+						if (topBar != null)
 						{
-							ViewGroup.LayoutParams topParams =  emojiTopBar.getLayoutParams();
+							ViewGroup.LayoutParams topParams =  topBar.getLayoutParams();
 							if (topParams != null)
 							{
 								int height = topParams.height;
@@ -284,7 +320,7 @@ public class EmojiHooks
 								height *= modifier;
 
 								topParams.height = height;
-								emojiTopBar.setLayoutParams(topParams);
+								topBar.setLayoutParams(topParams);
 							}
 						}
 					}
@@ -293,10 +329,9 @@ public class EmojiHooks
 		}
 		else
 		{
-			Log.e(LOGTAG, "EmojiClassManager.emojiPanel_onAttachedToWindowMethod was null, top bar size cannot be adjusted.");
+			Log.e(LOGTAG, debugName+" on attached to window method was null");
 		}
 
-		return hooks;
 	}
 
 	public static Set<XC_MethodHook.Unhook> hookResourceLookup( PackageTree param) throws NoSuchMethodException, NoSuchFieldException
