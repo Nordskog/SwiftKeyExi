@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.6.6] - 18-03-2020
+### Fixed
+ - Compatibility targeting 7.5.1.5 ( ClassHunter library update )
+
+### Added
+ - Separate size modifier for emoji/gif/sticker panels
+
+### Changed
+ - Replaced toolbar toggle button with vertical swipe when maximize predictions enabled
 
 ## [2.6.5] - 07-03-2020
 ### Fixed
