@@ -30,6 +30,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -82,7 +83,13 @@ public class KeyboardMethods
 
 	public static boolean getToolbarOpen()
 	{
-		for (WeakReference<View> reference : mExpandButtons.values())
+		// We generally want to the last created button, as the others may
+		// Well be invalid by now. Make a copy and reverse the list.
+		ArrayList<WeakReference<View>> reversedList = new ArrayList<>();
+		reversedList.addAll( mExpandButtons.values() );
+		Collections.reverse( reversedList );
+
+		for ( WeakReference<View> reference : reversedList )
 		{
 			View button = reference.get();
 			if (button != null)
@@ -784,7 +791,13 @@ public class KeyboardMethods
 	 */
 	public static void doToolbarButtonClick()
 	{
-		for (WeakReference<View> reference : mExpandButtons.values())
+		// We generally want to the last created button, as the others may
+		// Well be invalid by now. Make a copy and reverse the list.
+		ArrayList<WeakReference<View>> reversedList = new ArrayList<>();
+		reversedList.addAll( mExpandButtons.values() );
+		Collections.reverse( reversedList );
+
+		for (WeakReference<View> reference : reversedList)
 		{
 			View expandButton = reference.get();
 			if (expandButton != null)
