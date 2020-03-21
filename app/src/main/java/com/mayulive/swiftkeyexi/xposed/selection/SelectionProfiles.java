@@ -20,7 +20,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("mv2");
+		newProfile.setFullPath("cy2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -85,11 +85,10 @@ public class SelectionProfiles
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
@@ -105,7 +104,7 @@ public class SelectionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
+										new ClassItem(int.class),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
@@ -120,6 +119,7 @@ public class SelectionProfiles
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(boolean.class),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
@@ -132,10 +132,10 @@ public class SelectionProfiles
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(boolean.class),
 
+										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
@@ -233,10 +233,10 @@ public class SelectionProfiles
 						//Method #13: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -246,8 +246,8 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class)
 
 								),
 
@@ -257,8 +257,11 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -268,10 +271,8 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -282,8 +283,7 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -295,10 +295,8 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
-										new ClassItem(boolean.class)
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -310,10 +308,7 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -325,9 +320,7 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -351,11 +344,54 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem(boolean.class)
 
 								),
 
 						//Method #23: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #24: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #25: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #26: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -368,49 +404,13 @@ public class SelectionProfiles
 
 								),
 
-						//Method #24: a
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #25: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #26: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(boolean.class)
-
-								),
-
 						//Method #27: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -421,7 +421,7 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -432,7 +432,7 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(boolean.class),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -1200,7 +1200,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("yr3");
+		newProfile.setFullPath("x84");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1233,7 +1233,7 @@ public class SelectionProfiles
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//e
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//f
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(android.view.View.class)),	//g
-						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//h
+						new FieldItem( PUBLIC | EXACT , 	new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//h
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//i
 						new FieldItem( PUBLIC | EXACT , 	new ClassItem(android.view.View.class)),	//j
 
@@ -1273,7 +1273,7 @@ public class SelectionProfiles
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(android.view.View.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT )
 
 								),
@@ -1323,17 +1323,6 @@ public class SelectionProfiles
 								(
 										PUBLIC | EXACT ,
 										new ClassItem(void.class)
-
-								),
-
-						//Method #9: onMeasure
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(int.class),
-										new ClassItem(int.class)
 
 								),
 
