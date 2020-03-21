@@ -79,6 +79,7 @@ public class PreferenceConstants
 	//Gifs
 	public static final String pref_gifs_enable_nsfw_key = "pref_gifs_enable_nsfw";
 	public static final String pref_gifs_more_sources_key = "pref_gifs_more_sources";
+	public static final String pref_gifs_us_region_key = "pref_gifs_us_region";
 
 	//Sound
 	public static final String pref_sound_use_custom_keypress_key = "pref_sound_use_custom_keypress";

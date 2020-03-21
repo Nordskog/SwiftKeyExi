@@ -57,6 +57,7 @@ public class Settings
 	public static boolean DISABLE_CURSOR_JUMPING = false;
 
 	public static boolean DISPLAY_NSFW_GIFS = false;
+	public static boolean USE_US_GIF_REGION = false;
 	public static boolean DISPLAY_GIFS_FROM_MORE_SOURCES = false;
 	public static boolean GIF_REMOVE_REDIRECT = true;
 
@@ -156,6 +157,7 @@ public class Settings
 		USE_CUSTOM_KEYPRESS_SOUND = prefs.getBoolean(PreferenceConstants.pref_sound_use_custom_keypress_key, false);
 
 		DISPLAY_NSFW_GIFS = prefs.getBoolean(PreferenceConstants.pref_gifs_enable_nsfw_key, false);
+		USE_US_GIF_REGION = prefs.getBoolean(PreferenceConstants.pref_gifs_us_region_key, false);
 		DISPLAY_GIFS_FROM_MORE_SOURCES = prefs.getBoolean(PreferenceConstants.pref_gifs_more_sources_key, false);
 		GIF_REMOVE_REDIRECT = prefs.getBoolean(PreferenceConstants.pref_gifs_remove_redirect_key, true);
 

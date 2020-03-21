@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.6.7] - 21-03-2020
+### Fixed
+ - Replacement toolbar toggle not working after some time
+
+### Added
+ - Option to set GIF search region to US ( other regions filter NSFW results regardless of SafeSearch setting )
+
 ## [2.6.6] - 18-03-2020
 ### Fixed
  - Compatibility targeting 7.5.1.5 ( ClassHunter library update )

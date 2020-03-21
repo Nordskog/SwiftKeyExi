@@ -466,45 +466,73 @@ public class EmojiHooks
 
 		returnSet.add(XposedBridge.hookMethod( EmojiClassManager.uriBuilderAppendParameterMethod, new XC_MethodHook()
 		{
+			boolean inHook = false;
+
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param)
 			{
-				if (Settings.DISPLAY_NSFW_GIFS || Settings.DISPLAY_GIFS_FROM_MORE_SOURCES)
+				if (inHook)
+					return;
+
+				inHook = true;
+
+				if (Settings.DISPLAY_NSFW_GIFS || Settings.DISPLAY_GIFS_FROM_MORE_SOURCES || Settings.USE_US_GIF_REGION )
 				{
-					try
+					if ( lastAuthority != null && lastAuthority.equals("www.bingapis.com") )
 					{
-						String parameter = (String)param.args[0];
-
-						boolean isSafeSearch = Settings.DISPLAY_NSFW_GIFS 			&& 	parameter.equals("safeSearch");
-						boolean isLicense = Settings.DISPLAY_GIFS_FROM_MORE_SOURCES && 	parameter.equals("license");
-
-						if ( (isLicense || isSafeSearch ) && lastAuthority != null && lastAuthority.equals("www.bingapis.com"))
+						try
 						{
+							String parameter = (String)param.args[0];
 
-							if (isSafeSearch)
+							boolean isSafeSearch = Settings.DISPLAY_NSFW_GIFS 				&& 	parameter.equals("safeSearch");
+							boolean isLicense = Settings.DISPLAY_GIFS_FROM_MORE_SOURCES 	&& 	parameter.equals("license");
+							boolean isQueryAndShouldSetRegion = Settings.USE_US_GIF_REGION 	&&  parameter.equals("q");
+
+							if ( (isLicense || isSafeSearch || isQueryAndShouldSetRegion ) )
 							{
-								param.args[1] ="Off";
-							}
+								if (isQueryAndShouldSetRegion)
+								{
+									// Bing has started limiting nsfw results in some regions, including bloody Norway.
+									// For actual nsfw results to be displayed, the region must be set to the US region.
+									// We do this by adding an extra param here.
+									try
+									{
+										// Note that this would cause an infinite loop on EdXposed, but we guard the hook with a bool a the beginning.
+										android.net.Uri.Builder builder = (android.net.Uri.Builder) param.thisObject;
+										builder.appendQueryParameter("cc", "US");
+									}
+									catch ( Throwable ex )
+									{
+										Log.e(LOGTAG, "Failed to set image search region to US");
+										ex.printStackTrace();
+									}
+								}
+								else if (isSafeSearch)
+								{
+									param.args[1] ="Off";
+								}
+								else if (isLicense)
+								{
+									param.args[1] ="All";
+								}
 
-							if (isLicense)
-							{
-								param.args[1] ="All";
 							}
-
 						}
-					}
-					catch ( Throwable ex)
-					{
-						Hooks.gifHooksNSFW.invalidate(ex, "Something went wrong changing gif safesearch value");
-						ex.printStackTrace();
+						catch ( Throwable ex)
+						{
+							Hooks.gifHooksNSFW.invalidate(ex, "Something went wrong changing gif safesearch value");
+							ex.printStackTrace();
+						}
 					}
 				}
 
+				inHook = false;
+
 			}
+
 		}));
 
 		return returnSet;
-
 	}
 
 	public static boolean hookAll(final PackageTree param)
