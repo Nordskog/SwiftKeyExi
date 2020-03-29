@@ -20,7 +20,6 @@ import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysHooks;
 import com.mayulive.swiftkeyexi.xposed.predictions.PredictionCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionHooks;
 import com.mayulive.swiftkeyexi.xposed.sound.SoundHooks;
-import com.mayulive.swiftkeyexi.xposed.style.StyleHooks;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
 /**
@@ -167,10 +166,6 @@ public class Hooks
 				{
 					HardwareKeyHooks.hookAll(classTree);
 					handleProgress(timer, "Hardware keys", 20);
-
-					//Nothing will break catastrophically without it
-					StyleHooks.HookAll(classTree);
-					handleProgress(timer, "Stylehooks", 30);
 
 					//No a hook, just sets a listener
 					preventPeriodHook();

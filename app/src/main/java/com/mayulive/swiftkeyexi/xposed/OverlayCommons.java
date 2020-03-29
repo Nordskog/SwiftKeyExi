@@ -1,13 +1,11 @@
 package com.mayulive.swiftkeyexi.xposed;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,10 +15,9 @@ import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.main.keyboard.KeyboardOverlay;
 import com.mayulive.swiftkeyexi.settings.Settings;
 import com.mayulive.swiftkeyexi.util.CodeUtils;
-import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.util.view.ViewTools;
 import com.mayulive.swiftkeyexi.xposed.key.KeyCommons;
-import com.mayulive.swiftkeyexi.xposed.style.StyleCommons;
+import com.mayulive.swiftkeyexi.xposed.keyboard.StyleCommons;
 
 import java.util.ArrayList;
 import java.util.List;

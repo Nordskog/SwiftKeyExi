@@ -1,22 +1,15 @@
-package com.mayulive.swiftkeyexi.xposed.style;
+package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextPaint;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.mayulive.swiftkeyexi.ExiModule;
-import com.mayulive.swiftkeyexi.util.ContextUtils;
 import com.mayulive.swiftkeyexi.xposed.ExiXposed;
-import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 
 import java.util.ArrayList;
 
@@ -33,6 +26,10 @@ public class StyleCommons
 	public static final String TOOLBAR_LIGHT_SEARCH_TEXT_STRING = "light_gif_search_text";
 	public static final String TOOLBAR_DARK_SEARCH_TEXT_STRING = "dark_gif_search_text";
 
+	// Note that light/dark strings are reversed compared to before
+	public static final String TOOLBAR_LIGHT_SEARCH_TEXT_STRING_NEW = "translucent_white_10";
+	public static final String TOOLBAR_DARK_SEARCH_TEXT_STRING_NEW = "translucent_black_10";
+
 	public static int TOOLBAR_LIGHT_SEARCH_TEXT_COLOR_RESOURCE = -1;
 	public static int TOOLBAR_DARK_SEARCH_TEXT_COLOR_RESOURCE = -1;
 
@@ -47,8 +44,22 @@ public class StyleCommons
 
 	protected static void setToolbarColorResources( Context context )
 	{
-		TOOLBAR_LIGHT_SEARCH_TEXT_COLOR_RESOURCE = context.getResources().getIdentifier(TOOLBAR_LIGHT_SEARCH_TEXT_STRING, "color", ExiXposed.HOOK_PACKAGE_NAME);
-		TOOLBAR_DARK_SEARCH_TEXT_COLOR_RESOURCE = context.getResources().getIdentifier(TOOLBAR_DARK_SEARCH_TEXT_STRING, "color", ExiXposed.HOOK_PACKAGE_NAME);
+		//TOOLBAR_LIGHT_SEARCH_TEXT_COLOR_RESOURCE = context.getResources().getIdentifier(TOOLBAR_LIGHT_SEARCH_TEXT_STRING, "color", ExiXposed.HOOK_PACKAGE_NAME);
+		//TOOLBAR_DARK_SEARCH_TEXT_COLOR_RESOURCE = context.getResources().getIdentifier(TOOLBAR_DARK_SEARCH_TEXT_STRING, "color", ExiXposed.HOOK_PACKAGE_NAME);
+
+		//if (TOOLBAR_LIGHT_SEARCH_TEXT_COLOR_RESOURCE == 0)
+		{
+			TOOLBAR_LIGHT_SEARCH_TEXT_COLOR_RESOURCE = context.getResources().getIdentifier(TOOLBAR_LIGHT_SEARCH_TEXT_STRING_NEW, "color", ExiXposed.HOOK_PACKAGE_NAME);
+			TOOLBAR_DARK_SEARCH_TEXT_COLOR_RESOURCE = context.getResources().getIdentifier(TOOLBAR_DARK_SEARCH_TEXT_STRING_NEW, "color", ExiXposed.HOOK_PACKAGE_NAME);
+		}
+
+		if ( TOOLBAR_LIGHT_SEARCH_TEXT_COLOR_RESOURCE == 0 )
+		{
+			Log.e(LOGTAG, "Failed to get toolbar color resource, was 0");
+			toolbarColorResourceSet = true;
+
+			return;
+		}
 
 		//Nowhere convenient to intercept the identifier, and we don't want to compare a bunch of strings.
 		//Actual color value it is.
@@ -101,7 +112,7 @@ public class StyleCommons
 		mThemeChangedListeners.add(listener);
 	}
 
-	protected static void callThemeChangedListeners(int theme)
+	public static void callThemeChangedListeners(int theme)
 	{
 		for (ThemeChangedListener listener : mThemeChangedListeners)
 		{

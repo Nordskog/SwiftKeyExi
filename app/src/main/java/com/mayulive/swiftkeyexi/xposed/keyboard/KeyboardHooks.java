@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.mayulive.swiftkeyexi.ExiModule;
+import com.mayulive.swiftkeyexi.SharedTheme;
 import com.mayulive.swiftkeyexi.providers.FontProvider;
 import com.mayulive.swiftkeyexi.providers.SharedPreferencesProvider;
 import com.mayulive.swiftkeyexi.service.SwiftkeyBroadcastListener;
@@ -37,10 +38,13 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -587,9 +591,73 @@ public class KeyboardHooks
 		}
 
 		return hookSet;
-
 	}
 
+
+	private static Set<XC_MethodHook.Unhook> hookThemeLoad(PackageTree lpparam )
+	{
+		HashSet<XC_MethodHook.Unhook> hookSet = new HashSet<>();
+
+		hookSet.addAll( XposedBridge.hookAllConstructors( KeyboardClassManager.themeContainerClass, new XC_MethodHook()
+		{
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			{
+				try
+				{
+					new Thread(() ->
+					{
+						try
+						{
+							Object themeInstance = param.thisObject;
+
+							// Multiple methods, but return value seems to be matched
+							for (Method method : KeyboardClassManager.themeContainerClass_booleanRetMethods)
+							{
+								// Target methods takes no arguments
+								if (method.getParameterTypes().length > 0)
+									continue;
+
+								boolean newBooleanValue = (boolean) method.invoke(themeInstance);
+								int newValue = newBooleanValue ? 1 : 0;
+
+								new Handler(Looper.getMainLooper()).post(() ->
+								{
+									//This value is 0-1, matching the values that exist in SharedTheme
+									SharedTheme.setCurrenThemeType( ContextUtils.getHookContext(), newValue );
+
+									if (newValue != StyleCommons.mTheme)
+									{
+										Log.d(LOGTAG, "Theme now: "+newValue);
+
+										StyleCommons.mTheme = newValue;
+										StyleCommons.callThemeChangedListeners(newValue);
+									}
+								});
+							}
+
+						}
+						catch ( Exception ex )
+						{
+							Log.e(LOGTAG, "Problem waiting for theme instance");
+							ex.printStackTrace();
+						}
+
+
+					}).start();
+				}
+				catch ( Exception ex )
+				{
+					Log.e(LOGTAG, "Problem intercepting theme set");
+				}
+
+			}
+		}));
+
+
+		return hookSet;
+
+	}
 
 
 	private static Set<XC_MethodHook.Unhook> hookGifIinsert()
@@ -805,6 +873,11 @@ public class KeyboardHooks
 				if (Hooks.themeSet.isRequirementsMet())
 				{
 					Hooks.themeSet.addAll( hookSetTheme(lpparam) );
+				}
+
+				if (Hooks.styleHooks_darklight.isRequirementsMet())
+				{
+					Hooks.styleHooks_darklight.addAll(hookThemeLoad(lpparam));
 				}
 
 
