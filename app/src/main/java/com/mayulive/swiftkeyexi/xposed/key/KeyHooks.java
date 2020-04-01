@@ -11,6 +11,7 @@ import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 
+import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.UpDownMotionEvent;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -215,6 +216,13 @@ public class KeyHooks
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 			{
+				// Called on the creation of any new key.
+				// This will not be called again until the key and all of its popups have been constructed.
+
+				PopupkeysCommons.mLastOrderedLowerCasepopups = null;
+				PopupkeysCommons.mLastOrderedUpperasepopups = null;
+				KeyCommons.mLastKeyPopupKeyIndexCounter = 0;
+				KeyCommons.mLastKeyPopupLowerCaseKeyDefinitionsProcessed = false;
 				Object templateInstance =  param.args[0];
 				KeyCommons.mLastTemplateKey = KeyCommons.getTemplateKey( System.identityHashCode(templateInstance) );
 			}

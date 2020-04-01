@@ -56,6 +56,15 @@ public class KeyCommons
 
 	protected static KeyDefinition mLastKeyDefined = null;
 
+	// Popups keys pass through the same key constructor as normal keys
+	// Lower case goes first, then upper. Set this to false on new key
+	protected static boolean mLastKeyPopupLowerCaseKeyDefinitionsProcessed = false;
+
+	// Popup keys and then the actual key are added in order.
+	// [ popup keys lower ] - empty key [ popup keys upper ] - empty key - actual key.
+	// Index matches popup key display order. Reset on net key and after lower keys processed.
+	protected static int mLastKeyPopupKeyIndexCounter = 0;
+
 	//static String mLastTag = null;			//Last tag defined
 	//static KeyType mLastTagType = KeyType.DEFAULT;
 	public static TemplateKey mLastTemplateKey = null;
@@ -561,6 +570,8 @@ public class KeyCommons
 		{
 			this.type = type;
 			this.content = stringA;
+			if (stringA == null)
+				stringA = "NULL";
 
 		}
 	}

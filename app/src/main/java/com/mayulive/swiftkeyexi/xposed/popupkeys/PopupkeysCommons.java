@@ -48,6 +48,11 @@ public class PopupkeysCommons
 	protected static DB_PopupParentKeyItem mLastPopupParentKey = null;	//Our keys
 	protected static List<String> mLastInitialPopupkeyList = null;			//Swiftkey's keys
 
+	// The final reordered popups list after we've done all our work.
+	// Order is display order from left to right
+	// These are cleared on new raw key definition over in keyhooks, just to make sure they're not duplicated incorrectly.
+	public static List<String> mLastOrderedLowerCasepopups = null;
+	public static List<String> mLastOrderedUpperasepopups = null;
 
 	//Map a string to an action for popups keys
 	protected static Map<String,KeyboardInteraction.TextAction> mPopupKeyActions = new HashMap<String,KeyboardInteraction.TextAction>();
