@@ -36,25 +36,139 @@ public class KeyHooks
 {
 	private static String LOGTAG = ExiModule.getLogTag(KeyHooks.class);
 
+	private static void handleDonwHookAfter()
+	{
+		// Back in the day enabling it directly in the before hook would allow the current event but cancel the next one.
+		// For some reason it will now also cancel the current one, so we set it on a delay.
+		if ( KeyCommons.mCancelAllKeysAfterKeyDown )
+		{
+			KeyCommons.mCancelAllKeys = true;
+			KeyCommons.mCancelAllKeysAfterKeyDown = false;
+		}
+	}
+
+	private static void handleUpHookBefore( XC_MethodHook.MethodHookParam param )
+	{
+
+		if (DebugTools.DEBUG_KEYS)
+		{
+			Object thiz = param.thisObject;
+			KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
+
+			Log.d(LOGTAG, "Up   method: "+param.toString());
+			Log.d(LOGTAG, "Key up: "+(key != null ? key.toString() : "NULL" )+", pointer: "+System.identityHashCode(thiz));
+		}
+
+		if ( KeyCommons.mLongPressTriggeredSinceLastDownEvent)
+		{
+			KeyCommons.mLongPressTriggeredSinceLastDownEvent = false;
+
+			try
+			{
+				Object thiz = param.thisObject;
+				KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
+
+				// This is probably a popup
+				if (key != null && key.type == KeyType.POPUP && key.content != null && key.content.length() > 1)
+				{
+					// With extremely few exceptions, popups only contain a single character.
+					// Our inserted popups, however, may contain more characters.
+					// For some reason Swiftkey will sort or cut off long popup strings.
+					// A notable example is password fields, where for some bizarre reason the string will be sorted
+					// so that all numbers come first, followed by all letters.
+					// If the popup is greater than 1 character we should inser it ourselves instead.
+					// We need to call the keyCancel event on the popup key to make it disappeaer/de-highlight.
+
+					if (KeyClassManager.keyboardSingleKeyCancelMethod != null)
+					{
+						if (DebugTools.DEBUG_KEYS)
+						{
+							Log.d(LOGTAG, "Multi-char popup. Will cancel and insert manually: "+key.content);
+						}
+						param.setResult(null);
+						KeyClassManager.keyboardSingleKeyCancelMethod.invoke(thiz, param.args[0]);
+
+						KeyboardMethods.inputText( key.content );
+					}
+				}
+			}
+			catch (Throwable ex)
+			{
+				Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in onKeyUp hook");
+			}
+		}
+	}
+
+	private static void handleDonwhookBefore(XC_MethodHook.MethodHookParam param, boolean isDefinitelyDown )
+	{
+
+		if (DebugTools.DEBUG_KEYS)
+		{
+			Object thiz = param.thisObject;
+			KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
+
+			Log.d(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" )+", pointer: "+System.identityHashCode(thiz));
+			Log.d(LOGTAG, "Down method: "+param.toString());
+		}
+
+		if ( isDefinitelyDown || SelectionState.getLastUpDownEvent() == UpDownMotionEvent.DOWN)
+		{
+			try
+			{
+				Object thiz = param.thisObject;
+				KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
+
+				//Maybe keys are defined somewhere else too?
+				//I used to pass a generic key in these cases, but recently swiftkey have
+				//changed how long-presses work. When a popup... pops-up, it triggers
+				//a null key (key that did not pass through the definition methods we are hooking).
+				//This causes some features to think another key was pressed, even though it was just
+				//a key poppping up. We shouldn't be doing anything with these null keys anyway,
+				//so let's just not pass them along.
+				if (key != null)
+				{
+					KeyCommons.callKeyDownListeners(key);
+
+					// Normally when we invoke the original method, the hook is not called.
+					// with EdXposed, it is, for some reason. Probably only because we call it from outside of the hook.
+					// Check time since last processed and skip delaying key if it was very very recent.
+					if ( System.currentTimeMillis() - KeyCommons.mDelayedKeysLastProcessed > 25 )
+					{
+						//If we will ever be swiping for from the shift key, we have to delay it triggering
+						//until pointer_up and we're sure we're not going to enter swipe.
+						//This is also technically necessary when swiping from anywhere, but it is unlikely the user
+						//will swipe from shift.
+						if ( key.is(KeyType.SHIFT) && ( Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey() || Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() ) )
+						{
+							KeyCommons.DelayedKey delayedKey = new KeyCommons.DelayedKey( param.args, thiz, (Method)param.method, 2000 );
+							KeyCommons.addDelayedKey(delayedKey);
+							param.setResult(null);
+						}
+					}
+
+				}
+			}
+			catch (Throwable ex)
+			{
+				Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in onKeyDown hook");
+			}
+		}
+
+	}
+
+
 	public static Set<XC_MethodHook.Unhook> hookOnKeyDown() throws NoSuchFieldException
 	{
 		HashSet<XC_MethodHook.Unhook> hooks = new HashSet<>();
 
-		for (Method method : KeyClassManager.keyboardSingleKeyDownMethod)
+		if ( KeyClassManager.keyboardSingleKeyDownMethod != null )
 		{
-			hooks.add( XposedBridge.hookMethod(method, new XC_MethodHook()
+			hooks.add( XposedBridge.hookMethod(KeyClassManager.keyboardSingleKeyDownMethod , new XC_MethodHook()
 			{
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
-					// Back in the day enabling it directly in the before hook would allow the current event but cancel the next one.
-					// For some reason it will now also cancel the current one, so we set it on a delay.
-					if ( KeyCommons.mCancelAllKeysAfterKeyDown )
-					{
-						KeyCommons.mCancelAllKeys = true;
-						KeyCommons.mCancelAllKeysAfterKeyDown = false;
-					}
-
+					handleDonwHookAfter();
 				}
 
 				// This used to be a before hook, and we immediately asked to cancel all keys sometimes.
@@ -63,61 +177,53 @@ public class KeyHooks
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
-					// Need to query last overlay motion event to figure out if this is key down or something else.
-					if (SelectionState.getLastUpDownEvent() != UpDownMotionEvent.DOWN)
-					{
-						return;
-					}
-
-					try
-					{
-						Object thiz = param.thisObject;
-						KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
-
-						if (DebugTools.DEBUG_KEYS)
-						{
-							Log.i(LOGTAG, "Key down: "+(key != null ? key.toString() : "NULL" )+", pointer: "+System.identityHashCode(thiz));
-						}
-
-						//Maybe keys are defined somewhere else too?
-						//I used to pass a generic key in these cases, but recently swiftkey have
-						//changed how long-presses work. When a popup... pops-up, it triggers
-						//a null key (key that did not pass through the definition methods we are hooking).
-						//This causes some features to think another key was pressed, even though it was just
-						//a key poppping up. We shouldn't be doing anything with these null keys anyway,
-						//so let's just not pass them along.
-						if (key != null)
-						{
-							KeyCommons.callKeyDownListeners(key);
-
-							// Normally when we invoke the original method, the hook is not called.
-							// with EdXposed, it is, for some reason. Probably only because we call it from outside of the hook.
-							// Check time since last processed and skip delaying key if it was very very recent.
-							if ( System.currentTimeMillis() - KeyCommons.mDelayedKeysLastProcessed > 25 )
-							{
-								//If we will ever be swiping for from the shift key, we have to delay it triggering
-								//until pointer_up and we're sure we're not going to enter swipe.
-								//This is also technically necessary when swiping from anywhere, but it is unlikely the user
-								//will swipe from shift.
-								if ( key.is(KeyType.SHIFT) && ( Settings.SWIPE_CURSOR_BEHAVIOR.isMultiKey() || Settings.SWIPE_SELECTION_BEHAVIOR.triggersFromShiftAndDelete() ) )
-								{
-									KeyCommons.DelayedKey delayedKey = new KeyCommons.DelayedKey( param.args, thiz, (Method)param.method, 2000 );
-									KeyCommons.addDelayedKey(delayedKey);
-									param.setResult(null);
-								}
-							}
-
-						}
-
-					}
-					catch (Throwable ex)
-					{
-						Hooks.keyHooks_keyDefinition.invalidate(ex, "Unexpected problem in onKeyDown hook");
-					}
+					handleDonwhookBefore(param, true);
 				}
 
 			}));
+
+			hooks.add( XposedBridge.hookMethod(KeyClassManager.keyboardSingleKeyUpMethod , new XC_MethodHook()
+			{
+				// This used to be a before hook, and we immediately asked to cancel all keys sometimes.
+				// This prevents the key from working at all after 7.3.7.18.
+				// Fixed by changing to After. Not sure what changed here.
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+				{
+					handleUpHookBefore(param);
+				}
+
+			}));
+
 		}
+		else
+		{
+			Log.e(LOGTAG, "keyboardSingleKeyDownMethod not defined, falling back to hooking all key event methods");
+
+			for (Method method : KeyClassManager.keyboardSingleKeyActionMethods)
+			{
+				hooks.add( XposedBridge.hookMethod(method, new XC_MethodHook()
+				{
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable
+					{
+						handleDonwHookAfter();
+					}
+
+					// This used to be a before hook, and we immediately asked to cancel all keys sometimes.
+					// This prevents the key from working at all after 7.3.7.18.
+					// Fixed by changing to After. Not sure what changed here.
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+					{
+						handleDonwhookBefore(param, false);
+					}
+
+				}));
+			}
+		}
+
+
 
 		return hooks;
 
@@ -299,6 +405,16 @@ public class KeyHooks
 
 				@Override public void afterKeyboardConfigurationChanged() {}
 
+			});
+
+			PopupkeysCommons.addOnLongPressListener(new PopupkeysCommons.OnLongPressTriggeredListener()
+			{
+				@Override
+				public boolean onLongPressTriggered()
+				{
+					KeyCommons.mLongPressTriggeredSinceLastDownEvent = true;
+					return false;
+				}
 			});
 
 		}

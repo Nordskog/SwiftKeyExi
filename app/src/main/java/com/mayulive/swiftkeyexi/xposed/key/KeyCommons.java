@@ -71,6 +71,8 @@ public class KeyCommons
 
 	private static HashMap<Integer, TemplateKey> mKeyTemplates = new HashMap<>();
 
+	protected static boolean mLongPressTriggeredSinceLastDownEvent = false;
+
 	////////////
 	//Misc
 	////////////
