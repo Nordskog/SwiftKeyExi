@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.6.8] - 03-04-2020
+### Fixed
+ - Emoji panel locking up Swiftkey ( Beta )
+ - Quick-menu in sectioned layouts ( Chinese stroke etc )
+ - Long popup strings being inserted correctly in certain fields
+
+### Added
+ - Text action to toggle number row
+ - Text action to toggle toolbar
+ 
+### Changed
+ - Maximize predictions retains toolbar toggle button by default ( swipe gesture in settings )
+ - Made Swipe gesture to open toolbar less sensitive
+
 ## [2.6.7] - 21-03-2020
 ### Fixed
  - Replacement toolbar toggle not working after some time
