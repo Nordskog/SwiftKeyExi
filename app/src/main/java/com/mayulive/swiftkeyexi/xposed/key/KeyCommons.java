@@ -441,6 +441,18 @@ public class KeyCommons
 					return true;
 				}
 
+				case TOGGLE_NUMBER_ROW:
+				{
+					KeyboardMethods.toggleNumberRow();
+					return true;
+				}
+
+				case TOGGLE_TOOLBAR:
+				{
+					KeyboardMethods.doToolbarButtonClick();
+					return true;
+				}
+
 				default:
 				{
 					return false;

@@ -42,6 +42,8 @@ public class KeyboardMethods
 {
 
 	private static final String AUTOCOMPLETE_PREF_KEY = "pref_typing_style_autocomplete";
+	private static final String SHOW_NUMBER_ROW_PREF_KEY = "pref_keyboard_show_number_row";
+
 	public static Map<Integer, WeakReference<View>> mExpandButtons = new HashMap<>();
 	public static int mExpandButtonOriginalWidth = 0;	// Set when added to above list
 
@@ -695,6 +697,25 @@ public class KeyboardMethods
 		editor.apply();
 
 		return;
+	}
+
+	public static boolean getShowNumerRow()
+	{
+		SharedPreferences prefs = getSwiftkeySharedPrefs();
+		return prefs.getBoolean(SHOW_NUMBER_ROW_PREF_KEY, false);	// Correct default value?
+	}
+
+	public static void setShowNumberRow(boolean on)
+	{
+		SharedPreferences prefs = getSwiftkeySharedPrefs();
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putBoolean( SHOW_NUMBER_ROW_PREF_KEY, on);
+		editor.apply();
+	}
+
+	public static void toggleNumberRow()
+	{
+		setShowNumberRow( !getShowNumerRow() );
 	}
 
 	public static void setKeyboardOpacity()

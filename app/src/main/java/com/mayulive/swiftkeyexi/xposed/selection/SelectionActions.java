@@ -82,12 +82,11 @@ public class SelectionActions
 		if (action != null)
 		{
 			//Vibrate?
-			if(vibrate)
+			if(vibrate && action != KeyboardInteraction.TextAction.TOGGLE_TOOLBAR)	// Toolbar will trigger its own vibration
 			{
 				Vibrator v = (Vibrator) ContextUtils.getHookContext().getSystemService(Context.VIBRATOR_SERVICE);
 				v.vibrate(KeyboardMethods.getVibrationDuration());
 			}
-
 
 			KeyCommons.PerformTextAction( PriorityKeyboardClassManager.getInputConnection(), action, text);
 		}

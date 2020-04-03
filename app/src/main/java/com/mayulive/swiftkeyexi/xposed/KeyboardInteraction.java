@@ -28,7 +28,9 @@ public class KeyboardInteraction
 		NEWLINE,
 		TOGGLE_AUTOCORRECT,
 		TOGGLE_INCOGNITO,
-		TOGGLE_AUTO_INCOGNITO;
+		TOGGLE_AUTO_INCOGNITO,
+		TOGGLE_NUMBER_ROW,
+		TOGGLE_TOOLBAR;
 
 		public static String getTextRepresentation(Context context, TextAction action)
 		{
@@ -66,6 +68,10 @@ public class KeyboardInteraction
 						return context.getResources().getString(R.string.textaction_toggle_auto_incog);
 					case NEWLINE:
 						return context.getResources().getString(R.string.textaction_insert_newline);
+					case TOGGLE_NUMBER_ROW:
+						return context.getResources().getString(R.string.textaction_toggle_number_row);
+					case TOGGLE_TOOLBAR:
+						return context.getResources().getString(R.string.textaction_toggle_toolbar);
 
 					default:
 						return "Null";
@@ -115,6 +121,10 @@ public class KeyboardInteraction
 						return context.getResources().getString(R.string.textaction_short_toggle_auto_incog);
 					case NEWLINE:
 						return context.getResources().getString(R.string.textaction_short_insert_newline);
+					case TOGGLE_NUMBER_ROW:
+						return context.getResources().getString(R.string.textaction_short_toggle_number_row);
+					case TOGGLE_TOOLBAR:
+						return context.getResources().getString(R.string.textaction_short_toggle_toolbar);
 
 					default:
 						return "Null";
@@ -167,13 +177,11 @@ public class KeyboardInteraction
 			values.add( TextAction.GO_TO_END);
 			values.add( TextAction.GO_TO_START);
 
+			values.add( TextAction.TOGGLE_NUMBER_ROW);
+			values.add( TextAction.TOGGLE_TOOLBAR);
 			values.add( TextAction.TOGGLE_AUTOCORRECT);
 			values.add( TextAction.TOGGLE_INCOGNITO);
 			values.add( TextAction.TOGGLE_AUTO_INCOGNITO);
-
-
-
-
 
 			return values.toArray( new TextAction[ values.size() ] );
 		}
