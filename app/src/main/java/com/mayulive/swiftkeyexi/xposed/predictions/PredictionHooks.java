@@ -19,8 +19,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -424,7 +422,7 @@ public class PredictionHooks
 					}
 					PredictionCommons.mLastUpdateTime = System.currentTimeMillis();
 
-					if (Settings.changed_REMOVE_SUGGESTIONS_PADDING)
+					if (Settings.changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON)
 					{
 						PredictionCommons.setSuggestionsPaddingVisibility( !Settings.REMOVE_SUGGESTIONS_PADDING );
 						KeyboardMethods.handleExpandButton();

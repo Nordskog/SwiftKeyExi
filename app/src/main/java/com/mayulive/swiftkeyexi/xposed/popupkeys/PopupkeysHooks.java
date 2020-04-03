@@ -192,6 +192,15 @@ public class PopupkeysHooks
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
 
+					if (KeyCommons.mLastTemplateKey == null)
+					{
+						if (DebugTools.DEBUG_POPUPS)
+						{
+							Log.i(LOGTAG, "Last template null, skipping button order" );
+						}
+
+						return;
+					}
 
 					if (DebugTools.DEBUG_POPUPS)
 					{
@@ -363,6 +372,16 @@ public class PopupkeysHooks
 
 							if (DebugTools.DEBUG_POPUPS)
 								Log.i(LOGTAG, "Output: "+outputKeys.toString());
+
+							// Store this list so the key constructor can query them later
+							if (isUpperCase)
+							{
+								PopupkeysCommons.mLastOrderedUpperasepopups = outputKeys;
+							}
+							else
+							{
+								PopupkeysCommons.mLastOrderedLowerCasepopups = outputKeys;
+							}
 
 							btSubClass_aField.set(btSubClassInstance, outputKeys);
 						}

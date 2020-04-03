@@ -20,7 +20,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("cy2");
+		newProfile.setFullPath("kx2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -85,10 +85,11 @@ public class SelectionProfiles
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(boolean.class),
 
+										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(int.class),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
@@ -104,7 +105,7 @@ public class SelectionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
+										new ClassItem(boolean.class),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
@@ -119,7 +120,6 @@ public class SelectionProfiles
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(boolean.class),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
@@ -132,10 +132,10 @@ public class SelectionProfiles
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
@@ -233,10 +233,10 @@ public class SelectionProfiles
 						//Method #13: a
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -246,37 +246,12 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(int.class)
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class)
 
 								),
 
 						//Method #15: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #16: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(boolean.class),
-
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #17: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -287,7 +262,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #18: a
+						//Method #16: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -300,7 +275,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #19: a
+						//Method #17: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -312,6 +287,36 @@ public class SelectionProfiles
 
 								),
 
+						//Method #18: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(int.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #19: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(boolean.class),
+
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
 						//Method #20: a
 						new MethodProfile
 								(
@@ -320,7 +325,9 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(java.lang.String.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -344,10 +351,7 @@ public class SelectionProfiles
 
 										new ClassItem(java.lang.String.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class),
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -358,9 +362,7 @@ public class SelectionProfiles
 										new ClassItem(boolean.class),
 
 										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
 										new ClassItem(boolean.class),
 										new ClassItem(boolean.class)
 
@@ -369,14 +371,10 @@ public class SelectionProfiles
 						//Method #24: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -386,8 +384,8 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(int.class)
 
 								),
 
@@ -397,9 +395,10 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
 										new ClassItem(boolean.class)
 
 								),
@@ -410,7 +409,8 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -819,12 +819,12 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("ec3");
+		newProfile.setFullPath("db3");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
 		newProfile.setMaxDepth(0);
-		newProfile.setModifiers(PUBLIC | FINAL );
+		newProfile.setModifiers(PUBLIC );
 
 		newProfile.setTypeParamCount(0);
 		newProfile.setSuperClass(	new ClassItem(java.lang.Object.class));
@@ -878,7 +878,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -888,7 +888,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.util.List.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -898,7 +898,8 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(int.class)
 
 								),
 
@@ -918,8 +919,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class)
+										new ClassItem(java.util.List.class)
 
 								),
 
@@ -929,7 +929,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -959,7 +959,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -979,7 +979,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -989,7 +989,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -999,7 +999,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -1009,7 +1009,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1019,7 +1019,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -1049,7 +1049,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1059,7 +1059,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 

@@ -147,15 +147,20 @@ public class PredictionHandlers
 
 			replacementLinear.setOnFlingListener(direction ->
 			{
-				switch (direction)
+				if ( Settings.REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE )
 				{
-					case UP:
-					case DOWN:
-						KeyboardMethods.doToolbarButtonClick();
-						return true;
-					default:
-						return false;
+					switch (direction)
+					{
+						case UP:
+						case DOWN:
+							KeyboardMethods.doToolbarButtonClick();
+							return true;
+						default:
+							return false;
+					}
 				}
+
+				return false;
 			});
 
 			return replacementLinear;
@@ -391,15 +396,22 @@ public class PredictionHandlers
 
 				PredictionCommons.mCandidateContainer.setOnFlingListener(direction ->
 				{
-					switch (direction)
+					if ( Settings.REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE )
 					{
-						case UP:
-						case DOWN:
-							KeyboardMethods.doToolbarButtonClick();
-							return true;
-						default:
-							return false;
+
+
+						switch (direction)
+						{
+							case UP:
+							case DOWN:
+								KeyboardMethods.doToolbarButtonClick();
+								return true;
+							default:
+								return false;
+						}
 					}
+
+					return false;
 				});
 
 				PredictionCommons.mCandidateContainer.addView(headerScroller);

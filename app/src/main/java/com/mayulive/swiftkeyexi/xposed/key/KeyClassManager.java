@@ -10,10 +10,8 @@ import android.util.Log;
 import com.mayulive.swiftkeyexi.ExiModule;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
-import com.mayulive.xposed.classhunter.ClassHunter;
 import com.mayulive.xposed.classhunter.profiles.ClassItem;
 import com.mayulive.xposed.classhunter.profiles.MethodProfile;
-import com.mayulive.xposed.classhunter.Modifiers;
 import com.mayulive.xposed.classhunter.ProfileHelpers;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
 
@@ -59,7 +57,10 @@ public class KeyClassManager
 	//protected static Method onButtonReleasedHandlerMethod = null;	//Deprecated key-up
 	protected static List<Method> normalButtonClickItemMethods = null;
 
-	protected static List<Method> keyboardSingleKeyDownMethod = null;
+	protected static List<Method> keyboardSingleKeyActionMethods = null;
+	protected static Method keyboardSingleKeyCancelMethod = null;
+	protected static Method keyboardSingleKeyDownMethod = null;
+	protected static Method keyboardSingleKeyUpMethod = null;
 
 	protected static Method keyRawDefinitionClass_newKeyMethod = null;
 
@@ -97,11 +98,24 @@ public class KeyClassManager
 		{
 			//Method order expected to to remain the same.
 			//Should they change, maybe we can check the input touch event to figure out which is which?
-			keyboardSingleKeyDownMethod  = ProfileHelpers.findAllProfileMatches(new MethodProfile(
+			keyboardSingleKeyActionMethods = ProfileHelpers.findAllProfileMatches(new MethodProfile(
 							new ClassItem(void.class),
 							new ClassItem(pointerLocationClass)
 					),
 					keyDefinitionKeyClass.getDeclaredMethods(), keyDefinitionKeyClass);
+
+			if (keyboardSingleKeyActionMethods.size() == 4)
+			{
+				// Methods seem to always be in the same order they are named, so a-b-c == 0-1-2
+				keyboardSingleKeyDownMethod = keyboardSingleKeyActionMethods.remove(2); // c
+				keyboardSingleKeyDownMethod.setAccessible(true);
+
+				keyboardSingleKeyCancelMethod = keyboardSingleKeyActionMethods.remove(1); // b
+				keyboardSingleKeyCancelMethod.setAccessible(true);
+
+				keyboardSingleKeyUpMethod = keyboardSingleKeyActionMethods.remove(0); // a
+				keyboardSingleKeyUpMethod.setAccessible(true);
+			}
 
 		}
 
@@ -220,7 +234,7 @@ public class KeyClassManager
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyDefinitionKeyClass", 	keyDefinitionKeyClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "pointerLocationClass", 	pointerLocationClass );
-		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "keyboardSingleKeyDownMethod", 	keyboardSingleKeyDownMethod );
+		Hooks.logSetRequirement( Hooks.keyHooks_keyDefinition,	 "keyboardSingleKeyDownMethod", keyboardSingleKeyActionMethods != null && !keyboardSingleKeyActionMethods.isEmpty() );
 
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "newKeyInfoClass", 	newKeyInfoClass );
 		Hooks.logSetRequirementFalseIfNull( Hooks.keyHooks_keyDefinition,	 "newKeyInfoClass_constructor", 	newKeyInfoClass_constructor );

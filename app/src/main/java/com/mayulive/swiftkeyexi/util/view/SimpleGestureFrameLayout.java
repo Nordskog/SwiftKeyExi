@@ -7,6 +7,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
+import com.mayulive.swiftkeyexi.util.MathUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GestureDetectorCompat;
@@ -98,11 +100,27 @@ public class SimpleGestureFrameLayout extends FrameLayout implements GestureDete
 		mListener = listener;
 	}
 
+	private boolean eventInBounds(MotionEvent event )
+	{
+		int height = this.getMeasuredHeight();	// Also padding event must end outside
+		int width = this.getMeasuredWidth();
+
+		boolean withinX =  (MathUtils.isWithinRange( event.getX(), 0 - height, width +height ));
+		boolean withinY  =  (MathUtils.isWithinRange( event.getY(), 0 - height, height + height ));
+
+		return withinX && withinY;
+	}
+
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
 	{
 		if (mListener != null)
 		{
+			// Only used for predictions vertical swipe.
+			// Disregard if up is not outside + height away.
+			if ( eventInBounds(e2) )
+				return false;
+
 			if ( Math.abs(velocityY) > Math.abs( velocityX ))
 			{
 				if (velocityY > 0)
@@ -131,7 +149,6 @@ public class SimpleGestureFrameLayout extends FrameLayout implements GestureDete
 
 		return false;
 	}
-
 	public interface onFlingListener
 	{
 		boolean onFling( FlingDirection direction );

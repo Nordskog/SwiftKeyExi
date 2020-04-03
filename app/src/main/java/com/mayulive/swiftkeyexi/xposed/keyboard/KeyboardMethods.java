@@ -42,6 +42,8 @@ public class KeyboardMethods
 {
 
 	private static final String AUTOCOMPLETE_PREF_KEY = "pref_typing_style_autocomplete";
+	private static final String SHOW_NUMBER_ROW_PREF_KEY = "pref_keyboard_show_number_row";
+
 	public static Map<Integer, WeakReference<View>> mExpandButtons = new HashMap<>();
 	public static int mExpandButtonOriginalWidth = 0;	// Set when added to above list
 
@@ -190,6 +192,7 @@ public class KeyboardMethods
 	protected static ArrayList<KeyboardEventListener> mKeyboardEventListeners = new ArrayList<>();
 	protected static ArrayList<SharedPreferences.OnSharedPreferenceChangeListener> mSwiftkeyPrefChangedListeners = new ArrayList<>();
 
+	protected static ImageView mReplacementExpandToolbarButton = null;
 	protected static ImageView mReplacementExpandToolbarButtonMinor = null;
 	protected static ViewGroup mKeyboardRoot = null;
 	protected static float mLastKeyboardOpacity = 1;
@@ -696,6 +699,25 @@ public class KeyboardMethods
 		return;
 	}
 
+	public static boolean getShowNumerRow()
+	{
+		SharedPreferences prefs = getSwiftkeySharedPrefs();
+		return prefs.getBoolean(SHOW_NUMBER_ROW_PREF_KEY, false);	// Correct default value?
+	}
+
+	public static void setShowNumberRow(boolean on)
+	{
+		SharedPreferences prefs = getSwiftkeySharedPrefs();
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putBoolean( SHOW_NUMBER_ROW_PREF_KEY, on);
+		editor.apply();
+	}
+
+	public static void toggleNumberRow()
+	{
+		setShowNumberRow( !getShowNumerRow() );
+	}
+
 	public static void setKeyboardOpacity()
 	{
 		//Run if changed or opacity not 100%
@@ -815,8 +837,9 @@ public class KeyboardMethods
 	{
 		if (toolbarContainer != null)
 		{
-			if (mReplacementExpandToolbarButtonMinor == null)
+			if (mReplacementExpandToolbarButtonMinor == null || mReplacementExpandToolbarButton == null)
 			{
+				mReplacementExpandToolbarButton = getExpandToolbarButton(toolbarContainer.getContext(), false);
 				mReplacementExpandToolbarButtonMinor = getExpandToolbarButton(toolbarContainer.getContext(), true);
 			}
 
@@ -824,6 +847,38 @@ public class KeyboardMethods
 			// Inserted at top of keyboard when suggestions hidden
 			//////////////////////////////////////////////////////////
 
+			if ( Settings.REMOVE_SUGGESTIONS_PADDING && !Settings.REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE )
+			{
+				// Ensure we are the top view
+				mReplacementExpandToolbarButton.setVisibility(View.VISIBLE);
+
+				if (toolbarContainer != null )
+				{
+					// Sometimes a new container is created, so we cannot assume that
+					// the, if the view has a parent, it is the same as this new container.
+					{
+						ViewParent currentParent = mReplacementExpandToolbarButton.getParent();
+						if (currentParent != null && currentParent != toolbarContainer)
+						{
+							// Has parent, but is a different container
+							((ViewGroup)currentParent).removeView(mReplacementExpandToolbarButton);
+						}
+					}
+
+					// Will handle inserting the ivew, and moving it back to the top if something has decided to cover it.
+					int existingIndex = toolbarContainer.indexOfChild( mReplacementExpandToolbarButton );
+					if ( existingIndex < toolbarContainer.getChildCount() -1 )
+					{
+						if (existingIndex != -1) // Skip removing if not actually a child yet
+							toolbarContainer.removeView(mReplacementExpandToolbarButton);
+						toolbarContainer.addView(mReplacementExpandToolbarButton);
+					}
+				}
+			}
+			else
+			{
+				mReplacementExpandToolbarButton.setVisibility(View.GONE);
+			}
 
 			if ( Settings.HIDE_PREDICTIONS_BAR )
 			{

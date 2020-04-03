@@ -5,6 +5,7 @@ package com.mayulive.swiftkeyexi.xposed.keyboard;
  */
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -19,6 +20,8 @@ import com.mayulive.xposed.classhunter.profiles.MethodProfile;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +41,12 @@ public class KeyboardClassManager
 
 	static Object themeSetter_dummyCtiInstance = null;
 	static Object themeSetterClass_instance = null;
+
+	///////////////////////////////
+
+	protected static Class themeContainerClass = null;
+	protected static List<Method> themeContainerClass_booleanRetMethods = new ArrayList<>();
+
 
 	/////////////////////////////////////////
 
@@ -182,6 +191,29 @@ public class KeyboardClassManager
 			KeyboardClassManager.themeSetterClass_setThemeMethod = ProfileHelpers.findMostSimilar( profile, themeSetterClass.getDeclaredMethods(), themeSetterClass );
 			DebugTools.logIfMethodProfileMismatch(  themeSetterClass_setThemeMethod, themeSetterClass, profile, "themeSetterClass_setThemeMethod");
 
+			//////////////////
+
+			if ( KeyboardClassManager.themeSetterClass_setThemeMethod != null)
+			{
+				Type[] argTypes = ( (ParameterizedType)KeyboardClassManager.themeSetterClass_setThemeMethod.getGenericReturnType() ).getActualTypeArguments();
+				if (argTypes.length > 0)
+				{
+					themeContainerClass = (Class)  argTypes[0];
+					themeContainerClass_booleanRetMethods = ProfileHelpers.findAllMethodsWithReturnType(boolean.class, themeContainerClass.getDeclaredMethods());
+
+					// There are multiple methods, but both seem to return matched true/false values
+					// May be some weirdo themes where they are different
+					for (Method method : themeContainerClass_booleanRetMethods)
+					{
+						method.setAccessible(true);
+					}
+				}
+				else
+				{
+					Log.e(LOGTAG, "Set theme method return type args empty!");
+				}
+
+			}
 		}
 	}
 
@@ -249,5 +281,11 @@ public class KeyboardClassManager
 
 		//Theme set
 		Hooks.logSetRequirementFalseIfNull( Hooks.themeSet, "themeSetterClass_setThemeMethod is null", themeSetterClass_setThemeMethod );
+
+		//Dark light
+		Hooks.logSetRequirementFalseIfNull( 		Hooks.styleHooks_darklight, "themeContainerClass is null", themeContainerClass );
+		Hooks.logSetRequirement( 					Hooks.styleHooks_darklight, "themeContainerClass is null", !themeContainerClass_booleanRetMethods.isEmpty() );
+
+
 	}
 }

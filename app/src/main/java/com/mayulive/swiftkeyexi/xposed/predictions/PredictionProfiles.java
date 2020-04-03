@@ -388,7 +388,7 @@ public class PredictionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("hy2");
+		newProfile.setFullPath("px2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -452,11 +452,21 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype_fluency.Punctuator" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
 						//Method #3: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #4: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -472,7 +482,7 @@ public class PredictionProfiles
 
 								),
 
-						//Method #4: a
+						//Method #5: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -481,19 +491,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
 										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #5: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.inputmethod.EditorInfo.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
 
 								),
 
@@ -506,7 +503,6 @@ public class PredictionProfiles
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(android.view.inputmethod.EditorInfo.class),
 										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
 										new ClassItem(boolean.class)
 
 								),
@@ -518,7 +514,9 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(android.view.inputmethod.EditorInfo.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
 										new ClassItem(boolean.class)
 
 								),
@@ -589,7 +587,7 @@ public class PredictionProfiles
 
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(boolean.class)
 
 								),
 
@@ -600,9 +598,7 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-										new ClassItem(java.util.EnumSet.class)
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -613,7 +609,10 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -624,7 +623,12 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class)
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -635,10 +639,8 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -649,12 +651,9 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+										new ClassItem(java.util.EnumSet.class)
 
 								),
 
@@ -676,11 +675,22 @@ public class PredictionProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
 						//Method #21: a
+						new MethodProfile
+								(
+										PUBLIC | ABSTRACT | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #22: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
@@ -692,23 +702,13 @@ public class PredictionProfiles
 
 								),
 
-						//Method #22: a
-						new MethodProfile
-								(
-										PUBLIC | ABSTRACT | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("com.touchtype_fluency.Punctuator" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
 						//Method #23: a
 						new MethodProfile
 								(
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(java.util.List.class)
 
 								),
 
@@ -718,7 +718,7 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.util.List.class)
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -768,9 +768,9 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(int.class),
-										new ClassItem(android.view.KeyEvent.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -782,10 +782,7 @@ public class PredictionProfiles
 
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
-										new ClassItem(android.view.KeyEvent.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(android.view.KeyEvent.class)
 
 								),
 
@@ -795,9 +792,12 @@ public class PredictionProfiles
 										PUBLIC | ABSTRACT | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(android.view.KeyEvent.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 

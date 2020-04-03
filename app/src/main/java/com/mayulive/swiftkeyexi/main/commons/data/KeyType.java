@@ -32,7 +32,8 @@ public enum KeyType
 	CLEAR_BUFFER_KEY,    //ClearBufferKey. 清空 key
 	TAB,                //Tab
 	NUMBER,				//There is no number key type, but set it manually for 0-9
-	COMMA;
+	COMMA,
+	POPUP;				// Type created by us to track popup key instances
 
 
 	private static final Set<String> NUMBER_CHARACTERS = new HashSet<>();

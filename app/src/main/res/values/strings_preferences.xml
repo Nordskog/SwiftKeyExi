@@ -133,7 +133,11 @@
 
     <string name="pref_remove_suggestion_padding_key">pref_remove_suggestion_padding</string>
     <string name="pref_remove_suggestion_padding_title">Maximize predictions</string>
-    <string name="pref_remove_suggestion_padding_summary">Make predictions bar fill screen.\nVertical swipe to toggle toolbar</string>
+    <string name="pref_remove_suggestion_padding_summary">Make predictions bar fill screen.</string>
+
+    <string name="pref_replace_toolbar_button_with_swipe_key">pref_replace_toolbar_button_with_swipe</string>
+    <string name="pref_replace_toolbar_button_with_swipe_title">Vertical swipe to toggle toolbar</string>
+    <string name="pref_replace_toolbar_button_with_swipe_summary">Replace button with vertical swipe gesture to toggle toolbar.\nMaximize predictions must be enabled.</string>
 
 
     <string name="pref_disable_punctuation_autospace_key">pref_disable_punctuation_autospace</string>

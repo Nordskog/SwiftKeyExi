@@ -16,6 +16,8 @@
     <string name="textaction_toggle_incog">Toggle Incognito</string>
     <string name="textaction_toggle_auto_incog">Toggle Auto-Incognito</string>
     <string name="textaction_insert_newline">Insert Newline</string>
+    <string name="textaction_toggle_number_row">Toggle Number Row</string>
+    <string name="textaction_toggle_toolbar">Toogle Toolbar</string>
 
     <!-- Short-hand for quick menu -->
     <string name="textaction_short_undo">Undo</string>
@@ -32,5 +34,7 @@
     <string name="textaction_short_toggle_incog">Incog</string>
     <string name="textaction_short_toggle_auto_incog">Auto-Incog</string>
     <string name="textaction_short_insert_newline">Newline</string>
+    <string name="textaction_short_toggle_number_row">Numbers</string>
+    <string name="textaction_short_toggle_toolbar">Toolbar</string>
 
 </resources>

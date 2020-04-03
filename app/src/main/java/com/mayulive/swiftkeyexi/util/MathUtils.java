@@ -243,6 +243,10 @@ public class MathUtils
 		return (number%2 == 0);
 	}
 
+	public static boolean isWithinRange( float position, float start, float end )
+	{
+		return ( position >= start && position <= end);
+	}
 
 
 }

@@ -9,6 +9,9 @@ import com.mayulive.swiftkeyexi.main.commons.data.KeyType;
 import com.mayulive.swiftkeyexi.xposed.DebugTools;
 import com.mayulive.swiftkeyexi.xposed.Hooks;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
+import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+
+import java.util.List;
 
 /**
  * Created by Roughy on 9/9/2017.
@@ -21,20 +24,45 @@ public class KeyHandlers
 
 	protected static void handleKeyConstructed(Object returnKey, KeyCommons.TemplateKey template) throws Throwable
 	{
-
 		RectF hitbox = KeyCommons.getKeyArea(returnKey);
 
 		if (hitbox == null)	//No hitbox, no key we care about
+		{
 			return;
+		}
+
+		boolean isPhysicalKey = true;
+
+		// This method does not work for weird layouts, as the spacebar is part of a separate layout
+		if ( !KeyboardMethods.isLayoutWeird() )
+		{
+			if ( hitbox.top == 0f & hitbox.bottom == 1.0f )
+			{
+				// Key fills space. Only popups do this.
+				isPhysicalKey = false;
+			}
+
+		}
+
+
+		// Upper and lower case popups are delimited by a empty, 0-size key
+		// If we have iterated the popup counter and it has not been reset yet, then we've already handled lower case.
+		if ( hitbox.width() == 0 && hitbox.height() == 0)
+		{
+			KeyCommons.mLastKeyPopupLowerCaseKeyDefinitionsProcessed = KeyCommons.mLastKeyPopupKeyIndexCounter != 0;
+			KeyCommons.mLastKeyPopupKeyIndexCounter = 0;
+			return;
+		}
+
 
 		//Since this was moved to hook a method that gets called multiple times for every key,
 		//we started occasionally getting some extra bogus keys.
 		//Filter any keys that are 0,0,0,0, or that span the entire screen.
-		if (hitbox.top == 0 && hitbox.bottom == 1)
+		//if (hitbox.top == 0 && hitbox.bottom == 1)	// This happens in weird layouts and popups, so allow
+		//	return;
+		if (hitbox.left == 0 && hitbox.right == 1)	// This should never happen, I think
 			return;
-		if (hitbox.left == 0 && hitbox.right == 1)
-			return;
-		if (hitbox.left == 0 &&
+		if (	hitbox.left == 0 &&		// Popps have an empty spacer key like this, but that is handled above, so skip.
 				hitbox.top == 0 &&
 				hitbox.right == 0 &&
 				hitbox.bottom == 0)
@@ -99,6 +127,28 @@ public class KeyHandlers
 			if (template.tag != null)
 				newKey.tag = template.tag;
 
+			if (!isPhysicalKey)
+			{
+				// This is a popup key, but the template belongs to the parent, physical key.
+				// Change the type and tag accordingly
+				newKey.type = KeyType.POPUP;
+				newKey.tag = "POPUP";
+
+				// Get the actual contents of these popup keys, which we stored when messing with popups.
+
+				List<String> popupStrings = KeyCommons.mLastKeyPopupLowerCaseKeyDefinitionsProcessed ? PopupkeysCommons.mLastOrderedUpperasepopups : PopupkeysCommons.mLastOrderedLowerCasepopups;
+				if ( popupStrings != null && !popupStrings.isEmpty() )
+				{
+					if ( KeyCommons.mLastKeyPopupKeyIndexCounter < popupStrings.size() )
+					{
+						newKey.content = popupStrings.get( KeyCommons.mLastKeyPopupKeyIndexCounter );
+					}
+				}
+
+				// Keep track of which popup key we are on. Reset aboe and on new key.
+				KeyCommons.mLastKeyPopupKeyIndexCounter++;
+			}
+
 			KeyCommons.addKeyDefinition(returnKey, newKey);
 			KeyCommons.mLastKeyDefined = newKey;
 
@@ -123,9 +173,8 @@ public class KeyHandlers
 			}
 		}
 
-		KeyCommons.mLastTemplateKey = null;
-		//With the key created, clear recycled variables
-		//KeyCommons.sLastSymbolDefined = null;
+		// Seems we're okay without clearing now, and in fact rely on not clearing for popups to be processed.
+		// KeyCommons.mLastTemplateKey = null;
 	}
 
 }
