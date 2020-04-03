@@ -38,13 +38,10 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -906,7 +903,7 @@ public class KeyboardHooks
 
 						KeyboardMethods.setKeyboardOpacity();
 
-						if ( Settings.changed_HIDE_PREDICTIONS_BAR || Settings.changed_REMOVE_SUGGESTIONS_PADDING )
+						if ( Settings.changed_HIDE_PREDICTIONS_BAR || Settings.changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON)
 						{
 							KeyboardMethods.updateHidePredictionBarAndPadKeyboardTop();
 						}

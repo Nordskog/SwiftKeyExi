@@ -51,6 +51,7 @@ public class Settings
 	public static boolean DISABLE_PERIOD_CLICK = false;
 
 	public static boolean REMOVE_SUGGESTIONS_PADDING = false;
+	public static boolean REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE = false;	// Also set to false if REMOVE_SUGGESTIONS_PADDING not enabled
 
 	public static boolean USE_CUSTOM_KEYPRESS_SOUND = false;
 
@@ -121,7 +122,7 @@ public class Settings
 	///////////////////////
 
 	//We want to keep track of some settings, specifically to make changes when they change
-	public static boolean changed_REMOVE_SUGGESTIONS_PADDING = true;
+	public static boolean changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON = true;
 	public static boolean changed_EMOJI_TEXT_RESOURCE = true;
 	public static boolean changed_HIDE_PREDICTIONS_BAR = true;
 
@@ -207,10 +208,27 @@ public class Settings
 			}
 		}
 
-		changed_REMOVE_SUGGESTIONS_PADDING = REMOVE_SUGGESTIONS_PADDING;
+		{
+			changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON = REMOVE_SUGGESTIONS_PADDING;
 
-		REMOVE_SUGGESTIONS_PADDING = prefs.getBoolean(PreferenceConstants.pref_remove_suggestion_padding_key, false);
-		changed_REMOVE_SUGGESTIONS_PADDING = changed_REMOVE_SUGGESTIONS_PADDING != REMOVE_SUGGESTIONS_PADDING;
+			REMOVE_SUGGESTIONS_PADDING = prefs.getBoolean(PreferenceConstants.pref_remove_suggestion_padding_key, false);
+			changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON = changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON != REMOVE_SUGGESTIONS_PADDING;
+
+		}
+
+		{
+			changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON = REMOVE_SUGGESTIONS_PADDING;
+			boolean changed = REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE;
+			REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE = prefs.getBoolean(PreferenceConstants.pref_replace_toolbar_button_with_swipe_key, false);
+
+			// This should only be enabled if remove_suggestions_padding is also enabled
+			REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE = REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE && REMOVE_SUGGESTIONS_PADDING;
+
+			changed = changed != REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE;
+
+			changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON = changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON || changed;
+		}
+
 
 		{
 			float tempEmojiTextSize = EMOJI_TEXT_SIZE;

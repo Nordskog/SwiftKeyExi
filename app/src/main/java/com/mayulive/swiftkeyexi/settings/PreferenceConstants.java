@@ -26,6 +26,7 @@ public class PreferenceConstants
 	public static final String pref_quick_menu_color_key = "pref_quick_menu_color";
 
 	public static final String pref_remove_suggestion_padding_key = "pref_remove_suggestion_padding";
+	public static final String pref_replace_toolbar_button_with_swipe_key = "pref_replace_toolbar_button_with_swipe";
 
 	//Values
 	public static final String pref_dictionary_last_update_key = "pref_dictionary_last_update";

@@ -95,10 +95,16 @@
         android:summary="@string/pref_disable_auto_correct_on_cursor_move_summary"
         android:defaultValue="true" />
 
+        <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
+            android:key="@string/pref_remove_suggestion_padding_key"
+            android:title="@string/pref_remove_suggestion_padding_title"
+            android:summary="@string/pref_remove_suggestion_padding_summary"
+            android:defaultValue="false" />
+
     <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference
-        android:key="@string/pref_remove_suggestion_padding_key"
-        android:title="@string/pref_remove_suggestion_padding_title"
-        android:summary="@string/pref_remove_suggestion_padding_summary"
+        android:key="@string/pref_replace_toolbar_button_with_swipe_key"
+        android:title="@string/pref_replace_toolbar_button_with_swipe_title"
+        android:summary="@string/pref_replace_toolbar_button_with_swipe_summary"
         android:defaultValue="false" />
 
     <com.mayulive.swiftkeyexi.util.view.LineBreakCheckboxPreference

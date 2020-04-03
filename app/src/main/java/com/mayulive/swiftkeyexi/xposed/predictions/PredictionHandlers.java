@@ -147,7 +147,7 @@ public class PredictionHandlers
 
 			replacementLinear.setOnFlingListener(direction ->
 			{
-				if ( Settings.REMOVE_SUGGESTIONS_PADDING )
+				if ( Settings.REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE )
 				{
 					switch (direction)
 					{
@@ -396,7 +396,7 @@ public class PredictionHandlers
 
 				PredictionCommons.mCandidateContainer.setOnFlingListener(direction ->
 				{
-					if ( Settings.REMOVE_SUGGESTIONS_PADDING )
+					if ( Settings.REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE )
 					{
 
 
