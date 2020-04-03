@@ -277,7 +277,7 @@ public class KeyboardProfiles
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(android.content.res.Resources.class)),	//g
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//g0
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )),	//g1
-						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype.KeyboardService.b" , PUBLIC | EXACT )),	//h
+						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("com.touchtype.KeyboardService" , PUBLIC | EXACT )),	//h
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem(java.util.Collection.class)),	//h0
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//h1
 						new FieldItem( PUBLIC | FINAL | EXACT , 	new ClassItem("" , PUBLIC | EXACT )),	//i
@@ -332,11 +332,9 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.os.IBinder.class),
 
-										new ClassItem(android.content.Context.class),
-										new ClassItem("com.touchtype.KeyboardService.b" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("com.touchtype.KeyboardService" , PUBLIC | EXACT )
 
 								),
 
@@ -346,9 +344,20 @@ public class KeyboardProfiles
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem("" , PUBLIC | EXACT ),
 
+										new ClassItem(android.content.Context.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 								),
 
@@ -358,9 +367,9 @@ public class KeyboardProfiles
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem("" , PUBLIC | EXACT ),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(android.content.Context.class),
+										new ClassItem("com.touchtype.KeyboardService" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -368,9 +377,11 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.os.IBinder.class),
+										new ClassItem("" , PUBLIC | EXACT ),
 
-										new ClassItem("com.touchtype.KeyboardService.b" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -390,12 +401,9 @@ public class KeyboardProfiles
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem("" , PUBLIC | EXACT ),
 
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.util.concurrent.ExecutorService.class)
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -405,24 +413,12 @@ public class KeyboardProfiles
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem("" , PUBLIC | EXACT ),
 
-										new ClassItem(android.content.Context.class),
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.touchtype.KeyboardService.b" , PUBLIC | EXACT )
+										new ClassItem(android.content.Context.class)
 
 								),
 
 						//Method #7: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
-
-								),
-
-						//Method #8: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -433,7 +429,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #9: a
+						//Method #8: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -443,7 +439,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #10: a
+						//Method #9: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -453,7 +449,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #11: a
+						//Method #10: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -463,7 +459,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #12: a
+						//Method #11: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -474,13 +470,26 @@ public class KeyboardProfiles
 
 								),
 
+						//Method #12: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
 						//Method #13: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -488,13 +497,35 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | EXACT ),
+
+										new ClassItem(android.content.Context.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.KeyboardService" , PUBLIC | EXACT )
+
+								),
+
+						//Method #15: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem("" , PUBLIC | FINAL | EXACT ),
 
 										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
-						//Method #15: a
+						//Method #16: a
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #17: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -506,7 +537,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #16: a
+						//Method #18: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -527,66 +558,22 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #17: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #18: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
-
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
 						//Method #19: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
 
 										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.util.concurrent.ExecutorService.class)
 
 								),
 
 						//Method #20: a
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
-
-										new ClassItem(android.content.Context.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | EXACT )
-
-								),
-
-						//Method #21: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -598,7 +585,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #22: a
+						//Method #21: a
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -609,17 +596,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #23: b
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #24: b
+						//Method #22: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -629,7 +606,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #25: b
+						//Method #23: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -639,7 +616,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #26: b
+						//Method #24: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -650,7 +627,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #27: b
+						//Method #25: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -660,13 +637,33 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #28: b
+						//Method #26: b
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(java.lang.Integer.class),
 
-										new ClassItem("com.touchtype.KeyboardService.b" , PUBLIC | EXACT )
+										new ClassItem("com.touchtype.KeyboardService" , PUBLIC | EXACT )
+
+								),
+
+						//Method #27: b
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.String.class),
+
+										new ClassItem(android.content.Context.class)
+
+								),
+
+						//Method #28: c
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem(android.os.IBinder.class),
+
+										new ClassItem("com.touchtype.KeyboardService" , PUBLIC | EXACT )
 
 								),
 
@@ -674,9 +671,9 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.os.IBinder.class),
+										new ClassItem(android.util.DisplayMetrics.class),
 
-										new ClassItem("com.touchtype.KeyboardService.b" , PUBLIC | EXACT )
+										new ClassItem(android.content.Context.class)
 
 								),
 
@@ -710,13 +707,13 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #33: c
+						//Method #33: d
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(android.view.Window.class),
 
-										new ClassItem(android.content.Context.class)
+										new ClassItem("com.touchtype.KeyboardService" , PUBLIC | EXACT )
 
 								),
 
@@ -724,9 +721,9 @@ public class KeyboardProfiles
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.view.Window.class),
+										new ClassItem(java.lang.Boolean.class),
 
-										new ClassItem("com.touchtype.KeyboardService.b" , PUBLIC | EXACT )
+										new ClassItem(android.content.Context.class)
 
 								),
 
@@ -750,27 +747,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #37: d
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(java.lang.String.class),
-
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #38: e
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.util.DisplayMetrics.class),
-
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #39: e
+						//Method #37: e
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -780,23 +757,43 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #40: f
+						//Method #38: e
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(java.lang.Boolean.class),
+										new ClassItem(java.util.Locale.class),
 
 										new ClassItem(android.content.Context.class)
 
 								),
 
-						//Method #41: f
+						//Method #39: f
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem(android.content.Context.class)
+
+								),
+
+						//Method #40: f
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(java.lang.Float.class),
 
 										new ClassItem(android.content.res.Resources.class)
+
+								),
+
+						//Method #41: g
+						new MethodProfile
+								(
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+										new ClassItem(android.content.Context.class)
 
 								),
 
@@ -810,11 +807,11 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #43: g
+						//Method #43: h
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(java.util.Locale.class),
+										new ClassItem(android.util.DisplayMetrics.class),
 
 										new ClassItem(android.content.Context.class)
 
@@ -830,27 +827,17 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #45: h
+						//Method #45: i
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
 
 										new ClassItem(android.content.Context.class)
 
 								),
 
-						//Method #46: i
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem(android.util.DisplayMetrics.class),
-
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #47: j
+						//Method #46: j
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -860,7 +847,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #48: k
+						//Method #47: k
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -870,17 +857,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #49: l
-						new MethodProfile
-								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-
-										new ClassItem(android.content.Context.class)
-
-								),
-
-						//Method #50: m
+						//Method #48: l
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -890,7 +867,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #51: n
+						//Method #49: m
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -900,7 +877,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #52: o
+						//Method #50: n
 						new MethodProfile
 								(
 										PUBLIC | STATIC | SYNTHETIC | EXACT ,
@@ -910,7 +887,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #53: a
+						//Method #51: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -918,33 +895,33 @@ public class KeyboardProfiles
 
 								),
 
+						//Method #52: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class)
+
+								),
+
+						//Method #53: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class),
+										new ClassItem(int.class)
+
+								),
+
 						//Method #54: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(int.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #55: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class),
-										new ClassItem(int.class)
-
-								),
-
-						//Method #56: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -954,7 +931,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #57: a
+						//Method #55: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -964,7 +941,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #58: a
+						//Method #56: a
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -974,7 +951,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #59: a
+						//Method #57: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -986,7 +963,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #60: a
+						//Method #58: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -996,7 +973,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #61: a
+						//Method #59: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1007,7 +984,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #62: a
+						//Method #60: a
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -1019,28 +996,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #63: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #64: a
-						new MethodProfile
-								(
-										PUBLIC | SYNTHETIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #65: a
+						//Method #61: a
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -1051,7 +1007,28 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #66: a
+						//Method #62: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #63: a
+						new MethodProfile
+								(
+										PUBLIC | SYNTHETIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #64: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1061,7 +1038,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #67: a
+						//Method #65: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1072,7 +1049,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #68: a
+						//Method #66: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1084,7 +1061,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #69: a
+						//Method #67: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | VARARGS | EXACT ,
@@ -1094,7 +1071,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #70: a
+						//Method #68: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1105,7 +1082,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #71: b
+						//Method #69: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1113,7 +1090,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #72: b
+						//Method #70: b
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1124,7 +1101,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #73: b
+						//Method #71: b
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1134,7 +1111,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #74: b
+						//Method #72: b
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -1144,7 +1121,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #75: c
+						//Method #73: c
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -1154,7 +1131,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #76: c
+						//Method #74: c
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1162,7 +1139,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #77: d
+						//Method #75: d
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1170,7 +1147,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #78: d
+						//Method #76: d
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1180,7 +1157,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #79: e
+						//Method #77: e
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1188,7 +1165,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #80: f
+						//Method #78: f
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1196,7 +1173,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #81: g
+						//Method #79: g
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1204,7 +1181,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #82: h
+						//Method #80: h
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1212,7 +1189,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #83: i
+						//Method #81: i
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1220,7 +1197,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #84: j
+						//Method #82: j
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1228,7 +1205,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #85: k
+						//Method #83: k
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1236,7 +1213,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #86: l
+						//Method #84: l
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1244,7 +1221,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #87: m
+						//Method #85: m
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -1252,7 +1229,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #88: n
+						//Method #86: n
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -1260,7 +1237,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #89: o
+						//Method #87: o
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -1268,7 +1245,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #90: onConfigurationChanged
+						//Method #88: onConfigurationChanged
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1278,7 +1255,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #91: onHandwritingModelLoadStateChanged
+						//Method #89: onHandwritingModelLoadStateChanged
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1289,7 +1266,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #92: onKeyDown
+						//Method #90: onKeyDown
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1300,7 +1277,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #93: onKeyUp
+						//Method #91: onKeyUp
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1311,7 +1288,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #94: onLanguageLoadStateChanged
+						//Method #92: onLanguageLoadStateChanged
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1322,7 +1299,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #95: onMediaMounted
+						//Method #93: onMediaMounted
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1330,7 +1307,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #96: onMediaUnmounted
+						//Method #94: onMediaUnmounted
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1338,7 +1315,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #97: onTrimMemory
+						//Method #95: onTrimMemory
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1348,7 +1325,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #98: p
+						//Method #96: p
 						new MethodProfile
 								(
 										PUBLIC | SYNTHETIC | EXACT ,
@@ -1367,7 +1344,7 @@ public class KeyboardProfiles
 						new ConstructorProfile
 								(		PUBLIC | EXACT ,
 
-										new ClassItem("com.touchtype.KeyboardService.b" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype.KeyboardService" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(android.content.Context.class),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
@@ -2141,7 +2118,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("yx2");
+		newProfile.setFullPath("gx2");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -2210,21 +2187,21 @@ public class KeyboardProfiles
 						//Method #0: a
 						new MethodProfile
 								(
-										PUBLIC | STATIC | EXACT ,
+										PUBLIC | STATIC | SYNTHETIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
 						//Method #1: a
 						new MethodProfile
 								(
-										PUBLIC | STATIC | SYNTHETIC | EXACT ,
+										PUBLIC | STATIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -2265,11 +2242,62 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
 						//Method #6: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #7: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype_fluency.Punctuator" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #8: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT )
+
+								),
+
+						//Method #9: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+
+								),
+
+						//Method #10: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT )
+
+								),
+
+						//Method #11: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2280,7 +2308,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #7: a
+						//Method #12: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2296,7 +2324,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #8: a
+						//Method #13: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2308,7 +2336,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #9: a
+						//Method #14: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2321,7 +2349,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #10: a
+						//Method #15: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2335,7 +2363,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #11: a
+						//Method #16: a
 						new MethodProfile
 								(
 										PUBLIC | FINAL | EXACT ,
@@ -2350,19 +2378,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #12: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #13: a
+						//Method #17: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2373,7 +2389,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #14: a
+						//Method #18: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2384,7 +2400,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #15: a
+						//Method #19: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2396,7 +2412,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #16: a
+						//Method #20: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2409,7 +2425,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #17: a
+						//Method #21: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2420,7 +2436,71 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #18: a
+						//Method #22: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+
+								),
+
+						//Method #23: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #24: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class)
+
+								),
+
+						//Method #25: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #26: a
+						new MethodProfile
+								(
+										PUBLIC | EXACT ,
+										new ClassItem(void.class),
+
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class),
+										new ClassItem(java.lang.String.class),
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class)
+
+								),
+
+						//Method #27: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2432,7 +2512,7 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #19: a
+						//Method #28: a
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -2445,113 +2525,6 @@ public class KeyboardProfiles
 
 								),
 
-						//Method #20: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #21: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #22: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class)
-
-								),
-
-						//Method #23: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #24: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class),
-										new ClassItem(java.lang.String.class),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class)
-
-								),
-
-						//Method #25: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #26: a
-						new MethodProfile
-								(
-										PUBLIC | FINAL | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #27: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #28: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class)
-
-								),
-
 						//Method #29: a
 						new MethodProfile
 								(
@@ -2559,7 +2532,6 @@ public class KeyboardProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class),
 										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
@@ -2570,7 +2542,8 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype_fluency.Punctuator" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -2580,18 +2553,19 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("com.touchtype_fluency.KeyPress" , PUBLIC | ARRAY | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
 						//Method #32: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -2601,7 +2575,8 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
@@ -2611,7 +2586,9 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.util.List.class)
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -2621,17 +2598,17 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(java.util.List.class)
 
 								),
 
 						//Method #36: a
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2651,7 +2628,7 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -2668,20 +2645,20 @@ public class KeyboardProfiles
 						//Method #40: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
 						//Method #41: a
 						new MethodProfile
 								(
-										PUBLIC | FINAL | EXACT ,
+										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2691,7 +2668,7 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -2711,7 +2688,7 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -2721,7 +2698,7 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2738,7 +2715,7 @@ public class KeyboardProfiles
 						//Method #47: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
+										PUBLIC | FINAL | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT )
@@ -2751,7 +2728,7 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2771,9 +2748,9 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem(int.class),
-										new ClassItem(android.view.KeyEvent.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -2785,10 +2762,7 @@ public class KeyboardProfiles
 
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
-										new ClassItem(android.view.KeyEvent.class),
-										new ClassItem(boolean.class),
-										new ClassItem(boolean.class),
-										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
+										new ClassItem(android.view.KeyEvent.class)
 
 								),
 
@@ -2798,9 +2772,12 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(boolean.class),
 
-										new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(int.class),
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem(android.view.KeyEvent.class),
+										new ClassItem(boolean.class),
+										new ClassItem(boolean.class),
+										new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT )
 
 								),
 
@@ -2818,7 +2795,7 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2828,8 +2805,7 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -2839,8 +2815,7 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(java.lang.String.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -2851,7 +2826,7 @@ public class KeyboardProfiles
 										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(boolean.class)
+										new ClassItem("com.google.common.base.Optional" , PUBLIC | ABSTRACT | EXACT )
 
 								),
 
@@ -2861,7 +2836,8 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(java.lang.String.class)
 
 								),
 
@@ -2871,7 +2847,8 @@ public class KeyboardProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(boolean.class)
 
 								),
 
