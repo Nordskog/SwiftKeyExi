@@ -4,8 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import com.mayulive.swiftkeyexi.util.MathUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -98,11 +99,32 @@ public class SimpleGestureLinearLayout extends LinearLayout implements GestureDe
 		mListener = listener;
 	}
 
+
+
+
+	private boolean eventInBounds(MotionEvent event )
+	{
+		int height = this.getMeasuredHeight();	// Also padding event must end outside
+		int width = this.getMeasuredWidth();
+
+
+		boolean withinX =  (MathUtils.isWithinRange( event.getX(), 0 - height, width +height ));
+		boolean witinY  =  (MathUtils.isWithinRange( event.getY(), 0 - height, height + height ));
+
+		return withinX && witinY;
+	}
+
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
 	{
+
 		if (mListener != null)
 		{
+			// Only used for predictions vertical swipe.
+			// Disregard if up is not outside + height away.
+			if ( eventInBounds(e2) )
+				return false;
+
 			if ( Math.abs(velocityY) > Math.abs( velocityX ))
 			{
 				if (velocityY > 0)
