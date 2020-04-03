@@ -217,7 +217,6 @@ public class Settings
 		}
 
 		{
-			changed_SUGGESTIONS_PADDING_OR_TOOLBAR_BUTTON = REMOVE_SUGGESTIONS_PADDING;
 			boolean changed = REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE;
 			REPLACE_TOOLBAR_TOGGLE_WITH_SWIPE_GESTURE = prefs.getBoolean(PreferenceConstants.pref_replace_toolbar_button_with_swipe_key, false);
 
