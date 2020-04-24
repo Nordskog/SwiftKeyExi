@@ -86,6 +86,10 @@ public class PopupkeysHooks
 
 					PopupkeysCommons.mLastPopupParentKey = newParentKey;
 
+					if ( newParentKey != null && newParentKey.get_items().size() > 0 )
+					{
+						KeyCommons.mLastKeyHasCustomPopups = true;
+					}
 
 					//Some keys have multiple popup keys, but they're added later.
 					//This should only applay to the period key

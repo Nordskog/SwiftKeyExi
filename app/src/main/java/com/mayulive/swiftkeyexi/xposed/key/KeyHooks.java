@@ -69,7 +69,7 @@ public class KeyHooks
 				KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
 
 				// This is probably a popup
-				if (key != null && key.type == KeyType.POPUP && key.content != null && key.content.length() > 1)
+				if (key != null && key.type == KeyType.POPUP && key.hasCustomPopups && key.content != null && key.content.length() > 1 )
 				{
 					// With extremely few exceptions, popups only contain a single character.
 					// Our inserted popups, however, may contain more characters.
@@ -329,6 +329,7 @@ public class KeyHooks
 				PopupkeysCommons.mLastOrderedUpperasepopups = null;
 				KeyCommons.mLastKeyPopupKeyIndexCounter = 0;
 				KeyCommons.mLastKeyPopupLowerCaseKeyDefinitionsProcessed = false;
+				KeyCommons.mLastKeyHasCustomPopups = false;
 				Object templateInstance =  param.args[0];
 				KeyCommons.mLastTemplateKey = KeyCommons.getTemplateKey( System.identityHashCode(templateInstance) );
 			}
