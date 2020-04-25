@@ -157,7 +157,7 @@ public class PriorityPredictionsClassManager
 					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | EXACT ),
 					new ClassItem("" , PUBLIC | EXACT ),
-					new ClassItem("" , PUBLIC | EXACT )
+					new ClassItem("" , PUBLIC | FINAL | EXACT )
 
 			);
 
