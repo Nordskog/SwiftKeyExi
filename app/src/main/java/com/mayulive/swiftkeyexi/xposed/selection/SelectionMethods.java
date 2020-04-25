@@ -1244,7 +1244,7 @@ public class SelectionMethods
 			{
 				//if (SelectionCommons.mFirstDown.is(KeyCommons.KeyType.SYMBOL))
 				{
-					SelectionActions.handeModifierAction(SelectionState.mLastPointerDownInfo, SelectionState.mFirstDown.content);
+					SelectionActions.handeModifierAction(SelectionState.mLastPointerDownInfo, SelectionState.mFirstDown);
 				}
 			}
 			else if ( SelectionState.getSpaceModifierBehavior().isEnabled() && key.is(KeyType.SPACE) )

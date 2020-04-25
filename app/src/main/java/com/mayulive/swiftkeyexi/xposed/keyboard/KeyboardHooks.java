@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -25,6 +26,7 @@ import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 
 import com.mayulive.swiftkeyexi.EmojiCache.NormalEmojiItem;
 
+import com.mayulive.swiftkeyexi.xposed.selection.SelectionActions;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.system.SystemIntentService;
 import com.mayulive.xposed.classhunter.ClassHunter;
@@ -800,6 +802,67 @@ public class KeyboardHooks
 	}
 
 
+	private static Set<XC_MethodHook.Unhook> hookSendKeyEvent(PackageTree lpparam )
+	{
+		HashSet<XC_MethodHook.Unhook> hookSet = new HashSet<>();
+
+		hookSet.add( XposedBridge.hookMethod( KeyboardClassManager.inputConnectionImplementationClass_sendKeyEventMethod, new XC_MethodHook()
+		{
+
+			boolean inHook = false;
+
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable
+			{
+				if (inHook)
+					return;
+				inHook = true;
+
+				if ( SelectionState.mActionModifierDown )
+				{
+
+					try
+					{
+						KeyEvent event = (KeyEvent) param.args[0];
+						int code = event.getKeyCode();
+
+						switch (code)
+						{
+							case KeyEvent.KEYCODE_DPAD_LEFT:
+							case KeyEvent.KEYCODE_DPAD_UP:
+							case KeyEvent.KEYCODE_DPAD_RIGHT:
+							case KeyEvent.KEYCODE_DPAD_DOWN:
+							{
+								boolean ret = true;
+
+								// Swiftkey sends down/up immediately, so ignore down and only respond to up
+								if ( event.getAction() == KeyEvent.ACTION_UP )
+								{
+									// Since this is triggerd with the modifier key, following up accordingly
+									SelectionState.mActionTriggered = true;
+									ret = SelectionActions.sendShiftedKeyPress(code, 0);
+								}
+
+								// but always prevent original event
+								param.setResult(ret);
+							}
+						}
+
+					}
+					catch ( Exception ex)
+					{
+						Log.e(LOGTAG, "Problem adding shift to keyevent");
+						ex.printStackTrace();
+					}
+				}
+
+				inHook = false;
+
+			}
+		}));
+
+		return hookSet;
+	}
 
 
 		public static boolean hookPriority(final PackageTree lpparam)
@@ -856,6 +919,11 @@ public class KeyboardHooks
 			if (Hooks.baseHooks_base.isRequirementsMet())
 			{
 				Hooks.baseHooks_base.add( hookPrefChanged() );
+
+				if ( Hooks.baseHooks_selectWithArrows.isRequirementsMet() )
+				{
+					Hooks.baseHooks_selectWithArrows.addAll( hookSendKeyEvent(lpparam) );
+				}
 
 				if ( Hooks.baseHooks_toolbarExpandButton.isRequirementsMet() )
 				{

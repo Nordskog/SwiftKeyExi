@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Vibrator;
 import androidx.annotation.Nullable;
+
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
 
+import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 import com.mayulive.swiftkeyexi.main.keyboard.HotkeyPanel;
 import com.mayulive.swiftkeyexi.xposed.OverlayCommons;
 import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
@@ -27,13 +30,14 @@ public class SelectionActions
 {
 
 
-	protected static void handeModifierAction(pointerInformation mLastPointerInfo, String key)
+	protected static void handeModifierAction(pointerInformation mLastPointerInfo, KeyDefinition key)
 	{
-		if (key == null || key.isEmpty())
+		// We currently only symbols, numbers, and arrow keys, which all have content defined.
+		if (key.content == null || key.content.isEmpty())
 			return;
 
-		key = key.toLowerCase();
-		KeyboardInteraction.TextAction action = mModifierKeyActions.get(key);
+		String keyContent = key.content.toLowerCase();
+		KeyboardInteraction.TextAction action = mModifierKeyActions.get(keyContent);
 
 		if (action != null)
 		{
@@ -92,7 +96,7 @@ public class SelectionActions
 		}
 	}
 
-	protected static void sendKeyPress(int keyEvent, int repeatCount)
+	public static void sendKeyPress(int keyEvent, int repeatCount)
 	{
 		InputConnection connection =  PriorityKeyboardClassManager.getInputConnection();
 		if (connection != null)
@@ -102,8 +106,11 @@ public class SelectionActions
 		}
 	}
 
-	protected static void sendShiftedKeyPress(int keyEvent, int repeatCount)
+	public static boolean sendShiftedKeyPress(int keyEvent, int repeatCount)
 	{
+
+		boolean ret = false;
+
 		InputConnection connection =  PriorityKeyboardClassManager.getInputConnection();
 		if (connection != null)
 		{
@@ -112,8 +119,10 @@ public class SelectionActions
 			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT, 1 ));
 			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_DOWN, keyEvent, repeatCount, KeyEvent.META_SHIFT_ON ));
 			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, keyEvent, 0, KeyEvent.META_SHIFT_ON ));
-			connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0 ));
+			ret = connection.sendKeyEvent(new KeyEvent(0,0, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT, 0 ));
 
 		}
+
+		return ret;
 	}
 }

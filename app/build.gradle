@@ -12,12 +12,12 @@ android
                         applicationId 'com.mayulive.swiftkeyexi'
                         minSdkVersion 21
                         targetSdkVersion 26
-                        versionCode 69
-                        versionName "2.6.8"
+                        versionCode 70
+                        versionName "2.6.9"
 
                         //About fields/
-                        def SWIFTKEY_SUPORTED_VERSION = "7.5.1.7"
-                        def SWIFTKEY_BETA_SUPORTED_VERSION = "7.5.2.4"
+                        def SWIFTKEY_SUPORTED_VERSION = "7.5.3.5"
+                        def SWIFTKEY_BETA_SUPORTED_VERSION = "7.5.4.2"
                         def APP_AUTHOR_NAME = "Roughy"
 
 

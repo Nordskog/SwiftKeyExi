@@ -33,6 +33,10 @@ public class KeyboardClassManager
 
 	private static String LOGTAG = ExiModule.getLogTag(KeyboardClassManager.class);
 
+	////////////////////////////////////////
+
+	protected static Class inputConnectionImplementationClass = null;
+	protected static Method inputConnectionImplementationClass_sendKeyEventMethod = null;
 
 	///////////////////////////////////////////
 
@@ -85,6 +89,8 @@ public class KeyboardClassManager
 	public static void loadKnownClasses(PackageTree param)
 	{
 		layoutClass = ClassHunter.loadClass("com.touchtype_fluency.service.languagepacks.layouts.LayoutData.Layout", param.getClassLoader());
+
+		inputConnectionImplementationClass = ClassHunter.loadClass("com.android.internal.view.InputConnectionWrapper", param.getClassLoader());
 	}
 
 	public static void loadUnknownClasses(PackageTree param)
@@ -101,6 +107,8 @@ public class KeyboardClassManager
 		insertGifTextClasses = ProfileHelpers.loadProfiledClasses( KeyboardProfiles.get_INSERT_GIF_TEXT_CLASS_RPFOILE(), 2, param );
 
 		searchClass =  ProfileHelpers.loadProfiledClass( KeyboardProfiles.get_SEARCH_CLASS_PROFILE(), param );
+
+
 
 	}
 
@@ -215,6 +223,11 @@ public class KeyboardClassManager
 
 			}
 		}
+
+		if (inputConnectionImplementationClass != null)
+		{
+			inputConnectionImplementationClass_sendKeyEventMethod = ProfileHelpers.findFirstMethodByName( inputConnectionImplementationClass.getDeclaredMethods(), "sendKeyEvent" );
+		}
 	}
 
 	public static void loadFields()
@@ -286,6 +299,7 @@ public class KeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( 		Hooks.styleHooks_darklight, "themeContainerClass is null", themeContainerClass );
 		Hooks.logSetRequirement( 					Hooks.styleHooks_darklight, "themeContainerClass is null", !themeContainerClass_booleanRetMethods.isEmpty() );
 
-
+		// Select with arrow keys
+		Hooks.logSetRequirementFalseIfNull( 		Hooks.baseHooks_selectWithArrows, "inputConnectionImplementationClass_sendKeyEventMethod is null", inputConnectionImplementationClass_sendKeyEventMethod );
 	}
 }

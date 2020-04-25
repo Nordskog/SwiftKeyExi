@@ -12,6 +12,7 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.swiftkeyexi.xposed.selection.SelectionMethods;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.UpDownMotionEvent;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -69,7 +70,7 @@ public class KeyHooks
 				KeyDefinition key = KeyCommons.getKeyDefinition(thiz);
 
 				// This is probably a popup
-				if (key != null && key.type == KeyType.POPUP && key.content != null && key.content.length() > 1)
+				if (key != null && key.type == KeyType.POPUP && key.hasCustomPopups && key.content != null && key.content.length() > 1 )
 				{
 					// With extremely few exceptions, popups only contain a single character.
 					// Our inserted popups, however, may contain more characters.
@@ -241,10 +242,19 @@ public class KeyHooks
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
 
+
+
 					try
 					{
 						if (KeyCommons.mCancelNextKey || KeyCommons.mCancelAllKeys)
 						{
+							if ( SelectionState.mFirstDown != null && SelectionState.mFirstDown.type.isArrowKey() )
+							{
+								// Modifier + arrow key allows for selection now, but we request cancel all keys while the modifier is down.
+								// solution ... just exclude arrow keys from the whole shebang
+								return;
+							}
+
 							//Log.e("###", "maybe cancel normal button tap");
 							//We set this bool to true on ACTION_UP of the primary pointer.
 							//In theory we only set it when we know it's going to trigger a button tap,
@@ -298,7 +308,6 @@ public class KeyHooks
 
 				KeyType Type = KeyType.getType(typeInt, content);
 
-
 				KeyCommons.TemplateKey template = new KeyCommons.TemplateKey( Type, content );
 				template.tag = Integer.toHexString(typeInt);
 
@@ -329,6 +338,7 @@ public class KeyHooks
 				PopupkeysCommons.mLastOrderedUpperasepopups = null;
 				KeyCommons.mLastKeyPopupKeyIndexCounter = 0;
 				KeyCommons.mLastKeyPopupLowerCaseKeyDefinitionsProcessed = false;
+				KeyCommons.mLastKeyHasCustomPopups = false;
 				Object templateInstance =  param.args[0];
 				KeyCommons.mLastTemplateKey = KeyCommons.getTemplateKey( System.identityHashCode(templateInstance) );
 			}

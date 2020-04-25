@@ -12,6 +12,7 @@ public class KeyDefinition
 	public String tag = "";
 	public KeyType type;
 	public RectF hitbox = new RectF(0,0,0,0);
+	public boolean hasCustomPopups = false;
 
 
 	public KeyDefinition()

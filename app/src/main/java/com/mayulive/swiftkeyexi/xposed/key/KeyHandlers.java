@@ -134,6 +134,8 @@ public class KeyHandlers
 				newKey.type = KeyType.POPUP;
 				newKey.tag = "POPUP";
 
+				newKey.hasCustomPopups = KeyCommons.mLastKeyHasCustomPopups;
+
 				// Get the actual contents of these popup keys, which we stored when messing with popups.
 
 				List<String> popupStrings = KeyCommons.mLastKeyPopupLowerCaseKeyDefinitionsProcessed ? PopupkeysCommons.mLastOrderedUpperasepopups : PopupkeysCommons.mLastOrderedLowerCasepopups;

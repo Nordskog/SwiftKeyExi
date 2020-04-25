@@ -33,7 +33,11 @@ public enum KeyType
 	TAB,                //Tab
 	NUMBER,				//There is no number key type, but set it manually for 0-9
 	COMMA,
-	POPUP;				// Type created by us to track popup key instances
+	POPUP,				// Type created by us to track popup key instances
+	LEFT_ARROW,
+	UP_ARROW,
+	RIGHT_ARROW,
+	DOWN_ARROW;
 
 
 	private static final Set<String> NUMBER_CHARACTERS = new HashSet<>();
@@ -91,6 +95,22 @@ public enum KeyType
 
 			}
 
+			case 0xA:
+			{
+				switch( content )
+				{
+					case "icon_leftArrow":
+						return LEFT_ARROW;
+					case "icon_upArrow":
+						return UP_ARROW;
+					case "icon_rightArrow":
+						return RIGHT_ARROW;
+					case "icon_downArrow":
+						return DOWN_ARROW;
+				}
+
+				return DEFAULT;
+			}
 
 			case 0x7:			// Probably more of these
 				return ENTER;
@@ -102,6 +122,20 @@ public enum KeyType
 
 		return DEFAULT;
 
+	}
+
+	public boolean isArrowKey()
+	{
+		switch (this)
+		{
+			case LEFT_ARROW:
+			case UP_ARROW:
+			case RIGHT_ARROW:
+			case DOWN_ARROW:
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	public static KeyType getType(String tag)

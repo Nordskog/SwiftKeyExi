@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.6.9] - 25-04-2020
+### Fixed
+ - Text being inserted when long-pressing to remove a prediction
+ - Prediction insertion in flow failing sometimes ( probably significant performance impact )
+
+### Added
+ - text selection using mod + arrow keys
+ 
+### Changed
+ - Updated translations ( Russian, Brazilian-portuguese )
+
 ## [2.6.8] - 03-04-2020
 ### Fixed
  - Emoji panel locking up Swiftkey ( Beta )

@@ -50,9 +50,9 @@ public class SelectionState
 	//////////////////////////////
 
 	protected static boolean mSpaceModifierTriggered = false;	//swipe-from-space hotkey down
-	protected static boolean mActionModifierDown = false;		//Modifier (ctrl) down
-	protected static boolean mActionTriggered = false;			//Hotkey triggered
-	protected static KeyDefinition mFirstDown = new KeyDefinition();
+	public static boolean mActionModifierDown = false;		//Modifier (ctrl) down
+	public static boolean mActionTriggered = false;			//Hotkey triggered
+	public static KeyDefinition mFirstDown = new KeyDefinition();
 	protected static boolean mValidFirstDown = false;
 	protected static boolean mSwiping = false;					//We are swiping (not swiftkey)
 	protected static boolean mSwipeBlocked = false;				//We should not enter our swipe if true

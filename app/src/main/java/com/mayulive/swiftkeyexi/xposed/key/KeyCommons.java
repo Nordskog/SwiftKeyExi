@@ -59,6 +59,7 @@ public class KeyCommons
 	// Popups keys pass through the same key constructor as normal keys
 	// Lower case goes first, then upper. Set this to false on new key
 	protected static boolean mLastKeyPopupLowerCaseKeyDefinitionsProcessed = false;
+	public static boolean mLastKeyHasCustomPopups = false;	// Also reset
 
 	// Popup keys and then the actual key are added in order.
 	// [ popup keys lower ] - empty key [ popup keys upper ] - empty key - actual key.
