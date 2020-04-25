@@ -1,5 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.predictions;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -133,6 +135,33 @@ public class PredictionClassManager
 
 			UpdateCandidateGetTopCandidateClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(
 					profile, UpdateCandidateGetTopCandidateClass.getDeclaredMethods(), UpdateCandidateGetTopCandidateClass);
+
+			// BC for < 7.5.4.2
+			// TODO: remove after stable reaches 7.5.4.2
+			{
+				float similarity = profile.getSimilarity( UpdateCandidateGetTopCandidateClass_getTopCandidateMethod, UpdateCandidateGetTopCandidateClass, 0 );
+				if (similarity < 0.5f)	// Expected 0.35, otherwise keep existing
+				{
+					Log.d(LOGTAG, "UpdateCandidateGetTopCandidateClass_getTopCandidateMethod similarily below 0.5, using old class and profile" );
+
+					// Used to live in other class, with different signature.
+
+					profile = new MethodProfile
+							(
+									PUBLIC | FINAL | EXACT ,
+									new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+
+									new ClassItem("" , PUBLIC | EXACT ),
+									new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+									new ClassItem(int.class)
+							);
+
+					UpdateCandidateGetTopCandidateClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(
+							profile, UpdateCandidateTaskClass.getDeclaredMethods(), UpdateCandidateTaskClass);
+				}
+			}
 
 			DebugTools.logIfMethodProfileMismatch(UpdateCandidateGetTopCandidateClass_getTopCandidateMethod, UpdateCandidateGetTopCandidateClass, profile, "UpdateCandidateGetTopCandidateClass_getTopCandidateMethod");
 
