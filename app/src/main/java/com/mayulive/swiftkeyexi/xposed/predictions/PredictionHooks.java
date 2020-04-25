@@ -55,7 +55,7 @@ public class PredictionHooks
 
 		////////////////////////////
 
-		returnHooks.add( XposedBridge.hookMethod(PredictionClassManager.UpdateCandidateTaskClass_getTopCandidateMethod, new XC_MethodHook()
+		returnHooks.add( XposedBridge.hookMethod(PredictionClassManager.UpdateCandidateGetTopCandidateClass_getTopCandidateMethod, new XC_MethodHook()
 		{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable

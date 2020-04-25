@@ -32,7 +32,10 @@ public class PredictionClassManager
 	protected static Class UpdateCandidateTaskClass;
 	protected static Field UpdateCandidateTaskClass_FutureField ;
 
-	protected static Method UpdateCandidateTaskClass_getTopCandidateMethod;
+	////////////////////////////////
+
+	protected static Class UpdateCandidateGetTopCandidateClass;
+	protected static Method UpdateCandidateGetTopCandidateClass_getTopCandidateMethod;
 
 
 	protected static Class handleCandidateClass;
@@ -51,6 +54,8 @@ public class PredictionClassManager
 	protected static Class ellipsizeCheckerClass;
 	protected static Method ellipsizeCheckerClass_shouldEllipsizeMethod;
 	protected static Field ellipsizeCheckerClass_candidateField;
+
+
 
 	/////////////
 	//Misc
@@ -71,13 +76,14 @@ public class PredictionClassManager
 	}
 	public static void loadUnknownClasses(PackageTree param) throws IOException
 	{
-		UpdateCandidateTaskClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_UPDATER_CLASS_PROFILE(), param );	//candidates.k
+		resultTypeEnum = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_RESULT_TYPE_ENUM_PROFILE(), param );
+
+		UpdateCandidateTaskClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_UPDATER_CLASS_PROFILE(), param );
+		UpdateCandidateGetTopCandidateClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_CANDIDATE_UPDATER_GET_TOP_CANDIDATE_CLASS_PROFILE(UpdateCandidateTaskClass, resultTypeEnum), param );
 
 		updateCandidateDisplayClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_UPDATE_CANDIDATE_DISPLAY_CLASS_PROFILE(), param );	//candidates.k
 
 		handleCandidateClass = ProfileHelpers.loadProfiledClass( PredictionProfiles.get_HANDLE_CANDIDATE_CLASS_PROFILE(), param );
-		resultTypeEnum = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_RESULT_TYPE_ENUM_PROFILE(), param );
-
 
 		CandidateSourceTypeEnum = ProfileHelpers.loadProfiledClass(PredictionProfiles.get_CANDIDATE_SOURCE_TYPE_ENUN_PROFILE(), param );
 
@@ -117,25 +123,22 @@ public class PredictionClassManager
 		{
 			MethodProfile profile = new MethodProfile
 			(
-					PUBLIC | FINAL | EXACT ,
+					PUBLIC | EXACT ,
 					new ClassItem("com.touchtype_fluency.service.candidates.Candidate" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 
 					new ClassItem("" , PUBLIC | EXACT ),
-					new ClassItem("" , PUBLIC | FINAL | ENUM | EXACT ),
-					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-					new ClassItem(int.class)
+					new ClassItem(resultTypeEnum)
 
 			);
 
-			UpdateCandidateTaskClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(
-					profile, UpdateCandidateTaskClass.getDeclaredMethods(), UpdateCandidateTaskClass);
+			UpdateCandidateGetTopCandidateClass_getTopCandidateMethod = ProfileHelpers.findMostSimilar(
+					profile, UpdateCandidateGetTopCandidateClass.getDeclaredMethods(), UpdateCandidateGetTopCandidateClass);
 
-			DebugTools.logIfMethodProfileMismatch(  UpdateCandidateTaskClass_getTopCandidateMethod, UpdateCandidateTaskClass, profile, "UpdateCandidateTaskClass_getTopCandidateMethod");
+			DebugTools.logIfMethodProfileMismatch(UpdateCandidateGetTopCandidateClass_getTopCandidateMethod, UpdateCandidateGetTopCandidateClass, profile, "UpdateCandidateGetTopCandidateClass_getTopCandidateMethod");
 
-			if (UpdateCandidateTaskClass_getTopCandidateMethod != null && resultTypeEnum != null)
+			if (UpdateCandidateGetTopCandidateClass_getTopCandidateMethod != null && resultTypeEnum != null)
 			{
-				UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition = ProfileHelpers.findFirstClassIndex( resultTypeEnum, UpdateCandidateTaskClass_getTopCandidateMethod.getParameterTypes() );
+				UpdateCandidateTaskClass_getTopCandidateMethod_EnumPosition = ProfileHelpers.findFirstClassIndex( resultTypeEnum, UpdateCandidateGetTopCandidateClass_getTopCandidateMethod.getParameterTypes() );
 
 			}
 		}
