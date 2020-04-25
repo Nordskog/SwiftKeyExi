@@ -819,7 +819,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("db3");
+		newProfile.setFullPath("kd3");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -878,7 +878,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem(java.util.List.class)
 
 								),
 
@@ -898,8 +898,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(int.class)
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -919,7 +918,8 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem(java.util.List.class)
+										new ClassItem("" , PUBLIC | EXACT ),
+										new ClassItem(int.class)
 
 								),
 
@@ -929,7 +929,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -959,7 +959,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -979,7 +979,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -989,7 +989,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -999,7 +999,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1009,7 +1009,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -1019,7 +1019,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1037,7 +1037,7 @@ public class SelectionProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem(boolean.class),
+										new ClassItem(void.class),
 
 										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
@@ -1049,7 +1049,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
+										new ClassItem("" , PUBLIC | EXACT )
 
 								),
 
@@ -1059,7 +1059,7 @@ public class SelectionProfiles
 										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
-										new ClassItem("" , PUBLIC | EXACT )
+										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
 
@@ -1067,7 +1067,7 @@ public class SelectionProfiles
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
-										new ClassItem(void.class),
+										new ClassItem(boolean.class),
 
 										new ClassItem("" , PUBLIC | STATIC | INTERFACE | ABSTRACT | EXACT )
 
@@ -1107,7 +1107,7 @@ public class SelectionProfiles
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
 										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem(float.class),
-										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
+										new ClassItem("" , PUBLIC | EXACT ),
 										new ClassItem("" , PUBLIC | INTERFACE | ABSTRACT | EXACT )
 
 								),
@@ -1200,7 +1200,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("x84");
+		newProfile.setFullPath("k54");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
@@ -1246,7 +1246,7 @@ public class SelectionProfiles
 						//Method #0: a
 						new MethodProfile
 								(
-										PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
+										PUBLIC | EXACT ,
 										new ClassItem(void.class),
 
 										new ClassItem(java.lang.Object.class),
@@ -1257,44 +1257,12 @@ public class SelectionProfiles
 						//Method #1: a
 						new MethodProfile
 								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | STATIC | FINAL | ENUM | EXACT )
-
-								),
-
-						//Method #2: a
-						new MethodProfile
-								(
-										PUBLIC | EXACT ,
-										new ClassItem(void.class),
-
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT ),
-										new ClassItem(android.view.View.class),
-										new ClassItem("com.google.common.base.Supplier" , PUBLIC | INTERFACE | ABSTRACT | EXACT ),
-										new ClassItem("" , PUBLIC | EXACT )
-
-								),
-
-						//Method #3: a
-						new MethodProfile
-								(
 										PUBLIC | FINAL | EXACT ,
 										new ClassItem(boolean.class)
 
 								),
 
-						//Method #4: get
-						new MethodProfile
-								(
-										PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
-										new ClassItem(java.lang.Object.class)
-
-								),
-
-						//Method #5: get
+						//Method #2: get
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1302,7 +1270,15 @@ public class SelectionProfiles
 
 								),
 
-						//Method #6: getEcwView
+						//Method #3: get
+						new MethodProfile
+								(
+										PUBLIC | BRIDGE | SYNTHETIC | EXACT ,
+										new ClassItem(java.lang.Object.class)
+
+								),
+
+						//Method #4: getEcwView
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1310,7 +1286,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #7: onAttachedToWindow
+						//Method #5: onAttachedToWindow
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
@@ -1318,7 +1294,7 @@ public class SelectionProfiles
 
 								),
 
-						//Method #8: onDetachedFromWindow
+						//Method #6: onDetachedFromWindow
 						new MethodProfile
 								(
 										PUBLIC | EXACT ,
