@@ -12,6 +12,7 @@ import com.mayulive.swiftkeyexi.xposed.keyboard.KeyboardMethods;
 import com.mayulive.swiftkeyexi.main.commons.data.KeyDefinition;
 
 import com.mayulive.swiftkeyexi.xposed.popupkeys.PopupkeysCommons;
+import com.mayulive.swiftkeyexi.xposed.selection.SelectionMethods;
 import com.mayulive.swiftkeyexi.xposed.selection.SelectionState;
 import com.mayulive.swiftkeyexi.xposed.selection.selectionstuff.UpDownMotionEvent;
 import com.mayulive.xposed.classhunter.packagetree.PackageTree;
@@ -241,10 +242,19 @@ public class KeyHooks
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable
 				{
 
+
+
 					try
 					{
 						if (KeyCommons.mCancelNextKey || KeyCommons.mCancelAllKeys)
 						{
+							if ( SelectionState.mFirstDown != null && SelectionState.mFirstDown.type.isArrowKey() )
+							{
+								// Modifier + arrow key allows for selection now, but we request cancel all keys while the modifier is down.
+								// solution ... just exclude arrow keys from the whole shebang
+								return;
+							}
+
 							//Log.e("###", "maybe cancel normal button tap");
 							//We set this bool to true on ACTION_UP of the primary pointer.
 							//In theory we only set it when we know it's going to trigger a button tap,
@@ -297,7 +307,6 @@ public class KeyHooks
 				String content = (String) param.args[ KeyClassManager.newKeyInfoClass_constructorContentArgumentPosition ];
 
 				KeyType Type = KeyType.getType(typeInt, content);
-
 
 				KeyCommons.TemplateKey template = new KeyCommons.TemplateKey( Type, content );
 				template.tag = Integer.toHexString(typeInt);

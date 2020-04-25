@@ -53,9 +53,11 @@ public class Hooks
 	public static HookCategory gifHooksNSFW = new HookCategory("GifHooks NSFW");
 	public static HookCategory emojiHooks_base = new HookCategory("EmojiHooks Base");
 
+	public static HookCategory baseHooks_selectWithArrows = new HookCategory("KeyboardHooks selectWithArrows");
+
 	//Key
 	public static HookCategory keyHooks_keyCancel = new HookCategory("KeyHooks Cancel");
-	public static HookCategory keyHooks_keyDefinition = new HookCategory("KeyHooks Definition", keyHooks_keyCancel, selectionHooks_base);
+	public static HookCategory keyHooks_keyDefinition = new HookCategory("KeyHooks Definition", keyHooks_keyCancel, selectionHooks_base, baseHooks_selectWithArrows);
 
 	//Overlay (Doesn't contain any hooks, just dependencies)
 	public static HookCategory overlayHooks_base = new HookCategory("overlayHooks base");
@@ -67,6 +69,7 @@ public class Hooks
 	public static HookCategory baseHooks_layoutChange = new HookCategory("KeyboardHooks LayoutChange", overlayHooks_base);
 	public static HookCategory baseHooks_punctuationSpace = new HookCategory("KeyboardHooks PunctuationSpace");
 	public static HookCategory baseHooks_keyHeight = new HookCategory("KeyboardHooks keyHeight");
+
 
 	public static HookCategory baseHooks_toolbarExpandButton = new HookCategory("KeyboardHooks baseHooks_toolbarExpandButton");
 
