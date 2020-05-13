@@ -1,6 +1,7 @@
 package com.mayulive.swiftkeyexi.xposed.keyboard;
 
 import android.content.res.Configuration;
+import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 import com.mayulive.swiftkeyexi.ExiModule;
@@ -17,16 +18,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mayulive.xposed.classhunter.Modifiers.ABSTRACT;
-import static com.mayulive.xposed.classhunter.Modifiers.ARRAY;
-import static com.mayulive.xposed.classhunter.Modifiers.BRIDGE;
 import static com.mayulive.xposed.classhunter.Modifiers.EXACT;
 import static com.mayulive.xposed.classhunter.Modifiers.FINAL;
 import static com.mayulive.xposed.classhunter.Modifiers.INTERFACE;
 import static com.mayulive.xposed.classhunter.Modifiers.PUBLIC;
-import static com.mayulive.xposed.classhunter.Modifiers.SYNTHETIC;
-import static com.mayulive.xposed.classhunter.Modifiers.VARARGS;
 
 public class PriorityKeyboardClassManager
 {
@@ -40,7 +39,7 @@ public class PriorityKeyboardClassManager
 	//Methods
 	/////////////////////////
 	public static Method keyboardService_getCurrentInputConnectionMethod = null;
-	public static Method FullKeyboardServiceDelegate_onCreateInputView = null;
+	public static List<Method> FullKeyboardServiceDelegate_onCreateInputViewMethods = new ArrayList<>();
 	///////////////////
 	//Objects and instances
 	//////////////////
@@ -94,12 +93,7 @@ public class PriorityKeyboardClassManager
 
 		if (FullKeyboardServiceDelegate != null)
 		{
-			FullKeyboardServiceDelegate_onCreateInputView = ProfileHelpers.findMostSimilar( new MethodProfile(
-					PUBLIC | FINAL | VARARGS,
-					new ClassItem(void.class),
-
-					new ClassItem("android.view.View" , PUBLIC | ARRAY | EXACT )
-			), FullKeyboardServiceDelegate.getDeclaredMethods(), FullKeyboardServiceDelegate );
+			FullKeyboardServiceDelegate_onCreateInputViewMethods = ProfileHelpers.findAllMethodsWithReturnType(View.class, FullKeyboardServiceDelegate.getDeclaredMethods());
 		}
 
 		if (PriorityKeyboardClassManager.punctuatorImplClass != null)
@@ -187,7 +181,7 @@ public class PriorityKeyboardClassManager
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardService_getCurrentInputConnectionMethod", PriorityKeyboardClassManager.keyboardService_getCurrentInputConnectionMethod);
 		Hooks.logSetRequirementFalseIfNull( Hooks.baseHooks_base,	 "keyboardService_onConfigurationChangedMethod", 	PriorityKeyboardClassManager.keyboardService_onConfigurationChangedMethod );
 
-		Hooks.logSetRequirementFalseIfNull( Hooks.overlayHooks_base,	 "FullKeyboardServiceDelegate_onCreateInputView", 	PriorityKeyboardClassManager.FullKeyboardServiceDelegate_onCreateInputView);
+		Hooks.logSetRequirement( Hooks.overlayHooks_base,	 "FullKeyboardServiceDelegate_onCreateInputView", !PriorityKeyboardClassManager.FullKeyboardServiceDelegate_onCreateInputViewMethods.isEmpty() );
 
 
 		//Punctuation space
