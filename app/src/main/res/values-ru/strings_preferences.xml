@@ -38,7 +38,7 @@
     <string name="pref_gifs_more_sources_title">Дополнительные источники</string>
     <string name="pref_gifs_more_sources_summary">Отображать GIF-файлы из дополнительных источников</string>
     <string name="pref_gifs_us_region_title">Использовать регион США</string>
-    <string name="pref_gifs_us_region_summary">Для нефильтрованных результатов установить регион поиска GIF в США
+    <string name="pref_gifs_us_region_summary">Для нефильтрованных результатов установить регион поиска GIF в США.
 Bing как поставщик GIF файлов фильтрует результаты поиска в зависимости от региона. По некоторым причинам результаты поиска всех NSFW GIF-файлов фильтруются для любых регионов за исключением США. При включении этой настройки ваш регион переключается на США, и вы получаете результаты поиска без фильтрации</string>
     <string name="pref_gifs_remove_redirect_title">Убрать перенаправление на адрес Bing</string>
     <string name="pref_gifs_remove_redirect_summary">Прямая ссылка на изображение</string>

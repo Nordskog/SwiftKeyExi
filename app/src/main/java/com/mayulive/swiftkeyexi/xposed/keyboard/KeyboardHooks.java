@@ -79,67 +79,76 @@ public class KeyboardHooks
 
 	}
 
-	public static XC_MethodHook.Unhook hookViewCreatedFallback(PackageTree param)
+	public static Set<XC_MethodHook.Unhook> hookViewCreatedFallback(PackageTree param)
 	{
-		return XposedBridge.hookMethod(PriorityKeyboardClassManager.FullKeyboardServiceDelegate_onCreateInputView, new XC_MethodHook()
+		HashSet<XC_MethodHook.Unhook> hooks = new HashSet<>();
+
+		for (Method method : PriorityKeyboardClassManager.FullKeyboardServiceDelegate_onCreateInputViewMethods)
 		{
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable
+			hooks.add( XposedBridge.hookMethod(method, new XC_MethodHook()
 			{
-				// This method is called with either one or two views (varargs).
-				// We are interested in the first item.
-				try
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable
 				{
-					View[] views = (View[]) param.args[0];
-					if (views.length < 1)
-					{
-						Log.i(LOGTAG, "FullKeyboardServiceDelegate_onCreateInputView received array with no views");
-						return;
-					}
-
-					KeyboardMethods.mKeyboardRoot = ( ViewGroup )views[0];
-
-
+					// This method is called with either one or two views (varargs).
+					// We are interested in the first item.
 					try
 					{
-						SwiftkeyBroadcastListener.startService( KeyboardMethods.mKeyboardRoot.getContext() );
+						View res = (View) param.getResult();
+
+						if ( res == null)
+							return;
+
+						// Specifically PerformanceMeasuringFrameLayout but lazy
+						if ( !(res instanceof FrameLayout) )
+							return;
+
+
+						KeyboardMethods.mKeyboardRoot = (ViewGroup) res;
+
+						try
+						{
+							SwiftkeyBroadcastListener.startService( KeyboardMethods.mKeyboardRoot.getContext() );
+						}
+						catch ( Exception ex )
+						{
+							Log.i(LOGTAG, "Problem starting broadcast receiver in swiftkey context");
+							ex.printStackTrace();
+						}
+
+						KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
+
+						if ( KeyboardMethods.mKeyboardRoot == null )
+						{
+							Log.e(LOGTAG, "FullKeyboardServiceDelegate_onCreateInputView return value null, hopefully called again later");
+							return;
+						}
+
+						KeyboardMethods.setKeyboardOpacity();
+
+						//If cover is not null, maker sure we have not already added something
+						if (OverlayCommons.mKeyboardOverlay != null)
+						{
+							KeyboardMethods.mKeyboardRoot.removeView(OverlayCommons.mKeyboardOverlay);
+						}
+
+						RelativeLayout cover = new RelativeLayout( KeyboardMethods.mKeyboardRoot.getContext());
+
+						FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+						cover.setLayoutParams(params);
+						KeyboardMethods.mKeyboardRoot.addView(cover);
+						OverlayCommons.mKeyboardOverlay = cover;
 					}
-					catch ( Exception ex )
+					catch (Throwable ex)
 					{
-						Log.i(LOGTAG, "Problem starting broadcast receiver in swiftkey context");
-						ex.printStackTrace();
+						Hooks.baseHooks_viewCreated.invalidate(ex, "Unexpected problem in viewCreated hook");
 					}
 
-					KeyboardMethods.updateOrientation( KeyboardMethods.mKeyboardRoot.getContext() );
-
-					if ( KeyboardMethods.mKeyboardRoot == null )
-					{
-						Log.e(LOGTAG, "FullKeyboardServiceDelegate_onCreateInputView return value null, hopefully called again later");
-						return;
-					}
-
-					KeyboardMethods.setKeyboardOpacity();
-
-					//If cover is not null, maker sure we have not already added something
-					if (OverlayCommons.mKeyboardOverlay != null)
-					{
-						KeyboardMethods.mKeyboardRoot.removeView(OverlayCommons.mKeyboardOverlay);
-					}
-
-					RelativeLayout cover = new RelativeLayout( KeyboardMethods.mKeyboardRoot.getContext());
-
-					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-					cover.setLayoutParams(params);
-					KeyboardMethods.mKeyboardRoot.addView(cover);
-					OverlayCommons.mKeyboardOverlay = cover;
 				}
-				catch (Throwable ex)
-				{
-					Hooks.baseHooks_viewCreated.invalidate(ex, "Unexpected problem in viewCreated hook");
-				}
+			}));
+		}
 
-			}
-		});
+		return hooks;
 
 	}
 
@@ -891,7 +900,7 @@ public class KeyboardHooks
 
 				if (Hooks.baseHooks_viewCreated.isRequirementsMet())
 				{
-					Hooks.baseHooks_viewCreated.add(hookViewCreatedFallback(lpparam));
+					Hooks.baseHooks_viewCreated.addAll(hookViewCreatedFallback(lpparam));
 				}
 
 				if (Hooks.baseHooks_punctuationSpace.isRequirementsMet())

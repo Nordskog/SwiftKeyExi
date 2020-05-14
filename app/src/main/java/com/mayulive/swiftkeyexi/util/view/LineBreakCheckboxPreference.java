@@ -47,12 +47,20 @@ public class LineBreakCheckboxPreference extends CheckBoxPreference
 	{
 		super.onBindViewHolder(holder);
 
-		final TextView summaryView = (TextView) holder.findViewById(android.R.id.title);
+		final TextView titleView = (TextView) holder.findViewById(android.R.id.title);
+		if (titleView != null)
+		{
+			titleView.setEllipsize(TextUtils.TruncateAt.END);
+			titleView.setSingleLine(false);
+		}
 
-		//if (summaryView != null)
+
+		final TextView summaryView = (TextView) holder.findViewById(android.R.id.summary);
+		if (summaryView != null)
 		{
 			summaryView.setEllipsize(TextUtils.TruncateAt.END);
 			summaryView.setSingleLine(false);
+			summaryView.setMaxLines(999);	// No summary is too long, also it does nested scrolls if you let it.
 		}
 	}
 

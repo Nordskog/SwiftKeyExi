@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+
+## [2.7.0] - 14-05-2020
+### Fixed
+ - Compatibility targeting 7.5.5.15 ( keys, quick menu, shortcuts
+ - Long preferences getting cut off in some languages
+
 ## [2.6.9] - 25-04-2020
 ### Fixed
  - Text being inserted when long-pressing to remove a prediction
