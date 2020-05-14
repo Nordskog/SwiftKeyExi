@@ -2104,7 +2104,7 @@ public class KeyboardProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("kx2");
+		newProfile.setFullPath("kx2_gif");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);

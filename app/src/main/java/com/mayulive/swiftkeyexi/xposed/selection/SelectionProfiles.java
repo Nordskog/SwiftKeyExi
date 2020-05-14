@@ -20,7 +20,7 @@ public class SelectionProfiles
 	{
 		ClassProfile newProfile = new ClassProfile();
 
-		newProfile.setFullPath("kx2");
+		newProfile.setFullPath("kx2_selection");
 		newProfile.setKnownPath("");
 
 		newProfile.setMinDepth(0);
