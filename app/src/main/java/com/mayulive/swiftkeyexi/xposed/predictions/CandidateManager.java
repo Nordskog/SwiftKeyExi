@@ -335,7 +335,8 @@ private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 					PUBLIC | STATIC | EXACT ,
 					new ClassItem("" , PUBLIC | THIS | EXACT ),
 
-					new ClassItem(java.lang.String.class)
+					new ClassItem(java.lang.String.class),
+					new ClassItem(boolean.class)
 			);
 
 			token_staticConstructor = ProfileHelpers.findMostSimilar(profile, tokenClass.getDeclaredMethods(), tokenClass);
@@ -375,7 +376,9 @@ private static String LOGTAG = ExiModule.getLogTag(CandidateManager.class);
 
 		try
 		{
-			token = token_staticConstructor.invoke(null, new Object[]{text});
+			//boolean is whether string is empty or all whitespace, I think.
+			token = token_staticConstructor.invoke(null, new Object[]{text, true});
+
 		}
 		catch ( IllegalAccessException | InvocationTargetException e)
 		{
