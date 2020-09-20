@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.  
 Dates are in the format dd/mm/yyyy
 
+## [2.7.1] - 20-09-2020
+### Fixed
+ - Fixed crash caused by bad comparator
 
 ## [2.7.0] - 14-05-2020
 ### Fixed
