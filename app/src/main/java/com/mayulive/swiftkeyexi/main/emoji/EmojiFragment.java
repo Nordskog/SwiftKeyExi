@@ -130,15 +130,15 @@ public class EmojiFragment extends Fragment implements SharedPreferences.OnShare
 			///Find and sort the recents panel
 			for (DB_EmojiPanelItem panel : mKeyboardPanels)
 			{
-				if (panel.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS)
+				if (panel.get_source() == EmojiPanelItem.PANEL_SOURCE.RECENTS )
 				{
 					//Sort by last change time descending
-					Collections.sort( panel.get_items(), (a, b) -> (int)( b.get_last_change() - a.get_last_change() ) );
+					Collections.sort( panel.get_items(), (a, b) -> Long.compare(a.get_last_change(), b.get_last_change()) );
 				}
 				else if ( panel.get_source() == EmojiPanelItem.PANEL_SOURCE.USER)
 				{
 					//Sort by last change time ascending. Reusing for general order.
-					Collections.sort( panel.get_items(), (a, b) -> (int)( a.get_last_change() - b.get_last_change() ) );
+					Collections.sort( panel.get_items(), (a, b) -> Long.compare(b.get_last_change(), a.get_last_change()) );
 				}
 			}
 		}

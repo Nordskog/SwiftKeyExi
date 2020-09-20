@@ -1,5 +1,7 @@
 # Exi for Swiftkey
 
+### This project is mostly abandoned, and only supports older versions of Swiftkey and Swiftkey Beta, namely between 7.5.7.4 and 7.6.7.4
+
 Exi for Swiftkey is an Xposed Framework module that adds a number of features to the Swiftkey keyboard.
 
 * [XDA Support Thread](https://forum.xda-developers.com/xposed/modules/mod-exi-swiftkey-t3650598)
